@@ -1,0 +1,1 @@
+Note that this example project contains a hand-patched lock-file to work around https://github.com/sdispater/poetry/issues/1172

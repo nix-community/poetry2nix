@@ -1,0 +1,5 @@
+with import ../. { };
+
+mkPoetryPackage {
+  src = ./.;
+}

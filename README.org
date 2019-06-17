@@ -1,0 +1,2 @@
+* Convert poetry projects to nix automagically
+This is under _really_ early development
