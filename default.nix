@@ -1,7 +1,6 @@
 {
   pkgs ? import <nixpkgs> { },
   python ? pkgs.python3,
-  pythonPackages ? python.pkgs,
 }:
 
 let
@@ -15,68 +14,62 @@ let
   # Just grabbing the first possible hash only works ~50% of the time
   getSha256 = pname: poetryLock: builtins.elemAt poetryLock.metadata.hashes."${pname}" 0;
 
-  # Note: Makes a derivation tree
-  mkPoetryDerivation = {
-    pname,
-    depPkgs,
-    pyProject,
-    poetryLock,
-    overrides,
-  }: let
-    pkgMeta = depPkgs."${pname}";
-    version = pkgMeta.version;
-    dependencies =
-      if (builtins.hasAttr "dependencies" pkgMeta)
-      then (builtins.attrNames pkgMeta.dependencies)
-      else [ ];
-
-    drv = pythonPackages.buildPythonPackage {
-      inherit pname version;
-
-      # TODO: It's probably better to model derivations as an attrset that we pick deps from
-      # That way we avoid instantiating the same derivation multiple times
-      propagatedBuildInputs = builtins.map (pname: (mkPoetryDerivation {
-        inherit pname depPkgs pyProject poetryLock overrides;
-      })) dependencies;
-
-      doCheck = false;  # We never get development deps
-
-      src = pythonPackages.fetchPypi {
-        inherit pname version;
-        sha256 = getSha256 pname poetryLock;
-      };
-    };
-
-    override =
-      if (builtins.hasAttr pname overrides)
-      then overrides."${pname}"
-      else (drv: drv);
-
-  in override drv;
+  defaultPoetryOverrides = import ./overrides.nix;
 
   mkPoetryPackage = {
     src,
     pyproject ? src + "/pyproject.toml",
     poetrylock ? src + "/poetry.lock",
-    overrides ? import ./overrides.nix {
-      inherit pkgs python pythonPackages;
-    },
+    overrides ? defaultPoetryOverrides,
   }: let
     pyProject = importTOML pyproject;
     poetryLock = importTOML poetrylock;
 
-    # Turn list of packages from lock-file into attrset for easy lookup
-    depPkgs = builtins.listToAttrs (builtins.map (pkgMeta: {
-      name = pkgMeta.name;
-      value=pkgMeta;
-    }) poetryLock.package);
+    # Create an overriden version of pythonPackages
+    #
+    # We need to avoid mixing multiple versions of pythonPackages in the same
+    # closure as python can only ever have one version of a dependency
+    pythonPackages = (python.override {
+      packageOverrides = self: super:
 
-    # Turn an attrset of name/version pairs into a list of derivations
+      let
+        mkPoetryDep = pkgMeta: self.buildPythonPackage {
+          pname = pkgMeta.name;
+          version = pkgMeta.version;
+
+          doCheck = false;  # We never get development deps
+
+          propagatedBuildInputs = let
+            dependencies =
+              if builtins.hasAttr "dependencies" pkgMeta
+              then builtins.attrNames pkgMeta.dependencies
+              else [];
+          in builtins.map (dep: self."${dep}") dependencies;
+
+          src = self.fetchPypi {
+            pname = pkgMeta.name;
+            version = pkgMeta.version;
+            sha256 = getSha256 pkgMeta.name poetryLock;
+          };
+        };
+
+        lockPkgs = builtins.map (pkgMeta: {
+          name = pkgMeta.name;
+          value = let
+            drv = mkPoetryDep pkgMeta;
+            override =
+              if builtins.hasAttr pkgMeta.name overrides
+              then overrides."${pkgMeta.name}"
+              else _: drv: drv;
+          in override self drv;
+        }) poetryLock.package;
+      in builtins.listToAttrs lockPkgs;
+
+    }).pkgs;
+
     getDeps = deps: let
-      depNames = builtins.filter (depName: depName != "python") (builtins.attrNames deps);
-    in builtins.map (pname: mkPoetryDerivation {
-      inherit pname depPkgs pyProject poetryLock overrides;
-    }) depNames;
+      depAttrs = builtins.attrNames deps;
+    in builtins.map (dep: pythonPackages."${dep}") depAttrs;
 
   in pythonPackages.buildPythonApplication {
     pname = pyProject.tool.poetry.name;
@@ -86,12 +79,12 @@ let
 
     format = "pyproject";
 
-    buildInputs = [
-      pythonPackages.poetry
-    ];
+    doCheck = false;
+
+    buildInputs = [ pythonPackages.poetry ];
 
     propagatedBuildInputs = getDeps pyProject.tool.poetry.dependencies;
-    checkInputs = getDeps pyProject.tool.poetry.dev-dependencies;
+    checkInputs = [];  # getDeps pyProject.tool.poetry.dev-dependencies;
 
     meta = {
       description = pyProject.tool.poetry.description;
@@ -101,5 +94,5 @@ let
   };
 
 in {
-  inherit mkPoetryPackage;
+  inherit mkPoetryPackage defaultPoetryOverrides;
 }

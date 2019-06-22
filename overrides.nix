@@ -1,51 +1,32 @@
-{
-  pkgs,
-  python,
-  pythonPackages,
-}:
-
-{
-
-  pytest = (drv: drv.overrideAttrs(old: {
+let
+  addSetupTools = self: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [
-      pythonPackages.setuptools_scm
+      self.setuptools_scm
     ];
-  }));
+  });
 
-  six = (drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      pythonPackages.setuptools_scm
-    ];
-  }));
+in {
 
-  py = (drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      pythonPackages.setuptools_scm
-    ];
-  }));
+  pytest = addSetupTools;
 
-  zipp = (drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      pythonPackages.setuptools_scm
-    ];
-  }));
+  six = addSetupTools;
 
-  importlib-metadata = (drv: drv.overrideAttrs(old: {
-    src = pythonPackages.fetchPypi {
+  py = addSetupTools;
+
+  zipp = addSetupTools;
+
+  importlib-metadata = (self: drv: drv.overrideAttrs(old: {
+    src = self.fetchPypi {
       pname = "importlib_metadata";
       version = old.version;
       sha256 = old.src.outputHash;
     };
 
     buildInputs = old.buildInputs ++ [
-      pythonPackages.setuptools_scm
+      self.setuptools_scm
     ];
   }));
 
-  pluggy = (drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      pythonPackages.setuptools_scm
-    ];
-  }));
+  pluggy = addSetupTools;
 
 }
