@@ -21,18 +21,28 @@ let
     pyproject ? src + "/pyproject.toml",
     poetrylock ? src + "/poetry.lock",
     overrides ? defaultPoetryOverrides,
-  }: let
+    buildInputs ? [ ],
+    checkInputs ? [ ],
+    propagatedBuildInputs ? [ ],
+    ...
+  }@attrs: let
     pyProject = importTOML pyproject;
     poetryLock = importTOML poetrylock;
+
+    specialAttrs = [
+      "pyproject"
+      "poetrylock"
+      "overrides"
+    ];
+    passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
     # Create an overriden version of pythonPackages
     #
     # We need to avoid mixing multiple versions of pythonPackages in the same
     # closure as python can only ever have one version of a dependency
     pythonPackages = (python.override {
-      packageOverrides = self: super:
+      packageOverrides = self: super: let
 
-      let
         mkPoetryDep = pkgMeta: self.buildPythonPackage {
           pname = pkgMeta.name;
           version = pkgMeta.version;
@@ -60,10 +70,16 @@ let
             override =
               if builtins.hasAttr pkgMeta.name overrides
               then overrides."${pkgMeta.name}"
-              else _: drv: drv;
-          in override self drv;
+              else _: _: drv: drv;
+          in override self super drv;
         }) poetryLock.package;
-      in builtins.listToAttrs lockPkgs;
+
+      in {
+        # TODO: Figure out why install check fails with overridden version
+        pytest_xdist = super.pytest_xdist.overrideAttrs(old: {
+          doInstallCheck = false;
+        });
+      } // builtins.listToAttrs lockPkgs;
 
     }).pkgs;
 
@@ -71,27 +87,27 @@ let
       depAttrs = builtins.attrNames deps;
     in builtins.map (dep: pythonPackages."${dep}") depAttrs;
 
-  in pythonPackages.buildPythonApplication {
+  in pythonPackages.buildPythonApplication (passedAttrs // {
     pname = pyProject.tool.poetry.name;
     version = pyProject.tool.poetry.version;
 
-    inherit src;
-
     format = "pyproject";
 
-    doCheck = false;
+    buildInputs = [ pythonPackages.poetry ]
+      ++ buildInputs;
 
-    buildInputs = [ pythonPackages.poetry ];
+    propagatedBuildInputs = getDeps pyProject.tool.poetry.dependencies
+      ++ propagatedBuildInputs;
 
-    propagatedBuildInputs = getDeps pyProject.tool.poetry.dependencies;
-    checkInputs = [];  # getDeps pyProject.tool.poetry.dev-dependencies;
+    checkInputs = getDeps pyProject.tool.poetry.dev-dependencies
+      ++ checkInputs;
 
     meta = {
       description = pyProject.tool.poetry.description;
       licenses = [ pyProject.tool.poetry.license ];
     };
 
-  };
+  });
 
 in {
   inherit mkPoetryPackage defaultPoetryOverrides;

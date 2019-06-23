@@ -1,5 +1,5 @@
 let
-  addSetupTools = self: drv: drv.overrideAttrs(old: {
+  addSetupTools = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [
       self.setuptools_scm
     ];
@@ -15,7 +15,7 @@ in {
 
   zipp = addSetupTools;
 
-  importlib-metadata = (self: drv: drv.overrideAttrs(old: {
+  importlib-metadata = self: super: drv: drv.overrideAttrs(old: {
     src = self.fetchPypi {
       pname = "importlib_metadata";
       version = old.version;
@@ -25,7 +25,7 @@ in {
     buildInputs = old.buildInputs ++ [
       self.setuptools_scm
     ];
-  }));
+  });
 
   pluggy = addSetupTools;
 
