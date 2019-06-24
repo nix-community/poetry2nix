@@ -8,6 +8,7 @@ Need to filter out certain deps like enum34
 
 *** TODO Lock file hashes not distinguishable by origin
 Reported upstream at https://github.com/sdispater/poetry/issues/1172 and fixed in https://github.com/sdispater/poetry/pull/1183
+This branch depends on upstream PR #1183.
 
 *** TODO Non-pypi dependencies
 Not implemented at all currently

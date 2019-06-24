@@ -38,6 +38,21 @@ in {
 
   jsonschema = addSetupTools;
 
+  python-dateutil = addSetupTools;
+
+  numpy = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
+    buildInputs = old.buildInputs ++ [ pkgs.openblasCompat ];
+
+    # inherit (super.numpy) preConfigure preBuild enableParallelBuilding;
+  });
+
+  shapely = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
+
+    inherit (super.shapely) patches GEOS_LIBRARY_PATH;
+  });
+
   lockfile = self: super: drv: drv.overrideAttrs(old: {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pbr ];
   });

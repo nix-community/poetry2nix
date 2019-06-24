@@ -12,6 +12,11 @@ let
     then builtins.getAttr attribute set
     else default;
 
+  extensions = pkgs.lib.importJSON ./extensions.json;
+  getExtension = filename: builtins.elemAt
+    (builtins.filter (ext: builtins.match "^.*\.${ext}" filename != null) extensions)
+    0;
+
   defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
 
   mkPoetryPackage = {
@@ -19,9 +24,6 @@ let
     pyproject ? src + "/pyproject.toml",
     poetrylock ? src + "/poetry.lock",
     overrides ? defaultPoetryOverrides,
-    buildInputs ? [ ],
-    checkInputs ? [ ],
-    propagatedBuildInputs ? [ ],
     ...
   }@attrs: let
     pyProject = importTOML pyproject;
@@ -51,12 +53,13 @@ let
           src = let
             files = getAttrDefault "files" pkgMeta [];
             files_sdist = builtins.filter (f: f.packagetype == "sdist") files;
-            files_tar = builtins.filter (f: (builtins.match "^.*?tar.gz$" f.name) != null) files_sdist;
-            file = assert builtins.length files_tar == 1; builtins.elemAt files_tar 0;
+            # Grab the first sdist, we dont care about which one
+            file = assert builtins.length files_sdist >= 1; builtins.elemAt files_sdist 0;
           in self.fetchPypi {
             pname = pkgMeta.name;
             version = pkgMeta.version;
             sha256 = file.hash;
+            extension = getExtension file.name;
           };
         };
 
@@ -82,9 +85,13 @@ let
 
     }).pkgs;
 
-    getDeps = deps: let
+    getDeps = depAttr: let
+      deps = builtins.getAttr depAttr pyProject.tool.poetry;
       depAttrs = builtins.attrNames deps;
     in builtins.map (dep: pythonPackages."${dep}") depAttrs;
+
+    getInputs = attr: getAttrDefault attr attrs [];
+    mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
 
   in pythonPackages.buildPythonApplication (passedAttrs // {
     pname = pyProject.tool.poetry.name;
@@ -92,17 +99,16 @@ let
 
     format = "pyproject";
 
-    buildInputs = [ pythonPackages.poetry ]
-      ++ buildInputs;
+    buildInputs = mkInput "buildInputs" ([ pythonPackages.poetry ]);
+    propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies");
+    checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
-    propagatedBuildInputs = getDeps pyProject.tool.poetry.dependencies
-      ++ propagatedBuildInputs;
-
-    checkInputs = getDeps pyProject.tool.poetry.dev-dependencies
-      ++ checkInputs;
+    passthru = {
+      inherit pythonPackages;
+    };
 
     meta = {
-      description = pyProject.tool.poetry.description;
+      inherit (pyProject.tool.poetry) description;
       licenses = [ pyProject.tool.poetry.license ];
     };
 
