@@ -7,14 +7,12 @@ let
 
   importTOML = path: builtins.fromTOML (builtins.readFile path);
 
-  # TODO: Because pip (and by extension poetry) supports wheels hashes are a list
-  # This list has determistic but non-distinguishable origins
-  # (we dont know what url the hashes corresponds to)
-  #
-  # Just grabbing the first possible hash only works ~50% of the time
-  getSha256 = pname: poetryLock: builtins.elemAt poetryLock.metadata.hashes."${pname}" 0;
+  getAttrDefault = attribute: set: default:
+    if builtins.hasAttr attribute set
+    then builtins.getAttr attribute set
+    else default;
 
-  defaultPoetryOverrides = import ./overrides.nix;
+  defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
 
   mkPoetryPackage = {
     src,
@@ -29,11 +27,7 @@ let
     pyProject = importTOML pyproject;
     poetryLock = importTOML poetrylock;
 
-    specialAttrs = [
-      "pyproject"
-      "poetrylock"
-      "overrides"
-    ];
+    specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
     passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
     # Create an overriden version of pythonPackages
@@ -50,16 +44,19 @@ let
           doCheck = false;  # We never get development deps
 
           propagatedBuildInputs = let
-            dependencies =
-              if builtins.hasAttr "dependencies" pkgMeta
-              then builtins.attrNames pkgMeta.dependencies
-              else [];
+            depAttrs = getAttrDefault "dependencies" pkgMeta {};
+            dependencies = builtins.attrNames depAttrs;
           in builtins.map (dep: self."${dep}") dependencies;
 
-          src = self.fetchPypi {
+          src = let
+            files = getAttrDefault "files" pkgMeta [];
+            files_sdist = builtins.filter (f: f.packagetype == "sdist") files;
+            files_tar = builtins.filter (f: (builtins.match "^.*?tar.gz$" f.name) != null) files_sdist;
+            file = assert builtins.length files_tar == 1; builtins.elemAt files_tar 0;
+          in self.fetchPypi {
             pname = pkgMeta.name;
             version = pkgMeta.version;
-            sha256 = getSha256 pkgMeta.name poetryLock;
+            sha256 = file.hash;
           };
         };
 
@@ -67,10 +64,7 @@ let
           name = pkgMeta.name;
           value = let
             drv = mkPoetryDep pkgMeta;
-            override =
-              if builtins.hasAttr pkgMeta.name overrides
-              then overrides."${pkgMeta.name}"
-              else _: _: drv: drv;
+            override = getAttrDefault pkgMeta.name overrides (_: _: drv: drv);
           in override self super drv;
         }) poetryLock.package;
 
@@ -79,7 +73,12 @@ let
         pytest_xdist = super.pytest_xdist.overrideAttrs(old: {
           doInstallCheck = false;
         });
-      } // builtins.listToAttrs lockPkgs;
+      } // builtins.listToAttrs lockPkgs // {
+        # Temporary hacks (Missing support for markers)
+        enum34 = null;
+        functools32 = null;
+        typing = null;
+      };
 
     }).pkgs;
 
