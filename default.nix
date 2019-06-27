@@ -1,5 +1,6 @@
 {
   pkgs ? import <nixpkgs> { },
+  lib ? pkgs.lib,
   python ? pkgs.python3,
 }:
 
@@ -47,7 +48,9 @@ let
 
           propagatedBuildInputs = let
             depAttrs = getAttrDefault "dependencies" pkgMeta {};
-            dependencies = builtins.attrNames depAttrs;
+            # Some dependencies like django gets the attribute name django
+            # but dependencies try to access Django
+            dependencies = builtins.map (d: lib.toLower d) (builtins.attrNames depAttrs);
           in builtins.map (dep: self."${dep}") dependencies;
 
           src = let
