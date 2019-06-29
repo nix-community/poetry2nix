@@ -40,11 +40,26 @@ let
     pythonPackages = (python.override {
       packageOverrides = self: super: let
 
-        mkPoetryDep = pkgMeta: self.buildPythonPackage {
+        mkPoetryDep = pkgMeta: let
+          files = getAttrDefault "files" pkgMeta [];
+          files_sdist = builtins.filter (f: f.packagetype == "sdist") files;
+          files_bdist = builtins.filter (f: f.packagetype == "bdist_wheel") files;
+          files_supported = files_sdist ++ files_bdist;
+          # Grab the first dist, we dont care about which one
+          file = assert builtins.length files_supported >= 1; builtins.elemAt files_supported 0;
+
+          format =
+            if file.packagetype == "bdist_wheel"
+            then "wheel"
+            else "setuptools";
+
+        in self.buildPythonPackage {
           pname = pkgMeta.name;
           version = pkgMeta.version;
 
           doCheck = false;  # We never get development deps
+
+          inherit format;
 
           propagatedBuildInputs = let
             depAttrs = getAttrDefault "dependencies" pkgMeta {};
@@ -53,17 +68,21 @@ let
             dependencies = builtins.map (d: lib.toLower d) (builtins.attrNames depAttrs);
           in builtins.map (dep: self."${dep}") dependencies;
 
-          src = let
-            files = getAttrDefault "files" pkgMeta [];
-            files_sdist = builtins.filter (f: f.packagetype == "sdist") files;
-            # Grab the first sdist, we dont care about which one
-            file = assert builtins.length files_sdist >= 1; builtins.elemAt files_sdist 0;
-          in self.fetchPypi {
-            pname = pkgMeta.name;
-            version = pkgMeta.version;
-            sha256 = file.hash;
-            extension = getExtension file.name;
-          };
+          src =
+            if format == "wheel"
+            then self.fetchPypi {
+              pname = pkgMeta.name;
+              version = pkgMeta.version;
+              sha256 = file.hash;
+              format = "wheel";
+            }
+            else self.fetchPypi {
+              pname = pkgMeta.name;
+              version = pkgMeta.version;
+              sha256 = file.hash;
+              extension = getExtension file.name;
+            };
+
         };
 
         lockPkgs = builtins.map (pkgMeta: {

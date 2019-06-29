@@ -11,12 +11,12 @@ let
     ];
   });
 
+  renameLiteral = pname: (self: super: drv: drv.overrideAttrs(old: {
+    src = old.src.override { inherit pname; };
+  }));
+
   renameUnderscore = self: super: drv: drv.overrideAttrs(old: {
-    src = self.fetchPypi {
-      pname = builtins.replaceStrings ["-"] ["_"] old.pname;
-      version = old.version;
-      sha256 = old.src.outputHash;
-    };
+    src = old.src.override { pname = builtins.replaceStrings ["-"] ["_"] old.pname; };
   });
 
   renameCapital = let
@@ -25,18 +25,21 @@ let
       first = lib.toUpper (builtins.substring 0 1 s);
     in first + builtins.substring 1 len s;
   in self: super: drv: drv.overrideAttrs(old: {
-    src = self.fetchPypi {
-      pname = capitalise old.pname;
-      version = old.version;
-      sha256 = old.src.outputHash;
-    };
+    src = old.src.override { pname = capitalise old.pname; };
   });
 
   # Chain multiple overrides into a single one
   composeOverrides = overrides:
     (self: super: drv: builtins.foldl' (drv: override: override self super drv) drv overrides);
 
+  getAttrDefault = attribute: set: default:
+    if builtins.hasAttr attribute set
+    then builtins.getAttr attribute set
+    else default;
+
 in {
+
+  babel = renameCapital;
 
   django-bakery = self: super: drv: drv.overrideAttrs(old: {
     configurePhase = ''
@@ -46,12 +49,19 @@ in {
     '' + old.configurePhase;
   });
 
-  pretalx = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gettext ];
-  });
+  vat-moss = renameUnderscore;
 
   django = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gettext ];
+    propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
+      ++ [ pkgs.gettext ];
+  });
+
+  cffi = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+  });
+
+  cryptography = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.openssl ];
   });
 
   django-compressor = renameUnderscore;
@@ -61,6 +71,8 @@ in {
   django-context-decorator = renameUnderscore;
 
   markdown = renameCapital;
+
+  pyyaml = renameLiteral "PyYAML";
 
   pillow = let
     pillowOverride = self: super: drv: drv.overrideAttrs(old: {
@@ -94,6 +106,10 @@ in {
     buildInputs = old.buildInputs ++ [ pkgs.openblasCompat ];
   });
 
+  psycopg2-binary = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.postgresql ];
+  });
+
   lxml = self: super: drv: drv.overrideAttrs(old: {
     nativeBuildInputs = with pkgs; old.nativeBuildInputs ++ [ pkgconfig libxml2.dev libxslt.dev ];
     buildInputs = with pkgs; old.buildInputs ++ [ libxml2 libxslt ];
@@ -101,7 +117,6 @@ in {
 
   shapely = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
-
     inherit (super.shapely) patches GEOS_LIBRARY_PATH;
   });
 
