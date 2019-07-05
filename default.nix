@@ -37,9 +37,8 @@ let
     #
     # We need to avoid mixing multiple versions of pythonPackages in the same
     # closure as python can only ever have one version of a dependency
-    pythonPackages = (python.override {
+    py = let
       packageOverrides = self: super: let
-
         mkPoetryDep = pkgMeta: let
           files = getAttrDefault "files" pkgMeta [];
           files_sdist = builtins.filter (f: f.packagetype == "sdist") files;
@@ -104,8 +103,8 @@ let
         functools32 = null;
         typing = null;
       };
-
-    }).pkgs;
+    in python.override { inherit packageOverrides; self = py; };
+    pythonPackages = py.pkgs;
 
     getDeps = depAttr: let
       deps = builtins.getAttr depAttr pyProject.tool.poetry;
