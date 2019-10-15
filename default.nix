@@ -20,6 +20,9 @@ let
 
   defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
 
+  isBdist = f: builtins.match "^.*?whl$" f.file != null;
+  isSdist = f: ! isBdist f;
+
   mkPoetryPackage = {
     src,
     pyproject ? src + "/pyproject.toml",
@@ -29,6 +32,8 @@ let
   }@attrs: let
     pyProject = importTOML pyproject;
     poetryLock = importTOML poetrylock;
+
+    files = getAttrDefault "files" (getAttrDefault "metadata" poetryLock {}) {};
 
     specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
     passedAttrs = builtins.removeAttrs attrs specialAttrs;
@@ -40,15 +45,17 @@ let
     py = let
       packageOverrides = self: super: let
         mkPoetryDep = pkgMeta: let
-          files = getAttrDefault "files" pkgMeta [];
-          files_sdist = builtins.filter (f: f.packagetype == "sdist") files;
-          files_bdist = builtins.filter (f: f.packagetype == "bdist_wheel") files;
+          pkgFiles = getAttrDefault pkgMeta.name files [];
+          # files = poetryLock.metadata.files;
+          # files = getAttrDefault "files" pkgMeta [];
+          files_sdist = builtins.filter isSdist pkgFiles;
+          files_bdist = builtins.filter isBdist pkgFiles;
           files_supported = files_sdist ++ files_bdist;
           # Grab the first dist, we dont care about which one
           file = assert builtins.length files_supported >= 1; builtins.elemAt files_supported 0;
 
           format =
-            if file.packagetype == "bdist_wheel"
+            if isBdist file
             then "wheel"
             else "setuptools";
 
@@ -79,7 +86,7 @@ let
               pname = pkgMeta.name;
               version = pkgMeta.version;
               sha256 = file.hash;
-              extension = getExtension file.name;
+              extension = getExtension file.file;
             };
 
         };
@@ -120,7 +127,10 @@ let
 
     format = "pyproject";
 
-    buildInputs = mkInput "buildInputs" ([ pythonPackages.poetry ]);
+    # TODO: Only conditionally includo poetry based on build-system
+    # buildInputs = mkInput "buildInputs" ([ pythonPackages.poetry ]);
+    buildInputs = mkInput "buildInputs" ([ pythonPackages.setuptools ]);
+
     propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies");
     checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 

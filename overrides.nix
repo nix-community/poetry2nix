@@ -63,6 +63,8 @@ in {
     buildInputs = old.buildInputs ++ [ pkgs.libffi ];
   });
 
+  configparser = addSetupTools;
+
   cryptography = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [ pkgs.openssl ];
   });
@@ -127,4 +129,5 @@ in {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pbr ];
   });
 
+  keyring = addSetupTools;
 }
