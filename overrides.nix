@@ -51,10 +51,13 @@ in {
 
   vat-moss = renameUnderscore;
 
-  django = self: super: drv: drv.overrideAttrs(old: {
-    propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
+  django = composeOverrides [
+    renameCapital
+    (self: super: drv: drv.overrideAttrs(old: {
+      propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
       ++ [ pkgs.gettext ];
-  });
+    }))
+  ];
 
   cffi = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [ pkgs.libffi ];
