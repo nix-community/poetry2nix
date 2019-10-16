@@ -17,6 +17,8 @@ let
   getExtension = filename: builtins.elemAt
     (builtins.filter (ext: builtins.match "^.*\.${ext}" filename != null) extensions)
     0;
+  supportedRe = ("^.*?(" + builtins.concatStringsSep "|" extensions + ")");
+  fileSupported = fname: builtins.match supportedRe fname != null;
 
   defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
 
@@ -28,6 +30,7 @@ let
     pyproject ? src + "/pyproject.toml",
     poetrylock ? src + "/poetry.lock",
     overrides ? defaultPoetryOverrides,
+    meta ? {},
     ...
   }@attrs: let
     pyProject = importTOML pyproject;
@@ -45,7 +48,10 @@ let
     py = let
       packageOverrides = self: super: let
         mkPoetryDep = pkgMeta: let
-          pkgFiles = getAttrDefault pkgMeta.name files [];
+          pkgFiles = let
+            all = getAttrDefault pkgMeta.name files [];
+          in builtins.filter (f: fileSupported f.file) all;
+
           # files = poetryLock.metadata.files;
           # files = getAttrDefault "files" pkgMeta [];
           files_sdist = builtins.filter isSdist pkgFiles;
@@ -109,6 +115,7 @@ let
         enum34 = null;
         functools32 = null;
         typing = null;
+        futures = null;
       };
     in python.override { inherit packageOverrides; self = py; };
     pythonPackages = py.pkgs;
@@ -127,7 +134,7 @@ let
 
     format = "pyproject";
 
-    # TODO: Only conditionally includo poetry based on build-system
+    # TODO: Only conditionally include poetry based on build-system
     # buildInputs = mkInput "buildInputs" ([ pythonPackages.poetry ]);
     buildInputs = mkInput "buildInputs" ([ pythonPackages.setuptools ]);
 
@@ -138,7 +145,7 @@ let
       inherit pythonPackages;
     };
 
-    meta = {
+    meta = meta // {
       inherit (pyProject.tool.poetry) description;
       licenses = [ pyProject.tool.poetry.license ];
     };

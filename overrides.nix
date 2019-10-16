@@ -59,6 +59,8 @@ in {
     }))
   ];
 
+  click = renameCapital;
+
   cffi = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [ pkgs.libffi ];
   });
@@ -77,6 +79,10 @@ in {
 
   markdown = renameCapital;
 
+  markupsafe = self: super: drv: drv.overrideAttrs(old: {
+    src = old.src.override { pname = builtins.replaceStrings [ "markupsafe" ] [ "MarkupSafe"] old.pname; };
+  });
+
   pyyaml = renameLiteral "PyYAML";
 
   pillow = let
@@ -90,6 +96,8 @@ in {
 
   pytest = addSetupTools;
 
+  pytest-mock = addSetupTools;
+
   six = addSetupTools;
 
   py = addSetupTools;
@@ -98,13 +106,21 @@ in {
 
   importlib-metadata = composeOverrides [ renameUnderscore addSetupTools ];
 
+  importlib-resources = composeOverrides [ renameUnderscore ];
+
   typing-extensions = renameUnderscore;
 
   pluggy = addSetupTools;
 
+  pre-commit = renameUnderscore;
+
   jsonschema = addSetupTools;
 
+  jinja2 = renameCapital;
+
   python-dateutil = addSetupTools;
+
+  pygments = renameCapital;
 
   numpy = self: super: drv: drv.overrideAttrs(old: {
     nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
