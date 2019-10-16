@@ -13,6 +13,28 @@ let
     then builtins.getAttr attribute set
     else default;
 
+  satisfiesSemver = (import ./semver.nix {inherit lib;}).satisfies;
+
+  # Check Python version is compatible with package
+  isCompatible = pythonVersions: let
+    operators = {
+      "||" = cond1: cond2: cond1 || cond2;
+      "," = cond1: cond2: cond1 && cond2;  # , means &&
+    };
+    tokens = builtins.split "(,|\\|\\|)" pythonVersions;
+  in (builtins.foldl' (acc: v: let
+    isOperator = builtins.typeOf v == "list";
+    operator = if isOperator then (builtins.elemAt v 0) else acc.operator;
+  in if isOperator then (acc // {inherit operator;}) else {
+    inherit operator;
+    state = operators."${operator}" acc.state (satisfiesSemver python.version v);
+  })
+  {
+    operator = ",";
+    state = true;
+  }
+  tokens).state;
+
   extensions = pkgs.lib.importJSON ./extensions.json;
   getExtension = filename: builtins.elemAt
     (builtins.filter (ext: builtins.match "^.*\.${ext}" filename != null) extensions)
@@ -52,8 +74,6 @@ let
             all = getAttrDefault pkgMeta.name files [];
           in builtins.filter (f: fileSupported f.file) all;
 
-          # files = poetryLock.metadata.files;
-          # files = getAttrDefault "files" pkgMeta [];
           files_sdist = builtins.filter isSdist pkgFiles;
           files_bdist = builtins.filter isBdist pkgFiles;
           files_supported = files_sdist ++ files_bdist;
@@ -79,6 +99,10 @@ let
             # but dependencies try to access Django
             dependencies = builtins.map (d: lib.toLower d) (builtins.attrNames depAttrs);
           in builtins.map (dep: self."${dep}") dependencies;
+
+          meta = {
+            broken = ! isCompatible pkgMeta.python-versions;
+          };
 
           src =
             if format == "wheel"
