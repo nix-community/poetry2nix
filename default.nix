@@ -1,7 +1,6 @@
 {
   pkgs ? import <nixpkgs> { },
   lib ? pkgs.lib,
-  python ? pkgs.python3,
 }:
 
 let
@@ -16,7 +15,7 @@ let
   satisfiesSemver = (import ./semver.nix {inherit lib;}).satisfies;
 
   # Check Python version is compatible with package
-  isCompatible = pythonVersions: let
+  isCompatible = pythonVersion: pythonVersions: let
     operators = {
       "||" = cond1: cond2: cond1 || cond2;
       "," = cond1: cond2: cond1 && cond2;  # , means &&
@@ -27,7 +26,7 @@ let
     operator = if isOperator then (builtins.elemAt v 0) else acc.operator;
   in if isOperator then (acc // {inherit operator;}) else {
     inherit operator;
-    state = operators."${operator}" acc.state (satisfiesSemver python.version v);
+    state = operators."${operator}" acc.state (satisfiesSemver pythonVersion v);
   })
   {
     operator = ",";
@@ -47,12 +46,18 @@ let
   isBdist = f: builtins.match "^.*?whl$" f.file != null;
   isSdist = f: ! isBdist f;
 
+  mkEvalPep508 = import ./pep508.nix {
+    inherit lib;
+    stdenv = pkgs.stdenv;
+  };
+
   mkPoetryPackage = {
     src,
     pyproject ? src + "/pyproject.toml",
     poetrylock ? src + "/poetry.lock",
     overrides ? defaultPoetryOverrides,
     meta ? {},
+    python ? pkgs.python3,
     ...
   }@attrs: let
     pyProject = importTOML pyproject;
@@ -62,6 +67,8 @@ let
 
     specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
     passedAttrs = builtins.removeAttrs attrs specialAttrs;
+
+    evalPep508 = mkEvalPep508 python;
 
     # Create an overriden version of pythonPackages
     #
@@ -85,7 +92,10 @@ let
             then "wheel"
             else "setuptools";
 
-        in self.buildPythonPackage {
+          # Filter derivations by their PEP508 markers
+          markerFiltered = if builtins.hasAttr "marker" pkgMeta then (! evalPep508 pkgMeta.marker) else false;
+
+        in if markerFiltered then null else self.buildPythonPackage {
           pname = pkgMeta.name;
           version = pkgMeta.version;
 
@@ -101,7 +111,7 @@ let
           in builtins.map (dep: self."${dep}") dependencies;
 
           meta = {
-            broken = ! isCompatible pkgMeta.python-versions;
+            broken = ! isCompatible python.version pkgMeta.python-versions;
           };
 
           src =
@@ -126,7 +136,7 @@ let
           value = let
             drv = mkPoetryDep pkgMeta;
             override = getAttrDefault pkgMeta.name overrides (_: _: drv: drv);
-          in override self super drv;
+          in if drv != null then (override self super drv) else null;
         }) poetryLock.package;
 
       in {
@@ -134,13 +144,7 @@ let
         pytest_xdist = super.pytest_xdist.overrideAttrs(old: {
           doInstallCheck = false;
         });
-      } // builtins.listToAttrs lockPkgs // {
-        # Temporary hacks (Missing support for markers)
-        enum34 = null;
-        functools32 = null;
-        typing = null;
-        futures = null;
-      };
+      } // builtins.listToAttrs lockPkgs;
     in python.override { inherit packageOverrides; self = py; };
     pythonPackages = py.pkgs;
 
@@ -160,9 +164,9 @@ let
 
     # TODO: Only conditionally include poetry based on build-system
     # buildInputs = mkInput "buildInputs" ([ pythonPackages.poetry ]);
-    buildInputs = mkInput "buildInputs" ([ pythonPackages.setuptools ]);
+    buildInputs = mkInput "buildInputs" ([ pythonPackages.poetry ]);
 
-    propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies");
+    propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
     checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
     passthru = {
