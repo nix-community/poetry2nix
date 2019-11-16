@@ -14,9 +14,9 @@ let
         posNew = acc.pos + 1;
         isOpen = acc.openP == 0;
         startPos = if isOpen then posNew else acc.startPos;
-        exprs = if isOpen then acc.exprs else acc.exprs ++ [ (substr acc.exprPos (acc.pos - 1) acc.expr) ];
       in acc // {
-        inherit exprs startPos;
+        inherit startPos;
+        exprs = acc.exprs ++ [ (substr acc.exprPos (acc.pos - 1) acc.expr) ];
         pos = posNew;
         openP = acc.openP + 1;
       }
@@ -47,8 +47,8 @@ let
 
   parseExpressions = exprs: let
     splitCond = (s: builtins.map
-    (x: if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x)
-    (builtins.split " (and|or) " s));
+    (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
+    (builtins.split " (and|or) " (s + " ")));
 
     mapfn = expr: (
       if (builtins.match "^ ?$" expr != null) then null  # Filter empty
