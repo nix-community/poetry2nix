@@ -43,12 +43,14 @@ let
       exprPos = 0;
       startPos = 0;
     } (lib.stringToCharacters expr);
-  in acc.exprs ++ [ (substr acc.exprPos acc.pos expr) ];
+    tailExpr = (substr acc.exprPos acc.pos expr);
+    tailExprs = if tailExpr != "" then [ tailExpr ] else [];
+  in acc.exprs ++ tailExprs;
 
   parseExpressions = exprs: let
     splitCond = (s: builtins.map
-    (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
-    (builtins.split " (and|or) " (s + " ")));
+      (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
+      (builtins.split " (and|or) " (s + " ")));
 
     mapfn = expr: (
       if (builtins.match "^ ?$" expr != null) then null  # Filter empty
@@ -59,11 +61,14 @@ let
       else {
         type = "expr";
         value = expr;
-      });
+      }
+    );
 
-      parsed = builtins.filter (x: x != null) (builtins.map mapfn (splitCond exprs));
+    parse = expr: builtins.filter (x: x != null) (builtins.map mapfn (splitCond expr));
 
-  in if builtins.typeOf exprs == "string" then parsed else builtins.map parseExpressions exprs;
+  in builtins.foldl' (acc: v: acc ++ (
+    if builtins.typeOf v == "string" then parse v else [(parseExpressions v)]
+  )) [] exprs;
 
   # Transform individual expressions to structured expressions
   # This function also performs variable substitution, replacing environment markers with their explicit values
@@ -155,7 +160,6 @@ let
       "and" = x: y: x && y;
       "or" = x: y: x || y;
     };
-
     reduceExpressionsFun = acc: v: (
       if builtins.typeOf v == "set" then (
         if v.type == "value" then (
@@ -168,7 +172,14 @@ let
           }
         ) else throw "Unsupported type"
       ) else if builtins.typeOf v == "list" then (
-        builtins.foldl' reduceExpressionsFun acc v
+        let
+          ret = builtins.foldl' reduceExpressionsFun {
+            value = true;
+            cond = "and";
+          } v;
+        in acc // {
+          value = cond."${acc.cond}" acc.value ret.value;
+        }
       ) else throw "Unsupported type"
     );
   in (builtins.foldl' reduceExpressionsFun {
