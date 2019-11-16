@@ -3,11 +3,10 @@ This is under _really_ early development, don't expect things to work.
 
 ** Missing
 
-*** TODO Implement support for markers
-Need to filter out certain deps like enum34
-
 *** TODO Non-pypi dependencies
 Not implemented at all currently
 
 *** TODO Circular dependencies
 Not implemented at all currently
+
+*** TODO Add tests
