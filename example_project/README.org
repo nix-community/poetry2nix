@@ -1,1 +1,0 @@
-Note that this example project contains depends on a patched version of poetry
