@@ -46,7 +46,7 @@ in {
       if ! test -e LICENSE; then
         touch LICENSE
       fi
-    '' + old.configurePhase;
+    '' + (getAttrDefault "configurePhase" old "");
   });
 
   vat-moss = renameUnderscore;
@@ -58,6 +58,8 @@ in {
       ++ [ pkgs.gettext ];
     }))
   ];
+
+  cachecontrol = renameLiteral "CacheControl";
 
   click = renameCapital;
 
@@ -95,6 +97,10 @@ in {
   in composeOverrides [ renameCapital pillowOverride ];
 
   pytest = addSetupTools;
+
+  pyopenssl = renameLiteral "pyOpenSSL";
+
+  pypdf2 = renameLiteral "PyPDF2";
 
   pytest-mock = addSetupTools;
 
@@ -146,4 +152,7 @@ in {
   });
 
   keyring = addSetupTools;
+
+  secretstorage = renameLiteral "SecretStorage";
+
 }
