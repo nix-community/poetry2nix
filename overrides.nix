@@ -67,6 +67,8 @@ in {
     buildInputs = old.buildInputs ++ [ pkgs.libffi ];
   });
 
+  cbor2 = addSetupTools;
+
   configparser = addSetupTools;
 
   cryptography = self: super: drv: drv.overrideAttrs(old: {
@@ -86,6 +88,8 @@ in {
   });
 
   pyyaml = renameLiteral "PyYAML";
+
+  hypothesis = addSetupTools;
 
   pillow = let
     pillowOverride = self: super: drv: drv.overrideAttrs(old: {
