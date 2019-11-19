@@ -1,6 +1,7 @@
 {
   pkgs ? import <nixpkgs> { },
   lib ? pkgs.lib,
+  poetry ? null,
 }:
 
 let
@@ -13,9 +14,9 @@ let
     else default
   );
 
-  getAttrPathDefault = attrPath: set: default: (
+  getAttrPath = attrPath: set: (
     builtins.foldl'
-    (acc: v: if builtins.hasAttr v acc then acc."${v}" else default)
+    (acc: v: if builtins.typeOf acc == "set" && builtins.hasAttr v acc then acc."${v}" else null)
     set (lib.splitString "." attrPath)
   );
 
@@ -76,6 +77,8 @@ let
     passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
     evalPep508 = mkEvalPep508 python;
+
+    poetryPkg = poetry.override { inherit python; };
 
     # Create an overriden version of pythonPackages
     #
@@ -171,7 +174,7 @@ let
     getInputs = attr: getAttrDefault attr attrs [];
     mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
 
-    hasPoetryBuildSystem = getAttrPathDefault "build-system.build-backend" pyProject null == "poetry.masonry.api";
+    hasPoetryBuildSystem = getAttrPath "build-system.build-backend" pyProject == "poetry.masonry.api";
 
   in pythonPackages.buildPythonApplication (passedAttrs // {
     pname = pyProject.tool.poetry.name;
@@ -179,7 +182,7 @@ let
 
     format = "pyproject";
 
-    buildInputs = mkInput "buildInputs" (lib.optional hasPoetryBuildSystem pythonPackages.poetry);
+    buildInputs = mkInput "buildInputs" (lib.optional hasPoetryBuildSystem poetryPkg);
 
     propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
     checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
