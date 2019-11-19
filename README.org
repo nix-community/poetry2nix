@@ -1,12 +1,29 @@
-* Convert poetry projects to nix automagically
-This is under _really_ early development, don't expect things to work.
+[[https://travis-ci.org/adisbladis/pnpm2nix][https://travis-ci.org/adisbladis/poetry2nix.svg?branch=master]]
 
-** Missing
+* poetry2nix
+Poetry2nix turns [[https://poetry.eustace.io/][Poetry]] projects into Nix derivations without the need to actually write Nix expressions.
 
-*** TODO Non-pypi dependencies
-Not implemented at all currently
+It does so by parsing =pyproject.toml= and =poetry.lock= and converting them to Nix derivations on the fly.
 
-*** TODO Circular dependencies
-Not implemented at all currently
+** Usage
 
-*** TODO Add tests
+*** Example =default.nix=
+The easiest way to import poetry2nix is as an overlay.
+#+begin_src nix
+let
+  pkgs = import <nixpkgs> {
+    overlays = [
+      (import ((builtins.fetchTarball { url = https://github.com/adisbladis/poetry2nix/archive/master.tar.gz; }) + "/overlay.nix"))
+    ];
+  };
+in pkgs.poetry2nix.mkPoetryPackage {
+  python = python3;
+  pyproject = ./pyproject.toml;
+  poetryLock = ./poetry.lock;
+  src = lib.cleanSource ./.;
+}
+#+END_SRC
+Poetry2nix is also available as a [[https://github.com/NixOS/rfcs/pull/49][Nix flake]].
+
+** License
+=poetry2nix= is released under the terms of the MIT license.
