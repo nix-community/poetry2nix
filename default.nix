@@ -14,6 +14,18 @@ let
     else default
   );
 
+  # Fetch the artifacts from the PyPI index.
+  #
+  # Args:
+  #   file: filename including extension
+  #   hash: SRI hash
+  #   kind: Language implementation and version tag https://www.python.org/dev/peps/pep-0427/#file-name-convention
+  fetchPypi = lib.makeOverridable ({ pname, file, hash, kind }:
+    pkgs.fetchurl {
+      url = "https://files.pythonhosted.org/packages/${kind}/${builtins.substring 0 1 file}/${pname}/${file}";
+      inherit hash;
+    });
+
   getAttrPath = attrPath: set: (
     builtins.foldl'
     (acc: v: if builtins.typeOf acc == "set" && builtins.hasAttr v acc then acc."${v}" else null)
@@ -126,21 +138,14 @@ let
             broken = ! isCompatible python.version pkgMeta.python-versions;
           };
 
-          src =
-            if format == "wheel"
-            then self.fetchPypi {
-              pname = pkgMeta.name;
-              version = pkgMeta.version;
-              sha256 = file.hash;
-              format = "wheel";
-            }
-            else self.fetchPypi {
-              pname = pkgMeta.name;
-              version = pkgMeta.version;
-              sha256 = file.hash;
-              extension = getExtension file.file;
-            };
-
+          src = fetchPypi {
+            pname = pkgMeta.name;
+            inherit (file) file hash;
+            # We need to retrieve kind from the interpreter and the filename of the package
+            # Interpreters should declare what wheel types they're compatible with (python type + ABI)
+            # Here we can then choose a file based on that info.
+            kind = if format == "wheel" then "py2.py3" else "source";
+          };
         };
 
         # Filter packages by their PEP508 markers

@@ -11,23 +11,6 @@ let
     ];
   });
 
-  renameLiteral = pname: (self: super: drv: drv.overrideAttrs(old: {
-    src = old.src.override { inherit pname; };
-  }));
-
-  renameUnderscore = self: super: drv: drv.overrideAttrs(old: {
-    src = old.src.override { pname = builtins.replaceStrings ["-"] ["_"] old.pname; };
-  });
-
-  renameCapital = let
-    capitalise = s: let
-      len = builtins.stringLength s;
-      first = lib.toUpper (builtins.substring 0 1 s);
-    in first + builtins.substring 1 len s;
-  in self: super: drv: drv.overrideAttrs(old: {
-    src = old.src.override { pname = capitalise old.pname; };
-  });
-
   # Chain multiple overrides into a single one
   composeOverrides = overrides:
     (self: super: drv: builtins.foldl' (drv: override: override self super drv) drv overrides);
@@ -39,8 +22,6 @@ let
 
 in {
 
-  babel = renameCapital;
-
   django-bakery = self: super: drv: drv.overrideAttrs(old: {
     configurePhase = ''
       if ! test -e LICENSE; then
@@ -49,19 +30,12 @@ in {
     '' + (getAttrDefault "configurePhase" old "");
   });
 
-  vat-moss = renameUnderscore;
-
   django = composeOverrides [
-    renameCapital
     (self: super: drv: drv.overrideAttrs(old: {
       propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
       ++ [ pkgs.gettext ];
     }))
   ];
-
-  cachecontrol = renameLiteral "CacheControl";
-
-  click = renameCapital;
 
   cffi = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [ pkgs.libffi ];
@@ -75,19 +49,9 @@ in {
     buildInputs = old.buildInputs ++ [ pkgs.openssl ];
   });
 
-  django-compressor = renameUnderscore;
-
-  django-csp = renameUnderscore;
-
-  django-context-decorator = renameUnderscore;
-
-  markdown = renameCapital;
-
   markupsafe = self: super: drv: drv.overrideAttrs(old: {
     src = old.src.override { pname = builtins.replaceStrings [ "markupsafe" ] [ "MarkupSafe"] old.pname; };
   });
-
-  pyyaml = renameLiteral "PyYAML";
 
   hypothesis = addSetupTools;
 
@@ -98,13 +62,9 @@ in {
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ]
         ++ old.buildInputs;
     });
-  in composeOverrides [ renameCapital pillowOverride ];
+  in pillowOverride;
 
   pytest = addSetupTools;
-
-  pyopenssl = renameLiteral "pyOpenSSL";
-
-  pypdf2 = renameLiteral "PyPDF2";
 
   pytest-mock = addSetupTools;
 
@@ -114,23 +74,13 @@ in {
 
   zipp = addSetupTools;
 
-  importlib-metadata = composeOverrides [ renameUnderscore addSetupTools ];
-
-  importlib-resources = composeOverrides [ renameUnderscore ];
-
-  typing-extensions = renameUnderscore;
+  importlib-metadata = addSetupTools;
 
   pluggy = addSetupTools;
 
-  pre-commit = renameUnderscore;
-
   jsonschema = addSetupTools;
 
-  jinja2 = renameCapital;
-
   python-dateutil = addSetupTools;
-
-  pygments = renameCapital;
 
   numpy = self: super: drv: drv.overrideAttrs(old: {
     nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
@@ -156,7 +106,5 @@ in {
   });
 
   keyring = addSetupTools;
-
-  secretstorage = renameLiteral "SecretStorage";
 
 }
