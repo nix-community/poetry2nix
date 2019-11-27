@@ -176,8 +176,8 @@ let
     pythonPackages = py.pkgs;
 
     getDeps = depAttr: let
-      deps = builtins.getAttr depAttr pyProject.tool.poetry;
-      depAttrs = builtins.attrNames deps;
+      deps = getAttrDefault depAttr pyProject.tool.poetry {};
+      depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
     in builtins.map (dep: pythonPackages."${dep}") depAttrs;
 
     getInputs = attr: getAttrDefault attr attrs [];
