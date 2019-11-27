@@ -14,15 +14,19 @@ let
     else default
   );
 
-  # Fetch the artifacts from the PyPI index.
+  # Fetch the artifacts from the PyPI index. Since we get all
+  # info we need from the lock file we don't use nixpkgs' fetchPyPi
+  # as it modifies casing while not providing anything we don't already
+  # have.
   #
   # Args:
+  #   pname: package name
   #   file: filename including extension
   #   hash: SRI hash
   #   kind: Language implementation and version tag https://www.python.org/dev/peps/pep-0427/#file-name-convention
-  fetchPypi = lib.makeOverridable ({ pname, file, hash, kind }:
+  fetchFromPypi = lib.makeOverridable ({ pname, file, hash, kind }:
     pkgs.fetchurl {
-      url = "https://files.pythonhosted.org/packages/${kind}/${builtins.substring 0 1 file}/${pname}/${file}";
+      url = "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}";
       inherit hash;
     });
 
@@ -138,7 +142,7 @@ let
             broken = ! isCompatible python.version pkgMeta.python-versions;
           };
 
-          src = fetchPypi {
+          src = fetchFromPypi {
             pname = pkgMeta.name;
             inherit (file) file hash;
             # We need to retrieve kind from the interpreter and the filename of the package
