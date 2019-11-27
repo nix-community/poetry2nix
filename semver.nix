@@ -9,7 +9,7 @@ let
   in genList (i: if i == idx then value else (elemAt list i)) (length list);
 
   operators = let
-    matchWildCard = s: match "(.*)(\.[x\*])" s;
+    matchWildCard = s: match "([^\*])(\.[\*])" s;
     mkComparison = ret: version: v: builtins.compareVersions version v == ret;
     mkIdxComparison = idx: version: v: let
       ver = builtins.splitVersion v;
