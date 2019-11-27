@@ -140,6 +140,7 @@ let
 
           meta = {
             broken = ! isCompatible python.version pkgMeta.python-versions;
+            license = [];
           };
 
           src = fetchFromPypi {
