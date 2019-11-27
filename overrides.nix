@@ -107,4 +107,9 @@ in {
 
   keyring = addSetupTools;
 
+  # Break setuptools infinite recursion because of non-bootstrapped pip
+  wheel = self: super: drv: super.wheel.overridePythonAttrs(_: {
+    inherit (drv) pname name version src;
+  });
+
 }
