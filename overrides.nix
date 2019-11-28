@@ -279,6 +279,37 @@ in {
     buildInputs = old.buildInputs ++ [ pkgs.ffmpeg_4 ];
   });
 
+  urwidtrees = self: super: drv: drv.overrideAttrs(old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      self.urwid
+    ];
+  });
+
+  pycocotools = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [
+      self.cython
+      self.numpy
+    ];
+  });
+
+  lap = self: super: drv: drv.overrideAttrs(old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      self.numpy
+    ];
+  });
+
+  grandalf = self: super: drv: drv.overrideAttrs(old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "setup_requires=['pytest-runner',]," "setup_requires=[]," || true
+    '';
+  });
+
+  scaleapi = self: super: drv: drv.overrideAttrs(old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
+    '';
+  });
+
   # Environment markers are not always included (depending on how a dep was defined)
   enum34 = self: super: drv: if self.pythonAtLeast "3.4" then null else drv;
 
