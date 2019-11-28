@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "test"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+urllib3 = "^1.25.7"
+six = "^1.13.0"
+pip = "^19.3.1"
+botocore = "^1.13.28"
+requests = "^2.22.0"
+s3transfer = "^0.2.1"
+certifi = "^2019.11.28"
+pyyaml = "^5.1.2"
+pyasn1 = "^0.4.8"
+idna = "^2.8"
+docutils = "^0.15.2"
+rsa = "^4.0"
+chardet = "^3.0.4"
+jmespath = "^0.9.4"
+colorama = "^0.4.1"
+pytz = "^2019.3"
+simplejson = "^3.17.0"
+boto3 = "^1.10.28"
+wheel = "^0.33.6"
+numpy = "^1.17.4"
+protobuf = "^3.11.0"
+markupsafe = "^1.1.1"
+jinja2 = "^2.10.3"
+pyasn1-modules = "^0.2.7"
+attrs = "^19.3.0"
+google-api-core = "^1.14.3"
+cachetools = "^3.1.1"
+click = "^7.0"
+future = "^0.18.2"
+pycparser = "^2.19"
+google-auth = "^1.7.1"
+grpcio = "^1.25.0"
+google-cloud-core = "^1.0.3"
+asn1crypto = "^1.2.0"
+werkzeug = "^0.16.0"
+googleapis-common-protos = "^1.6.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

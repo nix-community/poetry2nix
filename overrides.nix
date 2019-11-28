@@ -56,14 +56,10 @@ in {
 
   hypothesis = addSetupTools;
 
-  pillow = let
-    pillowOverride = self: super: drv: drv.overrideAttrs(old: {
-      nativeBuildInputs = [ pkgs.pkgconfig ]
-        ++ old.nativeBuildInputs;
-      buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ]
-        ++ old.buildInputs;
-    });
-  in pillowOverride;
+  pillow = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
+    buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ old.buildInputs;
+  });
 
   pytest = addSetupTools;
 
@@ -312,5 +308,19 @@ in {
 
   # Environment markers are not always included (depending on how a dep was defined)
   enum34 = self: super: drv: if self.pythonAtLeast "3.4" then null else drv;
+
+  pyopenssl = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.openssl ];
+  });
+
+  bcrypt = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+  });
+
+  mccabe = self: super: drv: drv.overrideAttrs(old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," "setup_requires=[]," || true
+    '';
+  });
 
 }
