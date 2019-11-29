@@ -1,0 +1,3 @@
+test:
+  script:
+    - nix-build --no-out-link --show-trace tests
