@@ -12,16 +12,52 @@ let
     ];
   });
 
-  # Chain multiple overrides into a single one
-  composeOverrides = overrides:
-    (self: super: drv: builtins.foldl' (drv: override: override self super drv) drv overrides);
-
   getAttrDefault = attribute: set: default:
     if builtins.hasAttr attribute set
     then builtins.getAttr attribute set
     else default;
 
 in {
+
+  asciimatics = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [
+      self.setuptools_scm
+    ];
+  });
+
+  av = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [
+      pkgs.pkgconfig
+    ];
+    buildInputs = old.buildInputs ++ [ pkgs.ffmpeg_4 ];
+  });
+
+  bcrypt = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+  });
+
+  cffi = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+  });
+
+  cftime = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [
+      self.cython
+    ];
+  });
+
+  configparser = addSetupTools;
+
+  cbor2 = addSetupTools;
+
+  cryptography = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.openssl ];
+  });
+
+  django = (self: super: drv: drv.overrideAttrs(old: {
+    propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
+    ++ [ pkgs.gettext ];
+  }));
 
   django-bakery = self: super: drv: drv.overrideAttrs(old: {
     configurePhase = ''
@@ -31,53 +67,116 @@ in {
     '' + (getAttrDefault "configurePhase" old "");
   });
 
-  django = composeOverrides [
-    (self: super: drv: drv.overrideAttrs(old: {
-      propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
-      ++ [ pkgs.gettext ];
-    }))
-  ];
+  # Environment markers are not always included (depending on how a dep was defined)
+  enum34 = self: super: drv: if self.pythonAtLeast "3.4" then null else drv;
 
-  cffi = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+  grandalf = self: super: drv: drv.overrideAttrs(old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "setup_requires=['pytest-runner',]," "setup_requires=[]," || true
+    '';
   });
 
-  cbor2 = addSetupTools;
+  horovod = self: super: drv: drv.overrideAttrs(old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.openmpi ];
+  });
 
-  configparser = addSetupTools;
+  hypothesis = addSetupTools;
 
-  cryptography = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [ pkgs.openssl ];
+  importlib-metadata = addSetupTools;
+
+  inflect = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [
+      self.setuptools_scm
+    ];
+  });
+
+  jsonschema = addSetupTools;
+
+  keyring = addSetupTools;
+
+  lap = self: super: drv: drv.overrideAttrs(old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      self.numpy
+    ];
+  });
+  
+  llvmlite = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.llvm ];
+
+    # Disable static linking
+    # https://github.com/numba/llvmlite/issues/93
+    postPatch = ''
+      substituteInPlace ffi/Makefile.linux --replace "-static-libstdc++" ""
+
+      substituteInPlace llvmlite/tests/test_binding.py --replace "test_linux" "nope"
+    '';
+
+    # Set directory containing llvm-config binary
+    preConfigure = ''
+      export LLVM_CONFIG=${pkgs.llvm}/bin/llvm-config
+    '';
+
+    __impureHostDeps = pkgs.stdenv.lib.optionals pkgs.stdenv.isDarwin [ "/usr/lib/libm.dylib" ];
+
+    passthru.llvm = pkgs.llvm;
+  });
+
+  lockfile = self: super: drv: drv.overrideAttrs(old: {
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pbr ];
+  });
+
+  lxml = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = with pkgs; old.nativeBuildInputs ++ [ pkgconfig libxml2.dev libxslt.dev ];
+    buildInputs = with pkgs; old.buildInputs ++ [ libxml2 libxslt ];
   });
 
   markupsafe = self: super: drv: drv.overrideAttrs(old: {
     src = old.src.override { pname = builtins.replaceStrings [ "markupsafe" ] [ "MarkupSafe"] old.pname; };
   });
 
-  hypothesis = addSetupTools;
+  matplotlib = self: super: drv: drv.overrideAttrs(old: {
+    NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${pkgs.libcxx}/include/c++/v1";
 
-  pillow = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
-    buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ old.buildInputs;
+    XDG_RUNTIME_DIR = "/tmp";
+
+    nativeBuildInputs = old.nativeBuildInputs ++ [
+      pkgs.pkgconfig
+    ];
+
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      pkgs.libpng
+      pkgs.freetype
+    ];
+
+    inherit (super.matplotlib) patches;
   });
 
-  pytest = addSetupTools;
+  mccabe = self: super: drv: drv.overrideAttrs(old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," "setup_requires=[]," || true
+    '';
+  });
 
-  pytest-mock = addSetupTools;
+  netcdf4 = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [
+      self.cython
+    ];
 
-  six = addSetupTools;
+    propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      pkgs.zlib
+      pkgs.netcdf
+      pkgs.hdf5
+      pkgs.curl
+      pkgs.libjpeg
+    ];
 
-  py = addSetupTools;
-
-  zipp = addSetupTools;
-
-  importlib-metadata = addSetupTools;
-
-  pluggy = addSetupTools;
-
-  jsonschema = addSetupTools;
-
-  python-dateutil = addSetupTools;
+    # Variables used to configure the build process
+    USE_NCCONFIG="0";
+    HDF5_DIR = lib.getDev pkgs.hdf5;
+    NETCDF4_DIR = pkgs.netcdf;
+    CURL_DIR = pkgs.curl.dev;
+    JPEG_DIR = pkgs.libjpeg.dev;
+  });
 
   numpy = self: super: drv: drv.overrideAttrs(old: let
     blas = pkgs.openblasCompat;
@@ -107,6 +206,13 @@ in {
     };
   });
 
+  pillow = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
+    buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ old.buildInputs;
+  });
+
+  pluggy = addSetupTools;
+
   psycopg2 = self: super: drv: drv.overrideAttrs(old: {
     nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.postgresql ];
   });
@@ -115,74 +221,12 @@ in {
     nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.postgresql ];
   });
 
-  lxml = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = with pkgs; old.nativeBuildInputs ++ [ pkgconfig libxml2.dev libxslt.dev ];
-    buildInputs = with pkgs; old.buildInputs ++ [ libxml2 libxslt ];
-  });
-
-  shapely = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
-    inherit (super.shapely) patches GEOS_LIBRARY_PATH;
-  });
-
-  lockfile = self: super: drv: drv.overrideAttrs(old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pbr ];
-  });
-
-  keyring = addSetupTools;
-
-  # Break setuptools infinite recursion because of non-bootstrapped pip
-  wheel = self: super: drv: super.wheel.overridePythonAttrs(_: {
-    inherit (drv) pname name version src;
-  });
-
-  cftime = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      self.cython
-    ];
-  });
-
-  inflect = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      self.setuptools_scm
-    ];
-  });
+  py = addSetupTools;
 
   pyarrow = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [
       self.cython
     ];
-  });
-
-  scipy = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
-    setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
-    enableParallelBuilding = true;
-    buildInputs = old.buildInputs ++ [ self.numpy.blas ];
-    preConfigure = ''
-      sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
-      export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
-    '';
-    preBuild = ''
-      ln -s ${self.numpy.cfg} site.cfg
-    '';
-  });
-
-  matplotlib = self: super: drv: drv.overrideAttrs(old: {
-    NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${pkgs.libcxx}/include/c++/v1";
-
-    XDG_RUNTIME_DIR = "/tmp";
-
-    nativeBuildInputs = old.nativeBuildInputs ++ [
-      pkgs.pkgconfig
-    ];
-
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      pkgs.libpng
-      pkgs.freetype
-    ];
-
-    inherit (super.matplotlib) patches;
   });
 
   pycairo = self: super: drv: (drv.overridePythonAttrs(_: {
@@ -203,57 +247,27 @@ in {
     mesonFlags = [ "-Dpython=${if self.isPy3k then "python3" else "python"}" ];
   });
 
-  llvmlite = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.llvm ];
-
-    # Disable static linking
-    # https://github.com/numba/llvmlite/issues/93
-    postPatch = ''
-      substituteInPlace ffi/Makefile.linux --replace "-static-libstdc++" ""
-
-      substituteInPlace llvmlite/tests/test_binding.py --replace "test_linux" "nope"
-    '';
-
-    # Set directory containing llvm-config binary
-    preConfigure = ''
-      export LLVM_CONFIG=${pkgs.llvm}/bin/llvm-config
-    '';
-
-    __impureHostDeps = pkgs.stdenv.lib.optionals pkgs.stdenv.isDarwin [ "/usr/lib/libm.dylib" ];
-
-    passthru.llvm = pkgs.llvm;
-  });
-
-  horovod = self: super: drv: drv.overrideAttrs(old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.openmpi ];
-  });
-
-  asciimatics = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      self.setuptools_scm
-    ];
-  });
-
-  netcdf4 = self: super: drv: drv.overrideAttrs(old: {
+  pycocotools = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [
       self.cython
+      self.numpy
     ];
-
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      pkgs.zlib
-      pkgs.netcdf
-      pkgs.hdf5
-      pkgs.curl
-      pkgs.libjpeg
-    ];
-
-    # Variables used to configure the build process
-    USE_NCCONFIG="0";
-    HDF5_DIR = lib.getDev pkgs.hdf5;
-    NETCDF4_DIR = pkgs.netcdf;
-    CURL_DIR = pkgs.curl.dev;
-    JPEG_DIR = pkgs.libjpeg.dev;
   });
+
+  pygobject = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+    buildInputs = old.buildInputs ++ [ pkgs.glib pkgs.gobject-introspection ];
+  });
+
+  pyopenssl = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.openssl ];
+  });
+
+  pytest = addSetupTools;
+
+  pytest-mock = addSetupTools;
+
+  python-dateutil = addSetupTools;
 
   python-prctl = self: super: drv: drv.overrideAttrs(old: {
     buildInputs = old.buildInputs ++ [
@@ -262,18 +276,32 @@ in {
     ];
   });
 
-  pygobject = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
-    buildInputs = old.buildInputs ++ [ pkgs.glib pkgs.gobject-introspection ];
-
+  scaleapi = self: super: drv: drv.overrideAttrs(old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
+    '';
   });
 
-  av = self: super: drv: drv.overrideAttrs(old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [
-      pkgs.pkgconfig
-    ];
-    buildInputs = old.buildInputs ++ [ pkgs.ffmpeg_4 ];
+  scipy = self: super: drv: drv.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
+    setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
+    enableParallelBuilding = true;
+    buildInputs = old.buildInputs ++ [ self.numpy.blas ];
+    preConfigure = ''
+      sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
+      export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
+    '';
+    preBuild = ''
+      ln -s ${self.numpy.cfg} site.cfg
+    '';
   });
+
+  shapely = self: super: drv: drv.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
+    inherit (super.shapely) patches GEOS_LIBRARY_PATH;
+  });
+
+  six = addSetupTools;
 
   urwidtrees = self: super: drv: drv.overrideAttrs(old: {
     propagatedBuildInputs = old.propagatedBuildInputs ++ [
@@ -281,46 +309,10 @@ in {
     ];
   });
 
-  pycocotools = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [
-      self.cython
-      self.numpy
-    ];
+  # Break setuptools infinite recursion because of non-bootstrapped pip
+  wheel = self: super: drv: super.wheel.overridePythonAttrs(_: {
+    inherit (drv) pname name version src;
   });
 
-  lap = self: super: drv: drv.overrideAttrs(old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [
-      self.numpy
-    ];
-  });
-
-  grandalf = self: super: drv: drv.overrideAttrs(old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace "setup_requires=['pytest-runner',]," "setup_requires=[]," || true
-    '';
-  });
-
-  scaleapi = self: super: drv: drv.overrideAttrs(old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
-    '';
-  });
-
-  # Environment markers are not always included (depending on how a dep was defined)
-  enum34 = self: super: drv: if self.pythonAtLeast "3.4" then null else drv;
-
-  pyopenssl = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [ pkgs.openssl ];
-  });
-
-  bcrypt = self: super: drv: drv.overrideAttrs(old: {
-    buildInputs = old.buildInputs ++ [ pkgs.libffi ];
-  });
-
-  mccabe = self: super: drv: drv.overrideAttrs(old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," "setup_requires=[]," || true
-    '';
-  });
-
+  zipp = addSetupTools;
 }
