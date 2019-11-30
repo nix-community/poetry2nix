@@ -1,4 +1,4 @@
-[[https://travis-ci.org/adisbladis/pnpm2nix][https://travis-ci.org/adisbladis/poetry2nix.svg?branch=master]]
+[[https://gitlab.com/nix-community/poetry2nix/-/jobs][https://gitlab.com/nix-community/poetry2nix/badges/master/pipeline.svg]]
 
 * poetry2nix
 Poetry2nix turns [[https://poetry.eustace.io/][Poetry]] projects into Nix derivations without the need to actually write Nix expressions.
