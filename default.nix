@@ -1,7 +1,9 @@
 { pkgs ? import <nixpkgs> {}
 , lib ? pkgs.lib
 , poetry ? null
+,
 }:
+
 let
 
   importTOML = path: builtins.fromTOML (builtins.readFile path);
@@ -81,6 +83,26 @@ let
     stdenv = pkgs.stdenv;
   };
 
+  selectWhl = (
+    import ./pep425.nix {
+      inherit lib;
+      inherit (pkgs) stdenv;
+      python = pkgs.python3;
+    }
+  ).select;
+
+  #
+  # Returns the appropriate manylinux dependencies and string representation for the file specified
+  #
+  getManyLinuxDeps = f:
+    let
+      ml = pkgs.pythonManylinuxPackages;
+    in
+      if lib.strings.hasInfix "manylinux1" f then { pkg = [ ml.manylinux1 ]; str = "1"; }
+      else if lib.strings.hasInfix "manylinux2010" f then { pkg = [ ml.manylinux2010 ]; str = "2010"; }
+      else if lib.strings.hasInfix "manylinux2014" f then { pkg = [ ml.manylinux2014 ]; str = "2014"; }
+      else { pkg = []; str = null; };
+
   mkPoetryPackage =
     { src
     , pyproject ? src + "/pyproject.toml"
@@ -116,14 +138,12 @@ let
             in
               builtins.filter (f: fileSupported f.file) all;
 
-            files_sdist = builtins.filter isSdist pkgFiles;
-            files_bdist = builtins.filter isBdist pkgFiles;
-            files_supported = files_sdist ++ files_bdist;
-            # Only files matching this version
             filterFile = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." ] [ "\\." ] pkgMeta.version + ".*$") fname != null;
-            files_filtered = builtins.filter (f: filterFile f.file) files_supported;
-            # Grab the first dist, we dont care about which one
-            file = assert builtins.length files_filtered >= 1; builtins.elemAt files_filtered 0;
+            filteredFiles = builtins.filter (f: filterFile f.file) pkgFiles;
+
+            binaryDist = selectWhl filteredFiles;
+            sourceDist = builtins.filter isSdist filteredFiles;
+            file = if (builtins.length sourceDist) > 0 then builtins.head sourceDist else builtins.head binaryDist;
 
             format =
               if isBdist file
@@ -136,8 +156,13 @@ let
               version = pkgMeta.version;
 
               doCheck = false; # We never get development deps
+              dontStrip = true;
 
               inherit format;
+
+              nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+              buildInputs =  (getManyLinuxDeps file.file).pkg;
+              NIX_PYTHON_MANYLINUX = (getManyLinuxDeps file.file).str;
 
               propagatedBuildInputs = let
                 depAttrs = getAttrDefault "dependencies" pkgMeta {};
@@ -158,7 +183,7 @@ let
                 # We need to retrieve kind from the interpreter and the filename of the package
                 # Interpreters should declare what wheel types they're compatible with (python type + ABI)
                 # Here we can then choose a file based on that info.
-                kind = if format == "wheel" then "py2.py3" else "source";
+                kind = if format == "setuptools" then "source" else (builtins.elemAt (lib.strings.splitString "-" file.file) 2);
               };
             };
 
@@ -225,12 +250,12 @@ let
           format = "pyproject";
 
           buildInputs = mkInput "buildInputs" getBuildSystemPkgs;
-
           propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
             inherit pythonPackages;
+            python = py;
           };
 
           meta = meta // {

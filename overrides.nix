@@ -147,7 +147,7 @@ in
 
       __impureHostDeps = pkgs.stdenv.lib.optionals pkgs.stdenv.isDarwin [ "/usr/lib/libm.dylib" ];
 
-      passthru.llvm = pkgs.llvm;
+      passthru = old.passthru // { llvm = pkgs.llvm; };
     }
   );
 
@@ -246,7 +246,7 @@ in
         preBuild = ''
           ln -s ${cfg} site.cfg
         '';
-        passthru = {
+        passthru = old.passthru // {
           blas = blas;
           inherit blasImplementation cfg;
         };
