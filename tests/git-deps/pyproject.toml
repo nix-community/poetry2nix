@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "git-deps"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+alembic = { git = "https://github.com/sqlalchemy/alembic.git", tag = "rel_1_3_1" }
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
