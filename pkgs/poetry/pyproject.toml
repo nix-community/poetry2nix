@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry"
-version = "1.0.0b8"
+version = "1.0.0b9"
 description = "Python dependency management and packaging made easy."
 authors = [
     "Sébastien Eustace <sebastien@eustace.io>"
@@ -24,7 +24,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "~2.7 || ^3.4"
 cleo = "^0.7.6"
-clikit = "^0.4.0"
+clikit = "^0.4.1"
 requests = "^2.18"
 cachy = "^0.3.0"
 requests-toolbelt = "^0.8.0"
@@ -73,6 +73,14 @@ httpretty = "^0.9.6"
 
 [tool.poetry.scripts]
 poetry = "poetry.console:main"
+
+
+[build-system]
+requires = ["intreehooks"]
+build-backend = "intreehooks:loader"
+
+[tool.intreehooks]
+build-backend = "poetry.masonry.api"
 
 
 [tool.isort]
