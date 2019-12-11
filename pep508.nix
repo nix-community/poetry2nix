@@ -14,23 +14,25 @@ let
         posNew = acc.pos + 1;
         isOpen = acc.openP == 0;
         startPos = if isOpen then posNew else acc.startPos;
-      in acc // {
-        inherit startPos;
-        exprs = acc.exprs ++ [ (substr acc.exprPos (acc.pos - 1) acc.expr) ];
-        pos = posNew;
-        openP = acc.openP + 1;
-      }
+      in
+        acc // {
+          inherit startPos;
+          exprs = acc.exprs ++ [ (substr acc.exprPos (acc.pos - 1) acc.expr) ];
+          pos = posNew;
+          openP = acc.openP + 1;
+        }
     ) else if c == ")" then (
       let
         openP = acc.openP - 1;
         exprs = findSubExpressions (substr acc.startPos acc.pos acc.expr);
-      in acc // {
-        inherit openP;
-        pos = acc.pos + 1;
-        exprs = if openP == 0 then acc.exprs ++ [ exprs ] else acc.exprs;
-        exprPos = if openP == 0 then acc.pos + 1 else acc.exprPos;
-      }
-    ) else acc // {pos = acc.pos + 1;}
+      in
+        acc // {
+          inherit openP;
+          pos = acc.pos + 1;
+          exprs = if openP == 0 then acc.exprs ++ [ exprs ] else acc.exprs;
+          exprPos = if openP == 0 then acc.pos + 1 else acc.exprPos;
+        }
+    ) else acc // { pos = acc.pos + 1; }
   );
 
   # Make a tree out of expression groups (parens)
@@ -45,12 +47,15 @@ let
     } (lib.stringToCharacters expr);
     tailExpr = (substr acc.exprPos acc.pos expr);
     tailExprs = if tailExpr != "" then [ tailExpr ] else [];
-  in acc.exprs ++ tailExprs;
+  in
+    acc.exprs ++ tailExprs;
 
   parseExpressions = exprs: let
-    splitCond = (s: builtins.map
-      (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
-      (builtins.split " (and|or) " (s + " ")));
+    splitCond = (
+      s: builtins.map
+        (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
+        (builtins.split " (and|or) " (s + " "))
+    );
 
     mapfn = expr: (
       if (builtins.match "^ ?$" expr != null) then null  # Filter empty
@@ -66,32 +71,35 @@ let
 
     parse = expr: builtins.filter (x: x != null) (builtins.map mapfn (splitCond expr));
 
-  in builtins.foldl' (acc: v: acc ++ (
-    if builtins.typeOf v == "string" then parse v else [(parseExpressions v)]
-  )) [] exprs;
+  in
+    builtins.foldl' (
+      acc: v: acc ++ (
+        if builtins.typeOf v == "string" then parse v else [ (parseExpressions v) ]
+      )
+    ) [] exprs;
 
   # Transform individual expressions to structured expressions
   # This function also performs variable substitution, replacing environment markers with their explicit values
   transformExpressions = exprs: let
     variables = {
-      os_name = "posix";  # TODO: Check other platforms
+      os_name = "posix"; # TODO: Check other platforms
       sys_platform = (
         if stdenv.isLinux then "linux"
         else if stdenv.isDarwin then "darwin"
         else throw "Unsupported platform"
       );
       platform_machine = stdenv.platform.kernelArch;
-      platform_python_implementation = "CPython";  # Only CPython supported for now
-      platform_release = "";  # Field not reproducible
+      platform_python_implementation = "CPython"; # Only CPython supported for now
+      platform_release = ""; # Field not reproducible
       platform_system = (
         if stdenv.isLinux then "Linux"
         else if stdenv.isDarwin then "Darwin"
         else throw "Unsupported platform"
       );
-      platform_version = "";  # Field not reproducible
+      platform_version = ""; # Field not reproducible
       python_version = python.passthru.pythonVersion;
       python_full_version = python.version;
-      implementation_name = "cpython";  # Only cpython supported for now
+      implementation_name = "cpython"; # Only cpython supported for now
       implementation_version = python.version;
       extra = "";
     };
@@ -103,23 +111,27 @@ let
       substituteVar
     ];
 
-  in if builtins.typeOf exprs == "set" then (
-    if exprs.type == "expr" then (let
-      mVal = ''[a-zA-Z0-9\'"_\. ]+'';
-      mOp = "in|[!=<>]+";
-      e = stripStr exprs.value;
-      m = builtins.map stripStr (builtins.match ''^(${mVal}) *(${mOp}) *(${mVal})$'' e);
-    in {
-      type = "expr";
-      value = {
-        op = builtins.elemAt m 1;
-        values = [
-          (processVar (builtins.elemAt m 0))
-          (processVar (builtins.elemAt m 2))
-        ];
-      };
-    }) else exprs
-  ) else builtins.map transformExpressions exprs;
+  in
+    if builtins.typeOf exprs == "set" then (
+      if exprs.type == "expr" then (
+        let
+          mVal = ''[a-zA-Z0-9\'"_\. ]+'';
+          mOp = "in|[!=<>]+";
+          e = stripStr exprs.value;
+          m = builtins.map stripStr (builtins.match ''^(${mVal}) *(${mOp}) *(${mVal})$'' e);
+        in
+          {
+            type = "expr";
+            value = {
+              op = builtins.elemAt m 1;
+              values = [
+                (processVar (builtins.elemAt m 0))
+                (processVar (builtins.elemAt m 2))
+              ];
+            };
+          }
+      ) else exprs
+    ) else builtins.map transformExpressions exprs;
 
   # Recursively eval all expressions
   evalExpressions = exprs: let
@@ -142,17 +154,22 @@ let
       "===" = null;
       "in" = x: y: let
         values = builtins.filter (x: builtins.typeOf x == "string") (builtins.split " " (unmarshal y));
-      in builtins.elem (unmarshal x) values;
+      in
+        builtins.elem (unmarshal x) values;
     };
-  in if builtins.typeOf exprs == "set" then (
-    if exprs.type == "expr" then (let
-      expr = exprs;
-      result = (op."${expr.value.op}") (builtins.elemAt expr.value.values 0) (builtins.elemAt expr.value.values 1);
-      in {
-        type = "value";
-        value = result;
-      }) else exprs
-  ) else builtins.map evalExpressions exprs;
+  in
+    if builtins.typeOf exprs == "set" then (
+      if exprs.type == "expr" then (
+        let
+          expr = exprs;
+          result = (op."${expr.value.op}") (builtins.elemAt expr.value.values 0) (builtins.elemAt expr.value.values 1);
+        in
+          {
+            type = "value";
+            value = result;
+          }
+      ) else exprs
+    ) else builtins.map evalExpressions exprs;
 
   # Now that we have performed an eval all that's left to do is to concat the graph into a single bool
   reduceExpressions = exprs: let
@@ -177,17 +194,22 @@ let
             value = true;
             cond = "and";
           } v;
-        in acc // {
-          value = cond."${acc.cond}" acc.value ret.value;
-        }
+        in
+          acc // {
+            value = cond."${acc.cond}" acc.value ret.value;
+          }
       ) else throw "Unsupported type"
     );
-  in (builtins.foldl' reduceExpressionsFun {
-    value = true;
-    cond = "and";
-  } exprs).value;
+  in
+    (
+      builtins.foldl' reduceExpressionsFun {
+        value = true;
+        cond = "and";
+      } exprs
+    ).value;
 
-in e: builtins.foldl' (acc: v: v acc) e [
+in
+e: builtins.foldl' (acc: v: v acc) e [
   findSubExpressions
   parseExpressions
   transformExpressions

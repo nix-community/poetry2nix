@@ -7,14 +7,16 @@ let
     poetryLock = ./poetry.lock;
     src = lib.cleanSource ./.;
     overrides = poetry2nix.defaultPoetryOverrides // {
-      alembic = self: super: drv: drv.overrideAttrs(old: {
-        TESTING_FOOBAR = 42;
-      });
+      alembic = self: super: drv: drv.overrideAttrs (
+        old: {
+          TESTING_FOOBAR = 42;
+        }
+      );
     };
   };
 in
-  runCommand "test" {} ''
-    x=${builtins.toString (pyApp.pythonPackages.alembic.TESTING_FOOBAR)}
-    [ "$x" = "42" ] || exit 1
-    mkdir $out
-  ''
+runCommand "test" {} ''
+  x=${builtins.toString (pyApp.pythonPackages.alembic.TESTING_FOOBAR)}
+  [ "$x" = "42" ] || exit 1
+  mkdir $out
+''
