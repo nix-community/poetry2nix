@@ -129,6 +129,23 @@ pymysql = ["pymysql"]
 
 [[package]]
 category = "main"
+description = ""
+name = "trivial"
+optional = false
+python-versions = "^3.6"
+version = "0.1.0"
+
+[package.dependencies]
+Flask = "^1.1.1"
+alembic = "1.0.10"
+
+[package.source]
+reference = ""
+type = "directory"
+url = "../trivial"
+
+[[package]]
+category = "main"
 description = "The comprehensive WSGI web application library."
 name = "werkzeug"
 optional = false
@@ -141,7 +158,7 @@ termcolor = ["termcolor"]
 watchdog = ["watchdog"]
 
 [metadata]
-content-hash = "ae696aa80655f7bf9b8b9fd7185e7c4da38cf26ebc601d02d8c7d529e58399de"
+content-hash = "e983ed24d82ee6509898be17ba18eb8b97be6a6c730045cbbc691a41d6591ee0"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -215,6 +232,7 @@ six = [
 sqlalchemy = [
     {file = "SQLAlchemy-1.3.11.tar.gz", hash = "sha256:afa5541e9dea8ad0014251bc9d56171ca3d8b130c9627c6cb3681cff30be3f8a"},
 ]
+trivial = []
 werkzeug = [
     {file = "Werkzeug-0.16.0-py2.py3-none-any.whl", hash = "sha256:e5f4a1f98b52b18a93da705a7458e55afb26f32bff83ff5d19189f92462d65c4"},
     {file = "Werkzeug-0.16.0.tar.gz", hash = "sha256:7280924747b5733b246fe23972186c6b348f9ae29724135a6dfc1e53cea433e7"},

@@ -8,4 +8,5 @@ in
   override = pkgs.callPackage ./override-support { inherit poetry2nix; };
   top-packages-1 = pkgs.callPackage ./common-pkgs-1 { inherit poetry2nix; };
   top-packages-2 = pkgs.callPackage ./common-pkgs-2 { inherit poetry2nix; };
+  path-deps = pkgs.callPackage ./path-deps { inherit poetry2nix; };
 }
