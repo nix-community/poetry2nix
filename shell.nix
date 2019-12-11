@@ -3,8 +3,8 @@ let
   poetry2nix = import ./. { inherit pkgs; inherit poetry; };
   poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
 in
-  pkgs.mkShell {
-    buildInputs = [
-      poetry
-    ];
-  }
+pkgs.mkShell {
+  buildInputs = [
+    poetry
+  ];
+}
