@@ -5,4 +5,5 @@ poetry2nix.mkPoetryPackage {
   pyproject = ./pyproject.toml;
   poetryLock = ./poetry.lock;
   src = lib.cleanSource ./.;
+  pwd = ./.;
 }

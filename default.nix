@@ -83,6 +83,9 @@ let
 
   mkPoetryPackage =
     { src
+    , # `pwd` is the path of the current package. This is used for path
+      # resolution when the lockfile contains relative paths.
+      pwd ? null
     , pyproject ? src + "/pyproject.toml"
     , poetrylock ? src + "/poetry.lock"
     , overrides ? defaultPoetryOverrides
@@ -110,57 +113,71 @@ let
         packageOverrides = self: super: let
           getDep = depName: if builtins.hasAttr depName self then self."${depName}" else null;
 
-          mkPoetryDep = pkgMeta: let
-            pkgFiles = let
-              all = getAttrDefault pkgMeta.name files [];
-            in
-              builtins.filter (f: fileSupported f.file) all;
-
-            files_sdist = builtins.filter isSdist pkgFiles;
-            files_bdist = builtins.filter isBdist pkgFiles;
-            files_supported = files_sdist ++ files_bdist;
-            # Only files matching this version
-            filterFile = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." ] [ "\\." ] pkgMeta.version + ".*$") fname != null;
-            files_filtered = builtins.filter (f: filterFile f.file) files_supported;
-            # Grab the first dist, we dont care about which one
-            file = assert builtins.length files_filtered >= 1; builtins.elemAt files_filtered 0;
-
-            format =
-              if isBdist file
-              then "wheel"
-              else "setuptools";
-
-          in
-            self.buildPythonPackage {
-              pname = pkgMeta.name;
-              version = pkgMeta.version;
-
-              doCheck = false; # We never get development deps
-
-              inherit format;
-
-              propagatedBuildInputs = let
-                depAttrs = getAttrDefault "dependencies" pkgMeta {};
-                # Some dependencies like django gets the attribute name django
-                # but dependencies try to access Django
-                dependencies = builtins.map (d: lib.toLower d) (builtins.attrNames depAttrs);
+          mkPoetryDep = pkgMeta:
+            assert pkgs.lib.traceSeqN 3 pkgMeta true;
+            let
+              pkgFiles = let
+                all = getAttrDefault pkgMeta.name files [];
               in
-                builtins.map getDep dependencies;
+                builtins.filter (f: fileSupported f.file) all;
 
-              meta = {
-                broken = ! isCompatible python.version pkgMeta.python-versions;
-                license = [];
-              };
+              files_sdist = builtins.filter isSdist pkgFiles;
+              files_bdist = builtins.filter isBdist pkgFiles;
+              files_supported = files_sdist ++ files_bdist;
+              # Only files matching this version
+              filterFile = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." ] [ "\\." ] pkgMeta.version + ".*$") fname != null;
+              files_filtered = builtins.filter (f: filterFile f.file) files_supported;
+              # Grab the first dist, we dont care about which one
+              file = assert builtins.length files_filtered >= 1; builtins.elemAt files_filtered 0;
 
-              src = fetchFromPypi {
+              isLocalDependency = (pkgMeta.source or {}).type or null == "directory";
+
+              src =
+                if isLocalDependency then
+                  assert pkgs.lib.assertMsg (pwd != null) "the package contains a path dependency. Please also pass the pwd attribute";
+                  pwd + "/${pkgMeta.source.url}"
+                else
+                  fetchFromPypi {
+                    pname = pkgMeta.name;
+                    inherit (file) file hash;
+                    # We need to retrieve kind from the interpreter and the filename of the package
+                    # Interpreters should declare what wheel types they're compatible with (python type + ABI)
+                    # Here we can then choose a file based on that info.
+                    kind = if format == "wheel" then "py2.py3" else "source";
+                  };
+
+              format =
+                if isLocalDependency then
+                  "pyproject"
+                else if isBdist file
+                then "wheel"
+                else "setuptools";
+
+            in
+              self.buildPythonPackage {
                 pname = pkgMeta.name;
-                inherit (file) file hash;
-                # We need to retrieve kind from the interpreter and the filename of the package
-                # Interpreters should declare what wheel types they're compatible with (python type + ABI)
-                # Here we can then choose a file based on that info.
-                kind = if format == "wheel" then "py2.py3" else "source";
+                version = pkgMeta.version;
+
+                doCheck = false; # We never get development deps
+
+                inherit src format;
+
+                # TODO: does this make sense?
+                buildInputs = lib.optional isLocalDependency poetryPkg;
+
+                propagatedBuildInputs = let
+                  depAttrs = getAttrDefault "dependencies" pkgMeta {};
+                  # Some dependencies like django gets the attribute name django
+                  # but dependencies try to access Django
+                  dependencies = builtins.map (d: lib.toLower d) (builtins.attrNames depAttrs);
+                in
+                  builtins.map getDep dependencies;
+
+                meta = {
+                  broken = ! isCompatible python.version pkgMeta.python-versions;
+                  license = [];
+                };
               };
-            };
 
           # Filter packages by their PEP508 markers
           pkgsWithFilter = builtins.map (
@@ -226,8 +243,17 @@ let
 
           buildInputs = mkInput "buildInputs" getBuildSystemPkgs;
 
+          nativeBuildInputs = [ pkgs.yt ];
           propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
+
+          postPatch = ''
+            # Tell poetry not to resolve the path dependencies. Any version is
+            # fine !
+            yt -tj < pyproject.toml | python ${./pyproject-without-path.py} > pyproject.json
+            yt -jt < pyproject.json > pyproject.toml
+            rm pyproject.json
+          '';
 
           passthru = {
             inherit pythonPackages;
