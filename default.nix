@@ -205,8 +205,17 @@ let
       getInputs = attr: getAttrDefault attr attrs [];
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
 
-      hasPoetryBuildSystem = getAttrPath "build-system.build-backend" pyProject == "poetry.masonry.api";
+      knownBuildSystems = {
+        "intreehooks:loader" = [ py.pkgs.intreehooks ];
+        "poetry.masonry.api" = [ poetryPkg ];
+        "" = [];
+      };
 
+      getBuildSystemPkgs = let
+        buildSystem = getAttrPath
+          "build-system.build-backend" pyProject;
+      in
+        knownBuildSystems.${buildSystem} or (throw "unsupported build system ${buildSystem}");
     in
       pythonPackages.buildPythonApplication (
         passedAttrs // {
@@ -215,7 +224,7 @@ let
 
           format = "pyproject";
 
-          buildInputs = mkInput "buildInputs" (lib.optional hasPoetryBuildSystem poetryPkg);
+          buildInputs = mkInput "buildInputs" getBuildSystemPkgs;
 
           propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
