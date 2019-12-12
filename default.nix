@@ -102,6 +102,9 @@ let
 
       poetryPkg = poetry.override { inherit python; };
 
+      # Fallback for nixos-19.09 and before
+      intreehooksPkg = py.pkgs.intreehooks or (py.pkgs.callPackage ./pkgs/intreehooks {});
+
       # Create an overriden version of pythonPackages
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
@@ -206,7 +209,7 @@ let
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
 
       knownBuildSystems = {
-        "intreehooks:loader" = [ py.pkgs.intreehooks ];
+        "intreehooks:loader" = [ intreehooksPkg ];
         "poetry.masonry.api" = [ poetryPkg ];
         "" = [];
       };
