@@ -1,3 +1,7 @@
 test:
   script:
     - nix-build --no-out-link --show-trace tests
+
+nixpkgs-fmt:
+  script:
+    - ./check-fmt
