@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry"
-version = "1.0.0b9"
+version = "1.0.0"
 description = "Python dependency management and packaging made easy."
 authors = [
     "Sébastien Eustace <sebastien@eustace.io>"
@@ -9,9 +9,9 @@ license = "MIT"
 
 readme = "README.md"
 
-homepage = "https://poetry.eustace.io/"
-repository = "https://github.com/sdispater/poetry"
-documentation = "https://poetry.eustace.io/docs"
+homepage = "https://python-poetry.org/"
+repository = "https://github.com/python-poetry/poetry"
+documentation = "https://python-poetry.org/docs"
 
 keywords = ["packaging", "dependency", "poetry"]
 
@@ -70,6 +70,7 @@ pre-commit = "^1.10"
 tox = "^3.0"
 pytest-sugar = "^0.9.2"
 httpretty = "^0.9.6"
+markdown-include = "^0.5.1"
 
 [tool.poetry.scripts]
 poetry = "poetry.console:main"
