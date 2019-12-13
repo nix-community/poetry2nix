@@ -10,7 +10,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425.select cs);
+        expr = (pep425.selectWheel cs);
         expected = [ { file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; } ];
       };
 
@@ -22,7 +22,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425OSX.select cs);
+        expr = (pep425OSX.selectWheel cs);
         expected = [ { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_10_x86_64.whl"; } ];
       };
 
@@ -38,7 +38,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425Python37.select cs);
+        expr = (pep425Python37.selectWheel cs);
         expected = [ { file = "grpcio-1.25.0-cp37-cp37m-manylinux2010_x86_64.whl"; } ];
       };
 
@@ -50,7 +50,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425OSX.select cs);
+        expr = (pep425OSX.selectWheel cs);
         expected = [ { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_12_x86_64.whl"; } ];
       };
 
@@ -62,7 +62,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425OSX.select cs);
+        expr = (pep425OSX.selectWheel cs);
         expected = [];
       };
 
@@ -74,7 +74,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425.select cs);
+        expr = (pep425.selectWheel cs);
         expected = [ { file = "grpcio-1.25.0-cp27-cp27m-manylinux1_x86_64.whl"; } ];
       };
 
@@ -86,17 +86,17 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = (pep425.select cs);
+        expr = (pep425.selectWheel cs);
         expected = [];
       };
 
   testLinuxEmptyList = {
-    expr = pep425.select [];
+    expr = pep425.selectWheel [];
     expected = [];
   };
 
   testOSXEmptyList = {
-    expr = pep425OSX.select [];
+    expr = pep425OSX.selectWheel [];
     expected = [];
   };
 
@@ -139,7 +139,7 @@ lib.debug.runTests {
       ];
     in
       {
-        expr = pep425.select cs;
+        expr = pep425.selectWheel cs;
         expected = [ { file = "cffi-1.13.2-cp27-cp27m-manylinux1_x86_64.whl"; } ];
       };
 

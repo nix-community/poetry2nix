@@ -57,7 +57,7 @@ let
   #
   # Selects the best matching wheel file from a list of files
   #
-  select = files:
+  selectWheel = files:
     let
       filesWithoutSources = (builtins.filter (x: hasSuffix ".whl" x.file) files);
 
@@ -97,5 +97,5 @@ let
 
 in
 {
-  inherit select;
+  inherit selectWheel;
 }

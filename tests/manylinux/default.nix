@@ -7,7 +7,7 @@ let
     poetryLock = ./poetry.lock;
     src = lib.cleanSource ./.;
   };
-  p = pkg.py.withPackages (ps: [ ps.numpy ps.opencv-python ]);
+  p = pkg.python.withPackages (ps: [ ps.numpy ps.opencv-python ]);
 in
 runCommand "test" {} ''
   ${p}/bin/python -c "import cv2"

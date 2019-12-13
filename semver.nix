@@ -71,10 +71,10 @@ let
       else throw "Constraint \"${constraintStr}\" could not be parsed"
     );
 
-  satisfies = version: constraint: let
+  satisfiesSemver = version: constraint: let
     inherit (parseConstraint constraint) op v;
   in
     if constraint == "*" then true else operators."${op}" version v;
 
 in
-{ inherit satisfies; }
+{ inherit satisfiesSemver; }
