@@ -111,13 +111,12 @@ let
       # closure as python can only ever have one version of a dependency
       py = let
         packageOverrides = self: super: let
-          getDep = depName: if builtins.hasAttr depName self then self."${depName}" else null;
+          getDep = depName:
+            if builtins.hasAttr depName self then self."${depName}" else null;
 
           mkPoetryDep = pkgMeta: let
-            pkgFiles = let
-              all = getAttrDefault pkgMeta.name files [];
-            in
-              builtins.filter (f: fileSupported f.file) all;
+            all = getAttrDefault pkgMeta.name files [];
+            pkgFiles = builtins.filter (f: fileSupported f.file) all;
 
             files_sdist = builtins.filter isSdist pkgFiles;
             files_bdist = builtins.filter isBdist pkgFiles;
@@ -128,11 +127,34 @@ let
             # Grab the first dist, we dont care about which one
             file = assert builtins.length files_filtered >= 1; builtins.elemAt files_filtered 0;
 
+            srcType = (pkgMeta.source or { type = "pypi"; }).type;
+
             format =
-              if isBdist file
+              if srcType == "pypi" && isBdist file
               then "wheel"
               else "setuptools";
 
+            src =
+              {
+                # If the source is of type git we use a builtin fetcher.
+                # it's not ideal as it happends at evaluation time and doesn't
+                # build on hydra. But since we don't have an output hash it's
+                # the only available option.
+                git = { type, reference, url }:
+                  builtins.fetchGit { url = url; ref = reference; };
+
+                pypi = {}:
+                  fetchFromPypi {
+                    pname = pkgMeta.name;
+                    inherit (file) file hash;
+                    # We need to retrieve kind from the interpreter and the filename of the package
+                    # Interpreters should declare what wheel types they're compatible with (python type + ABI)
+                    # Here we can then choose a file based on that info.
+                    kind = if format == "wheel" then "py2.py3" else "source";
+                  };
+              }.${srcType} or (throw "source type ${srcType} not supported")
+                pkgMeta.source or {}
+            ;
           in
             self.buildPythonPackage {
               pname = pkgMeta.name;
@@ -140,7 +162,7 @@ let
 
               doCheck = false; # We never get development deps
 
-              inherit format;
+              inherit src format;
 
               propagatedBuildInputs = let
                 depAttrs = getAttrDefault "dependencies" pkgMeta {};
@@ -153,15 +175,6 @@ let
               meta = {
                 broken = ! isCompatible python.version pkgMeta.python-versions;
                 license = [];
-              };
-
-              src = fetchFromPypi {
-                pname = pkgMeta.name;
-                inherit (file) file hash;
-                # We need to retrieve kind from the interpreter and the filename of the package
-                # Interpreters should declare what wheel types they're compatible with (python type + ABI)
-                # Here we can then choose a file based on that info.
-                kind = if format == "wheel" then "py2.py3" else "source";
               };
             };
 
