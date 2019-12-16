@@ -1,6 +1,6 @@
 { lib, poetry2nix, python, fetchFromGitHub, runtimeShell }:
 
-poetry2nix.mkPoetryPackage {
+poetry2nix.mkPoetryApplication {
 
   inherit python;
 

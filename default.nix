@@ -21,25 +21,22 @@ let
   );
 
 
-  mkPoetryPackage =
+  mkPoetryPython =
     { src
-    , pyproject ? src + "/pyproject.toml"
     , poetrylock ? src + "/poetry.lock"
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
     , ...
     }@attrs: let
-      pyProject = readTOML pyproject;
       poetryLock = readTOML poetrylock;
       lockFiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
 
-      specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
+      specialAttrs = [ "poetrylock" "overrides" ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
       evalPep508 = mkEvalPep508 python;
 
-      poetryPkg = poetry.override { inherit python; };
 
       # Create an overriden version of pythonPackages
       #
@@ -81,13 +78,36 @@ let
           } // nulledPkgs // lockPkgs;
       in
         python.override { inherit packageOverrides; self = py; };
-      pythonPackages = py.pkgs;
+    in
+      py;
+
+  mkPoetryApplication =
+    { src
+    , pyproject ? src + "/pyproject.toml"
+    , poetrylock ? src + "/poetry.lock"
+    , overrides ? defaultPoetryOverrides
+    , meta ? {}
+    , python ? pkgs.python3
+    , ...
+    }@attrs: let
+      poetryPkg = poetry.override { inherit python; };
+
+      py = mkPoetryPython (
+        {
+          inherit src pyproject poetrylock overrides meta python;
+        } // attrs
+      );
+
+      pyProject = readTOML pyproject;
+
+      specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
+      passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
       getDeps = depAttr: let
         deps = getAttrDefault depAttr pyProject.tool.poetry {};
         depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
       in
-        builtins.map (dep: pythonPackages."${dep}") depAttrs;
+        builtins.map (dep: py.pkgs."${dep}") depAttrs;
 
       getInputs = attr: getAttrDefault attr attrs [];
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
@@ -103,7 +123,7 @@ let
       in
         knownBuildSystems.${buildSystem} or (throw "unsupported build system ${buildSystem}");
     in
-      pythonPackages.buildPythonApplication (
+      py.pkgs.buildPythonApplication (
         passedAttrs // {
           pname = pyProject.tool.poetry.name;
           version = pyProject.tool.poetry.version;
@@ -111,11 +131,10 @@ let
           format = "pyproject";
 
           buildInputs = mkInput "buildInputs" getBuildSystemPkgs;
-          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
+          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
-            inherit pythonPackages;
             python = py;
           };
 
@@ -126,8 +145,8 @@ let
 
         }
       );
-
 in
 {
-  inherit mkPoetryPackage defaultPoetryOverrides;
+  inherit mkPoetryPython mkPoetryApplication defaultPoetryOverrides;
+  mkPoetryPackage = attrs: builtins.trace "mkPoetryPackage is deprecated. Use mkPoetryApplication instead." (mkPoetryApplication attrs);
 }

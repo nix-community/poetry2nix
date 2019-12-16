@@ -1,9 +1,8 @@
 { lib, python3, poetry2nix, runCommand }:
 
 let
-  pyApp = poetry2nix.mkPoetryPackage {
+  python = poetry2nix.mkPoetryPython {
     python = python3;
-    pyproject = ./pyproject.toml;
     poetryLock = ./poetry.lock;
     src = lib.cleanSource ./.;
     overrides = poetry2nix.defaultPoetryOverrides // {
@@ -16,7 +15,7 @@ let
   };
 in
 runCommand "test" {} ''
-  x=${builtins.toString (pyApp.pythonPackages.alembic.TESTING_FOOBAR)}
+  x=${builtins.toString (python.pkgs.alembic.TESTING_FOOBAR)}
   [ "$x" = "42" ] || exit 1
   mkdir $out
 ''
