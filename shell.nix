@@ -6,5 +6,6 @@ in
 pkgs.mkShell {
   buildInputs = [
     poetry
+    pkgs.nixpkgs-fmt
   ];
 }

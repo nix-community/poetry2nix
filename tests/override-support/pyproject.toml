@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "test"
+name = "override-support"
 version = "0.1.0"
 description = "poetry2nix test"
 authors = ["Your Name <you@example.com>"]

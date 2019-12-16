@@ -1,3 +1,16 @@
-test:
+test-19.09:
+  variables:
+    NIX_PATH: nixpkgs=channel:nixos-19.09
+  script:
+    # FIXME: the other tests are broken at the moment
+    - nix-build --no-out-link --show-trace tests -A trivial
+
+test-unstable:
+  variables:
+    NIX_PATH: nixpkgs=channel:nixos-unstable
   script:
     - nix-build --no-out-link --show-trace tests
+
+nixpkgs-fmt:
+  script:
+    - ./check-fmt
