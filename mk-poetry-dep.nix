@@ -55,7 +55,6 @@ buildPythonPackage {
 
   nativeBuildInputs = if (getManyLinuxDeps fileInfo.name).str != null then [ autoPatchelfHook ] else [];
   buildInputs = (getManyLinuxDeps fileInfo.name).pkg;
-  NIX_PYTHON_MANYLINUX = (getManyLinuxDeps fileInfo.name).str;
 
   propagatedBuildInputs =
     let
