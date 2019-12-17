@@ -20,7 +20,9 @@ let
     else default
   );
 
-
+  #
+  # Returns an attrset { python, poetryPackages } for the given lockfile
+  #
   mkPoetryPython =
     { poetrylock
     , overrides ? defaultPoetryOverrides
@@ -35,23 +37,22 @@ let
 
       evalPep508 = mkEvalPep508 python;
 
+      # Filter packages by their PEP508 markers
+      partitions = let
+        supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
+      in
+        lib.partition supportsPythonVersion lockData.package;
+
+      compatible = partitions.right;
+      incompatible = partitions.wrong;
 
       # Create an overriden version of pythonPackages
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
       # closure as python can only ever have one version of a dependency
-      py = let
-        packageOverrides = self: super: let
+      packageOverrides = self: super:
+        let
           getDep = depName: if builtins.hasAttr depName self then self."${depName}" else throw "foo";
-
-          # Filter packages by their PEP508 markers
-          partitions = let
-            supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
-          in
-            lib.partition supportsPythonVersion lockData.package;
-
-          compatible = partitions.right;
-          incompatible = partitions.wrong;
 
           lockPkgs = builtins.listToAttrs (
             builtins.map (
@@ -74,11 +75,35 @@ let
               inherit pkgs lib python poetryLib;
             };
           } // nulledPkgs // lockPkgs;
-      in
-        python.override { inherit packageOverrides; self = py; };
-    in
-      py;
 
+      py = python.override { inherit packageOverrides; self = py; };
+    in {
+        python = py;
+        poetryPackages = map (pkg: py.pkgs.${pkg.name}) compatible;
+    };
+
+  #
+  # Creates a python environment with the python packages from the specified lockfile
+  #
+  mkPoetryEnv =
+    { poetrylock
+    , overrides ? defaultPoetryOverrides
+    , meta ? {}
+    , python ? pkgs.python3
+  }:
+  let
+      py = mkPoetryPython (
+        {
+          inherit poetrylock overrides meta python;
+        }
+      );
+    in
+      py.python.withPackages (_: py.poetryPackages);
+
+
+  #
+  # Creates a python application
+  #
   mkPoetryApplication =
     { src
     , pyproject
@@ -94,7 +119,7 @@ let
         {
           inherit poetrylock overrides meta python;
         }
-      );
+      ).python;
 
       pyProject = readTOML pyproject;
 
@@ -145,6 +170,6 @@ let
       );
 in
 {
-  inherit mkPoetryPython mkPoetryApplication defaultPoetryOverrides;
+  inherit mkPoetryPython mkPoetryEnv mkPoetryApplication defaultPoetryOverrides;
   mkPoetryPackage = attrs: builtins.trace "mkPoetryPackage is deprecated. Use mkPoetryApplication instead." (mkPoetryApplication attrs);
 }
