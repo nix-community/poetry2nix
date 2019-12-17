@@ -77,10 +77,11 @@ let
           } // nulledPkgs // lockPkgs;
 
       py = python.override { inherit packageOverrides; self = py; };
-    in {
+    in
+      {
         python = py;
         poetryPackages = map (pkg: py.pkgs.${pkg.name}) compatible;
-    };
+      };
 
   #
   # Creates a python environment with the python packages from the specified lockfile
@@ -90,15 +91,15 @@ let
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
-  }:
-  let
-      py = mkPoetryPython (
-        {
-          inherit poetrylock overrides meta python;
-        }
-      );
-    in
-      py.python.withPackages (_: py.poetryPackages);
+    }:
+      let
+        py = mkPoetryPython (
+          {
+            inherit poetrylock overrides meta python;
+          }
+        );
+      in
+        py.python.withPackages (_: py.poetryPackages);
 
 
   #
@@ -115,9 +116,11 @@ let
     }@attrs: let
       poetryPkg = poetry.override { inherit python; };
 
-      py = (mkPoetryPython {
+      py = (
+        mkPoetryPython {
           inherit poetrylock overrides meta python;
-      }).python;
+        }
+      ).python;
 
       pyProject = readTOML pyproject;
 
