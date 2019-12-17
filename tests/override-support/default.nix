@@ -1,7 +1,7 @@
 { lib, python3, poetry2nix, runCommand }:
 
 let
-  python = poetry2nix.mkPoetryPython {
+  p = poetry2nix.mkPoetryPython {
     python = python3;
     poetrylock = ./poetry.lock;
     overrides = poetry2nix.defaultPoetryOverrides // {
@@ -14,7 +14,7 @@ let
   };
 in
 runCommand "test" {} ''
-  x=${builtins.toString (python.pkgs.alembic.TESTING_FOOBAR)}
+  x=${builtins.toString (p.python.pkgs.alembic.TESTING_FOOBAR)}
   [ "$x" = "42" ] || exit 1
   mkdir $out
 ''
