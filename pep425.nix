@@ -34,12 +34,6 @@ let
       };
 
   #
-  # Renders a wheel attribute set into a string
-  #
-  # e.g (toFile (toWheelAttrs x)) == x
-  toFileName = x: "${x.pkgName}-${x.pkgVer}-${x.pyVer}-${x.abi}-${x.platform}.whl";
-
-  #
   # Builds list of acceptable osx wheel files
   #
   # <versions>   accepted versions in descending order of preference
@@ -53,6 +47,14 @@ let
       then []
       else (builtins.filter (x: hasInfix v x.file) candidates) ++ (findBestMatches vs candidates);
 
+  # pyver = "cpXX"
+  # x     = "cpXX" | "py2" | "py3" | "py2.py3"
+  isPyVersionCompatible = pyver: x:
+    let
+      normalize = y: ''cp${lib.strings.removePrefix "cp" (lib.strings.removePrefix "py" y)}'';
+      isCompat = p: x: lib.strings.hasPrefix (normalize x) p;
+    in
+      lib.lists.any (isCompat pyver) (lib.strings.splitString "." x);
 
   #
   # Selects the best matching wheel file from a list of files
@@ -61,15 +63,18 @@ let
     let
       filesWithoutSources = (builtins.filter (x: hasSuffix ".whl" x.file) files);
 
-      withPython = pyver: abi: x: x.pyVer == pyver && x.abi == abi;
+      isPyAbiCompatible = pyabi: x: x == "none" || pyabi == x;
+
+      withPython = ver: abi: x: (isPyVersionCompatible ver x.pyVer) && (isPyAbiCompatible abi x.abi);
 
       withPlatform = if isLinux
       then (
         x: x.platform == "manylinux1_${stdenv.platform.kernelArch}"
         || x.platform == "manylinux2010_${stdenv.platform.kernelArch}"
         || x.platform == "manylinux2014_${stdenv.platform.kernelArch}"
+        || x.platform == "any"
       )
-      else (x: hasInfix "macosx" x.platform);
+      else (x: hasInfix "macosx" x.platform || x.platform == "any");
 
       filterWheel = x:
         let
@@ -81,8 +86,8 @@ let
 
       choose = files:
         let
-          osxMatches = [ "10_12" "10_11" "10_10" "10_9" ];
-          linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" ];
+          osxMatches = [ "10_12" "10_11" "10_10" "10_9" "any" ];
+          linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" "any" ];
           chooseLinux = x: lib.singleton (builtins.head (findBestMatches linuxMatches x));
           chooseOSX = x: lib.singleton (builtins.head (findBestMatches osxMatches x));
         in
@@ -97,5 +102,5 @@ let
 
 in
 {
-  inherit selectWheel;
+  inherit selectWheel toWheelAttrs isPyVersionCompatible;
 }

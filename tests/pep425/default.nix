@@ -2,6 +2,10 @@
 
 lib.debug.runTests {
 
+  #
+  # selectWheel
+  #
+
   testLinuxSimple =
     let
       cs = [
@@ -173,4 +177,89 @@ lib.debug.runTests {
         expr = pep425Python37.selectWheel cs;
         expected = [ { file = "msgpack-0.6.2-cp37-cp37m-manylinux1_x86_64.whl"; } ];
       };
+
+  testNonManyLinuxWheels =
+    let
+      cs = [
+        { file = "tensorboard-1.14.0-py2-none-any.whl"; }
+        { file = "tensorboard-1.14.0-py3-none-any.whl"; }
+      ];
+    in
+      {
+        expr = pep425Python37.selectWheel cs;
+        expected = [ { file = "tensorboard-1.14.0-py3-none-any.whl"; } ];
+      };
+
+  testPy2Py3Wheels =
+    let
+      cs = [
+        { file = "tensorboard-1.14.0-py2.py3-none-any.whl"; }
+      ];
+    in
+      {
+        expr = pep425Python37.selectWheel cs;
+        expected = [ { file = "tensorboard-1.14.0-py2.py3-none-any.whl"; } ];
+      };
+
+  #
+  # toWheelAttrs
+  #
+
+  testToWheelAttrs =
+    let
+      name = "msgpack-0.6.2-cp27-cp27m-manylinux1_i686.whl";
+    in
+      {
+        expr = pep425.toWheelAttrs name;
+        expected = {
+          pkgName = "msgpack";
+          pkgVer = "0.6.2";
+          pyVer = "cp27";
+          abi = "cp27m";
+          platform = "manylinux1_i686";
+        };
+      };
+
+  testToWheelAttrsAny =
+    let
+      name = "tensorboard-1.14.0-py3-none-any.whl";
+    in
+      {
+        expr = pep425.toWheelAttrs name;
+        expected = {
+          pkgName = "tensorboard";
+          pkgVer = "1.14.0";
+          pyVer = "py3";
+          abi = "none";
+          platform = "any";
+        };
+      };
+
+  #
+  # isPyVersionCompatible
+  #
+
+  tesPyVersionCompatible =
+    let
+      f = pep425.isPyVersionCompatible;
+    in
+      {
+        expr = [
+          (f "cp27" "cp27")
+          (f "cp27" "cp37")
+          (f "cp27" "py2")
+          (f "cp27" "py3")
+          (f "cp27" "py2.py3")
+          (f "cp37" "py2.py3")
+        ];
+
+        expected = [
+          true
+          false
+          true
+          false
+          true
+        ];
+      };
+
 }
