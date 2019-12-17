@@ -5,7 +5,7 @@ poetry2nix.mkPoetryApplication {
   inherit python;
 
   pyproject = ./pyproject.toml;
-  poetryLock = ./poetry.lock;
+  poetrylock = ./poetry.lock;
 
   src = fetchFromGitHub {
     owner = "sdispater";

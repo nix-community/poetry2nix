@@ -22,15 +22,13 @@ let
 
 
   mkPoetryPython =
-    { src
-    , poetrylock ? src + "/poetry.lock"
+    { poetrylock
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
-    , ...
     }@attrs: let
-      poetryLock = readTOML poetrylock;
-      lockFiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
+      lockData = readTOML poetrylock;
+      lockFiles = lib.getAttrFromPath [ "metadata" "files" ] lockData;
 
       specialAttrs = [ "poetrylock" "overrides" ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
@@ -50,7 +48,7 @@ let
           partitions = let
             supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
           in
-            lib.partition supportsPythonVersion poetryLock.package;
+            lib.partition supportsPythonVersion lockData.package;
 
           compatible = partitions.right;
           incompatible = partitions.wrong;
@@ -83,8 +81,8 @@ let
 
   mkPoetryApplication =
     { src
-    , pyproject ? src + "/pyproject.toml"
-    , poetrylock ? src + "/poetry.lock"
+    , pyproject
+    , poetrylock
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
@@ -94,8 +92,8 @@ let
 
       py = mkPoetryPython (
         {
-          inherit src pyproject poetrylock overrides meta python;
-        } // attrs
+          inherit poetrylock overrides meta python;
+        }
       );
 
       pyProject = readTOML pyproject;

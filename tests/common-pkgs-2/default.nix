@@ -3,6 +3,6 @@
 poetry2nix.mkPoetryApplication {
   python = python3;
   pyproject = ./pyproject.toml;
-  poetryLock = ./poetry.lock;
+  poetrylock = ./poetry.lock;
   src = lib.cleanSource ./.;
 }

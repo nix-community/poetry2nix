@@ -3,8 +3,7 @@
 let
   python = poetry2nix.mkPoetryPython {
     python = python3;
-    poetryLock = ./poetry.lock;
-    src = lib.cleanSource ./.;
+    poetrylock = ./poetry.lock;
     overrides = poetry2nix.defaultPoetryOverrides // {
       alembic = self: super: drv: drv.overrideAttrs (
         old: {
