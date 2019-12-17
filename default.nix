@@ -115,11 +115,9 @@ let
     }@attrs: let
       poetryPkg = poetry.override { inherit python; };
 
-      py = mkPoetryPython (
-        {
+      py = (mkPoetryPython {
           inherit poetrylock overrides meta python;
-        }
-      ).python;
+      }).python;
 
       pyProject = readTOML pyproject;
 
