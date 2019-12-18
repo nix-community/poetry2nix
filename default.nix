@@ -1,10 +1,18 @@
 { pkgs ? import <nixpkgs> {}
 , lib ? pkgs.lib
 , poetry ? null
+, poetryLib ? import ./lib.nix { inherit lib pkgs; }
 }:
-let
 
-  importTOML = path: builtins.fromTOML (builtins.readFile path);
+let
+  inherit (poetryLib) isCompatible readTOML;
+
+  defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
+
+  mkEvalPep508 = import ./pep508.nix {
+    inherit lib;
+    stdenv = pkgs.stdenv;
+  };
 
   getAttrDefault = attribute: set: default: (
     if builtins.hasAttr attribute set
@@ -12,195 +20,118 @@ let
     else default
   );
 
-  # Fetch the artifacts from the PyPI index. Since we get all
-  # info we need from the lock file we don't use nixpkgs' fetchPyPi
-  # as it modifies casing while not providing anything we don't already
-  # have.
   #
-  # Args:
-  #   pname: package name
-  #   file: filename including extension
-  #   hash: SRI hash
-  #   kind: Language implementation and version tag https://www.python.org/dev/peps/pep-0427/#file-name-convention
-  fetchFromPypi = lib.makeOverridable (
-    { pname, file, hash, kind }:
-      pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}";
-        inherit hash;
-      }
-  );
-
-  getAttrPath = attrPath: set: (
-    builtins.foldl'
-      (acc: v: if builtins.typeOf acc == "set" && builtins.hasAttr v acc then acc."${v}" else null)
-      set (lib.splitString "." attrPath)
-  );
-
-  satisfiesSemver = (import ./semver.nix { inherit lib; }).satisfies;
-
-  # Check Python version is compatible with package
-  isCompatible = pythonVersion: pythonVersions: let
-    operators = {
-      "||" = cond1: cond2: cond1 || cond2;
-      "," = cond1: cond2: cond1 && cond2; # , means &&
-    };
-    tokens = builtins.filter (x: x != "") (builtins.split "(,|\\|\\|)" pythonVersions);
-  in
-    (
-      builtins.foldl' (
-        acc: v: let
-          isOperator = builtins.typeOf v == "list";
-          operator = if isOperator then (builtins.elemAt v 0) else acc.operator;
-        in
-          if isOperator then (acc // { inherit operator; }) else {
-            inherit operator;
-            state = operators."${operator}" acc.state (satisfiesSemver pythonVersion v);
-          }
-      )
-        {
-          operator = ",";
-          state = true;
-        }
-        tokens
-    ).state;
-
-  extensions = pkgs.lib.importJSON ./extensions.json;
-  getExtension = filename: builtins.elemAt
-    (builtins.filter (ext: builtins.match "^.*\.${ext}" filename != null) extensions)
-    0;
-  supportedRe = ("^.*?(" + builtins.concatStringsSep "|" extensions + ")");
-  fileSupported = fname: builtins.match supportedRe fname != null;
-
-  defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
-
-  isBdist = f: builtins.match "^.*?whl$" f.file != null;
-  isSdist = f: ! isBdist f;
-
-  mkEvalPep508 = import ./pep508.nix {
-    inherit lib;
-    stdenv = pkgs.stdenv;
-  };
-
-  mkPoetryPackage =
-    { src
-    , pyproject ? src + "/pyproject.toml"
-    , poetrylock ? src + "/poetry.lock"
+  # Returns an attrset { python, poetryPackages } for the given lockfile
+  #
+  mkPoetryPython =
+    { poetrylock
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
-    , ...
     }@attrs: let
-      pyProject = importTOML pyproject;
-      poetryLock = importTOML poetrylock;
+      lockData = readTOML poetrylock;
+      lockFiles = lib.getAttrFromPath [ "metadata" "files" ] lockData;
 
-      files = getAttrDefault "files" (getAttrDefault "metadata" poetryLock {}) {};
-
-      specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
+      specialAttrs = [ "poetrylock" "overrides" ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
       evalPep508 = mkEvalPep508 python;
 
-      poetryPkg = poetry.override { inherit python; };
+      # Filter packages by their PEP508 markers
+      partitions = let
+        supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
+      in
+        lib.partition supportsPythonVersion lockData.package;
+
+      compatible = partitions.right;
+      incompatible = partitions.wrong;
 
       # Create an overriden version of pythonPackages
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
       # closure as python can only ever have one version of a dependency
-      py = let
-        packageOverrides = self: super: let
-          getDep = depName: if builtins.hasAttr depName self then self."${depName}" else null;
+      packageOverrides = self: super:
+        let
+          getDep = depName: if builtins.hasAttr depName self then self."${depName}" else throw "foo";
 
-          mkPoetryDep = pkgMeta: let
-            pkgFiles = let
-              all = getAttrDefault pkgMeta.name files [];
-            in
-              builtins.filter (f: fileSupported f.file) all;
-
-            files_sdist = builtins.filter isSdist pkgFiles;
-            files_bdist = builtins.filter isBdist pkgFiles;
-            files_supported = files_sdist ++ files_bdist;
-            # Only files matching this version
-            filterFile = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." ] [ "\\." ] pkgMeta.version + ".*$") fname != null;
-            files_filtered = builtins.filter (f: filterFile f.file) files_supported;
-            # Grab the first dist, we dont care about which one
-            file = assert builtins.length files_filtered >= 1; builtins.elemAt files_filtered 0;
-
-            format =
-              if isBdist file
-              then "wheel"
-              else "setuptools";
-
-          in
-            self.buildPythonPackage {
-              pname = pkgMeta.name;
-              version = pkgMeta.version;
-
-              doCheck = false; # We never get development deps
-
-              inherit format;
-
-              propagatedBuildInputs = let
-                depAttrs = getAttrDefault "dependencies" pkgMeta {};
-                # Some dependencies like django gets the attribute name django
-                # but dependencies try to access Django
-                dependencies = builtins.map (d: lib.toLower d) (builtins.attrNames depAttrs);
-              in
-                builtins.map getDep dependencies;
-
-              meta = {
-                broken = ! isCompatible python.version pkgMeta.python-versions;
-                license = [];
-              };
-
-              src = fetchFromPypi {
-                pname = pkgMeta.name;
-                inherit (file) file hash;
-                # We need to retrieve kind from the interpreter and the filename of the package
-                # Interpreters should declare what wheel types they're compatible with (python type + ABI)
-                # Here we can then choose a file based on that info.
-                kind = if format == "wheel" then "py2.py3" else "source";
-              };
-            };
-
-          # Filter packages by their PEP508 markers
-          pkgsWithFilter = builtins.map (
-            pkgMeta: let
-              f = if builtins.hasAttr "marker" pkgMeta then (!evalPep508 pkgMeta.marker) else false;
-            in
-              pkgMeta // { p2nixFiltered = f; }
-          ) poetryLock.package;
-
-          lockPkgs = builtins.map (
-            pkgMeta: {
-              name = pkgMeta.name;
-              value = let
-                drv = mkPoetryDep pkgMeta;
-                override = getAttrDefault pkgMeta.name overrides (_: _: drv: drv);
-              in
-                if drv != null then (override self super drv) else null;
-            }
-          ) (builtins.filter (pkgMeta: !pkgMeta.p2nixFiltered) pkgsWithFilter);
-
-          # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-          nulledPkgs = (
-            builtins.listToAttrs
-              (
-                builtins.map (x: { name = x.name; value = null; })
-                  (builtins.filter (pkgMeta: pkgMeta.p2nixFiltered) pkgsWithFilter)
-              )
+          lockPkgs = builtins.listToAttrs (
+            builtins.map (
+              pkgMeta: rec {
+                name = pkgMeta.name;
+                value = let
+                  drv = self.mkPoetryDep (pkgMeta // { files = lockFiles.${name}; });
+                  override = getAttrDefault pkgMeta.name overrides (_: _: drv: drv);
+                in
+                  override self super drv;
+              }
+            ) compatible
           );
 
+          # Null out any filtered packages, we don't want python.pkgs from nixpkgs
+          nulledPkgs = builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible);
         in
-          nulledPkgs // builtins.listToAttrs lockPkgs;
+          {
+            mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
+              inherit pkgs lib python poetryLib;
+            };
+          } // nulledPkgs // lockPkgs;
+
+      py = python.override { inherit packageOverrides; self = py; };
+    in
+      {
+        python = py;
+        poetryPackages = map (pkg: py.pkgs.${pkg.name}) compatible;
+      };
+
+  #
+  # Creates a python environment with the python packages from the specified lockfile
+  #
+  mkPoetryEnv =
+    { poetrylock
+    , overrides ? defaultPoetryOverrides
+    , meta ? {}
+    , python ? pkgs.python3
+    }:
+      let
+        py = mkPoetryPython (
+          {
+            inherit poetrylock overrides meta python;
+          }
+        );
       in
-        python.override { inherit packageOverrides; self = py; };
-      pythonPackages = py.pkgs;
+        py.python.withPackages (_: py.poetryPackages);
+
+
+  #
+  # Creates a python application
+  #
+  mkPoetryApplication =
+    { src
+    , pyproject
+    , poetrylock
+    , overrides ? defaultPoetryOverrides
+    , meta ? {}
+    , python ? pkgs.python3
+    , ...
+    }@attrs: let
+      poetryPkg = poetry.override { inherit python; };
+
+      py = (
+        mkPoetryPython {
+          inherit poetrylock overrides meta python;
+        }
+      ).python;
+
+      pyProject = readTOML pyproject;
+
+      specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
+      passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
       getDeps = depAttr: let
         deps = getAttrDefault depAttr pyProject.tool.poetry {};
         depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
       in
-        builtins.map (dep: pythonPackages."${dep}") depAttrs;
+        builtins.map (dep: py.pkgs."${dep}") depAttrs;
 
       getInputs = attr: getAttrDefault attr attrs [];
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
@@ -212,12 +143,11 @@ let
       };
 
       getBuildSystemPkgs = let
-        buildSystem = getAttrPath
-          "build-system.build-backend" pyProject;
+        buildSystem = lib.getAttrFromPath [ "build-system" "build-backend" ] pyProject;
       in
         knownBuildSystems.${buildSystem} or (throw "unsupported build system ${buildSystem}");
     in
-      pythonPackages.buildPythonApplication (
+      py.pkgs.buildPythonApplication (
         passedAttrs // {
           pname = pyProject.tool.poetry.name;
           version = pyProject.tool.poetry.version;
@@ -225,12 +155,11 @@ let
           format = "pyproject";
 
           buildInputs = mkInput "buildInputs" getBuildSystemPkgs;
-
-          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ pythonPackages.setuptools ]);
+          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
-            inherit pythonPackages;
+            python = py;
           };
 
           meta = meta // {
@@ -240,8 +169,8 @@ let
 
         }
       );
-
 in
 {
-  inherit mkPoetryPackage defaultPoetryOverrides;
+  inherit mkPoetryPython mkPoetryEnv mkPoetryApplication defaultPoetryOverrides;
+  mkPoetryPackage = attrs: builtins.trace "mkPoetryPackage is deprecated. Use mkPoetryApplication instead." (mkPoetryApplication attrs);
 }

@@ -26,10 +26,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = false
 python-versions = "*"
-version = "1.10.38"
+version = "1.10.40"
 
 [package.dependencies]
-botocore = ">=1.13.38,<1.14.0"
+botocore = ">=1.13.40,<1.14.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.2.0,<0.3.0"
 
@@ -39,7 +39,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = false
 python-versions = "*"
-version = "1.13.38"
+version = "1.13.40"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -115,7 +115,7 @@ description = "Google API client core library"
 name = "google-api-core"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
-version = "1.14.3"
+version = "1.15.0"
 
 [package.dependencies]
 google-auth = ">=0.4.0,<2.0dev"
@@ -137,7 +137,7 @@ description = "Google Authentication Library"
 name = "google-auth"
 optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
-version = "1.8.2"
+version = "1.9.0"
 
 [package.dependencies]
 cachetools = ">=2.0.0,<3.2"
@@ -392,7 +392,7 @@ version = "0.33.6"
 test = ["pytest (>=3.0.0)", "pytest-cov"]
 
 [metadata]
-content-hash = "06e9d870e809e7c94ac14c04da41af87c5a6eb5b3f1603a1287220d75e2aba44"
+content-hash = "275efbd0631fb7dd98c7549662306de06e6c9e6759a70c88569e1bc733d05e3c"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -405,12 +405,12 @@ attrs = [
     {file = "attrs-19.3.0.tar.gz", hash = "sha256:f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"},
 ]
 boto3 = [
-    {file = "boto3-1.10.38-py2.py3-none-any.whl", hash = "sha256:d64ec82b5125d8f8cae00f92d33a338c6c55cb5984967cfc7f4c52cf138126c4"},
-    {file = "boto3-1.10.38.tar.gz", hash = "sha256:6cdb063b2ae5ac7b93ded6b6b17e3da1325b32232d5ff56e6800018d4786bba6"},
+    {file = "boto3-1.10.40-py2.py3-none-any.whl", hash = "sha256:e8f02208f0127dd73443b8518aacd8207563576e6f6b245a621fdf5080acd5fb"},
+    {file = "boto3-1.10.40.tar.gz", hash = "sha256:8a3b9bb731270888271cd3e0de8d96b35db86be55cfd47296087a074ff23ea86"},
 ]
 botocore = [
-    {file = "botocore-1.13.38-py2.py3-none-any.whl", hash = "sha256:81b588e5a0e33e75c619f992d315b14b81597fe8bd1291a801724861df4d8cef"},
-    {file = "botocore-1.13.38.tar.gz", hash = "sha256:15766a367f39dba9de3c6296aaa7da31030f08a0117fd12685e7df682d8acee2"},
+    {file = "botocore-1.13.40-py2.py3-none-any.whl", hash = "sha256:7e44f4c527c11c90942b3ea32ef4577596b08e77d01ab3f9a260b4873402a84d"},
+    {file = "botocore-1.13.40.tar.gz", hash = "sha256:0f30d5f09181231166c4e74ba7335d0740e1645c4354d76271fde0cad606d8a4"},
 ]
 cachetools = [
     {file = "cachetools-3.1.1-py2.py3-none-any.whl", hash = "sha256:428266a1c0d36dc5aca63a2d7c5942e88c2c898d72139fca0e97fdd2380517ae"},
@@ -441,12 +441,12 @@ future = [
     {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
 ]
 google-api-core = [
-    {file = "google-api-core-1.14.3.tar.gz", hash = "sha256:df8adc4b97f5ab4328a0e745bee77877cf4a7d4601cb1cd5959d2bbf8fba57aa"},
-    {file = "google_api_core-1.14.3-py2.py3-none-any.whl", hash = "sha256:b95895a9398026bc0500cf9b4a3f82c3f72c3f9150b26ff53af40c74e91c264a"},
+    {file = "google-api-core-1.15.0.tar.gz", hash = "sha256:2d661c8d650a1df5805d0e360121cb55c55d8bd29f858fa62cbe943e59ce89f7"},
+    {file = "google_api_core-1.15.0-py2.py3-none-any.whl", hash = "sha256:9006e1641599345056cc690a934e1262107c78d969d72cf96412f6db5d32147f"},
 ]
 google-auth = [
-    {file = "google-auth-1.8.2.tar.gz", hash = "sha256:bf45ce767ac45704372a6d3677b4a036594a935f4e460e58c7accc3c36925f06"},
-    {file = "google_auth-1.8.2-py2.py3-none-any.whl", hash = "sha256:bdf3af2b19368fc50ed0542b891bf64c2e92d8f207d92064a6cf1e1a1014d761"},
+    {file = "google-auth-1.9.0.tar.gz", hash = "sha256:038a921618620491502eeb4ed5b7af6a8ee2a7950918a5b3e0d718e841aff4da"},
+    {file = "google_auth-1.9.0-py2.py3-none-any.whl", hash = "sha256:a977375be9f9c46cd20ffb90f0532a27fa0e171eb47373de270b6028005b8e8b"},
 ]
 google-cloud-core = [
     {file = "google-cloud-core-1.1.0.tar.gz", hash = "sha256:49036087c1170c3fad026e45189f17092b8c584a9accb2d73d1854f494e223ae"},
