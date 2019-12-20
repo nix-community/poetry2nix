@@ -7,7 +7,7 @@
 let
   inherit (poetryLib) isCompatible readTOML;
 
-  defaultPoetryOverrides = import ./overrides.nix { inherit pkgs; };
+  defaultPoetryOverrides = [ (import ./overrides.nix { inherit pkgs; }) ];
 
   mkEvalPep508 = import ./pep508.nix {
     inherit lib;
@@ -50,7 +50,7 @@ let
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
       # closure as python can only ever have one version of a dependency
-      packageOverrides = self: super:
+      baseOverlay = self: super:
         let
           getDep = depName: if builtins.hasAttr depName self then self."${depName}" else throw "foo";
 
@@ -58,23 +58,39 @@ let
             builtins.map (
               pkgMeta: rec {
                 name = pkgMeta.name;
-                value = let
-                  drv = self.mkPoetryDep (pkgMeta // { files = lockFiles.${name}; });
-                  override = getAttrDefault pkgMeta.name overrides (_: _: drv: drv);
-                in
-                  override self super drv;
+                value = self.mkPoetryDep (pkgMeta // { files = lockFiles.${name}; });
               }
             ) compatible
           );
-
-          # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-          nulledPkgs = builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible);
         in
-          {
+          lockPkgs;
+
+      overlays = [
+        (
+          self: super: {
             mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
               inherit pkgs lib python poetryLib;
             };
-          } // nulledPkgs // lockPkgs;
+          }
+        )
+        # Null out any filtered packages, we don't want python.pkgs from nixpkgs
+        (self: super: builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible))
+        # Create poetry2nix layer
+        baseOverlay
+      ] ++ # User provided overrides
+      overrides;
+
+      packageOverrides = self: super: (
+        builtins.foldl'
+          (
+            acc: v: let
+              newSuper = acc // v self acc;
+            in
+              newSuper
+          )
+          super
+          overlays
+      );
 
       py = python.override { inherit packageOverrides; self = py; };
     in
