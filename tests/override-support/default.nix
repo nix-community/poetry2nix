@@ -4,13 +4,17 @@ let
   p = poetry2nix.mkPoetryPython {
     python = python3;
     poetrylock = ./poetry.lock;
-    overrides = poetry2nix.defaultPoetryOverrides // {
-      alembic = self: super: drv: drv.overrideAttrs (
-        old: {
-          TESTING_FOOBAR = 42;
+    overrides = poetry2nix.defaultPoetryOverrides ++ [
+      (
+        self: super: {
+          alembic = super.alembic.overrideAttrs (
+            old: {
+              TESTING_FOOBAR = 42;
+            }
+          );
         }
-      );
-    };
+      )
+    ];
   };
 in
 runCommand "test" {} ''

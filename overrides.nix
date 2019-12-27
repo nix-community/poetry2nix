@@ -3,9 +3,11 @@
 , stdenv ? pkgs.stdenv
 }:
 
+self: super:
+
 let
 
-  addSetupTools = self: super: drv: drv.overrideAttrs (
+  addSetupTools = drv: if drv == null then null else drv.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.setuptools_scm
@@ -21,7 +23,7 @@ let
 in
 {
 
-  asciimatics = self: super: drv: drv.overrideAttrs (
+  asciimatics = super.asciimatics.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.setuptools_scm
@@ -29,7 +31,7 @@ in
     }
   );
 
-  av = self: super: drv: drv.overrideAttrs (
+  av = super.av.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [
         pkgs.pkgconfig
@@ -38,19 +40,19 @@ in
     }
   );
 
-  bcrypt = self: super: drv: drv.overrideAttrs (
+  bcrypt = super.bcrypt.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.libffi ];
     }
   );
 
-  cffi = self: super: drv: drv.overrideAttrs (
+  cffi = super.cffi.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.libffi ];
     }
   );
 
-  cftime = self: super: drv: drv.overrideAttrs (
+  cftime = super.cftime.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.cython
@@ -58,18 +60,18 @@ in
     }
   );
 
-  configparser = addSetupTools;
+  configparser = addSetupTools super.configparser;
 
-  cbor2 = addSetupTools;
+  cbor2 = addSetupTools super.cbor2;
 
-  cryptography = self: super: drv: drv.overrideAttrs (
+  cryptography = super.cryptography.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
     }
   );
 
   django = (
-    self: super: drv: drv.overrideAttrs (
+    super.django.overrideAttrs (
       old: {
         propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
         ++ [ pkgs.gettext ];
@@ -77,7 +79,7 @@ in
     )
   );
 
-  django-bakery = self: super: drv: drv.overrideAttrs (
+  django-bakery = super.django-bakery.overrideAttrs (
     old: {
       configurePhase = ''
         if ! test -e LICENSE; then
@@ -88,9 +90,9 @@ in
   );
 
   # Environment markers are not always included (depending on how a dep was defined)
-  enum34 = self: super: drv: if self.pythonAtLeast "3.4" then null else drv;
+  enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
 
-  grandalf = self: super: drv: drv.overrideAttrs (
+  grandalf = super.grandalf.overrideAttrs (
     old: {
       postPatch = ''
         substituteInPlace setup.py --replace "setup_requires=['pytest-runner',]," "setup_requires=[]," || true
@@ -98,17 +100,17 @@ in
     }
   );
 
-  horovod = self: super: drv: drv.overrideAttrs (
+  horovod = super.horovod.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.openmpi ];
     }
   );
 
-  hypothesis = addSetupTools;
+  hypothesis = addSetupTools super.hypothesis;
 
-  importlib-metadata = addSetupTools;
+  importlib-metadata = addSetupTools super.importlib-metadata;
 
-  inflect = self: super: drv: drv.overrideAttrs (
+  inflect = super.inflect.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.setuptools_scm
@@ -116,11 +118,11 @@ in
     }
   );
 
-  jsonschema = addSetupTools;
+  jsonschema = addSetupTools super.jsonschema;
 
-  keyring = addSetupTools;
+  keyring = addSetupTools super.keyring;
 
-  lap = self: super: drv: drv.overrideAttrs (
+  lap = super.lap.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
         self.numpy
@@ -128,7 +130,7 @@ in
     }
   );
 
-  llvmlite = self: super: drv: drv.overrideAttrs (
+  llvmlite = super.llvmlite.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.llvm ];
 
@@ -151,26 +153,26 @@ in
     }
   );
 
-  lockfile = self: super: drv: drv.overrideAttrs (
+  lockfile = super.lockfile.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pbr ];
     }
   );
 
-  lxml = self: super: drv: drv.overrideAttrs (
+  lxml = super.lxml.overrideAttrs (
     old: {
       nativeBuildInputs = with pkgs; old.nativeBuildInputs ++ [ pkgconfig libxml2.dev libxslt.dev ];
       buildInputs = with pkgs; old.buildInputs ++ [ libxml2 libxslt ];
     }
   );
 
-  markupsafe = self: super: drv: drv.overrideAttrs (
+  markupsafe = super.markupsafe.overrideAttrs (
     old: {
       src = old.src.override { pname = builtins.replaceStrings [ "markupsafe" ] [ "MarkupSafe" ] old.pname; };
     }
   );
 
-  matplotlib = self: super: drv: drv.overrideAttrs (
+  matplotlib = super.matplotlib.overrideAttrs (
     old: {
       NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${pkgs.libcxx}/include/c++/v1";
 
@@ -189,7 +191,7 @@ in
     }
   );
 
-  mccabe = self: super: drv: drv.overrideAttrs (
+  mccabe = super.mccabe.overrideAttrs (
     old: {
       postPatch = ''
         substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," "setup_requires=[]," || true
@@ -197,7 +199,7 @@ in
     }
   );
 
-  netcdf4 = self: super: drv: drv.overrideAttrs (
+  netcdf4 = super.netcdf4.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.cython
@@ -220,7 +222,7 @@ in
     }
   );
 
-  numpy = self: super: drv: drv.overrideAttrs (
+  numpy = super.numpy.overrideAttrs (
     old: let
       blas = pkgs.openblasCompat;
       blasImplementation = lib.nameFromURL blas.name "-";
@@ -253,30 +255,30 @@ in
       }
   );
 
-  pillow = self: super: drv: drv.overrideAttrs (
+  pillow = super.pillow.overrideAttrs (
     old: {
       nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ old.buildInputs;
     }
   );
 
-  pluggy = addSetupTools;
+  pluggy = addSetupTools super.pluggy;
 
-  psycopg2 = self: super: drv: drv.overrideAttrs (
+  psycopg2 = super.psycopg2.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.postgresql ];
     }
   );
 
-  psycopg2-binary = self: super: drv: drv.overrideAttrs (
+  psycopg2-binary = super.psycopg2-binary.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.postgresql ];
     }
   );
 
-  py = addSetupTools;
+  py = addSetupTools super.py;
 
-  pyarrow = self: super: drv: drv.overrideAttrs (
+  pyarrow = super.pyarrow.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.cython
@@ -284,31 +286,33 @@ in
     }
   );
 
-  pycairo = self: super: drv: (
-    drv.overridePythonAttrs (
-      _: {
-        format = "other";
+  pycairo = (
+    drv: (
+      drv.overridePythonAttrs (
+        _: {
+          format = "other";
+        }
+      )
+    ).overrideAttrs (
+      old: {
+
+        nativeBuildInputs = old.nativeBuildInputs ++ [
+          pkgs.meson
+          pkgs.ninja
+          pkgs.pkgconfig
+        ];
+
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.cairo
+          pkgs.xlibsWrapper
+        ];
+
+        mesonFlags = [ "-Dpython=${if self.isPy3k then "python3" else "python"}" ];
       }
     )
-  ).overrideAttrs (
-    old: {
+  ) super.pycairo;
 
-      nativeBuildInputs = old.nativeBuildInputs ++ [
-        pkgs.meson
-        pkgs.ninja
-        pkgs.pkgconfig
-      ];
-
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
-        pkgs.cairo
-        pkgs.xlibsWrapper
-      ];
-
-      mesonFlags = [ "-Dpython=${if self.isPy3k then "python3" else "python"}" ];
-    }
-  );
-
-  pycocotools = self: super: drv: drv.overrideAttrs (
+  pycocotools = super.pycocotools.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.cython
@@ -317,26 +321,26 @@ in
     }
   );
 
-  pygobject = self: super: drv: drv.overrideAttrs (
+  pygobject = super.pygobject.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
       buildInputs = old.buildInputs ++ [ pkgs.glib pkgs.gobject-introspection ];
     }
   );
 
-  pyopenssl = self: super: drv: drv.overrideAttrs (
+  pyopenssl = super.pyopenssl.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
     }
   );
 
-  pytest = addSetupTools;
+  pytest = addSetupTools super.pytest;
 
-  pytest-mock = addSetupTools;
+  pytest-mock = addSetupTools super.pytest-mock;
 
-  python-dateutil = addSetupTools;
+  python-dateutil = addSetupTools super.python-dateutil;
 
-  python-prctl = self: super: drv: drv.overrideAttrs (
+  python-prctl = super.python-prctl.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
         self.setuptools_scm
@@ -345,7 +349,7 @@ in
     }
   );
 
-  scaleapi = self: super: drv: drv.overrideAttrs (
+  scaleapi = super.scaleapi.overrideAttrs (
     old: {
       postPatch = ''
         substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
@@ -353,7 +357,7 @@ in
     }
   );
 
-  scipy = self: super: drv: drv.overrideAttrs (
+  scipy = super.scipy.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
       setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
@@ -369,16 +373,16 @@ in
     }
   );
 
-  shapely = self: super: drv: drv.overrideAttrs (
+  shapely = super.shapely.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
       inherit (super.shapely) patches GEOS_LIBRARY_PATH;
     }
   );
 
-  six = addSetupTools;
+  six = addSetupTools super.six;
 
-  urwidtrees = self: super: drv: drv.overrideAttrs (
+  urwidtrees = super.urwidtrees.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
         self.urwid
@@ -386,12 +390,16 @@ in
     }
   );
 
-  # Break setuptools infinite recursion because of non-bootstrapped pip
-  wheel = self: super: drv: super.wheel.overridePythonAttrs (
+  # TODO: Figure out getting rid of this hack
+  wheel = (
+    pkgs.python3.pkgs.override {
+      python = self.python;
+    }
+  ).wheel.overridePythonAttrs (
     _: {
-      inherit (drv) pname name version src;
+      inherit (super.wheel) pname name version src;
     }
   );
 
-  zipp = addSetupTools;
+  zipp = addSetupTools super.zipp;
 }
