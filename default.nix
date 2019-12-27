@@ -58,7 +58,12 @@ let
             builtins.map (
               pkgMeta: rec {
                 name = pkgMeta.name;
-                value = self.mkPoetryDep (pkgMeta // { files = lockFiles.${name}; });
+                value = self.mkPoetryDep (
+                  pkgMeta // {
+                    source = getAttrDefault "source" pkgMeta null;
+                    files = lockFiles.${name};
+                  }
+                );
               }
             ) compatible
           );

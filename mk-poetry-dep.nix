@@ -9,6 +9,7 @@
 { name
 , version
 , files
+, source
 , dependencies ? {}
 , python-versions
 , supportedExtensions ? lib.importJSON ./extensions.json
@@ -29,6 +30,8 @@
     hasSupportedExtension = fname: builtins.match supportedRegex fname != null;
   in
     builtins.filter (f: matchesVersion f.file && hasSupportedExtension f.file) files;
+
+  isGit = source != null && source.type == "git";
 
   fileInfo = let
     isBdist = f: lib.strings.hasSuffix "whl" f.file;
@@ -51,10 +54,10 @@ buildPythonPackage {
 
   doCheck = false; # We never get development deps
   dontStrip = true;
-  format = fileInfo.format;
+  format = if isGit then "setuptools" else fileInfo.format;
 
-  nativeBuildInputs = if (getManyLinuxDeps fileInfo.name).str != null then [ autoPatchelfHook ] else [];
-  buildInputs = (getManyLinuxDeps fileInfo.name).pkg;
+  nativeBuildInputs = if (!isGit && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [];
+  buildInputs = if !isGit then (getManyLinuxDeps fileInfo.name).pkg else [];
 
   propagatedBuildInputs =
     let
@@ -72,7 +75,12 @@ buildPythonPackage {
   # We need to retrieve kind from the interpreter and the filename of the package
   # Interpreters should declare what wheel types they're compatible with (python type + ABI)
   # Here we can then choose a file based on that info.
-  src = fetchFromPypi {
+  src = if isGit then (
+    builtins.fetchGit {
+      inherit (source) url;
+      rev = source.reference;
+    }
+  ) else fetchFromPypi {
     pname = name;
     inherit (fileInfo) file hash kind;
   };
