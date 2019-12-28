@@ -16,6 +16,9 @@ in
   pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
   env = pkgs.callPackage ./env { inherit poetry2nix; };
   git-deps = pkgs.callPackage ./git-deps { inherit poetry2nix; };
+  git-deps-pinned = pkgs.callPackage ./git-deps-pinned { inherit poetry2nix; };
+
+  cli = poetry2nix;
 
   # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
   # Once this is available in 19.09 and unstable we can re-enable the manylinux test

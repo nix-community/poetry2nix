@@ -190,8 +190,11 @@ let
 
         }
       );
+
+  cli = import ./cli.nix { inherit pkgs lib; };
+
 in
 {
-  inherit mkPoetryPython mkPoetryEnv mkPoetryApplication defaultPoetryOverrides;
+  inherit mkPoetryPython mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli;
   mkPoetryPackage = attrs: builtins.trace "mkPoetryPackage is deprecated. Use mkPoetryApplication instead." (mkPoetryApplication attrs);
 }
