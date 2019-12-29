@@ -56,6 +56,19 @@ let
       }
   );
 
+  getBuildSystemPkgs =
+    { pythonPackages
+    , pyProject
+    }: let
+      knownBuildSystems = {
+        "intreehooks:loader" = [ pythonPackages.intreehooks ];
+        "poetry.masonry.api" = [ pythonPackages.poetry ];
+        "" = [];
+      };
+      buildSystem = lib.getAttrFromPath [ "build-system" "build-backend" ] pyProject;
+    in
+      knownBuildSystems.${buildSystem} or (throw "unsupported build system ${buildSystem}");
+
 in
 {
   inherit
@@ -63,5 +76,6 @@ in
     getManyLinuxDeps
     isCompatible
     readTOML
+    getBuildSystemPkgs
     ;
 }
