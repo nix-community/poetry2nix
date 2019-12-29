@@ -11,7 +11,9 @@
 , files
 , source
 , dependencies ? {}
+, pythonPackages
 , python-versions
+, pwd
 , supportedExtensions ? lib.importJSON ./extensions.json
 , ...
 }: let
@@ -31,7 +33,18 @@
   in
     builtins.filter (f: matchesVersion f.file && hasSupportedExtension f.file) files;
 
-  isGit = source != null && source.type == "git";
+  toPath = s: pwd + "/${s}";
+
+  isSource = source != null;
+  isGit = isSource && source.type == "git";
+  isLocal = isSource && source.type == "directory";
+
+  localDepPath = toPath source.url;
+  pyProject = poetryLib.readTOML (localDepPath + "/pyproject.toml");
+
+  buildSystemPkgs = poetryLib.getBuildSystemPkgs {
+    inherit pythonPackages pyProject;
+  };
 
   fileInfo = let
     isBdist = f: lib.strings.hasSuffix "whl" f.file;
@@ -54,10 +67,10 @@ buildPythonPackage {
 
   doCheck = false; # We never get development deps
   dontStrip = true;
-  format = if isGit then "setuptools" else fileInfo.format;
+  format = if isLocal then "pyproject" else if isGit then "setuptools" else fileInfo.format;
 
-  nativeBuildInputs = if (!isGit && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [];
-  buildInputs = if !isGit then (getManyLinuxDeps fileInfo.name).pkg else [];
+  nativeBuildInputs = if (!isSource && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [];
+  buildInputs = if !isSource then (getManyLinuxDeps fileInfo.name).pkg else [];
 
   propagatedBuildInputs =
     let
@@ -65,7 +78,7 @@ buildPythonPackage {
       # but dependencies try to access Django
       deps = builtins.map (d: lib.toLower d) (builtins.attrNames dependencies);
     in
-      builtins.map (n: pythonPackages.${n}) deps;
+      (builtins.map (n: pythonPackages.${n}) deps) ++ (if isLocal then buildSystemPkgs else []);
 
   meta = {
     broken = ! isCompatible python.version python-versions;
@@ -80,7 +93,7 @@ buildPythonPackage {
       inherit (source) url;
       rev = source.reference;
     }
-  ) else fetchFromPypi {
+  ) else if isLocal then (localDepPath) else fetchFromPypi {
     pname = name;
     inherit (fileInfo) file hash kind;
   };

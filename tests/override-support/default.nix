@@ -1,9 +1,11 @@
 { lib, python3, poetry2nix, runCommand }:
 
 let
-  p = poetry2nix.mkPoetryPython {
+  p = poetry2nix.mkPoetryApplication {
     python = python3;
+    src = ./.;
     poetrylock = ./poetry.lock;
+    pyproject = ./pyproject.toml;
     overrides = poetry2nix.defaultPoetryOverrides ++ [
       (
         self: super: {

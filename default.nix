@@ -25,9 +25,11 @@ let
   #
   mkPoetryPython =
     { poetrylock
+    , poetryPkg
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
+    , pwd ? null
     }@attrs: let
       lockData = readTOML poetrylock;
       lockFiles = lib.getAttrFromPath [ "metadata" "files" ] lockData;
@@ -60,8 +62,10 @@ let
                 name = pkgMeta.name;
                 value = self.mkPoetryDep (
                   pkgMeta // {
+                    inherit pwd;
                     source = getAttrDefault "source" pkgMeta null;
                     files = lockFiles.${name};
+                    pythonPackages = self;
                   }
                 );
               }
@@ -76,6 +80,7 @@ let
             mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
               inherit pkgs lib python poetryLib;
             };
+            poetry = poetryPkg;
           }
         )
         # Null out any filtered packages, we don't want python.pkgs from nixpkgs
@@ -111,12 +116,14 @@ let
     { poetrylock
     , overrides ? defaultPoetryOverrides
     , meta ? {}
+    , pwd ? null
     , python ? pkgs.python3
     }:
       let
+        poetryPkg = poetry.override { inherit python; };
         py = mkPoetryPython (
           {
-            inherit poetrylock overrides meta python;
+            inherit poetryPkg poetrylock overrides meta python pwd;
           }
         );
       in
@@ -133,13 +140,14 @@ let
     , overrides ? defaultPoetryOverrides
     , meta ? {}
     , python ? pkgs.python3
+    , pwd ? null
     , ...
     }@attrs: let
       poetryPkg = poetry.override { inherit python; };
 
       py = (
         mkPoetryPython {
-          inherit poetrylock overrides meta python;
+          inherit poetryPkg poetrylock overrides meta python pwd;
         }
       ).python;
 
@@ -157,16 +165,11 @@ let
       getInputs = attr: getAttrDefault attr attrs [];
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
 
-      knownBuildSystems = {
-        "intreehooks:loader" = [ py.pkgs.intreehooks ];
-        "poetry.masonry.api" = [ poetryPkg ];
-        "" = [];
+      buildSystemPkgs = poetryLib.getBuildSystemPkgs {
+        inherit pyProject;
+        pythonPackages = py.pkgs;
       };
 
-      getBuildSystemPkgs = let
-        buildSystem = lib.getAttrFromPath [ "build-system" "build-backend" ] pyProject;
-      in
-        knownBuildSystems.${buildSystem} or (throw "unsupported build system ${buildSystem}");
     in
       py.pkgs.buildPythonApplication (
         passedAttrs // {
@@ -175,13 +178,22 @@ let
 
           format = "pyproject";
 
-          buildInputs = mkInput "buildInputs" getBuildSystemPkgs;
+          nativeBuildInputs = [ pkgs.yj ];
+          buildInputs = mkInput "buildInputs" buildSystemPkgs;
           propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
             python = py;
           };
+
+          postPatch = (getAttrDefault "postPatch" passedAttrs "") + ''
+            # Tell poetry not to resolve the path dependencies. Any version is
+            # fine !
+            yj -tj < pyproject.toml | python ${./pyproject-without-path.py} > pyproject.json
+            yj -jt < pyproject.json > pyproject.toml
+            rm pyproject.json
+          '';
 
           meta = meta // {
             inherit (pyProject.tool.poetry) description;
@@ -195,6 +207,6 @@ let
 
 in
 {
-  inherit mkPoetryPython mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli;
+  inherit mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli;
   mkPoetryPackage = attrs: builtins.trace "mkPoetryPackage is deprecated. Use mkPoetryApplication instead." (mkPoetryApplication attrs);
 }
