@@ -7,6 +7,7 @@
 let
   inherit (poetryLib) isCompatible readTOML;
 
+  /* The default list of poetry2nix override overlays */
   defaultPoetryOverrides = [ (import ./overrides.nix { inherit pkgs; }) ];
 
   mkEvalPep508 = import ./pep508.nix {
@@ -114,9 +115,11 @@ let
         poetryPackages = map (pkg: py.pkgs.${pkg.name}) compatible;
       };
 
-  #
-  # Creates a python environment with the python packages from the specified lockfile
-  #
+  /* Returns a package with a python interpreter and all packages specified in the poetry.lock lock file.
+
+     Example:
+       poetry2nix.mkPoetryEnv { poetrylock = ./poetry.lock; python = python3; }
+  */
   mkPoetryEnv =
     { poetrylock
     , overrides ? defaultPoetryOverrides
@@ -134,10 +137,7 @@ let
       in
         py.python.withPackages (_: py.poetryPackages);
 
-
-  #
-  # Creates a python application
-  #
+  /* Creates a Python application from pyproject.toml and poetry.lock */
   mkPoetryApplication =
     { src
     , pyproject
@@ -208,10 +208,10 @@ let
         }
       );
 
+  /* Poetry2nix CLI used to supplement SHA-256 hashes for git dependencies  */
   cli = import ./cli.nix { inherit pkgs lib; };
 
 in
 {
   inherit mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli;
-  mkPoetryPackage = attrs: builtins.trace "mkPoetryPackage is deprecated. Use mkPoetryApplication instead." (mkPoetryApplication attrs);
 }
