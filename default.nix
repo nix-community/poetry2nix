@@ -197,7 +197,7 @@ let
 
           meta = meta // {
             inherit (pyProject.tool.poetry) description;
-            licenses = [ pyProject.tool.poetry.license ];
+            license = pyProject.tool.poetry.license;
           };
 
         }
