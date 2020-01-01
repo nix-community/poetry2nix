@@ -99,17 +99,7 @@ let
       ] ++ # User provided overrides
       overrides;
 
-      packageOverrides = self: super: (
-        builtins.foldl'
-          (
-            acc: v: let
-              newSuper = acc // v self acc;
-            in
-              newSuper
-          )
-          super
-          overlays
-      );
+      packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
 
       py = python.override { inherit packageOverrides; self = py; };
     in
