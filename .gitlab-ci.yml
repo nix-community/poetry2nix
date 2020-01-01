@@ -2,8 +2,7 @@ test-19.09:
   variables:
     NIX_PATH: nixpkgs=channel:nixos-19.09
   script:
-    # FIXME: the other tests are broken at the moment
-    - nix-shell -p git --run "nix-build --no-out-link --show-trace tests -A trivial"
+    - nix-shell -p git --run "nix-build --no-out-link --show-trace tests"
 
 test-unstable:
   variables:
