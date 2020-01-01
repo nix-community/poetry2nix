@@ -1,5 +1,6 @@
 { pkgs ? import <nixpkgs> {}
 , lib ? pkgs.lib
+, version
 }:
 
 let
@@ -8,7 +9,7 @@ let
 in
 pkgs.stdenv.mkDerivation {
   pname = "poetry2nix";
-  version = "0.1";
+  inherit version;
 
   buildInputs = [
     (python3.withPackages (ps: [ ps.toml ]))

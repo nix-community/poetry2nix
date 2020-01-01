@@ -7,6 +7,9 @@
 let
   inherit (poetryLib) isCompatible readTOML;
 
+  # Poetry2nix version
+  version = "1.0.0";
+
   /* The default list of poetry2nix override overlays */
   defaultPoetryOverrides = [ (import ./overrides.nix { inherit pkgs; }) ];
 
@@ -209,9 +212,34 @@ let
       );
 
   /* Poetry2nix CLI used to supplement SHA-256 hashes for git dependencies  */
-  cli = import ./cli.nix { inherit pkgs lib; };
+  cli = import ./cli.nix { inherit pkgs lib version; };
+
+  /* Poetry2nix documentation  */
+  doc = pkgs.stdenv.mkDerivation {
+    pname = "poetry2nix-docs";
+    inherit version;
+
+    src = pkgs.runCommandNoCC "poetry2nix-docs-src" {} ''
+      mkdir -p $out
+      cp ${./default.nix} $out/default.nix
+    '';
+
+    buildInputs = [
+      pkgs.nixdoc
+    ];
+
+    buildPhase = ''
+      nixdoc --category poetry2nix --description "Poetry2nix functions" --file ./default.nix > poetry2nix.xml
+    '';
+
+    installPhase = ''
+      mkdir -p $out
+      cp poetry2nix.xml $out/
+    '';
+
+  };
 
 in
 {
-  inherit mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli;
+  inherit mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli doc;
 }
