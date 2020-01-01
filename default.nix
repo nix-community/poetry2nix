@@ -25,7 +25,7 @@ let
   );
 
   # Map SPDX identifiers to license names
-  spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v;}) (lib.attrValues lib.licenses)));
+  spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
   # Get license by id falling back to input string
   getLicenseBySpdxId = spdxId: getAttrDefault spdxId spdxLicenses spdxId;
 
