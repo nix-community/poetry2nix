@@ -20,6 +20,11 @@ let
     else default
   );
 
+  # Map SPDX identifiers to license names
+  spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v;}) (lib.attrValues lib.licenses)));
+  # Get license by id falling back to input string
+  getLicenseBySpdxId = spdxId: getAttrDefault spdxId spdxLicenses spdxId;
+
   #
   # Returns an attrset { python, poetryPackages } for the given lockfile
   #
@@ -196,8 +201,8 @@ let
           '';
 
           meta = meta // {
-            inherit (pyProject.tool.poetry) description;
-            license = pyProject.tool.poetry.license;
+            inherit (pyProject.tool.poetry) description homepage;
+            license = getLicenseBySpdxId (getAttrDefault "license" pyProject.tool.poetry "unknown");
           };
 
         }

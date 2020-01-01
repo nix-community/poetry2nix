@@ -59,9 +59,6 @@ poetry2nix.mkPoetryApplication {
   doCheck = false;
 
   meta = with lib; {
-    homepage = "https://python-poetry.org/";
-    description = "Python dependency management and packaging made easy";
-    license = licenses.mit;
     platforms = platforms.all;
     maintainers = with maintainers; [ adisbladis ];
   };
