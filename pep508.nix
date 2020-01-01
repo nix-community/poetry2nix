@@ -6,7 +6,7 @@ let
   substr = start: stop: s: builtins.substring start (stop - start) s;
 
   # Strip leading/trailing whitespace from string
-  stripStr = s: lib.elemAt (builtins.split "^ *| *$" s) 2;
+  stripStr = s: lib.elemAt (builtins.split "^ *" (lib.elemAt (builtins.split " *$" s) 0)) 2;
 
   findSubExpressionsFun = acc: c: (
     if c == "(" then (
