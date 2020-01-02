@@ -60,14 +60,12 @@ let
     { pythonPackages
     , pyProject
     }: let
-      knownBuildSystems = {
-        "intreehooks:loader" = [ pythonPackages.intreehooks ];
-        "poetry.masonry.api" = [ pythonPackages.poetry ];
-        "" = [];
-      };
       buildSystem = lib.getAttrFromPath [ "build-system" "build-backend" ] pyProject;
+      drvAttr = builtins.elemAt (builtins.split "\\.|:" buildSystem) 0;
     in
-      knownBuildSystems.${buildSystem} or (throw "unsupported build system ${buildSystem}");
+      if buildSystem == "" then [] else (
+        [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ]
+      );
 
 in
 {
