@@ -7,13 +7,17 @@ let
     poetrylock = ./poetry.lock;
     pyproject = ./pyproject.toml;
     overrides = [
-      (poetry2nix.defaultPoetryOverrides.overrideOverlay (self: super: {
-        alembic = super.alembic.overrideAttrs (
-          old: {
-            TESTING_FOOBAR = 42;
+      (
+        poetry2nix.defaultPoetryOverrides.overrideOverlay (
+          self: super: {
+            alembic = super.alembic.overrideAttrs (
+              old: {
+                TESTING_FOOBAR = 42;
+              }
+            );
           }
-        );
-      }))
+        )
+      )
     ];
   };
 in

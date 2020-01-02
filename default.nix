@@ -247,6 +247,7 @@ in
     overrideOverlay = fn: self: super: let
       defaultSet = defaultPoetryOverrides self super;
       customSet = fn self super;
-    in defaultSet // customSet;
+    in
+      defaultSet // customSet;
   };
 }
