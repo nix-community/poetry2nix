@@ -18,6 +18,8 @@ let
     stdenv = pkgs.stdenv;
   };
 
+  getFunctorFn = fn: if builtins.typeOf fn == "set" then fn.__functor else fn;
+
   getAttrDefault = attribute: set: default: (
     if builtins.hasAttr attribute set
     then builtins.getAttr attribute set
@@ -83,21 +85,23 @@ let
         in
           lockPkgs;
 
-      overlays = [
-        (
-          self: super: {
-            mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
-              inherit pkgs lib python poetryLib;
-            };
-            poetry = poetryPkg;
-          }
-        )
-        # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-        (self: super: builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible))
-        # Create poetry2nix layer
-        baseOverlay
-      ] ++ # User provided overrides
-      overrides;
+      overlays = builtins.map getFunctorFn (
+        [
+          (
+            self: super: {
+              mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
+                inherit pkgs lib python poetryLib;
+              };
+              poetry = poetryPkg;
+            }
+          )
+          # Null out any filtered packages, we don't want python.pkgs from nixpkgs
+          (self: super: builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible))
+          # Create poetry2nix layer
+          baseOverlay
+        ] ++ # User provided overrides
+        overrides
+      );
 
       packageOverrides = lib.foldr lib.composeExtensions (self: super: {}) overlays;
 
@@ -231,5 +235,18 @@ let
 
 in
 {
-  inherit mkPoetryEnv mkPoetryApplication defaultPoetryOverrides cli doc;
+  inherit mkPoetryEnv mkPoetryApplication cli doc;
+
+  /*
+  The default list of poetry2nix override overlays
+
+  Can be overriden by calling defaultPoetryOverrides.overrideOverlay which takes an overlay function
+  */
+  defaultPoetryOverrides = {
+    __functor = defaultPoetryOverrides;
+    overrideOverlay = fn: self: super: let
+      defaultSet = defaultPoetryOverrides self super;
+      customSet = fn self super;
+    in defaultSet // customSet;
+  };
 }
