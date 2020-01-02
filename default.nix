@@ -11,7 +11,7 @@ let
   version = "1.0.0";
 
   /* The default list of poetry2nix override overlays */
-  defaultPoetryOverrides = [ (import ./overrides.nix { inherit pkgs; }) ];
+  defaultPoetryOverrides = (import ./overrides.nix { inherit pkgs lib; });
 
   mkEvalPep508 = import ./pep508.nix {
     inherit lib;
@@ -35,7 +35,7 @@ let
   mkPoetryPython =
     { poetrylock
     , poetryPkg
-    , overrides ? defaultPoetryOverrides
+    , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , python ? pkgs.python3
     , pwd ? null
@@ -115,7 +115,7 @@ let
   */
   mkPoetryEnv =
     { poetrylock
-    , overrides ? defaultPoetryOverrides
+    , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , pwd ? null
     , python ? pkgs.python3
@@ -135,7 +135,7 @@ let
     { src
     , pyproject
     , poetrylock
-    , overrides ? defaultPoetryOverrides
+    , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , python ? pkgs.python3
     , pwd ? null
