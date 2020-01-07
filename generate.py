@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i python3 -p python3Packages.poetry
+#! nix-shell -i python3 -p python3 poetry
 
 # Run code generation used by poetry2nix
 
@@ -10,5 +10,6 @@ EXT_FILE = 'extensions.json'
 
 if __name__ == '__main__':
     with open(EXT_FILE, 'w') as f:
-        ext = sorted(ext.lstrip('.') for ext in SUPPORTED_EXTENSIONS)
-        f.write(json.dumps(ext, indent=2))
+        ext = set(ext.lstrip('.') for ext in SUPPORTED_EXTENSIONS)
+        ext.add('egg')
+        f.write(json.dumps(sorted(ext), indent=2) + '\n')

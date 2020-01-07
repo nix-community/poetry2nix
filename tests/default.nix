@@ -21,6 +21,9 @@ in
   cli = poetry2nix;
   path-deps = pkgs.callPackage ./path-deps { inherit poetry2nix; };
 
+  # Egg support not yet in channel, uncomment when channel progressed
+  # eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
+
   inherit (poetry2nix) doc;
 
   # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
