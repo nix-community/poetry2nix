@@ -243,7 +243,7 @@ in
     in
       {
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
-        buildInputs = old.buildInputs ++ [ blas ];
+        buildInputs = old.buildInputs ++ [ blas self.cython ];
         enableParallelBuilding = true;
         preBuild = ''
           ln -s ${cfg} site.cfg
