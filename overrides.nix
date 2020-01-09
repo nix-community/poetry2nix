@@ -23,6 +23,8 @@ let
 in
 {
 
+  apipkg = addSetupTools super.apipkg;
+
   asciimatics = super.asciimatics.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
@@ -93,6 +95,8 @@ in
 
   # Environment markers are not always included (depending on how a dep was defined)
   enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
+
+  execnet = addSetupTools super.execnet;
 
   grandalf = super.grandalf.overrideAttrs (
     old: {
@@ -338,9 +342,13 @@ in
 
   pytest = addSetupTools super.pytest;
 
-  pytest-mock = addSetupTools super.pytest-mock;
+  pytest-black = addSetupTools super.pytest-black;
 
   python-dateutil = addSetupTools super.python-dateutil;
+
+  pytest-forked = addSetupTools super.pytest-forked;
+
+  pytest-mock = addSetupTools super.pytest-mock;
 
   python-prctl = super.python-prctl.overrideAttrs (
     old: {
@@ -350,6 +358,8 @@ in
       ];
     }
   );
+
+  pytest-xdist = addSetupTools super.pytest-xdist;
 
   scaleapi = super.scaleapi.overrideAttrs (
     old: {
