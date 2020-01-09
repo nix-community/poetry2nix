@@ -45,7 +45,7 @@ in
       buildInputs = old.buildInputs ++ [ pkgs.libffi ];
     }
   );
-  
+
   black = addSetupTools super.black;
 
   cffi = super.cffi.overrideAttrs (
