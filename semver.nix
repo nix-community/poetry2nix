@@ -1,13 +1,7 @@
-{ lib }:
+{ lib, ireplace }:
 
 let
   inherit (builtins) elemAt match;
-
-  # Replace a list entry at defined index with set value
-  ireplace = idx: value: list: let
-    inherit (builtins) genList length;
-  in
-    genList (i: if i == idx then value else (elemAt list i)) (length list);
 
   operators = let
     matchWildCard = s: match "([^\*])(\.[\*])" s;

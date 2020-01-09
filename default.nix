@@ -14,7 +14,7 @@ let
   defaultPoetryOverrides = (import ./overrides.nix { inherit pkgs lib; });
 
   mkEvalPep508 = import ./pep508.nix {
-    inherit lib;
+    inherit lib poetryLib;
     stdenv = pkgs.stdenv;
   };
 
