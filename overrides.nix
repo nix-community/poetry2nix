@@ -45,6 +45,12 @@ in
       buildInputs = old.buildInputs ++ [ pkgs.libffi ];
     }
   );
+  
+  black = super.black.overrideAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ pkgs.setuptools_scm ];
+    }
+  );
 
   cffi = super.cffi.overrideAttrs (
     old: {
