@@ -46,11 +46,7 @@ in
     }
   );
   
-  black = super.black.overrideAttrs (
-    old: {
-      buildInputs = old.buildInputs ++ [ pkgs.setuptools_scm ];
-    }
-  );
+  black = addSetupTools super.black;
 
   cffi = super.cffi.overrideAttrs (
     old: {
