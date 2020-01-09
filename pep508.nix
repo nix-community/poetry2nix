@@ -151,7 +151,7 @@ let
       ">=" = x: y: (unmarshal x) >= (unmarshal y);
       ">" = x: y: (unmarshal x) > (unmarshal y);
       "~=" = null;
-      "===" = null;
+      "===" = x: y: x == y;
       "in" = x: y: let
         values = builtins.filter (x: builtins.typeOf x == "string") (builtins.split " " (unmarshal y));
       in

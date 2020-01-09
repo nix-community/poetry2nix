@@ -20,6 +20,7 @@ in
   git-deps-pinned = pkgs.callPackage ./git-deps-pinned { inherit poetry2nix; };
   cli = poetry2nix;
   path-deps = pkgs.callPackage ./path-deps { inherit poetry2nix; };
+  operators = pkgs.callPackage ./operators { inherit poetry2nix; };
 
   # Egg support not yet in channel, uncomment when channel progressed
   # eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
