@@ -10,8 +10,8 @@ poetry2nix.mkPoetryApplication {
   src = fetchFromGitHub {
     owner = "sdispater";
     repo = "poetry";
-    rev = "1.0.0";
-    sha256 = "05xlx9wnlrsjj3i4wawnvxadvqwsdh03401wpgingkbq0c50aimi";
+    rev = "1.0.1";
+    sha256 = "01s3kickc3pdp5gbj9m4r80cxdwr0xgdgpp00l93mxj3pbxwnl6d";
   };
 
   # "Vendor" dependencies (for build-system support)
