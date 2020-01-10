@@ -74,6 +74,8 @@
         else (builtins.elemAt (lib.strings.splitString "-" name) 2);
     };
 
+  baseBuildInputs = lib.optional (name != "setuptools_scm" && name != "setuptools-scm") pythonPackages.setuptools_scm;
+
 in
 
 buildPythonPackage {
@@ -85,7 +87,7 @@ buildPythonPackage {
   format = if isLocal then "pyproject" else if isGit then "setuptools" else fileInfo.format;
 
   nativeBuildInputs = if (!isSource && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [];
-  buildInputs = if !isSource then (getManyLinuxDeps fileInfo.name).pkg else [];
+  buildInputs = baseBuildInputs ++ (if !isSource then (getManyLinuxDeps fileInfo.name).pkg else []);
 
   propagatedBuildInputs =
     let
