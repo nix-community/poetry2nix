@@ -5,14 +5,6 @@
 
 self: super:
 
-let
-
-  getAttrDefault = attribute: set: default:
-    if builtins.hasAttr attribute set
-    then builtins.getAttr attribute set
-    else default;
-
-in
 {
   av = super.av.overrideAttrs (
     old: {
@@ -52,7 +44,7 @@ in
   django = (
     super.django.overrideAttrs (
       old: {
-        propagatedNativeBuildInputs = (getAttrDefault "propagatedNativeBuildInputs" old [])
+        propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [])
         ++ [ pkgs.gettext ];
       }
     )
@@ -64,7 +56,7 @@ in
         if ! test -e LICENSE; then
           touch LICENSE
         fi
-      '' + (getAttrDefault "configurePhase" old "");
+      '' + (old.configurePhase or "");
     }
   );
 

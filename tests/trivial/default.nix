@@ -5,17 +5,4 @@ poetry2nix.mkPoetryApplication {
   pyproject = ./pyproject.toml;
   poetrylock = ./poetry.lock;
   src = lib.cleanSource ./.;
-
-  overrides = [
-    poetry2nix.defaultPoetryOverrides
-    (
-      self: super: {
-        maturin = (builtins.trace (lib.functionArgs super.maturin.override) super.maturin.override) {
-          preferWheel = true;
-        };
-      }
-    )
-
-  ];
-
 }

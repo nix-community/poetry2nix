@@ -30,8 +30,8 @@ let
     in
       (builtins.foldl' combine initial tokens).state;
 
-  fromTOML = toml: if builtins.hasAttr "fromTOML" builtins then builtins.fromTOML toml else
-    builtins.fromJSON (
+  fromTOML = builtins.fromTOML or
+    (toml: builtins.fromJSON (
       builtins.readFile (
         pkgs.runCommand "from-toml"
           {
@@ -47,7 +47,7 @@ let
               -o $out
           ''
       )
-    );
+    ));
   readTOML = path: fromTOML (builtins.readFile path);
 
   #
