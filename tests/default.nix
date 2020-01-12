@@ -27,7 +27,7 @@ builtins.removeAttrs
     preferWheel = pkgs.callPackage ./prefer-wheel { inherit poetry2nix; };
 
     # Egg support not yet in channel, uncomment when channel progressed
-    # eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
+    eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
 
     inherit (poetry2nix) doc;
 

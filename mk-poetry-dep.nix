@@ -62,7 +62,7 @@ pythonPackages.callPackage (
         sourceDist = builtins.filter isSdist fileCandidates;
         eggs = builtins.filter isEgg fileCandidates;
 
-        entries = (if preferWheel then binaryDist ++ sourceDist else sourceDist ++ binaryDist);
+        entries = (if preferWheel then binaryDist ++ sourceDist else sourceDist ++ binaryDist) ++ eggs;
 
         lockFileEntry = builtins.head entries;
 
