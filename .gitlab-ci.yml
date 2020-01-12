@@ -1,6 +1,7 @@
 test-19.09:
   variables:
     NIX_PATH: nixpkgs=channel:nixos-19.09
+    SKIP_TESTS: manylinux,preferWheel
   script:
     - nix-shell -p git --run "nix-build --no-out-link --show-trace tests"
 
