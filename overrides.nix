@@ -298,6 +298,14 @@ in
     }
   );
 
+  pytest-datadir = super.pytest-datadir.overrideAttrs (
+    old: {
+      postInstall = ''
+        rm -f $out/LICENSE
+      '';
+    }
+  );
+
   python-prctl = super.python-prctl.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
@@ -342,6 +350,14 @@ in
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
         self.urwid
       ];
+    }
+  );
+
+  vose-alias-method = super.pytest-datadir.overrideAttrs (
+    old: {
+      postInstall = ''
+        rm -f $out/LICENSE
+      '';
     }
   );
 
