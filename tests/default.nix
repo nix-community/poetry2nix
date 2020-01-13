@@ -26,6 +26,9 @@ builtins.removeAttrs
     operators = pkgs.callPackage ./operators { inherit poetry2nix; };
     preferWheel = pkgs.callPackage ./prefer-wheel { inherit poetry2nix; };
 
+    inherit poetry;
+    poetry-python2 = poetry.override { python = pkgs.python2; };
+
     # Pyqt5 test is waiting for nixpkgs sip bump to reach channel
     pyqt5 = pkgs.callPackage ./pyqt5 { inherit poetry2nix; };
 
