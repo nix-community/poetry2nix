@@ -290,6 +290,85 @@ self: super:
     }
   );
 
+  pyqt5 = super.pyqt5.overridePythonAttrs (
+    old: {
+      format = "other";
+
+      nativeBuildInputs = old.nativeBuildInputs ++ [
+        pkgs.pkgconfig
+        pkgs.qt5.qmake
+        pkgs.xorg.lndir
+        pkgs.qt5.qtbase
+        pkgs.qt5.qtsvg
+        pkgs.qt5.qtdeclarative
+        pkgs.qt5.qtwebchannel
+        # self.pyqt5-sip
+        self.sip
+      ];
+
+      buildInputs = old.buildInputs ++ [
+        pkgs.dbus
+        pkgs.qt5.qtbase
+        pkgs.qt5.qtsvg
+        pkgs.qt5.qtdeclarative
+        self.sip
+      ];
+
+      # Fix dbus mainloop
+      inherit (pkgs.python3.pkgs.pyqt5) patches;
+
+      configurePhase = ''
+        runHook preConfigure
+
+        export PYTHONPATH=$PYTHONPATH:$out/${self.python.sitePackages}
+
+        mkdir -p $out/${self.python.sitePackages}/dbus/mainloop
+        ${self.python.executable} configure.py  -w \
+          --confirm-license \
+          --no-qml-plugin \
+          --bindir=$out/bin \
+          --destdir=$out/${self.python.sitePackages} \
+          --stubsdir=$out/${self.python.sitePackages}/PyQt5 \
+          --sipdir=$out/share/sip/PyQt5 \
+          --designer-plugindir=$out/plugins/designer
+
+        runHook postConfigure
+      '';
+
+      postInstall = ''
+        ln -s ${self.pyqt5-sip}/${self.python.sitePackages}/PyQt5/sip.* $out/${self.python.sitePackages}/PyQt5/
+        for i in $out/bin/*; do
+          wrapProgram $i --prefix PYTHONPATH : "$PYTHONPATH"
+        done
+
+        # # Let's make it a namespace package
+        # cat << EOF > $out/${self.python.sitePackages}/PyQt5/__init__.py
+        # from pkgutil import extend_path
+        # __path__ = extend_path(__path__, __name__)
+        # EOF
+      '';
+
+      installCheckPhase = let
+        modules = [
+          "PyQt5"
+          "PyQt5.QtCore"
+          "PyQt5.QtQml"
+          "PyQt5.QtWidgets"
+          "PyQt5.QtGui"
+        ];
+        imports = lib.concatMapStrings (module: "import ${module};") modules;
+      in
+        ''
+          echo "Checking whether modules can be imported..."
+          ${self.python.interpreter} -c "${imports}"
+        '';
+
+      doCheck = true;
+
+      enableParallelBuilding = true;
+    }
+  );
+
   pytest-datadir = super.pytest-datadir.overrideAttrs (
     old: {
       postInstall = ''
