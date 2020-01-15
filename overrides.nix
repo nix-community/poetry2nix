@@ -400,9 +400,21 @@ self: super:
     }
   );
 
+  # Pybind11 is an undeclared dependency of scipy that we need to pick from nixpkgs
+  # Make it not fail with infinite recursion
+  pybind11 = super.pybind11.overridePythonAttrs (
+    old: {
+      cmakeFlags = (old.cmakeFlags or []) ++ [
+        "-DPYBIND11_TEST=off"
+      ];
+      doCheck = false; # Circular test dependency
+    }
+  );
+
   scipy = super.scipy.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pybind11 ];
       setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
       enableParallelBuilding = true;
       buildInputs = old.buildInputs ++ [ self.numpy.blas ];
@@ -413,6 +425,23 @@ self: super:
       preBuild = ''
         ln -s ${self.numpy.cfg} site.cfg
       '';
+    }
+  );
+
+  scikit-learn = super.scikit-learn.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [
+        pkgs.gfortran
+        pkgs.glibcLocales
+      ] ++ lib.optionals stdenv.cc.isClang [
+        pkgs.llvmPackages.openmp
+      ];
+
+      nativeBuildInputs = old.nativeBuildInputs ++ [
+        self.cython
+      ];
+
+      enableParallelBuilding = true;
     }
   );
 
