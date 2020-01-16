@@ -460,7 +460,7 @@ self: super:
     }
   );
 
-  vose-alias-method = super.pytest-datadir.overrideAttrs (
+  vose-alias-method = super.vose-alias-method.overrideAttrs (
     old: {
       postInstall = ''
         rm -f $out/LICENSE
