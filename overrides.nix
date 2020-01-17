@@ -361,11 +361,11 @@ self: super:
           wrapProgram $i --prefix PYTHONPATH : "$PYTHONPATH"
         done
 
-        # # Let's make it a namespace package
-        # cat << EOF > $out/${self.python.sitePackages}/PyQt5/__init__.py
-        # from pkgutil import extend_path
-        # __path__ = extend_path(__path__, __name__)
-        # EOF
+        # Let's make it a namespace package
+        cat << EOF > $out/${self.python.sitePackages}/PyQt5/__init__.py
+        from pkgutil import extend_path
+        __path__ = extend_path(__path__, __name__)
+        EOF
       '';
 
       installCheckPhase = let
