@@ -25,6 +25,10 @@ builtins.removeAttrs
     path-deps = pkgs.callPackage ./path-deps { inherit poetry2nix; };
     operators = pkgs.callPackage ./operators { inherit poetry2nix; };
     preferWheel = pkgs.callPackage ./prefer-wheel { inherit poetry2nix; };
+    closure-size = pkgs.callPackage ./closure-size {
+      inherit poetry2nix poetry;
+      inherit (pkgs) postgresql;
+    };
 
     inherit poetry;
     poetry-python2 = poetry.override { python = pkgs.python2; };

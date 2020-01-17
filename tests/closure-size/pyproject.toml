@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "closure-size"
+version = "1.0.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.6"
+psycopg2 = "*"
+trivial = { path = "../trivial" }
+
+[tool.poetry.scripts]
+main = "closure_size:main"
+
+[build-system]
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.masonry.api"
