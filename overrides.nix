@@ -60,6 +60,19 @@ self: super:
     }
   );
 
+  dlib = super.dlib.overrideAttrs (
+    old: {
+      # Parallel building enabled
+      inherit (pkgs.python.pkgs.dlib) patches;
+
+      enableParallelBuilding = true;
+      dontUseCmakeConfigure = true;
+
+      nativeBuildInputs = old.nativeBuildInputs ++ pkgs.dlib.nativeBuildInputs;
+      buildInputs = old.buildInputs ++ pkgs.dlib.buildInputs;
+    }
+  );
+
   # Environment markers are not always included (depending on how a dep was defined)
   enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
 
