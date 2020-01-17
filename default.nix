@@ -183,9 +183,9 @@ let
 
           format = "pyproject";
 
-          nativeBuildInputs = [ pkgs.yj ];
           buildInputs = mkInput "buildInputs" buildSystemPkgs;
           propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
+          nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj ];
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
