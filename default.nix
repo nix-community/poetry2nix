@@ -39,7 +39,11 @@ let
       lockData = readTOML poetrylock;
       lockFiles = lib.getAttrFromPath [ "metadata" "files" ] lockData;
 
-      specialAttrs = [ "poetrylock" "overrides" ];
+      specialAttrs = [
+        "overrides"
+        "poetrylock"
+        "pwd"
+      ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
       evalPep508 = mkEvalPep508 python;
@@ -149,7 +153,12 @@ let
 
       pyProject = readTOML pyproject;
 
-      specialAttrs = [ "pyproject" "poetrylock" "overrides" ];
+      specialAttrs = [
+        "overrides"
+        "poetrylock"
+        "pwd"
+        "pyproject"
+      ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
       getDeps = depAttr: let
