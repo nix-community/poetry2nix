@@ -461,7 +461,7 @@ self: super:
   shapely = super.shapely.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
-      inherit (super.shapely) patches GEOS_LIBRARY_PATH;
+      inherit (pkgs.python3.pkgs.shapely) patches GEOS_LIBRARY_PATH;
     }
   );
 
