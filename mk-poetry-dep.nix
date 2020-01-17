@@ -84,14 +84,20 @@ pythonPackages.callPackage (
 
       baseBuildInputs = lib.optional (name != "setuptools_scm" && name != "setuptools-scm") pythonPackages.setuptools_scm;
 
+      format = if isLocal then "pyproject" else if isGit then "setuptools" else fileInfo.format;
+
     in
 
       buildPythonPackage {
         pname = name;
         version = version;
 
+        inherit format;
+
         doCheck = false; # We never get development deps
-        format = if isLocal then "pyproject" else if isGit then "setuptools" else fileInfo.format;
+
+        # Stripping pre-built wheels lead to `ELF load command address/offset not properly aligned`
+        dontStrip = format == "wheel";
 
         nativeBuildInputs = if (!isSource && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [];
         buildInputs = (
