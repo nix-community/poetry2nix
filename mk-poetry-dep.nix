@@ -112,7 +112,7 @@ pythonPackages.callPackage (
           builtins.map (n: pythonPackages.${lib.toLower n}) (builtins.attrNames dependencies);
 
         meta = {
-          broken = ! isCompatible python.version python-versions;
+          broken = ! isCompatible python.pythonVersion python-versions;
           license = [];
         };
 

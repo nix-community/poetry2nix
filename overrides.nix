@@ -21,11 +21,15 @@ self: super:
     }
   );
 
-  cffi = super.cffi.overrideAttrs (
-    old: {
-      buildInputs = old.buildInputs ++ [ pkgs.libffi ];
-    }
-  );
+  cffi =
+    # cffi is bundled with pypy
+    if self.python.implementation == "pypy" then null else (
+      super.cffi.overrideAttrs (
+        old: {
+          buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+        }
+      )
+    );
 
   cftime = super.cftime.overrideAttrs (
     old: {

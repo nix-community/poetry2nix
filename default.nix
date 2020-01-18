@@ -195,7 +195,7 @@ let
           postPatch = (passedAttrs.postPatch or "") + ''
             # Tell poetry not to resolve the path dependencies. Any version is
             # fine !
-            yj -tj < pyproject.toml | python ${./pyproject-without-path.py} > pyproject.json
+            yj -tj < pyproject.toml | ${python.interpreter} ${./pyproject-without-path.py} > pyproject.json
             yj -jt < pyproject.json > pyproject.toml
             rm pyproject.json
           '';
