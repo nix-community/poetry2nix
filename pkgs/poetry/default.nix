@@ -1,5 +1,6 @@
 { lib, poetry2nix, python, fetchFromGitHub, runtimeShell }:
 
+
 poetry2nix.mkPoetryApplication {
 
   inherit python;
@@ -7,12 +8,7 @@ poetry2nix.mkPoetryApplication {
   pyproject = ./pyproject.toml;
   poetrylock = ./poetry.lock;
 
-  src = fetchFromGitHub {
-    owner = "sdispater";
-    repo = "poetry";
-    rev = "1.0.1";
-    sha256 = "01s3kickc3pdp5gbj9m4r80cxdwr0xgdgpp00l93mxj3pbxwnl6d";
-  };
+  src = fetchFromGitHub (lib.importJSON ./src.json);
 
   # "Vendor" dependencies (for build-system support)
   postPatch = ''
@@ -64,6 +60,6 @@ poetry2nix.mkPoetryApplication {
 
   meta = with lib; {
     platforms = platforms.all;
-    maintainers = with maintainers; [ adisbladis ];
+    maintainers = with maintainers; [ adisbladis jakewaksbaum ];
   };
 }
