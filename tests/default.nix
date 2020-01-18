@@ -29,15 +29,16 @@ builtins.removeAttrs
       inherit poetry2nix poetry;
       inherit (pkgs) postgresql;
     };
+    pyqt5 = pkgs.callPackage ./pyqt5 { inherit poetry2nix; };
+    eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
 
+    # Test building poetry
     inherit poetry;
     poetry-python2 = poetry.override { python = pkgs.python2; };
 
-    # Pyqt5 test is waiting for nixpkgs sip bump to reach channel
-    pyqt5 = pkgs.callPackage ./pyqt5 { inherit poetry2nix; };
-
-    # Egg support not yet in channel, uncomment when channel progressed
-    eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
+    # And also test with pypy
+    poetry-pypy = poetry.override { python = pkgs.pypy; };
+    poetry-pypy3 = poetry.override { python = pkgs.pypy3; };
 
     inherit (poetry2nix) doc;
 
