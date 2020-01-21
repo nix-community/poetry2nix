@@ -93,7 +93,10 @@ let
         else throw "Unsupported platform"
       );
       platform_machine = stdenv.platform.kernelArch;
-      platform_python_implementation = "CPython"; # Only CPython supported for now
+      platform_python_implementation = {
+        cpython = "CPython";
+        pypy = "PyPy";
+      }."${python.passthru.implementation}" or throw "Unsupported implementation ${python.passthru.implementation}";
       platform_release = ""; # Field not reproducible
       platform_system = (
         if stdenv.isLinux then "Linux"
