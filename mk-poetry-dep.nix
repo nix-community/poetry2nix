@@ -20,7 +20,8 @@
 
 pythonPackages.callPackage (
   { preferWheel ? false
-  }:
+  , ...
+  }@args:
 
     let
 
@@ -114,6 +115,10 @@ pythonPackages.callPackage (
         meta = {
           broken = ! isCompatible python.pythonVersion python-versions;
           license = [];
+        };
+
+        passthru = {
+          inherit args;
         };
 
         # We need to retrieve kind from the interpreter and the filename of the package
