@@ -152,22 +152,39 @@ self: super:
   );
 
   matplotlib = super.matplotlib.overrideAttrs (
-    old: {
-      NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${pkgs.libcxx}/include/c++/v1";
+    old: let
+      enableGhostscript = old.passthru.enableGhostscript or false;
+      enableGtk3 = old.passthru.enableTk or false;
+      enableQt = old.passthru.enableQt or false;
+      enableTk = old.passthru.enableTk or false;
 
-      XDG_RUNTIME_DIR = "/tmp";
+      inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
 
-      nativeBuildInputs = old.nativeBuildInputs ++ [
-        pkgs.pkgconfig
-      ];
+    in
+      {
+        NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-I${pkgs.libcxx}/include/c++/v1";
 
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
-        pkgs.libpng
-        pkgs.freetype
-      ];
+        XDG_RUNTIME_DIR = "/tmp";
 
-      inherit (super.matplotlib) patches;
-    }
+        buildInputs = old.buildInputs
+        ++ lib.optional enableGhostscript pkgs.ghostscript
+        ++ lib.optional stdenv.isDarwin [ Cocoa ];
+
+        nativeBuildInputs = old.nativeBuildInputs ++ [
+          pkgs.pkgconfig
+        ];
+
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.libpng
+          pkgs.freetype
+        ]
+        ++ stdenv.lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
+        ++ stdenv.lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
+        ++ stdenv.lib.optionals enableQt [ self.pyqt5 ]
+        ;
+
+        inherit (super.matplotlib) patches;
+      }
   );
 
   # Calls Cargo at build time for source builds and is really tricky to package
