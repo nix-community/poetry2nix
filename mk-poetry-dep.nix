@@ -83,7 +83,7 @@ pythonPackages.callPackage (
             else (builtins.elemAt (lib.strings.splitString "-" name) 2);
         };
 
-      baseBuildInputs = lib.optional (name != "setuptools_scm" && name != "setuptools-scm") pythonPackages.setuptools_scm;
+      baseBuildInputs = lib.optional (name != "setuptools_scm" && name != "setuptools-scm") pythonPackages.setuptools-scm;
 
       format = if isLocal then "pyproject" else if isGit then "setuptools" else fileInfo.format;
 

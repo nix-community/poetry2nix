@@ -91,6 +91,8 @@ let
                 inherit pkgs lib python poetryLib;
               };
               poetry = poetryPkg;
+              # The canonical name is setuptools-scm
+              setuptools-scm = super.setuptools_scm;
             }
           )
           # Null out any filtered packages, we don't want python.pkgs from nixpkgs
