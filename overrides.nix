@@ -208,7 +208,7 @@ self: super:
 
   numpy = super.numpy.overrideAttrs (
     old: let
-      blas = pkgs.openblasCompat;
+      blas = old.passthru.args.blas or pkgs.openblasCompat;
       blasImplementation = lib.nameFromURL blas.name "-";
       cfg = pkgs.writeTextFile {
         name = "site.cfg";
