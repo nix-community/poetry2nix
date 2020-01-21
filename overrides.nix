@@ -256,6 +256,19 @@ self: super:
       }
   );
 
+  peewee = super.peewee.overridePythonAttrs (
+    old: let
+      withPostgres = old.passthru.withPostgres or false;
+      withMysql = old.passthru.withMysql or false;
+    in
+      {
+        buildInputs = old.buildInputs ++ [ self.cython pkgs.sqlite ];
+        propagatedBuildInputs = old.propagatedBuildInputs
+        ++ lib.optional withPostgres self.psycopg2
+        ++ lib.optional withMysql self.mysql-connector;
+      }
+  );
+
   pillow = super.pillow.overrideAttrs (
     old: {
       nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
