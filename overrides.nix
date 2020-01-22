@@ -80,6 +80,13 @@ self: super:
   # Environment markers are not always included (depending on how a dep was defined)
   enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
 
+  faker = super.faker.overrideAttrs(old: {
+    buildInputs = old.buildInputs ++ [
+      # Prefer canonical pypi name and fallback to nixpkgs name
+      (self.pytest-runner or self.pytestrunner)
+    ];
+  });
+
   grandalf = super.grandalf.overrideAttrs (
     old: {
       postPatch = ''
