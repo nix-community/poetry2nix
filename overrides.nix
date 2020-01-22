@@ -82,10 +82,9 @@ self: super:
 
   faker = super.faker.overrideAttrs (
     old: {
-      buildInputs = old.buildInputs ++ [
-        # Prefer canonical pypi name and fallback to nixpkgs name
-        (self.pytest-runner or self.pytestrunner)
-      ];
+      postPatch = ''
+        substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],' || true
+      '';
     }
   );
 
