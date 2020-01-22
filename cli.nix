@@ -25,7 +25,6 @@ pkgs.stdenv.mkDerivation {
 
   buildPhase = ''
     runHook preBuild
-    ${python3.pkgs.black}/bin/black --quiet --check poetry2nix
     patchShebangs poetry2nix
     runHook postBuild
   '';
@@ -36,8 +35,8 @@ pkgs.stdenv.mkDerivation {
     mv poetry2nix $out/bin
 
     wrapProgram $out/bin/poetry2nix --prefix PATH ":" ${lib.makeBinPath [
-    pkgs.nix-prefetch-git
-  ]}
+      pkgs.nix-prefetch-git
+    ]}
 
     runHook postInstall
   '';
