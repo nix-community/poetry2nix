@@ -521,6 +521,13 @@ self: super:
       enableParallelBuilding = true;
     }
   );
+  
+  shapely = super.shapely.overrideAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
+      inherit (pkgs.python3.pkgs.shapely) patches GEOS_LIBRARY_PATH;
+    }
+  );
 
   urwidtrees = super.urwidtrees.overrideAttrs (
     old: {
@@ -544,13 +551,6 @@ self: super:
         pkgs.darwin.apple_sdk.frameworks.ApplicationServices
         pkgs.darwin.apple_sdk.frameworks.CoreServices
       ];
-    }
-  );
-
-  shapely = super.shapely.overrideAttrs (
-    old: {
-      buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
-      inherit (pkgs.python3.pkgs.shapely) patches GEOS_LIBRARY_PATH;
     }
   );
 
