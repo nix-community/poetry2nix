@@ -545,6 +545,15 @@ self: super:
     }
   );
 
+  uvloop = super.uvloop.overrideAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ lib.optionals stdenv.isDarwin [
+        pkgs.darwin.apple_sdk.frameworks.ApplicationServices
+        pkgs.darwin.apple_sdk.frameworks.CoreServices
+      ];
+    }
+  );
+
   # Stop infinite recursion by using bootstrapped pkg from nixpkgs
   wheel = (
     pkgs.python3.pkgs.override {
