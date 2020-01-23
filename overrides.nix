@@ -521,7 +521,7 @@ self: super:
       enableParallelBuilding = true;
     }
   );
-  
+
   shapely = super.shapely.overrideAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
