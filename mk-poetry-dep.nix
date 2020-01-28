@@ -87,7 +87,7 @@ pythonPackages.callPackage (
       skipSetupToolsSCM = [
         "setuptools_scm"
         "setuptools-scm"
-        "toml"  # Toml is an extra for setuptools-scm
+        "toml" # Toml is an extra for setuptools-scm
       ];
       baseBuildInputs = lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm;
 
