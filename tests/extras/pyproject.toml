@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "extras"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+setuptools-scm = { version = "^3.4", extras = ["toml"] }
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

@@ -31,6 +31,7 @@ builtins.removeAttrs
     };
     pyqt5 = pkgs.callPackage ./pyqt5 { inherit poetry2nix; };
     eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
+    extras = pkgs.callPackage ./extras { inherit poetry2nix; };
 
     # Test building poetry
     inherit poetry;

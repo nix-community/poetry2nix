@@ -1,0 +1,44 @@
+[[package]]
+category = "main"
+description = "the blessed package to manage your versions by scm tags"
+name = "setuptools-scm"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "3.4.3"
+
+[package.dependencies]
+[package.dependencies.toml]
+optional = true
+version = "*"
+
+[package.extras]
+toml = ["toml"]
+
+[[package]]
+category = "main"
+description = "Python Library for Tom's Obvious, Minimal Language"
+name = "toml"
+optional = false
+python-versions = "*"
+version = "0.10.0"
+
+[metadata]
+content-hash = "bf0b62435a48cd69b82b30553f74e7eb13edda95279f1815dd3fbd927042b213"
+python-versions = "^3.6"
+
+[metadata.files]
+setuptools-scm = [
+    {file = "setuptools_scm-3.4.3-py2.7.egg", hash = "sha256:88c6c749256801da389dc8ec7ea09789dde340c6d03ac8bb4c98b99c0619de63"},
+    {file = "setuptools_scm-3.4.3-py2.py3-none-any.whl", hash = "sha256:f7a5091d8de1b1491068623e9acbe7e881d62986e4c0af7f361424622902ff08"},
+    {file = "setuptools_scm-3.4.3-py3.4.egg", hash = "sha256:6ca1cda5f6791ee2505d8eff675089f6c2ab9e261d8eb86df644b4be06b83aa6"},
+    {file = "setuptools_scm-3.4.3-py3.5.egg", hash = "sha256:004e9725f96dcdf24db60b633027b378eaffcdb3a73f2f1c045084b1051d0ef0"},
+    {file = "setuptools_scm-3.4.3-py3.6.egg", hash = "sha256:0331d6da7598e5619ebd582acc0b7e775d04c1897c50df12838208b7a637661d"},
+    {file = "setuptools_scm-3.4.3-py3.7.egg", hash = "sha256:855349a23a12d955019fddfcf3fc71d3f30e7ea621545a543b92ef23ff2ffb5c"},
+    {file = "setuptools_scm-3.4.3-py3.8.egg", hash = "sha256:cf444db465cf96bf775bde122f2ea54c39303c2d1b1dc994f1139bb5c67673bd"},
+    {file = "setuptools_scm-3.4.3.tar.gz", hash = "sha256:26b8a108783cd88f4b15ff1f0f347d6b476db25d0c226159b835d713f9487320"},
+]
+toml = [
+    {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
+    {file = "toml-0.10.0-py2.py3-none-any.whl", hash = "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"},
+    {file = "toml-0.10.0.tar.gz", hash = "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c"},
+]
