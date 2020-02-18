@@ -93,6 +93,14 @@ let
         [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ]
       );
 
+  removeTOMLPathDependencies = python: ''
+    # Tell poetry not to resolve the path dependencies. Any version is
+    # fine !
+    ${pkgs.yj}/bin/yj -tj < pyproject.toml | ${python.interpreter} ${./pyproject-without-path.py} > pyproject.json
+    ${pkgs.yj}/bin/yj -jt < pyproject.json > pyproject.toml
+    rm pyproject.json
+  '';
+
 in
 {
   inherit
@@ -101,5 +109,6 @@ in
     isCompatible
     readTOML
     getBuildSystemPkgs
+    removeTOMLPathDependencies
     ;
 }
