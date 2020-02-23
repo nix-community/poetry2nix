@@ -23,6 +23,7 @@ builtins.removeAttrs
     git-deps-pinned = pkgs.callPackage ./git-deps-pinned { inherit poetry2nix; };
     cli = poetry2nix;
     path-deps = pkgs.callPackage ./path-deps { inherit poetry2nix; };
+    path-deps-level2 = pkgs.callPackage ./path-deps-level2 { inherit poetry2nix; };
     operators = pkgs.callPackage ./operators { inherit poetry2nix; };
     preferWheel = pkgs.callPackage ./prefer-wheel { inherit poetry2nix; };
     closure-size = pkgs.callPackage ./closure-size {

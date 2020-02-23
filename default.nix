@@ -194,13 +194,7 @@ let
             python = py;
           };
 
-          postPatch = (passedAttrs.postPatch or "") + ''
-            # Tell poetry not to resolve the path dependencies. Any version is
-            # fine !
-            yj -tj < pyproject.toml | ${python.interpreter} ${./pyproject-without-path.py} > pyproject.json
-            yj -jt < pyproject.json > pyproject.toml
-            rm pyproject.json
-          '';
+          postPatch = (passedAttrs.postPatch or "") + poetryLib.removeTOMLPathDependencies python;
 
           meta = meta // {
             inherit (pyProject.tool.poetry) description homepage;
