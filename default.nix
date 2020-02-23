@@ -29,7 +29,8 @@ let
   # Returns an attrset { python, poetryPackages } for the given lockfile
   #
   mkPoetryPython =
-    { poetrylock
+    { pyProject
+    , poetrylock
     , poetryPkg
     , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
@@ -48,9 +49,16 @@ let
 
       evalPep508 = mkEvalPep508 python;
 
-      # Filter packages by their PEP508 markers
+      # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions = let
-        supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
+        supportsPythonVersion = pkgMeta: let
+          pep508Result = if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
+
+          flatDeps = (pyProject.tool.poetry.dependencies or {}) // (pyProject.tool.poetry.dev-dependencies or {});
+          constraints = flatDeps.${pkgMeta.name}.python or "";
+          pyprojectResult = isCompatible python.pythonVersion constraints;
+        in
+          pyprojectResult && pep508Result;
       in
         lib.partition supportsPythonVersion lockData.package;
 
@@ -122,7 +130,8 @@ let
        poetry2nix.mkPoetryEnv { poetrylock = ./poetry.lock; python = python3; }
   */
   mkPoetryEnv =
-    { poetrylock
+    { pyproject
+    , poetrylock
     , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , pwd ? null
@@ -133,6 +142,7 @@ let
         py = mkPoetryPython (
           {
             inherit poetryPkg poetrylock overrides meta python pwd;
+            pyProject = readTOML pyproject;
           }
         );
       in
@@ -151,13 +161,13 @@ let
     }@attrs: let
       poetryPkg = poetry.override { inherit python; };
 
+      pyProject = readTOML pyproject;
+
       py = (
         mkPoetryPython {
-          inherit poetryPkg poetrylock overrides meta python pwd;
+          inherit poetryPkg pyProject poetrylock overrides meta python pwd;
         }
       ).python;
-
-      pyProject = readTOML pyproject;
 
       specialAttrs = [
         "overrides"
