@@ -247,7 +247,7 @@ let
 
 in
 {
-  inherit mkPoetryEnv mkPoetryApplication cli doc;
+  inherit mkPoetryEnv mkPoetryApplication mkPoetryPackages cli doc;
 
   /*
   The default list of poetry2nix override overlays
