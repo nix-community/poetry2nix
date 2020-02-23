@@ -39,8 +39,8 @@ builtins.removeAttrs
     poetry-python2 = poetry.override { python = pkgs.python2; };
 
     # And also test with pypy
-    poetry-pypy = poetry.override { python = pkgs.pypy; };
-    poetry-pypy3 = poetry.override { python = pkgs.pypy3; };
+    # poetry-pypy = poetry.override { python = pkgs.pypy; };
+    # poetry-pypy3 = poetry.override { python = pkgs.pypy3; };
 
     inherit (poetry2nix) doc;
 

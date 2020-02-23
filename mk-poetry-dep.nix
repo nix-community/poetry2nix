@@ -107,7 +107,9 @@ pythonPackages.callPackage (
         dontStrip = format == "wheel";
 
         nativeBuildInputs = (if (!isSource && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [])
-        ++ lib.optional (isLocal) pkgs.yj;
+        ++ lib.optional (isLocal) pkgs.yj
+        ++ lib.optional (format == "pyproject") pythonPackages.removePathDependenciesHook
+        ;
 
         buildInputs = (
           baseBuildInputs
@@ -119,8 +121,6 @@ pythonPackages.callPackage (
           # Some dependencies like django get the attribute name django
           # but dependencies try to access Django
           builtins.map (n: pythonPackages.${lib.toLower n}) (builtins.attrNames dependencies);
-
-        postPatch = (args.postPatch or "") + lib.optionalString isLocal (poetryLib.removeTOMLPathDependencies python);
 
         meta = {
           broken = ! isCompatible python.pythonVersion python-versions;
