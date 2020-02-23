@@ -82,18 +82,22 @@ let
           );
         in
           lockPkgs;
-
       overlays = builtins.map getFunctorFn (
         [
           (
-            self: super: {
-              mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
-                inherit pkgs lib python poetryLib;
-              };
-              poetry = poetryPkg;
-              # The canonical name is setuptools-scm
-              setuptools-scm = super.setuptools_scm;
-            }
+            self: super: let
+              hooks = self.callPackage ./hooks {};
+            in
+              {
+                mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
+                  inherit pkgs lib python poetryLib;
+                };
+                poetry = poetryPkg;
+                # The canonical name is setuptools-scm
+                setuptools-scm = super.setuptools_scm;
+
+                inherit (hooks) removePathDependenciesHook;
+              }
           )
           # Null out any filtered packages, we don't want python.pkgs from nixpkgs
           (self: super: builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible))
@@ -187,14 +191,12 @@ let
 
           buildInputs = mkInput "buildInputs" buildSystemPkgs;
           propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
-          nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj ];
+          nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj py.pkgs.removePathDependenciesHook ];
           checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
             python = py;
           };
-
-          postPatch = (passedAttrs.postPatch or "") + poetryLib.removeTOMLPathDependencies python;
 
           meta = meta // {
             inherit (pyProject.tool.poetry) description homepage;
