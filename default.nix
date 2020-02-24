@@ -8,7 +8,7 @@ let
   inherit (poetryLib) isCompatible readTOML;
 
   # Poetry2nix version
-  version = "1.1.0";
+  version = "1.5.0";
 
   /* The default list of poetry2nix override overlays */
   defaultPoetryOverrides = (import ./overrides.nix { inherit pkgs lib; });
