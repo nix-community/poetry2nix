@@ -25,11 +25,11 @@ let
   # Get license by id falling back to input string
   getLicenseBySpdxId = spdxId: spdxLicenses.${spdxId} or spdxId;
 
-  #
-  # Returns an attrset { python, poetryPackages } for the given lockfile
-  #
-  mkPoetryPython =
-    { pyProject
+  /*
+     Returns an attrset { python, poetryPackages, pyProject, poetryLock } for the given pyproject/lockfile.
+  */
+  mkPoetryPackages =
+    { pyproject
     , poetrylock
     , poetryPkg
     , overrides ? [ defaultPoetryOverrides ]
@@ -37,8 +37,9 @@ let
     , python ? pkgs.python3
     , pwd ? null
     }@attrs: let
-      lockData = readTOML poetrylock;
-      lockFiles = lib.getAttrFromPath [ "metadata" "files" ] lockData;
+      pyProject = readTOML pyproject;
+      poetryLock = readTOML poetrylock;
+      lockFiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
 
       specialAttrs = [
         "overrides"
@@ -60,7 +61,7 @@ let
         in
           pyprojectResult && pep508Result;
       in
-        lib.partition supportsPythonVersion lockData.package;
+        lib.partition supportsPythonVersion poetryLock.package;
 
       compatible = partitions.right;
       incompatible = partitions.wrong;
@@ -122,6 +123,8 @@ let
       {
         python = py;
         poetryPackages = map (pkg: py.pkgs.${pkg.name}) compatible;
+        poetryLock = poetryLock;
+        inherit pyProject;
       };
 
   /* Returns a package with a python interpreter and all packages specified in the poetry.lock lock file.
@@ -139,10 +142,9 @@ let
     }:
       let
         poetryPkg = poetry.override { inherit python; };
-        py = mkPoetryPython (
+        py = mkPoetryPackages (
           {
-            inherit poetryPkg poetrylock overrides meta python pwd;
-            pyProject = readTOML pyproject;
+            inherit poetryPkg pyproject poetrylock overrides meta python pwd;
           }
         );
       in
@@ -161,13 +163,12 @@ let
     }@attrs: let
       poetryPkg = poetry.override { inherit python; };
 
-      pyProject = readTOML pyproject;
+      poetryPython = mkPoetryPackages {
+        inherit poetryPkg pyproject poetrylock overrides meta python pwd;
+      };
+      py = poetryPython.python;
 
-      py = (
-        mkPoetryPython {
-          inherit poetryPkg pyProject poetrylock overrides meta python pwd;
-        }
-      ).python;
+      inherit (poetryPython) pyProject;
 
       specialAttrs = [
         "overrides"
