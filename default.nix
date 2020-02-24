@@ -52,12 +52,13 @@ let
 
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions = let
+        compat = isCompatible python.pythonVersion;
         supportsPythonVersion = pkgMeta: let
           pep508Result = if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
 
           flatDeps = (pyProject.tool.poetry.dependencies or {}) // (pyProject.tool.poetry.dev-dependencies or {});
           constraints = flatDeps.${pkgMeta.name}.python or "";
-          pyprojectResult = isCompatible python.pythonVersion constraints;
+          pyprojectResult = compat constraints;
         in
           pyprojectResult && pep508Result;
       in
