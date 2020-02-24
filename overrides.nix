@@ -477,6 +477,10 @@ self: super:
     }
   );
 
+  pandas = super.pandas.overrideAttrs(old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ self.cython ];
+  });
+
   # Pybind11 is an undeclared dependency of scipy that we need to pick from nixpkgs
   # Make it not fail with infinite recursion
   pybind11 = super.pybind11.overridePythonAttrs (
