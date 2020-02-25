@@ -31,12 +31,13 @@ let
   mkPoetryPackages =
     { pyproject
     , poetrylock
-    , poetryPkg
     , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , python ? pkgs.python3
     , pwd ? null
     }@attrs: let
+      poetryPkg = poetry.override { inherit python; };
+
       pyProject = readTOML pyproject;
       poetryLock = readTOML poetrylock;
       lockFiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
@@ -142,10 +143,9 @@ let
     , python ? pkgs.python3
     }:
       let
-        poetryPkg = poetry.override { inherit python; };
         py = mkPoetryPackages (
           {
-            inherit poetryPkg pyproject poetrylock overrides meta python pwd;
+            inherit pyproject poetrylock overrides meta python pwd;
           }
         );
       in
@@ -162,10 +162,8 @@ let
     , pwd ? null
     , ...
     }@attrs: let
-      poetryPkg = poetry.override { inherit python; };
-
       poetryPython = mkPoetryPackages {
-        inherit poetryPkg pyproject poetrylock overrides meta python pwd;
+        inherit pyproject poetrylock overrides meta python pwd;
       };
       py = poetryPython.python;
 
