@@ -6,8 +6,7 @@ let
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
-    overrides = [
-      poetry2nix.defaultPoetryOverrides
+    overrides = poetry2nix.overrides.withDefaults
       # This is also in overrides.nix but repeated for completeness
       (
         self: super: {
@@ -15,9 +14,7 @@ let
             preferWheel = true;
           };
         }
-      )
-
-    ];
+      );
   };
 
   url = lib.elemAt drv.passthru.python.pkgs.maturin.src.urls 0;
