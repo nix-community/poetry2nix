@@ -29,12 +29,13 @@ let
      Returns an attrset { python, poetryPackages, pyProject, poetryLock } for the given pyproject/lockfile.
   */
   mkPoetryPackages =
-    { pyproject
-    , poetrylock
+    { projectDir ? null
+    , pyproject ? projectDir + "/pyproject.toml"
+    , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , python ? pkgs.python3
-    , pwd ? null
+    , pwd ? projectDir
     }@attrs: let
       poetryPkg = poetry.override { inherit python; };
 
@@ -135,11 +136,12 @@ let
        poetry2nix.mkPoetryEnv { poetrylock = ./poetry.lock; python = python3; }
   */
   mkPoetryEnv =
-    { pyproject
-    , poetrylock
+    { projectDir ? null
+    , pyproject ? projectDir + "/pyproject.toml"
+    , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
-    , pwd ? null
+    , pwd ? projectDir
     , python ? pkgs.python3
     }:
       let
@@ -154,12 +156,13 @@ let
   /* Creates a Python application from pyproject.toml and poetry.lock */
   mkPoetryApplication =
     { src
-    , pyproject
-    , poetrylock
+    , projectDir ? null
+    , pyproject ? projectDir + "/pyproject.toml"
+    , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
     , meta ? {}
     , python ? pkgs.python3
-    , pwd ? null
+    , pwd ? projectDir
     , ...
     }@attrs: let
       poetryPython = mkPoetryPackages {
