@@ -470,7 +470,7 @@ self: super:
   );
 
   pyzmq = super.pyzmq.overrideAttrs (
-    old: rec {
+    old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.zeromq ];
     }
