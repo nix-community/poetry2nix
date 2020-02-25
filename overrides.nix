@@ -103,7 +103,7 @@ self: super:
   );
 
   # importlib-metadata has an incomplete dependency specification
-  importlib-metadata = if super.importlib-metadata == null then null else super.importlib-metadata.overrideAttrs (
+  importlib-metadata = super.importlib-metadata.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ lib.optional self.python.isPy2 self.pathlib2;
     }
@@ -466,6 +466,13 @@ self: super:
       buildInputs = old.buildInputs ++ [
         pkgs.libcap
       ];
+    }
+  );
+
+  pyzmq = super.pyzmq.overrideAttrs (
+    old: rec {
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.zeromq ];
     }
   );
 
