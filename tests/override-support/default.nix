@@ -6,8 +6,7 @@ let
     src = ./.;
     poetrylock = ./poetry.lock;
     pyproject = ./pyproject.toml;
-    overrides = [
-      poetry2nix.defaultPoetryOverrides
+    overrides = poetry2nix.overrides.withDefaults
       (
         self: super: {
           alembic = super.alembic.overrideAttrs (
@@ -16,8 +15,7 @@ let
             }
           );
         }
-      )
-    ];
+      );
   };
 in
 runCommand "test" {} ''

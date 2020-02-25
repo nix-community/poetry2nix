@@ -261,4 +261,25 @@ in
     in
       defaultSet // customSet;
   };
+
+  /*
+  Convenience functions for specifying overlays with or without the poerty2nix default overrides
+  */
+  overrides = {
+    /*
+    Returns the specified overlay in a list
+    */
+    withoutDefaults = overlay: [
+      overlay
+    ];
+
+    /*
+    Returns the specified overlay and returns a list
+    combining it with poetry2nix default overrides
+    */
+    withDefaults = overlay: [
+      defaultPoetryOverrides
+      overlay
+    ];
+  };
 }

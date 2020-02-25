@@ -6,9 +6,7 @@ poetry2nix.mkPoetryApplication {
   poetrylock = ./poetry.lock;
   src = lib.cleanSource ./.;
 
-  overrides = [
-    poetry2nix.defaultPoetryOverrides
-    (import ./poetry-git-overlay.nix { inherit pkgs; })
-  ];
+  overrides = poetry2nix.overrides.withDefaults
+    (import ./poetry-git-overlay.nix { inherit pkgs; });
 
 }
