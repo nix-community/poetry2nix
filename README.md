@@ -13,13 +13,14 @@ The _poetry2nix_ public API consists of the following attributes:
 - [defaultPoetryOverrides](#defaultPoetryOverrides): A set of bundled overrides fixing problems with Python packages.
 - [overrides.withDefaults](#overrides.withDefaults): A convenience function for specifying overrides on top of the defaults.
 - [overrides.withoutDefaults](#overrides.withoutDefaults): A convenience function for specifying overrides without defaults.
+- [cleanPythonSources](#cleanPythonSources): A function to create a source filter for python projects.
 
 ### mkPoetryApplication
 
 Creates a Python application using the Python interpreter specified based on the designated poetry project and lock files. `mkPoetryApplication` takes an attribute set with the following attributes (attributes without default are mandatory):
 
 - **projectDir**: path to the root of the project.
-- **src**: project source (_default_: `lib.cleanSource projectDir`).
+- **src**: project source (_default_: `cleanPythonSources { src = projectDir; }`).
 - **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
 - **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
@@ -78,6 +79,15 @@ _poetry2nix_ bundles a set of default overrides that fix problems with various P
 
 ### overrides.withDefaults
 Returns a list containing the specified overlay and `defaultPoetryOverrides`.
+
+### cleanPythonSources
+Provides a source filtering mechanism that:
+- Filters gitignore (if it exists, non-recursive)
+- Filters pycache/pyc files
+- Uses cleanSourceFilter to filter out .git/.hg, .o/.so, editor backup files & nix result symlinks
+
+Takes an attribute set with the following attributes (attributes without default are mandatory):
+- **src**: project source directory
 
 #### Example
 

@@ -35,6 +35,7 @@ builtins.removeAttrs
     pyqt5 = callTest ./pyqt5 {};
     eggs = callTest ./eggs {};
     extras = callTest ./extras {};
+    source-filter = callTest ./source-filter {};
 
     # Test building poetry
     inherit poetry;

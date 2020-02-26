@@ -146,7 +146,7 @@ let
   /* Creates a Python application from pyproject.toml and poetry.lock */
   mkPoetryApplication =
     { projectDir ? null
-    , src ? lib.cleanSource projectDir
+    , src ? poetryLib.cleanPythonSources { src = projectDir; }
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
@@ -252,6 +252,8 @@ let
 in
 {
   inherit mkPoetryEnv mkPoetryApplication mkPoetryPackages cli doc;
+
+  inherit (poetryLib) cleanPythonSources;
 
   /*
   The default list of poetry2nix override overlays
