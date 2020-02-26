@@ -26,6 +26,8 @@ Creates a Python application using the Python interpreter specified based on the
 - **meta**: application [meta](https://nixos.org/nixpkgs/manual/#chap-meta) data (_default:_ `{}`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 
+Other attributes are passed through to `buildPythonApplication`.
+
 #### Example
 ```nix
 poetry2nix.mkPoetryApplication {
