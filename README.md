@@ -18,8 +18,8 @@ The _poetry2nix_ public API consists of the following attributes:
 
 Creates a Python application using the Python interpreter specified based on the designated poetry project and lock files. `mkPoetryApplication` takes an attribute set with the following attributes (attributes without default are mandatory):
 
-- **src**: project source.
 - **projectDir**: path to the root of the project.
+- **src**: project source (_default_: `lib.cleanSource projectDir`).
 - **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
 - **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
@@ -29,7 +29,6 @@ Creates a Python application using the Python interpreter specified based on the
 #### Example
 ```nix
 poetry2nix.mkPoetryApplication {
-    src = lib.cleanSource ./.;
     projectDir = ./.;
 }
 ```

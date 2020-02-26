@@ -145,8 +145,8 @@ let
 
   /* Creates a Python application from pyproject.toml and poetry.lock */
   mkPoetryApplication =
-    { src
-    , projectDir ? null
+    { projectDir ? null
+    , src ? lib.cleanSource projectDir
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
@@ -198,6 +198,8 @@ let
         passedAttrs // {
           pname = pyProject.tool.poetry.name;
           version = pyProject.tool.poetry.version;
+
+          inherit src;
 
           format = "pyproject";
 
