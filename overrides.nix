@@ -6,6 +6,14 @@
 self: super:
 
 {
+  astroid = super.astroid.overrideAttrs (
+    old: rec {
+      postPatch = ''
+        substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],'
+      '';
+    }
+  );
+
   av = super.av.overrideAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [
@@ -96,6 +104,17 @@ self: super:
     }
   );
 
+  h5py = super.h5py.overrideAttrs (
+    old: rec {
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      buildInputs = old.buildInputs ++ [ pkgs.hdf5 self.pkgconfig self.cython ];
+      configure_flags = "--hdf5=${pkgs.hdf5}";
+      postConfigure = ''
+        ${self.python.executable} setup.py configure ${configure_flags}
+      '';
+    }
+  );
+
   horovod = super.horovod.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.openmpi ];
@@ -106,6 +125,15 @@ self: super:
   importlib-metadata = super.importlib-metadata.overrideAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ lib.optional self.python.isPy2 self.pathlib2;
+    }
+  );
+
+  jupyter = super.jupyter.overrideAttrs (
+    old: rec {
+      # jupyter is a meta-package. Everything relevant comes from the
+      # dependencies. It does however have a jupyter.py file that conflicts
+      # with jupyter-core so this meta solves this conflict.
+      meta.priority = 100;
     }
   );
 
@@ -262,6 +290,13 @@ self: super:
           inherit blasImplementation cfg;
         };
       }
+  );
+
+  openexr = super.openexr.overrideAttrs (
+    old: rec {
+      buildInputs = old.buildInputs ++ [ pkgs.openexr pkgs.ilmbase ];
+      NIX_CFLAGS_COMPILE = [ "-I${pkgs.openexr.dev}/include/OpenEXR" "-I${pkgs.ilmbase.dev}/include/OpenEXR" ];
+    }
   );
 
   peewee = super.peewee.overridePythonAttrs (
@@ -476,6 +511,14 @@ self: super:
     }
   );
 
+  rockset = super.rockset.overrideAttrs (
+    old: rec {
+      postPatch = ''
+        cp ./setup_rockset.py ./setup.py
+      '';
+    }
+  );
+
   scaleapi = super.scaleapi.overrideAttrs (
     old: {
       postPatch = ''
@@ -539,6 +582,14 @@ self: super:
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.geos self.cython ];
       inherit (pkgs.python3.pkgs.shapely) patches GEOS_LIBRARY_PATH;
+    }
+  );
+
+  tensorpack = super.tensorpack.overrideAttrs (
+    old: {
+      postPatch = ''
+        substituteInPlace setup.cfg --replace "# will call find_packages()" ""
+      '';
     }
   );
 
