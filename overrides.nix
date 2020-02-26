@@ -96,6 +96,16 @@ self: super:
     }
   );
 
+  fancycompleter = super.fancycompleter.overrideAttrs (
+    old: {
+      postPatch = ''
+        substituteInPlace setup.py \
+          --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
+          --replace 'versioning="devcommit"' 'version="${old.version}"'
+      '';
+    }
+  );
+
   grandalf = super.grandalf.overrideAttrs (
     old: {
       postPatch = ''
@@ -378,6 +388,14 @@ self: super:
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
       buildInputs = old.buildInputs ++ [ pkgs.glib pkgs.gobject-introspection ];
+    }
+  );
+
+  pylint = super.pylint.overrideAttrs (
+    old: {
+      postPatch = ''
+        substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],'
+      '';
     }
   );
 
