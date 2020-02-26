@@ -33,7 +33,6 @@ let
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
-    , meta ? {}
     , python ? pkgs.python3
     , pwd ? projectDir
     }@attrs: let
@@ -140,14 +139,13 @@ let
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
-    , meta ? {}
     , pwd ? projectDir
     , python ? pkgs.python3
     }:
       let
         py = mkPoetryPackages (
           {
-            inherit pyproject poetrylock overrides meta python pwd;
+            inherit pyproject poetrylock overrides python pwd;
           }
         );
       in
@@ -166,7 +164,7 @@ let
     , ...
     }@attrs: let
       poetryPython = mkPoetryPackages {
-        inherit pyproject poetrylock overrides meta python pwd;
+        inherit pyproject poetrylock overrides python pwd;
       };
       py = poetryPython.python;
 
