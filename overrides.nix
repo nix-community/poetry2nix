@@ -509,6 +509,12 @@ self: super:
     }
   );
 
+  pytest = super.pytest.overridePythonAttrs (
+    old: {
+      doCheck = false;
+    }
+  );
+
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
   python-prctl = super.python-prctl.overrideAttrs (
