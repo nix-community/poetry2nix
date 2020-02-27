@@ -8,9 +8,8 @@ self: super:
 {
   astroid = super.astroid.overrideAttrs (
     old: rec {
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],'
-      '';
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      doCheck = false;
     }
   );
 
@@ -90,9 +89,8 @@ self: super:
 
   faker = super.faker.overrideAttrs (
     old: {
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],' || true
-      '';
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      doCheck = false;
     }
   );
 
@@ -108,9 +106,8 @@ self: super:
 
   grandalf = super.grandalf.overrideAttrs (
     old: {
-      postPatch = ''
-        substituteInPlace setup.py --replace "setup_requires=['pytest-runner',]," "setup_requires=[]," || true
-      '';
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      doCheck = false;
     }
   );
 
@@ -240,9 +237,8 @@ self: super:
 
   mccabe = super.mccabe.overrideAttrs (
     old: {
-      postPatch = ''
-        substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," "setup_requires=[]," || true
-      '';
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      doCheck = false;
     }
   );
 
@@ -393,9 +389,8 @@ self: super:
 
   pylint = super.pylint.overrideAttrs (
     old: {
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],'
-      '';
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      doCheck = false;
     }
   );
 
