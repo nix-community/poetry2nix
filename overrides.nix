@@ -603,6 +603,14 @@ self: super:
     }
   );
 
+  tables = super.tables.overrideAttrs (
+    old: {
+      HDF5_DIR = "${pkgs.hdf5}";
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      propagatedBuildInputs = old.nativeBuildInputs ++ [ pkgs.hdf5 self.numpy self.numexpr ];
+    }
+  );
+
   tensorpack = super.tensorpack.overrideAttrs (
     old: {
       postPatch = ''
