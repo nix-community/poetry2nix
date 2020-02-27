@@ -395,6 +395,7 @@ self: super:
     old: {
       postPatch = ''
         substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' 'setup_requires=[],'
+        substituteInPlace setup.py --replace "setup_requires=['pytest-runner']," 'setup_requires=[],'
       '';
     }
   );
