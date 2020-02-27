@@ -11,6 +11,13 @@ test-unstable:
   script:
     - nix-shell -p git --run "nix-build --no-out-link --show-trace tests"
 
+graphs:
+  script:
+    - nix-shell --run 'mkdir -p artifacts && cd artifacts && poetry2nix-flamegraph'
+  artifacts:
+    paths:
+    - artifacts/
+
 nixpkgs-fmt:
   script:
     - ./check-fmt
