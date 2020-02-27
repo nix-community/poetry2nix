@@ -8,7 +8,7 @@ self: super:
 {
   astroid = super.astroid.overrideAttrs (
     old: rec {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
       doCheck = false;
     }
   );
@@ -89,7 +89,7 @@ self: super:
 
   faker = super.faker.overrideAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
       doCheck = false;
     }
   );
@@ -106,7 +106,7 @@ self: super:
 
   grandalf = super.grandalf.overrideAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
       doCheck = false;
     }
   );
@@ -237,7 +237,7 @@ self: super:
 
   mccabe = super.mccabe.overrideAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
       doCheck = false;
     }
   );
@@ -389,7 +389,7 @@ self: super:
 
   pylint = super.pylint.overrideAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pytestrunner ];
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
       doCheck = false;
     }
   );
@@ -508,6 +508,8 @@ self: super:
       '';
     }
   );
+
+  pytest-runner = super.pytest-runner or super.pytestrunner;
 
   python-prctl = super.python-prctl.overrideAttrs (
     old: {
