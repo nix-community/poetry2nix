@@ -606,6 +606,14 @@ self: super:
     }
   );
 
+  shellingham = if lib.versionAtLeast super.shellingham.version "1.3.2" then (
+    super.shellingham.overridePythonAttrs (
+      old: {
+        format = "pyproject";
+      }
+    )
+  ) else super.shellingham;
+
   tables = super.tables.overrideAttrs (
     old: {
       HDF5_DIR = "${pkgs.hdf5}";

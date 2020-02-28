@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python, fetchFromGitHub }:
+{ lib, poetry2nix, python, fetchFromGitHub, fetchpatch }:
 
 
 poetry2nix.mkPoetryApplication {
@@ -8,6 +8,15 @@ poetry2nix.mkPoetryApplication {
   projectDir = ./.;
 
   src = fetchFromGitHub (lib.importJSON ./src.json);
+
+  patches = [
+    (
+      fetchpatch {
+        url = "https://github.com/python-poetry/poetry/commit/d2fed3de1864e4a972d3d00c7f63461fcc34737f.patch";
+        sha256 = "01a8ha15ff9ajd0fss568y2xx1wjp2xjjv81w877vfasipcvwjff";
+      }
+    )
+  ];
 
   # "Vendor" dependencies (for build-system support)
   postPatch = ''
