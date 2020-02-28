@@ -53,15 +53,7 @@ let
 
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions = let
-        compat = isCompatible python.pythonVersion;
-        supportsPythonVersion = pkgMeta: let
-          pep508Result = if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
-
-          flatDeps = (pyProject.tool.poetry.dependencies or {}) // (pyProject.tool.poetry.dev-dependencies or {});
-          constraints = flatDeps.${pkgMeta.name}.python or "";
-          pyprojectResult = compat constraints;
-        in
-          pyprojectResult && pep508Result;
+        supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
       in
         lib.partition supportsPythonVersion poetryLock.package;
 
@@ -178,11 +170,20 @@ let
       ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
+      # Get dependencies and filter out depending on interpreter version
       getDeps = depAttr: let
+        compat = isCompatible py.pythonVersion;
         deps = pyProject.tool.poetry.${depAttr} or {};
         depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
       in
-        builtins.map (dep: py.pkgs."${dep}") depAttrs;
+        builtins.map (
+          dep: let
+            pkg = py.pkgs."${dep}";
+            constraints = deps.${dep}.python or "";
+            isCompat = compat constraints;
+          in
+            if isCompat then pkg else null
+        ) depAttrs;
 
       getInputs = attr: attrs.${attr} or [];
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;

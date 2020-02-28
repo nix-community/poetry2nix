@@ -117,10 +117,19 @@ pythonPackages.callPackage (
           ++ lib.optional isLocal buildSystemPkgs
         );
 
-        propagatedBuildInputs =
-          # Some dependencies like django get the attribute name django
-          # but dependencies try to access Django
-          builtins.map (n: pythonPackages.${lib.toLower n}) (builtins.attrNames dependencies);
+        propagatedBuildInputs = let
+          compat = isCompatible python.pythonVersion;
+          deps = lib.filterAttrs (n: v: v) (
+            lib.mapAttrs (
+              n: v: let
+                constraints = v.python or "";
+              in
+                compat constraints
+            ) dependencies
+          );
+          depAttrs = lib.attrNames deps;
+        in
+          builtins.map (n: pythonPackages.${lib.toLower n}) depAttrs;
 
         meta = {
           broken = ! isCompatible python.pythonVersion python-versions;
