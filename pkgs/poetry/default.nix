@@ -35,7 +35,6 @@ poetry2nix.mkPoetryApplication {
   doCheck = false;
 
   meta = with lib; {
-    platforms = platforms.all;
     maintainers = with maintainers; [ adisbladis jakewaksbaum ];
   };
 }

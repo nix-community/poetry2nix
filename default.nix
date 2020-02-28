@@ -211,6 +211,7 @@ let
 
           meta = meta // {
             inherit (pyProject.tool.poetry) description homepage;
+            inherit (py.meta) platforms;
             license = getLicenseBySpdxId (pyProject.tool.poetry.license or "unknown");
           };
 

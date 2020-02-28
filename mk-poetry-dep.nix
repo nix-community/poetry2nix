@@ -125,6 +125,7 @@ pythonPackages.callPackage (
         meta = {
           broken = ! isCompatible python.pythonVersion python-versions;
           license = [];
+          inherit (python.meta) platforms;
         };
 
         passthru = {
