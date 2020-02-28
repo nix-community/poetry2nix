@@ -9,30 +9,32 @@ let
 
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
 
+  callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
+
 in
 builtins.removeAttrs
   {
-    trivial = pkgs.callPackage ./trivial { inherit poetry2nix; };
-    override = pkgs.callPackage ./override-support { inherit poetry2nix; };
-    override-default = pkgs.callPackage ./override-default-support { inherit poetry2nix; };
-    top-packages-1 = pkgs.callPackage ./common-pkgs-1 { inherit poetry2nix; };
-    top-packages-2 = pkgs.callPackage ./common-pkgs-2 { inherit poetry2nix; };
+    trivial = callTest ./trivial {};
+    override = callTest ./override-support {};
+    override-default = callTest ./override-default-support {};
+    top-packages-1 = callTest ./common-pkgs-1 {};
+    top-packages-2 = callTest ./common-pkgs-2 {};
     pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
-    env = pkgs.callPackage ./env { inherit poetry2nix; };
-    git-deps = pkgs.callPackage ./git-deps { inherit poetry2nix; };
-    git-deps-pinned = pkgs.callPackage ./git-deps-pinned { inherit poetry2nix; };
+    env = callTest ./env {};
+    git-deps = callTest ./git-deps {};
+    git-deps-pinned = callTest ./git-deps-pinned {};
     cli = poetry2nix;
-    path-deps = pkgs.callPackage ./path-deps { inherit poetry2nix; };
-    path-deps-level2 = pkgs.callPackage ./path-deps-level2 { inherit poetry2nix; };
-    operators = pkgs.callPackage ./operators { inherit poetry2nix; };
-    preferWheel = pkgs.callPackage ./prefer-wheel { inherit poetry2nix; };
-    closure-size = pkgs.callPackage ./closure-size {
-      inherit poetry2nix poetry;
+    path-deps = callTest ./path-deps {};
+    path-deps-level2 = callTest ./path-deps-level2 {};
+    operators = callTest ./operators {};
+    preferWheel = callTest ./prefer-wheel {};
+    closure-size = callTest ./closure-size {
+      inherit poetry;
       inherit (pkgs) postgresql;
     };
-    pyqt5 = pkgs.callPackage ./pyqt5 { inherit poetry2nix; };
-    eggs = pkgs.callPackage ./eggs { inherit poetry2nix; };
-    extras = pkgs.callPackage ./extras { inherit poetry2nix; };
+    pyqt5 = callTest ./pyqt5 {};
+    eggs = callTest ./eggs {};
+    extras = callTest ./extras {};
 
     # Test building poetry
     inherit poetry;
@@ -46,5 +48,5 @@ builtins.removeAttrs
 
     # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
     # Once this is available in 19.09 and unstable we can re-enable the manylinux test
-    manylinux = pkgs.callPackage ./manylinux { inherit poetry2nix; };
+    manylinux = callTest ./manylinux {};
   } skipTests
