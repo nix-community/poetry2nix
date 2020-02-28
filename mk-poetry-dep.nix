@@ -106,8 +106,10 @@ pythonPackages.callPackage (
         # Stripping pre-built wheels lead to `ELF load command address/offset not properly aligned`
         dontStrip = format == "wheel";
 
-        nativeBuildInputs = (if (!isSource && (getManyLinuxDeps fileInfo.name).str != null) then [ autoPatchelfHook ] else [])
-        ++ lib.optional (isLocal) pkgs.yj
+        nativeBuildInputs = [
+          pythonPackages.poetry2nixFixupHook
+        ]
+        ++ lib.optional (!isSource && (getManyLinuxDeps fileInfo.name).str != null) autoPatchelfHook
         ++ lib.optional (format == "pyproject") pythonPackages.removePathDependenciesHook
         ;
 

@@ -99,7 +99,7 @@ let
                 # The canonical name is setuptools-scm
                 setuptools-scm = super.setuptools_scm;
 
-                inherit (hooks) removePathDependenciesHook;
+                inherit (hooks) removePathDependenciesHook poetry2nixFixupHook;
               }
           )
           # Null out any filtered packages, we don't want python.pkgs from nixpkgs
