@@ -151,7 +151,7 @@ pythonPackages.callPackage (
             inherit (source) url;
             rev = source.reference;
           }
-        ) else if isLocal then (localDepPath) else fetchFromPypi {
+        ) else if isLocal then (poetryLib.cleanPythonSources { src = localDepPath; }) else fetchFromPypi {
           pname = name;
           inherit (fileInfo) file hash kind;
         };
