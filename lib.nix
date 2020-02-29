@@ -103,7 +103,8 @@ let
     isGitRoot = builtins.pathExists (path + "/.git");
     hasGitIgnore = builtins.pathExists gitIgnore;
     gitIgnores = if hasGitIgnore then [ gitIgnore ] else [];
-  in lib.optionals (! isGitRoot) (findGitIgnores parent) ++ gitIgnores;
+  in
+    lib.optionals (! isGitRoot) (findGitIgnores parent) ++ gitIgnores;
 
   /*
   Provides a source filtering mechanism that:
