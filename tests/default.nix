@@ -45,8 +45,6 @@ builtins.removeAttrs
     # poetry-pypy = poetry.override { python = pkgs.pypy; };
     # poetry-pypy3 = poetry.override { python = pkgs.pypy3; };
 
-    inherit (poetry2nix) doc;
-
     # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
     # Once this is available in 19.09 and unstable we can re-enable the manylinux test
     manylinux = callTest ./manylinux {};
