@@ -80,12 +80,6 @@ _poetry2nix_ bundles a set of default overrides that fix problems with various P
 ### overrides.withDefaults
 Returns a list containing the specified overlay and `defaultPoetryOverrides`.
 
-### cleanPythonSources
-Provides a source filtering mechanism that:
-- Filters gitignore's
-- Filters pycache/pyc files
-- Uses cleanSourceFilter to filter out .git/.hg, .o/.so, editor backup files & nix result symlinks
-
 Takes an attribute set with the following attributes (attributes without default are mandatory):
 - **src**: project source directory
 
@@ -110,6 +104,21 @@ poetry2nix.mkPoetryEnv {
     overrides = poetry2nix.overrides.withoutDefaults (self: super: { foo = null; });
 }
 ```
+
+### cleanPythonSources
+Provides a source filtering mechanism that:
+- Filters gitignore's
+- Filters pycache/pyc files
+- Uses cleanSourceFilter to filter out .git/.hg, .o/.so, editor backup files & nix result symlinks
+
+#### Example
+
+```nix
+poetry2nix.cleanPythonSources {
+    src = ./.
+}
+```
+
 
 ## Contributing
 
