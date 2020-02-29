@@ -82,7 +82,7 @@ Returns a list containing the specified overlay and `defaultPoetryOverrides`.
 
 ### cleanPythonSources
 Provides a source filtering mechanism that:
-- Filters gitignore (if it exists, non-recursive)
+- Filters gitignore's
 - Filters pycache/pyc files
 - Uses cleanSourceFilter to filter out .git/.hg, .o/.so, editor backup files & nix result symlinks
 
