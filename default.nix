@@ -44,6 +44,7 @@ let
       specialAttrs = [
         "overrides"
         "poetrylock"
+        "projectDir"
         "pwd"
       ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
@@ -164,6 +165,7 @@ let
       specialAttrs = [
         "overrides"
         "poetrylock"
+        "projectDir"
         "pwd"
         "pyproject"
       ];
