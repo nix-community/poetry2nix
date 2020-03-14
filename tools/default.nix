@@ -4,12 +4,10 @@
     ];
   }
 }:
-
 let
   inherit (pkgs) lib;
 
   srcPath = builtins.toString ../.;
-
 in
 {
 
@@ -60,7 +58,6 @@ in
       mkdir $out
       tar -x --strip=1 -f ${pkgs.nix.src} -C $out
     '';
-
   in
     pkgs.writeScriptBin "poetry2nix-flamegraph" ''
       #!${pkgs.runtimeShell}

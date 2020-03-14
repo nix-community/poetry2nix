@@ -4,10 +4,8 @@
     ];
   }
 }:
-
 let
   tools = pkgs.callPackage ./tools {};
-
 in
 pkgs.mkShell {
   buildInputs = [

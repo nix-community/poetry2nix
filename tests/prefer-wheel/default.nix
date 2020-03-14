@@ -1,5 +1,4 @@
 { lib, poetry2nix, python3 }:
-
 let
   drv = poetry2nix.mkPoetryApplication {
     python = python3;
@@ -18,6 +17,5 @@ let
   };
 
   url = lib.elemAt drv.passthru.python.pkgs.maturin.src.urls 0;
-
 in
   assert lib.hasSuffix "whl" url; drv

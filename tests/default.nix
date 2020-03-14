@@ -10,7 +10,6 @@ let
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
 
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
-
 in
 builtins.removeAttrs
   {

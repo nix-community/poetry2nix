@@ -6,7 +6,6 @@ let
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
   };
-
 in
 runCommandNoCC "egg-test" {} ''
   ${drv}/bin/egg-test
