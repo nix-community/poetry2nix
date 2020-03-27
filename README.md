@@ -115,7 +115,7 @@ Provides a source filtering mechanism that:
 
 ```nix
 poetry2nix.cleanPythonSources {
-    src = ./.
+    src = ./.;
 }
 ```
 
