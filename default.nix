@@ -79,6 +79,7 @@ let
                       source = pkgMeta.source or null;
                       files = lockFiles.${name};
                       pythonPackages = self;
+                      sourceSpec = pyProject.tool.poetry.dependencies.${name} or pyProject.tool.poetry.dev-dependencies.${name};
                     }
                   );
                 }
