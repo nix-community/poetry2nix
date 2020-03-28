@@ -46,6 +46,14 @@ self: super:
     }
   );
 
+  configparser = super.configparser.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [
+        self.toml
+      ];
+    }
+  );
+
   cryptography = super.cryptography.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
