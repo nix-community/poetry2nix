@@ -353,9 +353,45 @@ self: super:
     }
   );
 
-  pyarrow = super.pyarrow.overridePythonAttrs (
+  pyarrow = if lib.versionAtLeast super.pyarrow.version "0.16.0" then super.pyarrow.overridePythonAttrs (
+    old:
+      let
+        _arrow-cpp = pkgs.arrow-cpp.override { inherit (self) python; };
+        ARROW_HOME = _arrow-cpp;
+      in {
+
+        nativeBuildInputs = old.nativeBuildInputs ++ [
+          self.cython
+          pkgs.pkgconfig
+          pkgs.cmake
+        ];
+
+        preBuild = ''
+          export PYARROW_PARALLEL=$NIX_BUILD_CORES
+        '';
+
+        PARQUET_HOME = _arrow-cpp;
+        inherit ARROW_HOME;
+
+        buildInputs = old.buildInputs ++ [
+          pkgs.arrow-cpp
+        ];
+
+        PYARROW_BUILD_TYPE = "release";
+        PYARROW_WITH_PARQUET = true;
+        PYARROW_CMAKE_OPTIONS = [
+          "-DCMAKE_INSTALL_RPATH=${ARROW_HOME}/lib"
+
+          # This doesn't use setup hook to call cmake so we need to workaround #54606
+          # ourselves
+          "-DCMAKE_POLICY_DEFAULT_CMP0025=NEW"
+        ];
+
+        dontUseCmakeConfigure = true;
+      }
+  ) else super.pyarrow.overridePythonAttrs (
     old: {
-      buildInputs = old.buildInputs ++ [
+      nativeBuildInputs = old.nativeBuildInputs ++ [
         self.cython
       ];
     }
