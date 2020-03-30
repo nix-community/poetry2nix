@@ -574,6 +574,15 @@ self: super:
 
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
+  python-jose = super.python-jose.overridePythonAttrs (
+    old: {
+      postPath = ''
+        substituteInPlace setup.py --replace "'pytest-runner'," ""
+        substituteInPlace setup.py --replace "'pytest-runner'" ""
+      '';
+    }
+  );
+
   python-prctl = super.python-prctl.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
