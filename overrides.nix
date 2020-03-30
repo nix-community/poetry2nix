@@ -356,9 +356,14 @@ self: super:
   pyarrow = if lib.versionAtLeast super.pyarrow.version "0.16.0" then super.pyarrow.overridePythonAttrs (
     old:
       let
+        parseMinor = drv: lib.concatStringsSep "." (lib.take 2 (lib.splitVersion drv.version));
         _arrow-cpp = pkgs.arrow-cpp.override { inherit (self) python; };
         ARROW_HOME = _arrow-cpp;
-      in {
+
+        arrowCppVersion = parseMinor pkgs.arrow-cpp;
+        pyArrowVersion = parseMinor super.pyarrow;
+        errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
+      in if arrowCppVersion != pyArrowVersion then throw errorMessage else {
 
         nativeBuildInputs = old.nativeBuildInputs ++ [
           self.cython
