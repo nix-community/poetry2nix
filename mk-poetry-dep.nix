@@ -74,10 +74,10 @@ pythonPackages.callPackage (
           format =
             if _isEgg then "egg"
             else if lib.strings.hasSuffix ".whl" name then "wheel"
-            else "setuptools";
+            else "pyproject";
           kind =
             if _isEgg then python.pythonVersion
-            else if format == "setuptools" then "source"
+            else if format == "pyproject" then "source"
             else (builtins.elemAt (lib.strings.splitString "-" name) 2);
         };
 
@@ -89,7 +89,7 @@ pythonPackages.callPackage (
       ];
       baseBuildInputs = lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm;
 
-      format = if isLocal then "pyproject" else if isGit then "setuptools" else fileInfo.format;
+      format = if isLocal then "pyproject" else if isGit then "pyproject" else fileInfo.format;
     in
 
       buildPythonPackage {
