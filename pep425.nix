@@ -87,8 +87,8 @@ let
         let
           osxMatches = [ "10_12" "10_11" "10_10" "10_9" "any" ];
           linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" "any" ];
-          chooseLinux = x: lib.singleton (builtins.head (findBestMatches linuxMatches x));
-          chooseOSX = x: lib.singleton (builtins.head (findBestMatches osxMatches x));
+          chooseLinux = x: lib.take 1 (findBestMatches linuxMatches x);
+          chooseOSX = x: lib.take 1 (findBestMatches osxMatches x);
         in
           if isLinux
           then chooseLinux files
