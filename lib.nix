@@ -90,7 +90,7 @@ let
     { pythonPackages
     , pyProject
     }:
-    let
+      let
         buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "" pyProject;
         drvAttr = builtins.elemAt (builtins.split "\\.|:" buildSystem) 0;
       in
