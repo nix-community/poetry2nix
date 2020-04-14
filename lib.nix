@@ -90,8 +90,8 @@ let
     { pythonPackages
     , pyProject
     }:
-      let
-        buildSystem = lib.getAttrFromPath [ "build-system" "build-backend" ] pyProject;
+    let
+        buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "" pyProject;
         drvAttr = builtins.elemAt (builtins.split "\\.|:" buildSystem) 0;
       in
         if buildSystem == "" then [] else (
