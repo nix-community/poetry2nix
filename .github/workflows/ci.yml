@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    paths-ignore:
+    - '**.md'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        nixpkgs_version: ["19.09", "master"]
+        # os: [ubuntu-latest, macos-latest]
+
+    env:
+      NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/${{ matrix.nixpgs_version }}.tar.gz"
+    steps:
+    - uses: cachix/install-nix-action@v8
+    - uses: actions/checkout@v1
+    - name: Run tests
+      run: nix-shell -p git --run "nix-build --no-out-link --show-trace tests"
+    - name: Check format
+      run: ./check-fmt
