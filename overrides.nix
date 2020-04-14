@@ -158,6 +158,12 @@ self: super:
     }
   );
 
+  kiwisolver = super.kiwisolver.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.cppy ];
+    }
+  );
+
   lap = super.lap.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
