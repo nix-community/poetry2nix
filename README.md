@@ -1,4 +1,4 @@
-[![](https://gitlab.com/nix-community/poetry2nix/badges/master/pipeline.svg)](https://gitlab.com/nix-community/poetry2nix/-/jobs)
+[![](https://github.com/nix-community/poetry2nix/workflows/CI/badge.svg)](https://gitlab.com/nix-community/poetry2nix/-/jobs)
 
 # poetry2nix
 _poetry2nix_ turns [Poetry](https://poetry.eustace.io/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
