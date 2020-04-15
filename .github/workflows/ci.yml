@@ -7,6 +7,16 @@ on:
     - '**.md'
 
 jobs:
+  nixpkgs-fmt:
+    runs-on: ubuntu-latest
+    env:
+      NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz"
+    steps:
+    - uses: cachix/install-nix-action@v8
+    - uses: actions/checkout@v1
+    - name: Check format
+      run: ./check-fmt
+
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -14,13 +24,13 @@ jobs:
         os: [ubuntu-latest]
         nixpkgs_version: ["19.09", "master"]
         # os: [ubuntu-latest, macos-latest]
-
     env:
       NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/${{ matrix.nixpgs_version }}.tar.gz"
     steps:
     - uses: cachix/install-nix-action@v8
     - uses: actions/checkout@v1
-    - name: Run tests
-      run: nix-shell -p git --run "nix-build --no-out-link --show-trace tests"
-    - name: Check format
-      run: ./check-fmt
+    - uses: cachix/cachix-action@v5
+      with:
+        name: poetry2nix
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        file: tests/default.nix
