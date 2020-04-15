@@ -35,6 +35,7 @@ builtins.removeAttrs
     eggs = callTest ./eggs {};
     extras = callTest ./extras {};
     source-filter = callTest ./source-filter {};
+    canonical-module-names = callTest ./canonical-module-names {};
 
     # Test building poetry
     inherit poetry;
