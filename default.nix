@@ -4,7 +4,7 @@
 , poetryLib ? import ./lib.nix { inherit lib pkgs; }
 }:
 let
-  inherit (poetryLib) isCompatible readTOML;
+  inherit (poetryLib) isCompatible readTOML moduleName;
 
   # Poetry2nix version
   version = "1.7.1";
@@ -40,7 +40,9 @@ let
 
         pyProject = readTOML pyproject;
         poetryLock = readTOML poetrylock;
-        lockFiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
+        lockFiles = let
+          lockfiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
+        in lib.listToAttrs (lib.mapAttrsToList (n: v: { name = moduleName n; value = v; }) lockfiles);
 
         specialAttrs = [
           "overrides"
@@ -72,7 +74,7 @@ let
             lockPkgs = builtins.listToAttrs (
               builtins.map (
                 pkgMeta: rec {
-                  name = pkgMeta.name;
+                  name = moduleName pkgMeta.name;
                   value = self.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd;
@@ -106,7 +108,7 @@ let
                   }
             )
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (self: super: builtins.listToAttrs (builtins.map (x: { name = x.name; value = null; }) incompatible))
+            (self: super: builtins.listToAttrs (builtins.map (x: { name = moduleName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
           ] ++ # User provided overrides
@@ -119,7 +121,7 @@ let
       in
         {
           python = py;
-          poetryPackages = map (pkg: py.pkgs.${pkg.name}) compatible;
+          poetryPackages = map (pkg: py.pkgs.${moduleName pkg.name}) compatible;
           poetryLock = poetryLock;
           inherit pyProject;
         };
@@ -202,7 +204,7 @@ let
       in
         py.pkgs.buildPythonApplication (
           passedAttrs // {
-            pname = pyProject.tool.poetry.name;
+            pname = moduleName pyProject.tool.poetry.name;
             version = pyProject.tool.poetry.version;
 
             inherit src;

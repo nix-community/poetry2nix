@@ -24,7 +24,7 @@ pythonPackages.callPackage (
   , ...
   }@args:
     let
-      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromPypi;
+      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromPypi moduleName;
 
       inherit (import ./pep425.nix {
         inherit lib python;
@@ -93,7 +93,7 @@ pythonPackages.callPackage (
     in
 
       buildPythonPackage {
-        pname = name;
+        pname = moduleName name;
         version = version;
 
         inherit format;
@@ -129,7 +129,7 @@ pythonPackages.callPackage (
           );
           depAttrs = lib.attrNames deps;
         in
-          builtins.map (n: pythonPackages.${lib.toLower n}) depAttrs;
+          builtins.map (n: pythonPackages.${moduleName n}) depAttrs;
 
         meta = {
           broken = ! isCompatible python.pythonVersion python-versions;

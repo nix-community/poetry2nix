@@ -8,6 +8,9 @@ let
     genList (i: if i == idx then value else (builtins.elemAt list i)) (length list)
   );
 
+  # Do some canonicalisation of module names
+  moduleName = name: lib.toLower (lib.replaceStrings [ "_" "." ] [ "-" "-" ] name);
+
   # Compare a semver expression with a version
   isCompatible = version:
     let
@@ -92,7 +95,7 @@ let
     }:
       let
         buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "" pyProject;
-        drvAttr = builtins.elemAt (builtins.split "\\.|:" buildSystem) 0;
+        drvAttr = moduleName (builtins.elemAt (builtins.split "\\.|:" buildSystem) 0);
       in
         if buildSystem == "" then [] else (
           [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ]
@@ -141,5 +144,6 @@ in
     getBuildSystemPkgs
     satisfiesSemver
     cleanPythonSources
+    moduleName
     ;
 }
