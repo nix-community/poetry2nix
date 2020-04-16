@@ -51,6 +51,10 @@ self: super:
       buildInputs = old.buildInputs ++ [
         self.toml
       ];
+
+      postPatch = ''
+        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
+      '';
     }
   );
 
