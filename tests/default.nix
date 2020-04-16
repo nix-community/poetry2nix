@@ -36,6 +36,7 @@ builtins.removeAttrs
     extras = callTest ./extras {};
     source-filter = callTest ./source-filter {};
     canonical-module-names = callTest ./canonical-module-names {};
+    wandb = callTest ./wandb {};
 
     # Test building poetry
     inherit poetry;
