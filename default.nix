@@ -34,6 +34,7 @@ let
     , overrides ? [ defaultPoetryOverrides ]
     , python ? pkgs.python3
     , pwd ? projectDir
+    , preferWheels ? false
     }@attrs:
       let
         poetryPkg = poetry.override { inherit python; };
@@ -49,6 +50,7 @@ let
           "poetrylock"
           "projectDir"
           "pwd"
+          "preferWheels"
         ];
         passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
@@ -77,7 +79,7 @@ let
                   name = moduleName pkgMeta.name;
                   value = self.mkPoetryDep (
                     pkgMeta // {
-                      inherit pwd;
+                      inherit pwd preferWheels;
                       source = pkgMeta.source or null;
                       files = lockFiles.${name};
                       pythonPackages = self;
@@ -138,11 +140,12 @@ let
     , overrides ? [ defaultPoetryOverrides ]
     , pwd ? projectDir
     , python ? pkgs.python3
+    , preferWheels ? false
     }:
       let
         py = mkPoetryPackages (
           {
-            inherit pyproject poetrylock overrides python pwd;
+            inherit pyproject poetrylock overrides python pwd preferWheels;
           }
         );
       in
@@ -158,11 +161,12 @@ let
     , meta ? {}
     , python ? pkgs.python3
     , pwd ? projectDir
+    , preferWheels ? false
     , ...
     }@attrs:
       let
         poetryPython = mkPoetryPackages {
-          inherit pyproject poetrylock overrides python pwd;
+          inherit pyproject poetrylock overrides python pwd preferWheels;
         };
         py = poetryPython.python;
 
@@ -174,6 +178,7 @@ let
           "projectDir"
           "pwd"
           "pyproject"
+          "preferWheels"
         ];
         passedAttrs = builtins.removeAttrs attrs specialAttrs;
 

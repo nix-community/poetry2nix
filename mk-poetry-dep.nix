@@ -16,11 +16,12 @@
 , pwd
 , sourceSpec
 , supportedExtensions ? lib.importJSON ./extensions.json
+, preferWheels ? false
 , ...
 }:
 
 pythonPackages.callPackage (
-  { preferWheel ? false
+  { preferWheel ? preferWheels
   , ...
   }@args:
     let
