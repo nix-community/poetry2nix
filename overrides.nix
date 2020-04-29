@@ -145,14 +145,15 @@ self: super:
 
   h5py = super.h5py.overridePythonAttrs
     (
-      old: rec {
+      old:
+      if old.format != "wheel" then rec {
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
         buildInputs = old.buildInputs ++ [ pkgs.hdf5 self.pkgconfig self.cython ];
         configure_flags = "--hdf5=${pkgs.hdf5}";
         postConfigure = ''
           ${self.python.executable} setup.py configure ${configure_flags}
         '';
-      }
+      } else old
     );
 
   horovod = super.horovod.overridePythonAttrs
@@ -700,7 +701,8 @@ self: super:
 
   scipy = super.scipy.overridePythonAttrs
     (
-      old: {
+      old:
+      if old.format != "wheel" then {
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.gfortran ];
         propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pybind11 ];
         setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
@@ -713,7 +715,7 @@ self: super:
         preBuild = ''
           ln -s ${self.numpy.cfg} site.cfg
         '';
-      }
+      } else old
     );
 
   scikit-learn = super.scikit-learn.overridePythonAttrs
@@ -805,7 +807,8 @@ self: super:
     }
   ).wheel.overridePythonAttrs
     (
-      _: {
+      old:
+      if old.format == "other" then old else {
         inherit (super.wheel) pname name version src;
       }
     );

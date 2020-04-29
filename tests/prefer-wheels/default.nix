@@ -1,11 +1,9 @@
 { lib, poetry2nix, python3, runCommand }:
 let
-  app = poetry2nix.mkPoetryApplication {
+  py = poetry2nix.mkPoetryPackages {
     projectDir = ./.;
     preferWheels = true;
   };
-  url = lib.elemAt app.passthru.python.pkgs.tensorflow.src.urls 0;
+  isWheelAttr = py.python.pkgs.tensorflow.src.isWheel or false;
 in
-  assert lib.hasSuffix "whl" url; runCommand "prefer-wheels" { } ''
-    touch $out
-  ''
+  assert isWheelAttr; (py.python.withPackages (_: py.poetryPackages)).override (args: { ignoreCollisions = true; })

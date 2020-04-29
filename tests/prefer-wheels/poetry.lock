@@ -362,7 +362,7 @@ description = "TensorFlow Estimator."
 name = "tensorflow-estimator"
 optional = false
 python-versions = "*"
-version = "2.2.0rc0"
+version = "2.1.0rc0"
 
 [[package]]
 category = "main"
@@ -418,7 +418,7 @@ python-versions = "*"
 version = "1.12.1"
 
 [metadata]
-content-hash = "f1c052ba8df831358ef7630291473df2e0310dc128e9e4e204d746a86cae6b99"
+content-hash = "82b72e0ca256c371b2b647204ea22345c297fb6121831320dbc7a85254bdf478"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -676,7 +676,7 @@ tensorflow = [
     {file = "tensorflow-2.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:7bad8ea686a1f33d9dac13eb578c4597346789d4f826980c8bbcfbd08e7dc921"},
 ]
 tensorflow-estimator = [
-    {file = "tensorflow_estimator-2.2.0rc0-py2.py3-none-any.whl", hash = "sha256:c24aba63b33de5db089e66585399e1abefad75038c4aacca8d8d1328ab3e8282"},
+    {file = "tensorflow_estimator-2.1.0rc0-py2.py3-none-any.whl", hash = "sha256:7d835eeb7eaff4d3c3d640be9d9296e9a9213b6172cb4a95317817d180e682c7"},
 ]
 termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},

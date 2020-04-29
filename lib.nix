@@ -82,6 +82,58 @@ let
     else if lib.strings.hasInfix "manylinux2014" f then { pkg = [ ml.manylinux2014 ]; str = "2014"; }
     else { pkg = [ ]; str = null; };
 
+  # Predict URL from the PyPI index.
+  # Args:
+  #   pname: package name
+  #   file: filename including extension
+  #   hash: SRI hash
+  #   kind: Language implementation and version tag
+  predictURLFromPypi = lib.makeOverridable
+    (
+      { pname, file, hash, kind }:
+      "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}"
+    );
+
+
+  # Fetch the wheels from the PyPI index.
+  # We need to first get the proper URL to the wheel.
+  # Args:
+  #   pname: package name
+  #   file: filename including extension
+  #   hash: SRI hash
+  #   kind: Language implementation and version tag
+  fetchWheelFromPypi = lib.makeOverridable
+    (
+      { pname, file, hash, kind }:
+      let
+        version = builtins.elemAt (builtins.split "-" file) 2;
+      in
+      (pkgs.stdenvNoCC.mkDerivation {
+        name = file;
+        buildInputs = with pkgs; [ curl jq ];
+        isWheel = true;
+        system = "builtin";
+
+        preferLocalBuild = true;
+        impureEnvVars = [
+          "http_proxy"
+          "https_proxy"
+          "ftp_proxy"
+          "all_proxy"
+          "no_proxy"
+        ];
+
+        predictedURL = predictURLFromPypi { inherit pname file hash kind; };
+        inherit pname file version;
+
+        builder = ./fetch-wheel.sh;
+
+        outputHashMode = "flat";
+        outputHashAlgo = "sha256";
+        outputHash = hash;
+      })
+    );
+
   # Fetch the artifacts from the PyPI index. Since we get all
   # info we need from the lock file we don't use nixpkgs' fetchPyPi
   # as it modifies casing while not providing anything we don't already
@@ -95,10 +147,12 @@ let
   fetchFromPypi = lib.makeOverridable
     (
       { pname, file, hash, kind }:
-      pkgs.fetchurl {
-        url = "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}";
-        inherit hash;
-      }
+      if lib.strings.hasSuffix "whl" file then fetchWheelFromPypi { inherit pname file hash kind; }
+      else
+        pkgs.fetchurl {
+          url = predictURLFromPypi { inherit pname file hash kind; };
+          inherit hash;
+        }
     );
   getBuildSystemPkgs =
     { pythonPackages
@@ -149,6 +203,7 @@ in
 {
   inherit
     fetchFromPypi
+    fetchWheelFromPypi
     getManyLinuxDeps
     isCompatible
     readTOML
