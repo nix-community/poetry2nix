@@ -71,8 +71,7 @@ let
     in
     builtins.foldl'
       (
-        acc: v: acc ++ ( if builtins.typeOf v == "string" then parse v else [ (parseExpressions v) ]
-        )
+        acc: v: acc ++ ( if builtins.typeOf v == "string" then parse v else [ (parseExpressions v) ])
       ) [ ] exprs;
 
   # Transform individual expressions to structured expressions
