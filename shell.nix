@@ -1,11 +1,11 @@
-{ pkgs ? import (fetchTarball { url = "channel:nixpkgs-unstable"; }) {
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs {
     overlays = [
       (import ./overlay.nix)
     ];
-  }
-}:
-let
-  tools = pkgs.callPackage ./tools {};
+  };
+  tools = pkgs.callPackage ./tools { };
 in
 pkgs.mkShell {
   buildInputs = [
@@ -13,5 +13,6 @@ pkgs.mkShell {
     tools.release
     pkgs.nixpkgs-fmt
     pkgs.poetry
+    pkgs.niv
   ];
 }
