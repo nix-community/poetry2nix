@@ -11,6 +11,15 @@ let
   # Do some canonicalisation of module names
   moduleName = name: lib.toLower (lib.replaceStrings [ "_" "." ] [ "-" "-" ] name);
 
+  # Get a full semver pythonVersion from a python derivation
+  getPythonVersion = python: let
+    pyVer = lib.splitVersion python.pythonVersion ++ [ "0" ];
+    ver = lib.splitVersion python.version;
+    major = l: lib.elemAt l 0;
+    minor = l: lib.elemAt l 1;
+    joinVersion = v: lib.concatStringsSep "." v;
+  in joinVersion (if major pyVer == major ver && minor pyVer == minor ver then ver else pyVer);
+
   # Compare a semver expression with a version
   isCompatible = version:
     let
@@ -145,5 +154,6 @@ in
     satisfiesSemver
     cleanPythonSources
     moduleName
+    getPythonVersion
     ;
 }

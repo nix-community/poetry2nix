@@ -180,7 +180,7 @@ let
         # Get dependencies and filter out depending on interpreter version
         getDeps = depAttr:
           let
-            compat = isCompatible py.pythonVersion;
+            compat = isCompatible (poetryLib.getPythonVersion py);
             deps = pyProject.tool.poetry.${depAttr} or {};
             depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
           in

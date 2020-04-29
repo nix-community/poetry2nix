@@ -117,7 +117,7 @@ pythonPackages.callPackage (
         );
 
         propagatedBuildInputs = let
-          compat = isCompatible python.pythonVersion;
+          compat = isCompatible (poetryLib.getPythonVersion python);
           deps = lib.filterAttrs (n: v: v) (
             lib.mapAttrs (
               n: v:
@@ -132,7 +132,7 @@ pythonPackages.callPackage (
           builtins.map (n: pythonPackages.${moduleName n}) depAttrs;
 
         meta = {
-          broken = ! isCompatible python.pythonVersion python-versions;
+          broken = ! isCompatible (poetryLib.getPythonVersion python) python-versions;
           license = [];
           inherit (python.meta) platforms;
         };
