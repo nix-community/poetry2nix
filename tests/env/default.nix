@@ -6,7 +6,7 @@ let
     poetrylock = ./poetry.lock;
   };
 in
-runCommand "env-test" {} ''
+runCommand "env-test" { } ''
   ${env}/bin/python -c 'import alembic'
   touch $out
 ''

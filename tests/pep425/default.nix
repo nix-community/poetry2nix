@@ -13,10 +13,10 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425.selectWheel cs);
-        expected = [ { file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; } ];
-      };
+    {
+      expr = (pep425.selectWheel cs);
+      expected = [{ file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; }];
+    };
 
   testOSXSimple =
     let
@@ -25,10 +25,10 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425OSX.selectWheel cs);
-        expected = [ { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_10_x86_64.whl"; } ];
-      };
+    {
+      expr = (pep425OSX.selectWheel cs);
+      expected = [{ file = "grpcio-1.25.0-cp27-cp27m-macosx_10_10_x86_64.whl"; }];
+    };
 
   testLinuxPickPython37 =
     let
@@ -41,10 +41,10 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp37-cp37m-manylinux2010_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425Python37.selectWheel cs);
-        expected = [ { file = "grpcio-1.25.0-cp37-cp37m-manylinux2010_x86_64.whl"; } ];
-      };
+    {
+      expr = (pep425Python37.selectWheel cs);
+      expected = [{ file = "grpcio-1.25.0-cp37-cp37m-manylinux2010_x86_64.whl"; }];
+    };
 
   testOSXPreferNewer =
     let
@@ -53,10 +53,10 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_12_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425OSX.selectWheel cs);
-        expected = [ { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_12_x86_64.whl"; } ];
-      };
+    {
+      expr = (pep425OSX.selectWheel cs);
+      expected = [{ file = "grpcio-1.25.0-cp27-cp27m-macosx_10_12_x86_64.whl"; }];
+    };
 
   testOSXNoMatch =
     let
@@ -65,10 +65,10 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425OSX.selectWheel cs);
-        expected = [];
-      };
+    {
+      expr = (pep425OSX.selectWheel cs);
+      expected = [ ];
+    };
 
   testLinuxPreferOlder =
     let
@@ -77,10 +77,10 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425.selectWheel cs);
-        expected = [ { file = "grpcio-1.25.0-cp27-cp27m-manylinux1_x86_64.whl"; } ];
-      };
+    {
+      expr = (pep425.selectWheel cs);
+      expected = [{ file = "grpcio-1.25.0-cp27-cp27m-manylinux1_x86_64.whl"; }];
+    };
 
   testLinuxNoMatch =
     let
@@ -89,19 +89,19 @@ lib.debug.runTests {
         { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_12_x86_64.whl"; }
       ];
     in
-      {
-        expr = (pep425.selectWheel cs);
-        expected = [];
-      };
+    {
+      expr = (pep425.selectWheel cs);
+      expected = [ ];
+    };
 
   testLinuxEmptyList = {
-    expr = pep425.selectWheel [];
-    expected = [];
+    expr = pep425.selectWheel [ ];
+    expected = [ ];
   };
 
   testOSXEmptyList = {
-    expr = pep425OSX.selectWheel [];
-    expected = [];
+    expr = pep425OSX.selectWheel [ ];
+    expected = [ ];
   };
 
   testLinuxCffiWhlFiles =
@@ -142,10 +142,10 @@ lib.debug.runTests {
         { file = "cffi-1.13.2.tar.gz"; }
       ];
     in
-      {
-        expr = pep425.selectWheel cs;
-        expected = [ { file = "cffi-1.13.2-cp27-cp27m-manylinux1_x86_64.whl"; } ];
-      };
+    {
+      expr = pep425.selectWheel cs;
+      expected = [{ file = "cffi-1.13.2-cp27-cp27m-manylinux1_x86_64.whl"; }];
+    };
 
   testMsgPack =
     let
@@ -173,10 +173,10 @@ lib.debug.runTests {
         { file = "msgpack-0.6.2.tar.gz"; }
       ];
     in
-      {
-        expr = pep425Python37.selectWheel cs;
-        expected = [ { file = "msgpack-0.6.2-cp37-cp37m-manylinux1_x86_64.whl"; } ];
-      };
+    {
+      expr = pep425Python37.selectWheel cs;
+      expected = [{ file = "msgpack-0.6.2-cp37-cp37m-manylinux1_x86_64.whl"; }];
+    };
 
   testNonManyLinuxWheels =
     let
@@ -185,10 +185,10 @@ lib.debug.runTests {
         { file = "tensorboard-1.14.0-py3-none-any.whl"; }
       ];
     in
-      {
-        expr = pep425Python37.selectWheel cs;
-        expected = [ { file = "tensorboard-1.14.0-py3-none-any.whl"; } ];
-      };
+    {
+      expr = pep425Python37.selectWheel cs;
+      expected = [{ file = "tensorboard-1.14.0-py3-none-any.whl"; }];
+    };
 
   testPy2Py3Wheels =
     let
@@ -196,10 +196,10 @@ lib.debug.runTests {
         { file = "tensorboard-1.14.0-py2.py3-none-any.whl"; }
       ];
     in
-      {
-        expr = pep425Python37.selectWheel cs;
-        expected = [ { file = "tensorboard-1.14.0-py2.py3-none-any.whl"; } ];
-      };
+    {
+      expr = pep425Python37.selectWheel cs;
+      expected = [{ file = "tensorboard-1.14.0-py2.py3-none-any.whl"; }];
+    };
 
   #
   # toWheelAttrs
@@ -209,31 +209,31 @@ lib.debug.runTests {
     let
       name = "msgpack-0.6.2-cp27-cp27m-manylinux1_i686.whl";
     in
-      {
-        expr = pep425.toWheelAttrs name;
-        expected = {
-          pkgName = "msgpack";
-          pkgVer = "0.6.2";
-          pyVer = "cp27";
-          abi = "cp27m";
-          platform = "manylinux1_i686";
-        };
+    {
+      expr = pep425.toWheelAttrs name;
+      expected = {
+        pkgName = "msgpack";
+        pkgVer = "0.6.2";
+        pyVer = "cp27";
+        abi = "cp27m";
+        platform = "manylinux1_i686";
       };
+    };
 
   testToWheelAttrsAny =
     let
       name = "tensorboard-1.14.0-py3-none-any.whl";
     in
-      {
-        expr = pep425.toWheelAttrs name;
-        expected = {
-          pkgName = "tensorboard";
-          pkgVer = "1.14.0";
-          pyVer = "py3";
-          abi = "none";
-          platform = "any";
-        };
+    {
+      expr = pep425.toWheelAttrs name;
+      expected = {
+        pkgName = "tensorboard";
+        pkgVer = "1.14.0";
+        pyVer = "py3";
+        abi = "none";
+        platform = "any";
       };
+    };
 
   #
   # isPyVersionCompatible
@@ -243,23 +243,23 @@ lib.debug.runTests {
     let
       f = pep425.isPyVersionCompatible;
     in
-      {
-        expr = [
-          (f "cp27" "cp27")
-          (f "cp27" "cp37")
-          (f "cp27" "py2")
-          (f "cp27" "py3")
-          (f "cp27" "py2.py3")
-          (f "cp37" "py2.py3")
-        ];
+    {
+      expr = [
+        (f "cp27" "cp27")
+        (f "cp27" "cp37")
+        (f "cp27" "py2")
+        (f "cp27" "py3")
+        (f "cp27" "py2.py3")
+        (f "cp37" "py2.py3")
+      ];
 
-        expected = [
-          true
-          false
-          true
-          false
-          true
-        ];
-      };
+      expected = [
+        true
+        false
+        true
+        false
+        true
+      ];
+    };
 
 }

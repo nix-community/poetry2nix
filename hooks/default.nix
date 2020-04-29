@@ -11,21 +11,23 @@ let
 in
 {
 
-  removePathDependenciesHook = callPackage (
-    {}:
+  removePathDependenciesHook = callPackage
+    (
+      {}:
       makeSetupHook {
         name = "remove-path-dependencies.sh";
-        deps = [];
+        deps = [ ];
         substitutions = {
           inherit pythonInterpreter;
           yj = "${yj}/bin/yj";
           pyprojectPatchScript = "${./pyproject-without-path.py}";
         };
       } ./remove-path-dependencies.sh
-  ) {};
+    ) { };
 
-  pipBuildHook = callPackage (
-    { pip, wheel }:
+  pipBuildHook = callPackage
+    (
+      { pip, wheel }:
       makeSetupHook {
         name = "pip-build-hook.sh";
         deps = [ pip wheel ];
@@ -33,14 +35,15 @@ in
           inherit pythonInterpreter pythonSitePackages;
         };
       } ./pip-build-hook.sh
-  ) {};
+    ) { };
 
-  poetry2nixFixupHook = callPackage (
-    {}:
+  poetry2nixFixupHook = callPackage
+    (
+      {}:
       makeSetupHook {
         name = "fixup-hook.sh";
-        deps = [];
+        deps = [ ];
       } ./fixup-hook.sh
-  ) {};
+    ) { };
 
 }

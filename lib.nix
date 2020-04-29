@@ -12,13 +12,15 @@ let
   moduleName = name: lib.toLower (lib.replaceStrings [ "_" "." ] [ "-" "-" ] name);
 
   # Get a full semver pythonVersion from a python derivation
-  getPythonVersion = python: let
-    pyVer = lib.splitVersion python.pythonVersion ++ [ "0" ];
-    ver = lib.splitVersion python.version;
-    major = l: lib.elemAt l 0;
-    minor = l: lib.elemAt l 1;
-    joinVersion = v: lib.concatStringsSep "." v;
-  in joinVersion (if major pyVer == major ver && minor pyVer == minor ver then ver else pyVer);
+  getPythonVersion = python:
+    let
+      pyVer = lib.splitVersion python.pythonVersion ++ [ "0" ];
+      ver = lib.splitVersion python.version;
+      major = l: lib.elemAt l 0;
+      minor = l: lib.elemAt l 1;
+      joinVersion = v: lib.concatStringsSep "." v;
+    in
+    joinVersion ( if major pyVer == major ver && minor pyVer == minor ver then ver else pyVer);
 
   # Compare a semver expression with a version
   isCompatible = version:
@@ -30,41 +32,41 @@ let
       };
       splitRe = "(" + (builtins.concatStringsSep "|" (builtins.map (x: lib.replaceStrings [ "|" ] [ "\\|" ] x) (lib.attrNames operators))) + ")";
     in
-      expr:
+    expr:
+    let
+      tokens = builtins.filter (x: x != "") (builtins.split splitRe expr);
+      combine = acc: v:
         let
-          tokens = builtins.filter (x: x != "") (builtins.split splitRe expr);
-          combine = acc: v:
-            let
-              isOperator = builtins.typeOf v == "list";
-              operator = if isOperator then (builtins.elemAt v 0) else acc.operator;
-            in
-              if isOperator then (acc // { inherit operator; }) else {
-                inherit operator;
-                state = operators."${operator}" acc.state (satisfiesSemver version v);
-              };
-          initial = { operator = "&&"; state = true; };
+          isOperator = builtins.typeOf v == "list";
+          operator = if isOperator then (builtins.elemAt v 0) else acc.operator;
         in
-          if expr == "" then true else (builtins.foldl' combine initial tokens).state;
-
+        if isOperator then (acc // { inherit operator; }) else {
+          inherit operator;
+          state = operators."${operator}" acc.state (satisfiesSemver version v);
+        };
+      initial = { operator = "&&"; state = true; };
+    in if expr == "" then true else (builtins.foldl' combine initial tokens).state;
   fromTOML = builtins.fromTOML or
     (
-      toml: builtins.fromJSON (
-        builtins.readFile (
-          pkgs.runCommand "from-toml"
-            {
-              inherit toml;
-              allowSubstitutes = false;
-              preferLocalBuild = true;
-            }
-            ''
-              ${pkgs.remarshal}/bin/remarshal \
-                -if toml \
-                -i <(echo "$toml") \
-                -of json \
-                -o $out
-            ''
+      toml: builtins.fromJSON
+        (
+          builtins.readFile
+            (
+              pkgs.runCommand "from-toml"
+                {
+                  inherit toml;
+                  allowSubstitutes = false;
+                  preferLocalBuild = true;
+                }
+                ''
+                  ${pkgs.remarshal}/bin/remarshal \
+                    -if toml \
+                    -i <(echo "$toml") \
+                    -of json \
+                    -o $out
+                ''
+            )
         )
-      )
     );
   readTOML = path: fromTOML (builtins.readFile path);
 
@@ -75,10 +77,10 @@ let
     let
       ml = pkgs.pythonManylinuxPackages;
     in
-      if lib.strings.hasInfix "manylinux1" f then { pkg = [ ml.manylinux1 ]; str = "1"; }
-      else if lib.strings.hasInfix "manylinux2010" f then { pkg = [ ml.manylinux2010 ]; str = "2010"; }
-      else if lib.strings.hasInfix "manylinux2014" f then { pkg = [ ml.manylinux2014 ]; str = "2014"; }
-      else { pkg = []; str = null; };
+    if lib.strings.hasInfix "manylinux1" f then { pkg = [ ml.manylinux1 ]; str = "1"; }
+    else if lib.strings.hasInfix "manylinux2010" f then { pkg = [ ml.manylinux2010 ]; str = "2010"; }
+    else if lib.strings.hasInfix "manylinux2014" f then { pkg = [ ml.manylinux2014 ]; str = "2014"; }
+    else { pkg = [ ]; str = null; };
 
   # Fetch the artifacts from the PyPI index. Since we get all
   # info we need from the lock file we don't use nixpkgs' fetchPyPi
@@ -90,25 +92,25 @@ let
   #   file: filename including extension
   #   hash: SRI hash
   #   kind: Language implementation and version tag https://www.python.org/dev/peps/pep-0427/#file-name-convention
-  fetchFromPypi = lib.makeOverridable (
-    { pname, file, hash, kind }:
+  fetchFromPypi = lib.makeOverridable
+    (
+      { pname, file, hash, kind }:
       pkgs.fetchurl {
         url = "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}";
         inherit hash;
       }
-  );
-
+    );
   getBuildSystemPkgs =
     { pythonPackages
     , pyProject
     }:
-      let
-        buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "" pyProject;
-        drvAttr = moduleName (builtins.elemAt (builtins.split "\\.|:" buildSystem) 0);
-      in
-        if buildSystem == "" then [] else (
-          [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ]
-        );
+    let
+      buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "" pyProject;
+      drvAttr = moduleName (builtins.elemAt (builtins.split "\\.|:" buildSystem) 0);
+    in
+    if buildSystem == "" then [ ] else (
+      [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ]
+    );
 
   # Find gitignore files recursively in parent directory stopping with .git
   findGitIgnores = path:
@@ -117,9 +119,9 @@ let
       gitIgnore = path + "/.gitignore";
       isGitRoot = builtins.pathExists (path + "/.git");
       hasGitIgnore = builtins.pathExists gitIgnore;
-      gitIgnores = if hasGitIgnore then [ gitIgnore ] else [];
+      gitIgnores = if hasGitIgnore then [ gitIgnore ] else [ ];
     in
-      lib.optionals (builtins.toString path != "/" && ! isGitRoot) (findGitIgnores parent) ++ gitIgnores;
+    lib.optionals (builtins.toString path != "/" && ! isGitRoot) (findGitIgnores parent) ++ gitIgnores;
 
   /*
   Provides a source filtering mechanism that:
@@ -136,13 +138,13 @@ let
         || (type == "regular" && ! lib.strings.hasSuffix ".pyc" name)
       ;
     in
-      lib.cleanSourceWith {
-        filter = lib.cleanSourceFilter;
-        src = lib.cleanSourceWith {
-          filter = pkgs.nix-gitignore.gitignoreFilterPure pycacheFilter gitIgnores src;
-          inherit src;
-        };
+    lib.cleanSourceWith {
+      filter = lib.cleanSourceFilter;
+      src = lib.cleanSourceWith {
+        filter = pkgs.nix-gitignore.gitignoreFilterPure pycacheFilter gitIgnores src;
+        inherit src;
       };
+    };
 in
 {
   inherit

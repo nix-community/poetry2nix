@@ -15,7 +15,6 @@ let
         }
       );
   };
-
   url = lib.elemAt drv.passthru.python.pkgs.maturin.src.urls 0;
 in
   assert lib.hasSuffix "whl" url; drv

@@ -5,9 +5,10 @@ poetry2nix.mkPoetryApplication {
   projectDir = ./.;
 
   # Assert expected ignored files not in sources
-  preConfigure = let
-    assertNotExists = name: "! test -f ${name} || (echo ${name} exists && false)";
-  in
+  preConfigure =
+    let
+      assertNotExists = name: "! test -f ${name} || (echo ${name} exists && false)";
+    in
     ''
       ${assertNotExists "ignored.pyc"}
       ${assertNotExists "__pycache__"}

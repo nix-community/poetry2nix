@@ -8,16 +8,17 @@ let
     overrides = poetry2nix.overrides.withDefaults
       (
         self: super: {
-          alembic = super.alembic.overrideAttrs (
-            old: {
-              TESTING_FOOBAR = 42;
-            }
-          );
+          alembic = super.alembic.overrideAttrs
+            (
+              old: {
+                TESTING_FOOBAR = 42;
+              }
+            );
         }
       );
   };
 in
-runCommand "test" {} ''
+runCommand "test" { } ''
   x=${builtins.toString (p.python.pkgs.alembic.TESTING_FOOBAR)}
   [ "$x" = "42" ] || exit 1
   mkdir $out
