@@ -1,9 +1,24 @@
-  source $stdenv/setup
-  echo "trying prediction first $predictedURL"
-curl -L -k $predictedURL --output $out 
-  if ! [ $? -ne 0 ]; then
-          echo "prediction failed, asking PyPI's API"
-          URL_FROM_API=$(curl -L -k "https://pypi.org/pypi/$pname/json" | jq -r ".releases.\"$version\"[] | select(.filename == \"$file\") | .url")
-          echo "trying $URL_FROM_API"
-          curl -k $URL_FROM_API --output $out
-  fi
+source $stdenv/setup
+set -euo pipefail
+
+curl="curl            \
+ --location           \
+ --max-redirs 20      \
+ --retry 2            \
+ --disable-epsv       \
+ --cookie-jar cookies \
+ --insecure           \
+ --speed-time 5       \
+ -#                   \
+ --fail               \
+ $curlOpts            \
+ $NIX_CURL_FLAGS"
+
+echo "Trying to fetch wheel with predicted URL: $predictedURL"
+
+$curl $predictedURL --output $out && exit 0
+
+echo "Predicted URL '$predictedURL' failed, querying pypi.org"
+$curl "https://pypi.org/pypi/$pname/json" | jq -r ".releases.\"$version\"[] | select(.filename == \"$file\") | .url" > url
+url=$(cat url)
+$curl -k $url --output $out

@@ -104,27 +104,26 @@ let
   #   kind: Language implementation and version tag
   fetchWheelFromPypi = lib.makeOverridable
     (
-      { pname, file, hash, kind }:
+      { pname, file, hash, kind, curlOpts ? "" }:
       let
         version = builtins.elemAt (builtins.split "-" file) 2;
       in
       (pkgs.stdenvNoCC.mkDerivation {
         name = file;
-        buildInputs = with pkgs; [ curl jq ];
+        nativeBuildInputs = [
+          pkgs.curl
+          pkgs.jq
+        ];
         isWheel = true;
         system = "builtin";
 
         preferLocalBuild = true;
-        impureEnvVars = [
-          "http_proxy"
-          "https_proxy"
-          "ftp_proxy"
-          "all_proxy"
-          "no_proxy"
+        impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
+          "NIX_CURL_FLAGS"
         ];
 
         predictedURL = predictURLFromPypi { inherit pname file hash kind; };
-        inherit pname file version;
+        inherit pname file version curlOpts;
 
         builder = ./fetch-wheel.sh;
 
