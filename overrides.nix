@@ -171,6 +171,13 @@ self: super:
       }
     );
 
+  isort = super.isort.overridePythonAttrs
+    (
+      old: {
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.setuptools ];
+      }
+    );
+
   jupyter = super.jupyter.overridePythonAttrs
     (
       old: rec {
