@@ -15,6 +15,6 @@ let
         }
       );
   };
-  url = lib.elemAt drv.passthru.python.pkgs.maturin.src.urls 0;
+  isWheelAttr = drv.passthru.python.pkgs.maturin.src.isWheel or false;
 in
-  assert lib.hasSuffix "whl" url; drv
+  assert isWheelAttr; drv
