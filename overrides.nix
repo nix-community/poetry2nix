@@ -174,7 +174,7 @@ self: super:
   isort = super.isort.overridePythonAttrs
     (
       old: {
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.setuptools ];
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
       }
     );
 
