@@ -163,6 +163,64 @@ self: super:
       }
     );
 
+  imagecodecs = super.imagecodecs.overridePythonAttrs
+    (
+      old: {
+        patchPhase = ''
+          substituteInPlace setup.py \
+            --replace "/usr/include/openjpeg-2.3" \
+                      "${pkgs.openjpeg.dev}/include/openjpeg-2.3"
+          substituteInPlace setup.py \
+            --replace "/usr/include/jxrlib" \
+                      "$out/include/libjxr"
+          substituteInPlace imagecodecs/_zopfli.c \
+            --replace '"zopfli/zopfli.h"' \
+                      '<zopfli.h>'
+          substituteInPlace imagecodecs/_zopfli.c \
+            --replace '"zopfli/zlib_container.h"' \
+                      '<zlib_container.h>'
+          substituteInPlace imagecodecs/_zopfli.c \
+            --replace '"zopfli/gzip_container.h"' \
+                      '<gzip_container.h>'
+        '';
+
+        preBuild = ''
+          mkdir -p $out/include/libjxr
+          ln -s ${pkgs.jxrlib}/include/libjxr/**/* $out/include/libjxr
+
+        '';
+
+        buildInputs = old.buildInputs ++ [
+          # Commented out packages are declared required, but not actually
+          # needed to build. They are not yet packaged for nixpkgs.
+          # bitshuffle
+          pkgs.brotli
+          # brunsli
+          pkgs.bzip2
+          pkgs.c-blosc
+          # charls
+          pkgs.giflib
+          pkgs.jxrlib
+          pkgs.lcms
+          pkgs.libaec
+          pkgs.libaec
+          pkgs.libjpeg_turbo
+          # liblzf
+          # liblzma
+          pkgs.libpng
+          pkgs.libtiff
+          pkgs.libwebp
+          pkgs.lz4
+          pkgs.openjpeg
+          pkgs.snappy
+          # zfp
+          pkgs.zopfli
+          pkgs.zstd
+          pkgs.zlib
+        ];
+      }
+    );
+
   # importlib-metadata has an incomplete dependency specification
   importlib-metadata = super.importlib-metadata.overridePythonAttrs
     (
@@ -691,6 +749,13 @@ self: super:
     (
       old: {
         nativeBuildInputs = old.nativeBuildInputs ++ [ self.cython ];
+      }
+    );
+
+  panel = super.panel.overridePythonAttrs
+    (
+      old: {
+        nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.nodejs ];
       }
     );
 
