@@ -36,6 +36,7 @@ builtins.removeAttrs
   canonical-module-names = callTest ./canonical-module-names { };
   wandb = callTest ./wandb { };
   dependency-environment = callTest ./dependency-environment { };
+  editable = callTest ./editable { };
 
   # Test building poetry
   inherit poetry;
