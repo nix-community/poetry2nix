@@ -62,13 +62,14 @@ $ result/bin/gunicorn web:app
 Note: If you need to perform overrides on the application, use `app.dependencyEnv.override { app = app.override { ... }; }`. See [./tests/dependency-environment/default.nix](./tests/dependency-environment/default.nix) for a full example.
 
 ### mkPoetryEnv
-Creates an environment that provides a Python interpreter along with all dependencies declared by the designated poetry project and lock files. `mkPoetryEnv` takes an attribute set with the following attributes (attributes without default are mandatory):
+Creates an environment that provides a Python interpreter along with all dependencies declared by the designated poetry project and lock files. Also allows package sources of an application to be installed in editable mode for fast development. `mkPoetryEnv` takes an attribute set with the following attributes (attributes without default are mandatory):
 
 - **projectDir**: path to the root of the project.
 - **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
 - **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
+- **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
 
 #### Example
 ```nix
@@ -78,6 +79,17 @@ poetry2nix.mkPoetryEnv {
 ```
 
 See [./tests/env/default.nix](./tests/env/default.nix) for a working example.
+
+```nix
+poetry2nix.mkPoetryEnv {
+    projectDir = ./.;
+    editablePackageSources = {
+        my-app = ./src;
+    };
+}
+```
+
+See [./tests/editable/default.nix](./tests/editable/default.nix) for a working example of an editable package.
 
 ### mkPoetryPackages
 Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poetryLock }`. Where `python` is the interpreter specified, `poetryPackages` is a list of all generated python packages, `pyProject` is the parsed `pyproject.toml` and `poetryLock` is the parsed `poetry.lock` file. `mkPoetryPackages` takes an attribute set with the following attributes (attributes without default are mandatory):

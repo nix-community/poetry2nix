@@ -1,0 +1,7 @@
+package = []
+
+[metadata]
+content-hash = "115cf985d932e9bf5f540555bbdd75decbb62cac81e399375fc19f6277f8c1d8"
+python-versions = "*"
+
+[metadata.files]
