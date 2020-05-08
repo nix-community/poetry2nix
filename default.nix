@@ -150,7 +150,13 @@ let
     in
     py.python.withPackages (_: py.poetryPackages);
 
-  /* Creates a Python application from pyproject.toml and poetry.lock */
+  /* Creates a Python application from pyproject.toml and poetry.lock
+
+     The result also contains a .dependencyEnv attribute which is a python
+     environment of all dependencies and this apps modules. This is useful if
+     you rely on dependencies to invoke your modules for deployment: e.g. this
+     allows `gunicorn my-module:app`.
+  */
   mkPoetryApplication =
     { projectDir ? null
     , src ? poetryLib.cleanPythonSources { src = projectDir; }
@@ -202,34 +208,48 @@ let
         inherit pyProject;
         pythonPackages = py.pkgs;
       };
+      app = py.pkgs.buildPythonPackage
+        (
+          passedAttrs // {
+            pname = moduleName pyProject.tool.poetry.name;
+            version = pyProject.tool.poetry.version;
+
+            inherit src;
+
+            format = "pyproject";
+            # Like buildPythonApplication, but without the toPythonModule part
+            # Meaning this ends up looking like an application but it also
+            # provides python modules
+            namePrefix = "";
+
+            buildInputs = mkInput "buildInputs" buildSystemPkgs;
+            propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
+            nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj py.pkgs.removePathDependenciesHook ];
+            checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
+
+            passthru = {
+              python = py;
+              dependencyEnv =
+                (lib.makeOverridable
+                  ({ app, ... }@attrs:
+                    let
+                      args = builtins.removeAttrs attrs [ "app" ] // {
+                        extraLibs = [ app ];
+                      };
+                    in
+                    py.buildEnv.override args)) { inherit app; };
+            };
+
+            meta = meta // {
+              inherit (pyProject.tool.poetry) description homepage;
+              inherit (py.meta) platforms;
+              license = getLicenseBySpdxId (pyProject.tool.poetry.license or "unknown");
+            };
+
+          }
+        );
     in
-    py.pkgs.buildPythonApplication
-      (
-        passedAttrs // {
-          pname = moduleName pyProject.tool.poetry.name;
-          version = pyProject.tool.poetry.version;
-
-          inherit src;
-
-          format = "pyproject";
-
-          buildInputs = mkInput "buildInputs" buildSystemPkgs;
-          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
-          nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj py.pkgs.removePathDependenciesHook ];
-          checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
-
-          passthru = {
-            python = py;
-          };
-
-          meta = meta // {
-            inherit (pyProject.tool.poetry) description homepage;
-            inherit (py.meta) platforms;
-            license = getLicenseBySpdxId (pyProject.tool.poetry.license or "unknown");
-          };
-
-        }
-      );
+    app;
 
   /* Poetry2nix CLI used to supplement SHA-256 hashes for git dependencies  */
   cli = import ./cli.nix { inherit pkgs lib version; };
