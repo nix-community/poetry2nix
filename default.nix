@@ -229,9 +229,15 @@ let
 
             passthru = {
               python = py;
-              dependencyEnv = py.buildEnv.override {
-                extraLibs = getDeps "dependencies" ++ [ app ];
-              };
+              dependencyEnv =
+                (lib.makeOverridable
+                  ({ app, ... }@attrs:
+                    let
+                      args = builtins.removeAttrs attrs [ "app" ] // {
+                        extraLibs = [ app ];
+                      };
+                    in
+                    py.buildEnv.override args)) { inherit app; };
             };
 
             meta = meta // {
