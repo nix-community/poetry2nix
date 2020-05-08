@@ -38,6 +38,29 @@ poetry2nix.mkPoetryApplication {
 
 See [./pkgs/poetry/default.nix](./pkgs/poetry/default.nix) for a working example.
 
+#### Dependency environment
+
+The resulting derivation also has the passthru attribute `dependencyEnv`, which is an environment with a python interpreter, all non-development dependencies and your application.
+This can be used if your application doesn't provide any binaries on its own and instead relies on dependencies binaries to call its modules (as is often the case with `celery` or `gunicorn`).
+For example, if your application defines a CLI for the module `admin` and a gunicorn app for the module `web`, a working `default.nix` would contain
+
+```nix
+let
+    app = poetry2nix.mkPoetryApplication {
+        projectDir = ./.;
+    };
+in app.dependencyEnv
+```
+
+After building this expression, your CLI and app can be called with these commands
+
+```shell
+$ result/bin/python -m admin
+$ result/bin/gunicorn web:app
+```
+
+Note: If you need to perform overrides on the application, use `app.dependencyEnv.override { app = app.override { ... }; }`. See [./tests/dependency-environment/default.nix](./tests/dependency-environment/default.nix) for a full example.
+
 ### mkPoetryEnv
 Creates an environment that provides a Python interpreter along with all dependencies declared by the designated poetry project and lock files. `mkPoetryEnv` takes an attribute set with the following attributes (attributes without default are mandatory):
 
