@@ -6,7 +6,7 @@ let
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
     overrides = poetry2nix.overrides.withDefaults
-      # This is also in overrides.nix but repeated for completeness
+      # This is also in /overrides but repeated for completeness
       (
         self: super: {
           maturin = super.maturin.override {

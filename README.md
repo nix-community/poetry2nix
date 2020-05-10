@@ -110,7 +110,7 @@ poetry2nix.mkPoetryPackages {
 
 ### defaultPoetryOverrides
 
-_poetry2nix_ bundles a set of default overrides that fix problems with various Python packages. These overrides are implemented in [overrides.nix](./overrides.nix).
+_poetry2nix_ bundles a set of default overrides that fix problems with various Python packages. These overrides are implemented in [overrides](./overrides).
 
 ### overrides.withDefaults
 Returns a list containing the specified overlay and `defaultPoetryOverrides`.

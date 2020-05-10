@@ -10,7 +10,7 @@ let
   version = "1.8.0";
 
   /* The default list of poetry2nix override overlays */
-  defaultPoetryOverrides = (import ./overrides.nix { inherit pkgs lib; });
+  defaultPoetryOverrides = (import ./overrides { inherit pkgs lib; });
   mkEvalPep508 = import ./pep508.nix {
     inherit lib poetryLib;
     stdenv = pkgs.stdenv;
