@@ -15,4 +15,6 @@ pkgs.mkShell {
     pkgs.poetry
     pkgs.niv
   ];
+
+  NIX_PATH = "nixpkgs=${pkgs.path}";
 }
