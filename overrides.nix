@@ -8,7 +8,7 @@ self: super:
 {
   astroid = super.astroid.overridePythonAttrs
     (
-      old: rec {
+      old: {
         buildInputs = old.buildInputs ++ [ self.pytest-runner ];
         doCheck = false;
       }
@@ -146,14 +146,16 @@ self: super:
   h5py = super.h5py.overridePythonAttrs
     (
       old:
-      if old.format != "wheel" then rec {
+      if old.format != "wheel" then (let
+        configure_flags = "--hdf5=${pkgs.hdf5}";
+      in {
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
         buildInputs = old.buildInputs ++ [ pkgs.hdf5 self.pkgconfig self.cython ];
-        configure_flags = "--hdf5=${pkgs.hdf5}";
+        inherit configure_flags;
         postConfigure = ''
           ${self.python.executable} setup.py configure ${configure_flags}
         '';
-      } else old
+      }) else old
     );
 
   horovod = super.horovod.overridePythonAttrs
@@ -238,7 +240,7 @@ self: super:
 
   jupyter = super.jupyter.overridePythonAttrs
     (
-      old: rec {
+      old: {
         # jupyter is a meta-package. Everything relevant comes from the
         # dependencies. It does however have a jupyter.py file that conflicts
         # with jupyter-core so this meta solves this conflict.
@@ -422,7 +424,7 @@ self: super:
 
   openexr = super.openexr.overridePythonAttrs
     (
-      old: rec {
+      old: {
         buildInputs = old.buildInputs ++ [ pkgs.openexr pkgs.ilmbase ];
         NIX_CFLAGS_COMPILE = [ "-I${pkgs.openexr.dev}/include/OpenEXR" "-I${pkgs.ilmbase.dev}/include/OpenEXR" ];
       }
@@ -729,7 +731,7 @@ self: super:
 
   rockset = super.rockset.overridePythonAttrs
     (
-      old: rec {
+      old: {
         postPatch = ''
           cp ./setup_rockset.py ./setup.py
         '';
