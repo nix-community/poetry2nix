@@ -15,6 +15,8 @@ builtins.removeAttrs
   override-default = callTest ./override-default-support { };
   top-packages-1 = callTest ./common-pkgs-1 { };
   top-packages-2 = callTest ./common-pkgs-2 { };
+  top-packages-1-wheels = callTest ./common-pkgs-1 { preferWheels = true; };
+  top-packages-2-wheels = callTest ./common-pkgs-2 { preferWheels = true; };
   pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
   env = callTest ./env { };
   git-deps = callTest ./git-deps { };
