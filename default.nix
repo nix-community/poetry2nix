@@ -252,7 +252,8 @@ let
                     extraLibs = [ app ];
                   };
                 in
-                py.buildEnv.override args)) { inherit app; };
+                py.buildEnv.override args)
+            ) { inherit app; };
           };
 
           meta = meta // {
