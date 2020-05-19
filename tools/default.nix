@@ -13,12 +13,11 @@ in
 
   release =
     let
-      pythonEnv = pkgs.python3.withPackages
-        (
-          ps: [
-            ps.pythonix
-          ]
-        );
+      pythonEnv = pkgs.python3.withPackages (
+        ps: [
+          ps.pythonix
+        ]
+      );
     in
     pkgs.writeScriptBin "poetry2nix-release" ''
       #!${pythonEnv.interpreter}
@@ -56,7 +55,8 @@ in
         pkgs.python3
         pkgs.nix
       ];
-      nixSrc = pkgs.runCommandNoCC "${pkgs.nix.name}-sources" { } ''
+      nixSrc = pkgs.runCommandNoCC "${pkgs.nix.name}-sources"
+        { } ''
         mkdir $out
         tar -x --strip=1 -f ${pkgs.nix.src} -C $out
       '';

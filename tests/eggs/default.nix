@@ -7,7 +7,8 @@ let
     src = lib.cleanSource ./.;
   };
 in
-runCommandNoCC "egg-test" { } ''
+runCommandNoCC "egg-test"
+{ } ''
   ${drv}/bin/egg-test
   touch $out
 ''

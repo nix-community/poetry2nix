@@ -69,28 +69,28 @@ let
       baseOverlay = self: super:
         let
           getDep = depName: self.${depName};
-          lockPkgs = builtins.listToAttrs
-            (
-              builtins.map
-                (
-                  pkgMeta: rec {
-                    name = moduleName pkgMeta.name;
-                    value = self.mkPoetryDep
-                      (
-                        pkgMeta // {
-                          inherit pwd preferWheels;
-                          source = pkgMeta.source or null;
-                          files = lockFiles.${name};
-                          pythonPackages = self;
-                          sourceSpec = pyProject.tool.poetry.dependencies.${name} or pyProject.tool.poetry.dev-dependencies.${name};
-                        }
-                      );
-                  }
-                ) compatible
-            );
+          lockPkgs = builtins.listToAttrs (
+            builtins.map
+              (
+                pkgMeta: rec {
+                  name = moduleName pkgMeta.name;
+                  value = self.mkPoetryDep (
+                    pkgMeta // {
+                      inherit pwd preferWheels;
+                      source = pkgMeta.source or null;
+                      files = lockFiles.${name};
+                      pythonPackages = self;
+                      sourceSpec = pyProject.tool.poetry.dependencies.${name} or pyProject.tool.poetry.dev-dependencies.${name};
+                    }
+                  );
+                }
+              )
+              compatible
+          );
         in
         lockPkgs;
-      overlays = builtins.map getFunctorFn
+      overlays = builtins.map
+        getFunctorFn
         (
           [
             (
@@ -145,22 +145,23 @@ let
     , editablePackageSources ? { }
     }:
     let
-      py = mkPoetryPackages
-        (
-          {
-            inherit pyproject poetrylock overrides python pwd preferWheels;
-          }
-        );
+      py = mkPoetryPackages (
+        {
+          inherit pyproject poetrylock overrides python pwd preferWheels;
+        }
+      );
       editablePackages = lib.mapAttrsToList
         (name: src:
           # Creates a "fake" python module that just points to the editable source directory
           # See https://docs.python.org/3.8/library/site.html for info on such .pth files
-          py.python.pkgs.toPythonModule
-            (pkgs.runCommandNoCC "${name}-editable" { } ''
-              mkdir -p "$out/${py.python.sitePackages}"
-              echo "${toString src}" > "$out/${py.python.sitePackages}/${name}.pth"
-            '')
-        ) editablePackageSources;
+          py.python.pkgs.toPythonModule (pkgs.runCommandNoCC "${name}-editable"
+            { } ''
+            mkdir -p "$out/${py.python.sitePackages}"
+            echo "${toString src}" > "$out/${py.python.sitePackages}/${name}.pth"
+          ''
+          )
+        )
+        editablePackageSources;
     in
     py.python.withPackages (_: py.poetryPackages ++ editablePackages);
 
@@ -214,54 +215,54 @@ let
               pkg = py.pkgs."${dep}";
               constraints = deps.${dep}.python or "";
               isCompat = compat constraints;
-            in if isCompat then pkg else null
-          ) depAttrs;
+            in
+            if isCompat then pkg else null
+          )
+          depAttrs;
       getInputs = attr: attrs.${attr} or [ ];
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;
         pythonPackages = py.pkgs;
       };
-      app = py.pkgs.buildPythonPackage
-        (
-          passedAttrs // {
-            pname = moduleName pyProject.tool.poetry.name;
-            version = pyProject.tool.poetry.version;
+      app = py.pkgs.buildPythonPackage (
+        passedAttrs // {
+          pname = moduleName pyProject.tool.poetry.name;
+          version = pyProject.tool.poetry.version;
 
-            inherit src;
+          inherit src;
 
-            format = "pyproject";
-            # Like buildPythonApplication, but without the toPythonModule part
-            # Meaning this ends up looking like an application but it also
-            # provides python modules
-            namePrefix = "";
+          format = "pyproject";
+          # Like buildPythonApplication, but without the toPythonModule part
+          # Meaning this ends up looking like an application but it also
+          # provides python modules
+          namePrefix = "";
 
-            buildInputs = mkInput "buildInputs" buildSystemPkgs;
-            propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
-            nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj py.pkgs.removePathDependenciesHook ];
-            checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
+          buildInputs = mkInput "buildInputs" buildSystemPkgs;
+          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
+          nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj py.pkgs.removePathDependenciesHook ];
+          checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
-            passthru = {
-              python = py;
-              dependencyEnv =
-                (lib.makeOverridable
-                  ({ app, ... }@attrs:
-                    let
-                      args = builtins.removeAttrs attrs [ "app" ] // {
-                        extraLibs = [ app ];
-                      };
-                    in
-                    py.buildEnv.override args)) { inherit app; };
-            };
+          passthru = {
+            python = py;
+            dependencyEnv = (
+              lib.makeOverridable ({ app, ... }@attrs:
+                let
+                  args = builtins.removeAttrs attrs [ "app" ] // {
+                    extraLibs = [ app ];
+                  };
+                in
+                py.buildEnv.override args)) { inherit app; };
+          };
 
-            meta = meta // {
-              inherit (pyProject.tool.poetry) description homepage;
-              inherit (py.meta) platforms;
-              license = getLicenseBySpdxId (pyProject.tool.poetry.license or "unknown");
-            };
+          meta = meta // {
+            inherit (pyProject.tool.poetry) description homepage;
+            inherit (py.meta) platforms;
+            license = getLicenseBySpdxId (pyProject.tool.poetry.license or "unknown");
+          };
 
-          }
-        );
+        }
+      );
     in
     app;
 

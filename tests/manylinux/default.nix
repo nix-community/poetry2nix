@@ -8,7 +8,8 @@ let
   };
   p = pkg.python.withPackages (ps: [ ps.numpy ps.opencv-python ]);
 in
-runCommand "test" { } ''
+runCommand "test"
+{ } ''
   ${p}/bin/python -c "import cv2"
   touch $out
 ''

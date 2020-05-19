@@ -11,15 +11,14 @@ poetry2nix.mkPoetryApplication {
     (import ./poetry-git-overlay.nix { inherit pkgs; })
     (
       self: super: {
-        pyramid-deferred-sqla = super.pyramid-deferred-sqla.overridePythonAttrs
-          (
-            old: {
-              postPatch = ''
-                touch LICENSE
-                substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
-              '';
-            }
-          );
+        pyramid-deferred-sqla = super.pyramid-deferred-sqla.overridePythonAttrs (
+          old: {
+            postPatch = ''
+              touch LICENSE
+              substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+            '';
+          }
+        );
       }
     )
   ];

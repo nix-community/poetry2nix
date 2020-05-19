@@ -17,4 +17,4 @@ let
   };
   isWheelAttr = drv.passthru.python.pkgs.maturin.src.isWheel or false;
 in
-  assert isWheelAttr; drv
+assert isWheelAttr; drv

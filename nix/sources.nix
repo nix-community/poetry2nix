@@ -110,7 +110,8 @@ let
             "The values in sources.json should not have an 'outPath' attribute"
           else
             spec // { outPath = fetch config.pkgs name spec; }
-      ) config.sources;
+      )
+      config.sources;
 
   # The "config" used by the fetchers
   mkConfig =

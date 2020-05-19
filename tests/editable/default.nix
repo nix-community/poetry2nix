@@ -13,7 +13,8 @@ let
     };
   };
 in
-runCommand "env-test" { } ''
+runCommand "env-test"
+  { } ''
   cp -r --no-preserve=mode ${./src} src
   echo 'print("Changed")' > src/trivial/__main__.py
   if [[ $(${env}/bin/python -m trivial) != "Changed" ]]; then
