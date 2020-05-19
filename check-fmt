@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash
+#!nix-shell ./shell.nix -i bash
 #
 # Just because the nixpkgs-fmt error message is not super readable. Used by
 # CI.
