@@ -256,14 +256,14 @@ let
             ) { inherit app; };
           };
 
-          meta = meta // lib.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry) {
+          meta = lib.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry) {
             inherit (pyProject.tool.poetry) description;
           } // lib.optionalAttrs (lib.hasAttr "homepage" pyProject.tool.poetry) {
             inherit (pyProject.tool.poetry) homepage;
           } // {
             inherit (py.meta) platforms;
             license = getLicenseBySpdxId (pyProject.tool.poetry.license or "unknown");
-          };
+          } // meta;
 
         }
       );
