@@ -37,6 +37,7 @@ builtins.removeAttrs
   wandb = callTest ./wandb { };
   dependency-environment = callTest ./dependency-environment { };
   editable = callTest ./editable { };
+  editable-egg = callTest ./editable-egg { };
 
   # Test building poetry
   inherit poetry;
