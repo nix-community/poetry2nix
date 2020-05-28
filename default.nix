@@ -150,20 +150,14 @@ let
           inherit pyproject poetrylock overrides python pwd preferWheels;
         }
       );
-      editablePackages = lib.mapAttrsToList
-        (name: src:
-          # Creates a "fake" python module that just points to the editable source directory
-          # See https://docs.python.org/3.8/library/site.html for info on such .pth files
-          py.python.pkgs.toPythonModule (pkgs.runCommandNoCC "${name}-editable"
-            { } ''
-            mkdir -p "$out/${py.python.sitePackages}"
-            echo "${toString src}" > "$out/${py.python.sitePackages}/${name}.pth"
-          ''
-          )
-        )
-        editablePackageSources;
+
+      editablePackage = import ./editable.nix {
+        inherit pkgs lib poetryLib editablePackageSources;
+        inherit (py) pyProject python;
+      };
+
     in
-    py.python.withPackages (_: py.poetryPackages ++ editablePackages);
+    py.python.withPackages (_: py.poetryPackages ++ lib.optional (editablePackageSources != { }) editablePackage);
 
   /* Creates a Python application from pyproject.toml and poetry.lock
 
