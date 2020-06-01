@@ -6,6 +6,12 @@
 self: super:
 
 {
+  automat = super.automat.overridePythonAttrs (
+    old: rec {
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.m2r ];
+    }
+  );
+
   astroid = super.astroid.overridePythonAttrs (
     old: rec {
       buildInputs = old.buildInputs ++ [ self.pytest-runner ];
@@ -395,6 +401,12 @@ self: super:
     old: rec {
       buildInputs = old.buildInputs ++ [ pkgs.openexr pkgs.ilmbase ];
       NIX_CFLAGS_COMPILE = [ "-I${pkgs.openexr.dev}/include/OpenEXR" "-I${pkgs.ilmbase.dev}/include/OpenEXR" ];
+    }
+  );
+
+  parsel = super.parsel.overridePythonAttrs (
+    old: rec {
+      nativeBuildInputs = old.nativeBuildInputs ++ [ self.pytest-runner ];
     }
   );
 
