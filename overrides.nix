@@ -529,6 +529,46 @@ self: super:
     }
   );
 
+  pygame = super.pygame.overridePythonAttrs (
+    old: rec {
+      nativeBuildInputs = [
+        pkgs.pkg-config
+        pkgs.SDL
+      ];
+
+      buildInputs = [
+        pkgs.SDL
+        pkgs.SDL_image
+        pkgs.SDL_mixer
+        pkgs.SDL_ttf
+        pkgs.libpng
+        pkgs.libjpeg
+        pkgs.portmidi
+        pkgs.xorg.libX11
+        pkgs.freetype
+      ];
+
+      # Tests fail because of no audio device and display.
+      doCheck = false;
+      preConfigure = ''
+        sed \
+          -e "s/origincdirs = .*/origincdirs = []/" \
+          -e "s/origlibdirs = .*/origlibdirs = []/" \
+          -e "/'\/lib\/i386-linux-gnu', '\/lib\/x86_64-linux-gnu']/d" \
+          -e "/\/include\/smpeg/d" \
+          -i buildconfig/config_unix.py
+        ${lib.concatMapStrings (dep: ''
+          sed \
+            -e "/origincdirs =/a\        origincdirs += ['${lib.getDev dep}/include']" \
+            -e "/origlibdirs =/a\        origlibdirs += ['${lib.getLib dep}/lib']" \
+            -i buildconfig/config_unix.py
+        '') buildInputs
+        }
+        LOCALBASE=/ ${self.python.interpreter} buildconfig/config.py
+      '';
+    }
+  );
+
   pygobject = super.pygobject.overridePythonAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
