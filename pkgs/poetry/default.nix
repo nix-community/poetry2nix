@@ -35,6 +35,7 @@ poetry2nix.mkPoetryApplication {
   doCheck = false;
 
   meta = with lib; {
+    inherit (python.meta) platforms;
     maintainers = with maintainers; [ adisbladis jakewaksbaum ];
   };
 }
