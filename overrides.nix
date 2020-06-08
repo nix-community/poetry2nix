@@ -217,6 +217,12 @@ self: super:
     }
   );
 
+  intreehooks = super.intreehooks.overridePythonAttrs (
+    old: {
+      doCheck = false;
+    }
+  );
+
   isort = super.isort.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
@@ -586,6 +592,12 @@ self: super:
   pyopenssl = super.pyopenssl.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
+    }
+  );
+
+  pytoml = super.pytoml.overridePythonAttrs (
+    old: {
+      doCheck = false;
     }
   );
 
