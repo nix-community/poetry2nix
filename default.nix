@@ -59,10 +59,7 @@ let
           supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true;
         in
         lib.partition supportsPythonVersion poetryLock.package;
-
-      # Reverse the list so newer versions are iterated first
-      # It's possible for multiple versions of a dependency to be compatible and we want to pick the latest one
-      compatible = lib.reverseList partitions.right;
+      compatible = partitions.right;
       incompatible = partitions.wrong;
 
       # Create an overriden version of pythonPackages
