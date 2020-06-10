@@ -841,6 +841,14 @@ self: super:
     }
   );
 
+  tensorflow = super.tensorflow.overridePythonAttrs (
+    old: {
+      postInstall = ''
+        rm $out/bin/tensorboard
+      '';
+    }
+  );
+
   tensorpack = super.tensorpack.overridePythonAttrs (
     old: {
       postPatch = ''
