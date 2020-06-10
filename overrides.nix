@@ -454,7 +454,14 @@ self: super:
       old:
       let
         parseMinor = drv: lib.concatStringsSep "." (lib.take 2 (lib.splitVersion drv.version));
-        _arrow-cpp = pkgs.arrow-cpp.override { inherit (self) python; };
+
+        # Starting with nixpkgs revision f149c7030a7, pyarrow takes "python3" as an argument
+        # instead of "python". Below we inspect function arguments to maintain compatibilitiy.
+        _arrow-cpp = pkgs.arrow-cpp.override (
+          builtins.intersectAttrs
+            (lib.functionArgs pkgs.arrow-cpp.override) { python = self.python; python3 = self.python; }
+        );
+
         ARROW_HOME = _arrow-cpp;
         arrowCppVersion = parseMinor pkgs.arrow-cpp;
         pyArrowVersion = parseMinor super.pyarrow;
