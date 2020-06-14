@@ -602,6 +602,12 @@ self: super:
     }
   );
 
+  python-ldap = super.python-ldap.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ pkgs.openldap pkgs.cyrus_sasl ];
+    }
+  );
+
   pytoml = super.pytoml.overridePythonAttrs (
     old: {
       doCheck = false;
