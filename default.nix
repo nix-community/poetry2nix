@@ -206,7 +206,7 @@ let
           (
             dep:
             let
-              pkg = py.pkgs."${dep}";
+              pkg = py.pkgs."${moduleName dep}";
               constraints = deps.${dep}.python or "";
               isCompat = compat constraints;
             in
