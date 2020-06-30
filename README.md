@@ -160,7 +160,7 @@ poetry2nix.cleanPythonSources {
 Contributions to this project are welcome in the form of GitHub PRs. Please consider the following before creating PRs:
 
 - This project uses [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt) for formatting the Nix code. You can use
-`nix-shell --run "nixpkgs-fmt ." to format everything.
+`nix-shell --run "nixpkgs-fmt .` to format everything.
 - If you are planning to make any considerable changes, you should first present your plans in a GitHub issue so it can be discussed.
 - If you add new features please consider adding tests.
 
