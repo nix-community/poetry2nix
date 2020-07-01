@@ -29,8 +29,8 @@ jobs:
     steps:
     - uses: cachix/install-nix-action@v8
     - uses: actions/checkout@v1
-    - uses: cachix/cachix-action@v5
+    - uses: cachix/cachix-action@v6
       with:
         name: poetry2nix
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        file: tests/default.nix
+    - run: nix-build --show-trace tests/default.nix
