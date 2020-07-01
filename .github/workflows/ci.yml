@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        nixpkgs_version: ["19.09", "master"]
+        nixpkgs_version: ["20.03", "master"]
         # os: [ubuntu-latest, macos-latest]
     env:
       NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/${{ matrix.nixpgs_version }}.tar.gz"
