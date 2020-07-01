@@ -1,7 +1,7 @@
-{ runCommand, lib, poetry2nix, python3 }:
+{ runCommand, lib, poetry2nix, python37 }:
 let
   pkg = poetry2nix.mkPoetryApplication {
-    python = python3;
+    python = python37;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
