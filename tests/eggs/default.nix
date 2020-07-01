@@ -1,7 +1,7 @@
-{ lib, poetry2nix, python3, runCommandNoCC }:
+{ lib, poetry2nix, python37, runCommandNoCC }:
 let
   drv = poetry2nix.mkPoetryApplication {
-    python = python3;
+    python = python37;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;

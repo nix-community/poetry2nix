@@ -22,15 +22,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        nixpkgs_version: ["19.09", "master"]
+        nixpkgs_version: ["20.03", "master"]
         # os: [ubuntu-latest, macos-latest]
     env:
       NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/${{ matrix.nixpgs_version }}.tar.gz"
     steps:
     - uses: cachix/install-nix-action@v8
     - uses: actions/checkout@v1
-    - uses: cachix/cachix-action@v5
+    - uses: cachix/cachix-action@v6
       with:
         name: poetry2nix
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-        file: tests/default.nix
+    - run: nix-build --show-trace tests/default.nix
