@@ -345,6 +345,14 @@ self: super:
     }
   );
 
+  mip = super.mip.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.autoPatchelfHook ];
+
+      buildInputs = old.buildInputs ++ [ pkgs.zlib self.cppy ];
+    }
+  );
+
   netcdf4 = super.netcdf4.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
