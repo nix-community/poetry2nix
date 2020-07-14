@@ -22,6 +22,9 @@ let
   # Get license by id falling back to input string
   getLicenseBySpdxId = spdxId: spdxLicenses.${spdxId} or spdxId;
 
+  # Experimental withPlugins functionality
+  toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
+
   /*
      Returns an attrset { python, poetryPackages, pyProject, poetryLock } for the given pyproject/lockfile.
   */
@@ -105,6 +108,8 @@ let
                   poetry = poetryPkg;
                   # The canonical name is setuptools-scm
                   setuptools-scm = super.setuptools_scm;
+
+                  __toPluginAble = toPluginAble self;
 
                   inherit (hooks) pipBuildHook removePathDependenciesHook poetry2nixFixupHook;
                 }
