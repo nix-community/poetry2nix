@@ -255,6 +255,11 @@ self: super:
     }
   );
 
+  libvirt-python = super.libvirt-python.overridePythonAttrs ({ nativeBuildInputs ? [ ], ... }: {
+    nativeBuildInputs = nativeBuildInputs ++ [ pkgs.pkgconfig ];
+    propagatedBuildInputs = [ pkgs.libvirt ];
+  });
+
   llvmlite = super.llvmlite.overridePythonAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.llvm ];
