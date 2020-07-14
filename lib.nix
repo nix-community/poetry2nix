@@ -154,12 +154,10 @@ let
     , pyProject
     }:
     let
-      buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "" pyProject;
+      buildSystem = lib.attrByPath [ "build-system" "build-backend" ] "poetry.masonry.api" pyProject;
       drvAttr = moduleName (builtins.elemAt (builtins.split "\\.|:" buildSystem) 0);
     in
-    if buildSystem == "" then [ ] else (
-      [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ]
-    );
+    [ pythonPackages.${drvAttr} or (throw "unsupported build system ${buildSystem}") ];
 
   # Find gitignore files recursively in parent directory stopping with .git
   findGitIgnores = path:
