@@ -36,6 +36,7 @@ let
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
+    , __isBootstrap ? false  # Hack: Always add Poetry as a build input unless bootstrapping
     }@attrs:
     let
       poetryPkg = poetry.override { inherit python; };
@@ -80,6 +81,7 @@ let
                   value = self.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd preferWheels;
+                      inherit __isBootstrap;
                       source = pkgMeta.source or null;
                       files = lockFiles.${name};
                       pythonPackages = self;
@@ -181,11 +183,12 @@ let
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
+    , __isBootstrap ? false  # Hack: Always add Poetry as a build input unless bootstrapping
     , ...
     }@attrs:
     let
       poetryPython = mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels;
+        inherit pyproject poetrylock overrides python pwd preferWheels __isBootstrap;
       };
       py = poetryPython.python;
 
