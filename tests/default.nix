@@ -11,6 +11,7 @@ in
 builtins.removeAttrs
 {
   trivial = callTest ./trivial { };
+  composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };
   top-packages-1 = callTest ./common-pkgs-1 { };

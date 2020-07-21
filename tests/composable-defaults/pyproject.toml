@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "composable_defaults"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+alembic = "1.0.10"
+Flask = "^1.1.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
