@@ -154,6 +154,29 @@ poetry2nix.cleanPythonSources {
 }
 ```
 
+### Creating a custom Poetry2nix instance
+Sometimes when it can be convenient to create a custom instance of `poetry2nix` with a different set of default overrides.
+
+#### Example
+```nix
+let
+  # self & super refers to poetry2nix
+  p2nix = poetry2nix.overrideScope' (self: super: {
+
+    # pyself & pysuper refers to python packages
+    defaultPoetryOverrides = super.defaultPoetryOverrides.extend (pyself: pysuper: {
+
+      my-custom-pkg = super.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
+
+    });
+
+  });
+
+in
+p2nix.mkPoetryApplication {
+  projectDir = ./.;
+}
+```
 
 ## Contributing
 
