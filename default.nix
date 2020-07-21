@@ -296,12 +296,16 @@ lib.makeScope pkgs.newScope (self: {
       in
       self.mkDefaultPoetryOverrides composed;
 
-    overrideOverlay = fn: self: super:
+    overrideOverlay = fn:
       let
-        defaultSet = defaults self super;
-        customSet = fn self super;
+        overlay = self: super:
+          let
+            defaultSet = defaults self super;
+            customSet = fn self super;
+          in
+          defaultSet // customSet;
       in
-      defaultSet // customSet;
+      self.mkDefaultPoetryOverrides overlay;
   };
 
   /*
