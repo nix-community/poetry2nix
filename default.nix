@@ -6,9 +6,6 @@
 let
   inherit (poetryLib) isCompatible readTOML moduleName;
 
-  # Poetry2nix version
-  version = "1.10.0";
-
   /* The default list of poetry2nix override overlays */
   defaultPoetryOverrides = (import ./overrides.nix { inherit pkgs lib; });
   mkEvalPep508 = import ./pep508.nix {
@@ -24,6 +21,11 @@ let
 
   # Experimental withPlugins functionality
   toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
+in
+lib.makeScope pkgs.newScope (self: {
+
+  # Poetry2nix version
+  version = "1.10.0";
 
   /*
      Returns an attrset { python, poetryPackages, pyProject, poetryLock } for the given pyproject/lockfile.
@@ -152,7 +154,7 @@ let
     , editablePackageSources ? { }
     }:
     let
-      py = mkPoetryPackages (
+      py = self.mkPoetryPackages (
         {
           inherit pyproject poetrylock overrides python pwd preferWheels;
         }
@@ -175,7 +177,7 @@ let
   */
   mkPoetryApplication =
     { projectDir ? null
-    , src ? poetryLib.cleanPythonSources { src = projectDir; }
+    , src ? self.cleanPythonSources { src = projectDir; }
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? [ defaultPoetryOverrides ]
@@ -187,7 +189,7 @@ let
     , ...
     }@attrs:
     let
-      poetryPython = mkPoetryPackages {
+      poetryPython = self.mkPoetryPackages {
         inherit pyproject poetrylock overrides python pwd preferWheels __isBootstrap;
       };
       py = poetryPython.python;
@@ -273,10 +275,12 @@ let
     app;
 
   /* Poetry2nix CLI used to supplement SHA-256 hashes for git dependencies  */
-  cli = import ./cli.nix { inherit pkgs lib version; };
-in
-{
-  inherit mkPoetryEnv mkPoetryApplication mkPoetryPackages cli version;
+  cli = import ./cli.nix {
+    inherit pkgs lib;
+    inherit (self) version;
+  };
+
+  # inherit mkPoetryEnv mkPoetryApplication mkPoetryPackages;
 
   inherit (poetryLib) cleanPythonSources;
 
@@ -315,4 +319,4 @@ in
       overlay
     ];
   };
-}
+})
