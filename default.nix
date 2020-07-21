@@ -7,7 +7,6 @@ let
   inherit (poetryLib) isCompatible readTOML moduleName;
 
   /* The default list of poetry2nix override overlays */
-  defaultPoetryOverrides = (import ./overrides.nix { inherit pkgs lib; });
   mkEvalPep508 = import ./pep508.nix {
     inherit lib poetryLib;
     stdenv = pkgs.stdenv;
@@ -34,7 +33,7 @@ lib.makeScope pkgs.newScope (self: {
     { projectDir ? null
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
-    , overrides ? [ defaultPoetryOverrides ]
+    , overrides ? [ self.defaultPoetryOverrides ]
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
@@ -146,7 +145,7 @@ lib.makeScope pkgs.newScope (self: {
     { projectDir ? null
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
-    , overrides ? [ defaultPoetryOverrides ]
+    , overrides ? [ self.defaultPoetryOverrides ]
     , pwd ? projectDir
     , python ? pkgs.python3
     , preferWheels ? false
@@ -180,7 +179,7 @@ lib.makeScope pkgs.newScope (self: {
     , src ? self.cleanPythonSources { src = projectDir; }
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
-    , overrides ? [ defaultPoetryOverrides ]
+    , overrides ? [ self.defaultPoetryOverrides ]
     , meta ? { }
     , python ? pkgs.python3
     , pwd ? projectDir
@@ -289,15 +288,19 @@ lib.makeScope pkgs.newScope (self: {
 
   Can be overriden by calling defaultPoetryOverrides.overrideOverlay which takes an overlay function
   */
-  defaultPoetryOverrides = {
-    __functor = defaultPoetryOverrides;
-    overrideOverlay = fn: self: super:
-      let
-        defaultSet = defaultPoetryOverrides self super;
-        customSet = fn self super;
-      in
-      defaultSet // customSet;
-  };
+  defaultPoetryOverrides =
+    let
+      defaults = import ./overrides.nix { inherit pkgs lib; };
+    in
+    {
+      __functor = defaults;
+      overrideOverlay = fn: self: super:
+        let
+          defaultSet = defaults self super;
+          customSet = fn self super;
+        in
+        defaultSet // customSet;
+    };
 
   /*
   Convenience functions for specifying overlays with or without the poerty2nix default overrides
@@ -315,7 +318,7 @@ lib.makeScope pkgs.newScope (self: {
     combining it with poetry2nix default overrides
     */
     withDefaults = overlay: [
-      defaultPoetryOverrides
+      self.defaultPoetryOverrides
       overlay
     ];
   };
