@@ -33,7 +33,7 @@ lib.makeScope pkgs.newScope (self: {
     { projectDir ? null
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
-    , overrides ? [ self.defaultPoetryOverrides ]
+    , overrides ? self.defaultPoetryOverrides
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
@@ -122,7 +122,7 @@ lib.makeScope pkgs.newScope (self: {
             # Create poetry2nix layer
             baseOverlay
           ] ++ # User provided overrides
-          overrides
+          (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
       packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
@@ -145,7 +145,7 @@ lib.makeScope pkgs.newScope (self: {
     { projectDir ? null
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
-    , overrides ? [ self.defaultPoetryOverrides ]
+    , overrides ? self.defaultPoetryOverrides
     , pwd ? projectDir
     , python ? pkgs.python3
     , preferWheels ? false
@@ -179,7 +179,7 @@ lib.makeScope pkgs.newScope (self: {
     , src ? self.cleanPythonSources { src = projectDir; }
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
-    , overrides ? [ self.defaultPoetryOverrides ]
+    , overrides ? self.defaultPoetryOverrides
     , meta ? { }
     , python ? pkgs.python3
     , pwd ? projectDir
@@ -283,24 +283,33 @@ lib.makeScope pkgs.newScope (self: {
 
   inherit (poetryLib) cleanPythonSources;
 
+
+  /*
+  Create a new default set of overrides with the same structure as the built-in ones
+  */
+  mkDefaultPoetryOverrides = defaults: {
+    __functor = defaults;
+
+    extend = overlay:
+      let
+        composed = lib.foldr lib.composeExtensions overlay [ defaults ];
+      in
+      self.mkDefaultPoetryOverrides composed;
+
+    overrideOverlay = fn: self: super:
+      let
+        defaultSet = defaults self super;
+        customSet = fn self super;
+      in
+      defaultSet // customSet;
+  };
+
   /*
   The default list of poetry2nix override overlays
 
   Can be overriden by calling defaultPoetryOverrides.overrideOverlay which takes an overlay function
   */
-  defaultPoetryOverrides =
-    let
-      defaults = import ./overrides.nix { inherit pkgs lib; };
-    in
-    {
-      __functor = defaults;
-      overrideOverlay = fn: self: super:
-        let
-          defaultSet = defaults self super;
-          customSet = fn self super;
-        in
-        defaultSet // customSet;
-    };
+  defaultPoetryOverrides = self.mkDefaultPoetryOverrides (import ./overrides.nix { inherit pkgs lib; });
 
   /*
   Convenience functions for specifying overlays with or without the poerty2nix default overrides
