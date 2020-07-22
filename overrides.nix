@@ -753,6 +753,12 @@ self: super:
     }
   );
 
+  ffmpeg-python = super.ffmpeg-python.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
   python-prctl = super.python-prctl.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
