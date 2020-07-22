@@ -6,7 +6,7 @@ let
     poetrylock = ./poetry.lock;
     pyproject = ./pyproject.toml;
     overrides = [
-      (
+      ((
         poetry2nix.defaultPoetryOverrides.overrideOverlay (
           self: super: {
             alembic = super.alembic.overrideAttrs (
@@ -16,7 +16,7 @@ let
             );
           }
         )
-      )
+      ).extend (pyself: pysuper: { })) # Test .extend for good measure
     ];
   };
 in
