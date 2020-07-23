@@ -888,6 +888,9 @@ self: super:
     }
   );
 
+  # nix uses a dash, poetry uses an underscore
+  typing_extensions = super.typing_extensions or self.typing-extensions;
+
   urwidtrees = super.urwidtrees.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
