@@ -907,6 +907,16 @@ self: super:
     }
   );
 
+  vispy = super.vispy.overrideAttrs (
+    old: {
+      inherit (pkgs.python3.pkgs.vispy) patches;
+      nativeBuildInputs = old.nativeBuildInputs ++ [
+        self.cython
+        self.setuptools-scm-git-archive
+      ];
+    }
+  );
+
   uvloop = super.uvloop.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ lib.optionals stdenv.isDarwin [
