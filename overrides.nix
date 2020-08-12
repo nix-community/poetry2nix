@@ -451,6 +451,8 @@ self: super:
 
   psycopg2 = super.psycopg2.overridePythonAttrs (
     old: {
+      buildInputs = old.buildInputs
+        ++ lib.optional stdenv.isDarwin pkgs.openssl;
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.postgresql ];
     }
   );
