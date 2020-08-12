@@ -135,6 +135,15 @@ self: super:
     }
   );
 
+  h3 = super.h3.overridePythonAttrs (
+    old: {
+      preBuild = (old.preBuild or "") + ''
+        substituteInPlace h3/h3.py \
+          --replace "'{}/{}'.format(_dirname, libh3_path)" '"${pkgs.h3}/lib/libh3${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}"'
+      '';
+    }
+  );
+
   h5py = super.h5py.overridePythonAttrs (
     old:
     if old.format != "wheel" then rec {
