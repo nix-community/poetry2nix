@@ -333,6 +333,13 @@ self: super:
         pkgs.pkgconfig
       ];
 
+      postPatch = ''
+        cat > setup.cfg <<EOF
+        [libs]
+        system_freetype = True
+        EOF
+      '';
+
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
         pkgs.libpng
         pkgs.freetype
