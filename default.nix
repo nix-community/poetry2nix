@@ -159,13 +159,28 @@ lib.makeScope pkgs.newScope (self: {
         }
       );
 
+      inherit (py) pyProject;
+
+      # Add executables from tool.poetry.scripts
+      scripts = pyProject.tool.poetry.scripts or { };
+      hasScripts = scripts != { };
+      scriptsPackage = import ./shell-scripts.nix {
+        inherit scripts lib;
+        inherit (py) python;
+      };
+
+      hasEditable = editablePackageSources != { };
       editablePackage = import ./editable.nix {
         inherit pkgs lib poetryLib editablePackageSources;
         inherit (py) pyProject python;
       };
 
     in
-    py.python.withPackages (_: py.poetryPackages ++ lib.optional (editablePackageSources != { }) editablePackage);
+    py.python.withPackages (
+      _: py.poetryPackages
+        ++ lib.optional hasEditable editablePackage
+        ++ lib.optional hasScripts scriptsPackage
+    );
 
   /* Creates a Python application from pyproject.toml and poetry.lock
 
