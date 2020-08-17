@@ -944,17 +944,34 @@ self: super:
     }
   );
 
+
   # Stop infinite recursion by using bootstrapped pkg from nixpkgs
-  wheel = (
-    pkgs.python3.pkgs.override {
+  bootstrapped-pip = super.bootstrapped-pip.override {
+    wheel = (pkgs.python3.pkgs.override {
       python = self.python;
-    }
-  ).wheel.overridePythonAttrs (
-    old:
-    if old.format == "other" then old else {
-      inherit (super.wheel) pname name version src;
-    }
-  );
+    }).wheel;
+  };
+  wheel =
+    let
+      isWheel = super.wheel.src.isWheel or false;
+      # If "wheel" is a pre-built binary wheel
+      wheelPackage = super.buildPythonPackage {
+        inherit (super.wheel) pname name version src;
+        inherit (pkgs.python3.pkgs.wheel) meta;
+        format = "wheel";
+      };
+      # If "wheel" is built from source
+      sourcePackage = (
+        pkgs.python3.pkgs.override {
+          python = self.python;
+        }
+      ).wheel.overridePythonAttrs (
+        old: {
+          inherit (super.wheel) pname name version src;
+        }
+      );
+    in
+    if isWheel then wheelPackage else sourcePackage;
 
   zipp =
     (

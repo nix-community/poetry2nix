@@ -114,7 +114,7 @@ lib.makeScope pkgs.newScope (self: {
 
                   __toPluginAble = toPluginAble self;
 
-                  inherit (hooks) pipBuildHook removePathDependenciesHook poetry2nixFixupHook;
+                  inherit (hooks) pipBuildHook removePathDependenciesHook poetry2nixFixupHook wheelUnpackHook;
                 }
             )
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
