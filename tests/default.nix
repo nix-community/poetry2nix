@@ -39,6 +39,7 @@ builtins.removeAttrs
   dependency-environment = callTest ./dependency-environment { };
   editable = callTest ./editable { };
   editable-egg = callTest ./editable-egg { };
+  ansible-molecule = callTest ./ansible-molecule { };
 
   # Test building poetry
   inherit poetry;
