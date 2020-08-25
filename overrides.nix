@@ -14,7 +14,26 @@ self: super:
 
   ansible = super.ansible.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.jinja2 self.paramiko self.pyyaml ];
+
+      prePatch = pkgs.python.pkgs.ansible.prePatch or "";
+
+      postInstall = pkgs.python.pkgs.ansible.postInstall or "";
+
+      # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
+      # in a correct manner.
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        self.pycrypto
+        self.paramiko
+        self.jinja2
+        self.pyyaml
+        self.httplib2
+        self.six
+        self.netaddr
+        self.dnspython
+        self.jmespath
+        self.dopy
+        self.ncclient
+      ];
     }
   );
 
