@@ -104,6 +104,13 @@ self: super:
     }
   );
 
+  dictdiffer = super.dictdiffer.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
+    }
+  );
+
   django = (
     super.django.overridePythonAttrs (
       old: {
