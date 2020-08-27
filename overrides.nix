@@ -68,6 +68,25 @@ self: super:
     }
   );
 
+  cairocffi = super.cairocffi.overridePythonAttrs (
+    old: {
+      inherit (pkgs.python3.pkgs.cairocffi) patches;
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
+  cairosvg = super.cairosvg.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
+  cssselect2 = super.cssselect2.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
   cffi =
     # cffi is bundled with pypy
     if self.python.implementation == "pypy" then null else (
@@ -966,6 +985,12 @@ self: super:
     }
   );
 
+  tinycss2 = super.tinycss2.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
   # nix uses a dash, poetry uses an underscore
   typing_extensions = super.typing_extensions or self.typing-extensions;
 
@@ -1011,6 +1036,14 @@ self: super:
       python = self.python;
     }).wheel;
   };
+
+  weasyprint = super.weasyprint.overridePythonAttrs (
+    old: {
+      inherit (pkgs.python3.pkgs.weasyprint) patches;
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
   wheel =
     let
       isWheel = super.wheel.src.isWheel or false;
