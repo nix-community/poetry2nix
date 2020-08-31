@@ -153,9 +153,13 @@ pythonPackages.callPackage
         if isGit then (
           builtins.fetchGit {
             inherit (source) url;
-            rev = source.reference;
-            ref = sourceSpec.branch or sourceSpec.rev or sourceSpec.tag or "HEAD";
-          }
+          } // (
+            if source.reference != null then {
+              rev = source.reference;
+            } else {
+              ref = sourceSpec.branch or sourceSpec.rev or sourceSpec.tag or "HEAD";
+            }
+          )
         ) else if isLocal then (poetryLib.cleanPythonSources { src = localDepPath; }) else fetchFromPypi {
           pname = name;
           inherit (fileInfo) file hash kind;
