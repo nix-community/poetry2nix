@@ -450,6 +450,10 @@ self: super:
       buildInputs = old.buildInputs ++ [ self.setuptools-scm-git-archive ];
     });
 
+  mongomock = super.mongomock.overridePythonAttrs (oa: {
+    buildInputs = oa.buildInputs ++ [ self.pbr ];
+  });
+
   netcdf4 = super.netcdf4.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
