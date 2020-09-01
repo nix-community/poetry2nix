@@ -1,8 +1,6 @@
 {
   description = "Poetry2nix flake";
 
-  edition = 201909;
-
   outputs = { self, nixpkgs }:
     let
       # TODO: There must be a better way to provide arch-agnostic flakes..
