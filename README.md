@@ -11,8 +11,8 @@ The _poetry2nix_ public API consists of the following attributes:
 - [mkPoetryEnv](#mkPoetryEnv): Creates a Python environment with an interpreter and all packages from `poetry.lock`.
 - [mkPoetryPackages](#mkPoetryPackages): Creates an attribute set providing access to the generated packages and other artifacts.
 - [defaultPoetryOverrides](#defaultPoetryOverrides): A set of bundled overrides fixing problems with Python packages.
-- [overrides.withDefaults](#overrides.withDefaults): A convenience function for specifying overrides on top of the defaults.
-- [overrides.withoutDefaults](#overrides.withoutDefaults): A convenience function for specifying overrides without defaults.
+- [overrides.withDefaults](#overrideswithDefaults): A convenience function for specifying overrides on top of the defaults.
+- [overrides.withoutDefaults](#overrideswithoutDefaults): A convenience function for specifying overrides without defaults.
 - [cleanPythonSources](#cleanPythonSources): A function to create a source filter for python projects.
 
 ### mkPoetryApplication
