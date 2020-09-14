@@ -165,6 +165,24 @@ self: super:
   # Environment markers are not always included (depending on how a dep was defined)
   enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
 
+  eth-hash = super.eth-hash.overridePythonAttrs {
+    preConfigure = ''
+      substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+    '';
+  };
+
+  eth-keyfile = super.eth-keyfile.overridePythonAttrs {
+    preConfigure = ''
+      substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+    '';
+  };
+
+  eth-keys = super.eth-keys.overridePythonAttrs {
+    preConfigure = ''
+      substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+    '';
+  };
+
   faker = super.faker.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ self.pytest-runner ];
@@ -295,6 +313,12 @@ self: super:
   isort = super.isort.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
+    }
+  );
+
+  jsonpickle = super.jsonpickle.overridePythonAttrs (
+    old: {
+      dontPreferSetupPy = true;
     }
   );
 
@@ -453,6 +477,12 @@ self: super:
   mongomock = super.mongomock.overridePythonAttrs (oa: {
     buildInputs = oa.buildInputs ++ [ self.pbr ];
   });
+
+  multiaddr = super.multiaddr.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.pytest-runner ];
+    }
+  );
 
   netcdf4 = super.netcdf4.overridePythonAttrs (
     old: {
@@ -914,6 +944,12 @@ self: super:
     }
   );
 
+  rlp = super.rlp.overridePythonAttrs {
+    preConfigure = ''
+      substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+    '';
+  };
+
   scipy = super.scipy.overridePythonAttrs (
     old:
     if old.format != "wheel" then {
@@ -1047,6 +1083,12 @@ self: super:
       buildInputs = old.buildInputs ++ [ self.pytest-runner ];
     }
   );
+
+  web3 = super.web3.overridePythonAttrs {
+    preConfigure = ''
+      substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+    '';
+  };
 
   wheel =
     let
