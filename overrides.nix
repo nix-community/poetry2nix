@@ -316,6 +316,13 @@ self: super:
     }
   );
 
+  # disable the removal of pyproject.toml, required because of setuptools_scm
+  jaraco-functools = super.jaraco-functools.overridePythonAttrs (
+    old: {
+      dontPreferSetupPy = true;
+    }
+  );
+
   jsonpickle = super.jsonpickle.overridePythonAttrs (
     old: {
       dontPreferSetupPy = true;
@@ -573,6 +580,13 @@ self: super:
     old: {
       nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ old.buildInputs;
+    }
+  );
+
+  # disable the removal of pyproject.toml, required because of setuptools_scm
+  portend = super.portend.overridePythonAttrs (
+    old: {
+      dontPreferSetupPy = true;
     }
   );
 
@@ -1006,6 +1020,13 @@ self: super:
       HDF5_DIR = "${pkgs.hdf5}";
       nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
       propagatedBuildInputs = old.nativeBuildInputs ++ [ pkgs.hdf5 self.numpy self.numexpr ];
+    }
+  );
+
+  # disable the removal of pyproject.toml, required because of setuptools_scm
+  tempora = super.tempora.overridePythonAttrs (
+    old: {
+      dontPreferSetupPy = true;
     }
   );
 
