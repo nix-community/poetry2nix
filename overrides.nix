@@ -1133,25 +1133,25 @@ self: super:
     in
     if isWheel then wheelPackage else sourcePackage;
 
-  zipp =
-    (
-      if lib.versionAtLeast super.zipp.version "2.0.0" then (
-        super.zipp.overridePythonAttrs (
-          old: {
-            prePatch = ''
-              substituteInPlace setup.py --replace \
-              'setuptools.setup()' \
-              'setuptools.setup(version="${super.zipp.version}")'
-            '';
-          }
-        )
-      ) else super.zipp
-    ).overridePythonAttrs (
-      old: {
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
-          self.toml
-        ];
-      }
-    );
+  zipp = if super.zipp == null then null else
+  (
+    if lib.versionAtLeast super.zipp.version "2.0.0" then (
+      super.zipp.overridePythonAttrs (
+        old: {
+          prePatch = ''
+            substituteInPlace setup.py --replace \
+            'setuptools.setup()' \
+            'setuptools.setup(version="${super.zipp.version}")'
+          '';
+        }
+      )
+    ) else super.zipp
+  ).overridePythonAttrs (
+    old: {
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        self.toml
+      ];
+    }
+  );
 
 }
