@@ -113,7 +113,7 @@ let
         python_full_version = python.version;
         implementation_name = python.implementation;
         implementation_version = python.version;
-        extra = "";
+        # extra = "";
       };
       substituteVar = value: if builtins.hasAttr value variables then (builtins.toJSON variables."${value}") else value;
       processVar = value: builtins.foldl' (acc: v: v acc) value [
@@ -128,15 +128,15 @@ let
           mOp = "in|[!=<>]+";
           e = stripStr exprs.value;
           m = builtins.map stripStr (builtins.match ''^(${mVal}) *(${mOp}) *(${mVal})$'' e);
+          m0 = processVar (builtins.elemAt m 0);
+          m2 = processVar (builtins.elemAt m 2);
         in
         {
           type = "expr";
           value = {
-            op = builtins.elemAt m 1;
-            values = [
-              (processVar (builtins.elemAt m 0))
-              (processVar (builtins.elemAt m 2))
-            ];
+            # HACK: We don't know extra at eval time, so we assume the expression is always true
+            op = if m0 == "extra" then "true" else builtins.elemAt m 1;
+            values = [ m0 m2 ];
           };
         }
       ) else exprs
@@ -153,6 +153,7 @@ let
       );
       hasElem = needle: haystack: builtins.elem needle (builtins.filter (x: builtins.typeOf x == "string") (builtins.split " " haystack));
       op = {
+        "true" = x: y: true;
         "<=" = x: y: (unmarshal x) <= (unmarshal y);
         "<" = x: y: (unmarshal x) < (unmarshal y);
         "!=" = x: y: x != y;
