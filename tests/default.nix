@@ -45,6 +45,15 @@ builtins.removeAttrs
   inherit poetry;
   poetry-python2 = poetry.override { python = pkgs.python2; };
 
+  poetry-env =
+    let
+      env = poetry2nix.mkPoetryEnv { projectDir = ../pkgs/poetry; };
+    in
+    pkgs.runCommand "poetry-env-test" { } ''
+      ${env}/bin/python -c 'import requests'
+      touch $out
+    '';
+
   # And also test with pypy
   # poetry-pypy = poetry.override { python = pkgs.pypy; };
   # poetry-pypy3 = poetry.override { python = pkgs.pypy3; };
