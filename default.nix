@@ -108,7 +108,11 @@ lib.makeScope pkgs.newScope (self: {
                   mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
                     inherit pkgs lib python poetryLib evalPep508;
                   };
+
+                  # Use poetry-core from the poetry build (pep517/518 build-system)
+                  poetry-core = if __isBootstrap then null else poetryPkg.passthru.python.pkgs.poetry-core;
                   poetry = if __isBootstrap then null else poetryPkg;
+
                   # The canonical name is setuptools-scm
                   setuptools-scm = super.setuptools_scm;
 

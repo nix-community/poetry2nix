@@ -21,6 +21,11 @@ poetry2nix.mkPoetryApplication {
   '';
 
   postInstall = ''
+    # Figure out the location of poetry.core
+    # As poetry.core is using the same root import name as the poetry package and the python module system wont look for the root
+    # in the separate second location we need to link poetry.core to poetry
+    ln -s $(python -c 'import poetry.core; import os.path; print(os.path.dirname(poetry.core.__file__))') $out/${python.sitePackages}/poetry/core
+
     mkdir -p "$out/share/bash-completion/completions"
     "$out/bin/poetry" completions bash > "$out/share/bash-completion/completions/poetry"
     mkdir -p "$out/share/zsh/vendor-completions"

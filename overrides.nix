@@ -594,6 +594,22 @@ self: super:
     }
   );
 
+  poetry-core = super.poetry-core.overridePythonAttrs(old: {
+    # "Vendor" dependencies (for build-system support)
+    postPatch = ''
+      echo "import sys" >> poetry/__init__.py
+      for path in ''${PYTHONPATH//:/ }; do echo $path; done | uniq | while read path; do
+        echo "sys.path.insert(0, \"$path\")" >> poetry/__init__.py
+      done
+    '';
+
+    # Propagating dependencies leads to issues downstream
+    # We've already patched poetry to prefer "vendored" dependencies
+    postFixup = ''
+      rm $out/nix-support/propagated-build-inputs
+    '';
+  });
+
   # disable the removal of pyproject.toml, required because of setuptools_scm
   portend = super.portend.overridePythonAttrs (
     old: {
