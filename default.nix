@@ -20,6 +20,52 @@ let
 
   # Experimental withPlugins functionality
   toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
+
+  mkInputAttrs =
+    { py
+    , pyProject
+    , attrs
+    }:
+    let
+      getInputs = attr: attrs.${attr} or [ ];
+
+      # Get dependencies and filter out depending on interpreter version
+      getDeps = depAttr:
+        let
+          compat = isCompatible (poetryLib.getPythonVersion py);
+          deps = pyProject.tool.poetry.${depAttr} or { };
+          depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
+        in
+        (
+          builtins.map
+            (
+              dep:
+              let
+                pkg = py.pkgs."${moduleName dep}";
+                constraints = deps.${dep}.python or "";
+                isCompat = compat constraints;
+              in
+              if isCompat then pkg else null
+            )
+            depAttrs
+        );
+
+      buildSystemPkgs = poetryLib.getBuildSystemPkgs {
+        inherit pyProject;
+        pythonPackages = py.pkgs;
+      };
+
+      mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
+
+    in
+    {
+      buildInputs = mkInput "buildInputs" buildSystemPkgs;
+      propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
+      nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
+      checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
+    };
+
+
 in
 lib.makeScope pkgs.newScope (self: {
 
@@ -130,10 +176,13 @@ lib.makeScope pkgs.newScope (self: {
         );
       packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
+
+      inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; };
+
     in
     {
       python = py;
-      poetryPackages = map (pkg: py.pkgs.${moduleName pkg.name}) compatible;
+      poetryPackages = builtins.foldl' (acc: v: acc ++ v) [ ] (lib.attrValues inputAttrs);
       poetryLock = poetryLock;
       inherit pyProject;
     };
@@ -223,32 +272,12 @@ lib.makeScope pkgs.newScope (self: {
       ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
-      # Get dependencies and filter out depending on interpreter version
-      getDeps = depAttr:
-        let
-          compat = isCompatible (poetryLib.getPythonVersion py);
-          deps = pyProject.tool.poetry.${depAttr} or { };
-          depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
-        in
-        builtins.map
-          (
-            dep:
-            let
-              pkg = py.pkgs."${moduleName dep}";
-              constraints = deps.${dep}.python or "";
-              isCompat = compat constraints;
-            in
-            if isCompat then pkg else null
-          )
-          depAttrs;
-      getInputs = attr: attrs.${attr} or [ ];
-      mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
-      buildSystemPkgs = poetryLib.getBuildSystemPkgs {
-        inherit pyProject;
-        pythonPackages = py.pkgs;
-      };
+      inputAttrs = mkInputAttrs { inherit py pyProject attrs; };
+
       app = py.pkgs.buildPythonPackage (
-        passedAttrs // {
+        passedAttrs // inputAttrs // {
+          nativeBuildInputs = inputAttrs.nativeBuildInputs ++ [ py.pkgs.removePathDependenciesHook ];
+        } // {
           pname = moduleName pyProject.tool.poetry.name;
           version = pyProject.tool.poetry.version;
 
@@ -259,11 +288,6 @@ lib.makeScope pkgs.newScope (self: {
           # Meaning this ends up looking like an application but it also
           # provides python modules
           namePrefix = "";
-
-          buildInputs = mkInput "buildInputs" buildSystemPkgs;
-          propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
-          nativeBuildInputs = mkInput "nativeBuildInputs" [ pkgs.yj py.pkgs.removePathDependenciesHook ];
-          checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
 
           passthru = {
             python = py;
