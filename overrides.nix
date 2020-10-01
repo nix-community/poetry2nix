@@ -338,6 +338,17 @@ self: super:
     }
   );
 
+  keyring = super.keyring.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [
+        self.toml
+      ];
+      postPatch = ''
+        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
+      '';
+    }
+  );
+
   kiwisolver = super.kiwisolver.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
