@@ -14,6 +14,7 @@ poetry2nix.mkPoetryApplication {
 
   # "Vendor" dependencies (for build-system support)
   postPatch = ''
+    echo "import sys" >> poetry/__init__.py
     for path in ''${PYTHONPATH//:/ }; do echo $path; done | uniq | while read path; do
       echo "sys.path.insert(0, \"$path\")" >> poetry/__init__.py
     done
