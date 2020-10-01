@@ -25,6 +25,7 @@ let
     { py
     , pyProject
     , attrs
+    , includeBuildSystem ? true
     }:
     let
       getInputs = attr: attrs.${attr} or [ ];
@@ -59,7 +60,7 @@ let
 
     in
     {
-      buildInputs = mkInput "buildInputs" buildSystemPkgs;
+      buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
       propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
       nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
       checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies");
@@ -177,7 +178,7 @@ lib.makeScope pkgs.newScope (self: {
       packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
-      inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; };
+      inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; includeBuildSystem = false; };
 
     in
     {
