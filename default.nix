@@ -91,7 +91,7 @@ lib.makeScope pkgs.newScope (self: {
                   );
                 }
               )
-              compatible
+              (lib.reverseList compatible)
           );
         in
         lockPkgs;
