@@ -35,8 +35,9 @@ let
   );
 
   # Make a tree out of expression groups (parens)
-  findSubExpressions = expr:
+  findSubExpressions = expr':
     let
+      expr = " " + expr';
       acc = builtins.foldl'
         findSubExpressionsFun
         {
