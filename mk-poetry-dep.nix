@@ -3,7 +3,6 @@
 , lib
 , python
 , buildPythonPackage
-, pythonPackages
 , poetryLib
 }:
 { name
