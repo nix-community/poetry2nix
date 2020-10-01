@@ -4,6 +4,7 @@
 , python
 , buildPythonPackage
 , poetryLib
+, evalPep508
 }:
 { name
 , version
@@ -126,8 +127,9 @@ pythonPackages.callPackage
                   n: v:
                     let
                       constraints = v.python or "";
+                      pep508Markers = v.markers or "";
                     in
-                    compat constraints
+                    compat constraints && evalPep508 pep508Markers
                 )
                 dependencies
             );
