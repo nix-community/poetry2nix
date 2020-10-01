@@ -278,9 +278,10 @@ lib.makeScope pkgs.newScope (self: {
             ) { inherit app; };
           };
 
-          meta = lib.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry) {
-            inherit (pyProject.tool.poetry) description;
-          } // lib.optionalAttrs (lib.hasAttr "homepage" pyProject.tool.poetry) {
+          meta = lib.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry)
+            {
+              inherit (pyProject.tool.poetry) description;
+            } // lib.optionalAttrs (lib.hasAttr "homepage" pyProject.tool.poetry) {
             inherit (pyProject.tool.poetry) homepage;
           } // {
             inherit (py.meta) platforms;
