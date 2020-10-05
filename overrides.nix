@@ -1193,4 +1193,16 @@ self: super:
     }
   );
 
+  credis = super.credis.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.cython ];
+    }
+  );
+
+  hashids = super.hashids.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.flit-core ];
+    }
+  );
+
 }
