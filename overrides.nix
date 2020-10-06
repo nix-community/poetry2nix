@@ -1115,6 +1115,36 @@ self: super:
     }
   );
 
+  torch = lib.makeOverridable
+    ({ enableCuda ? false
+     , cudatoolkit ? pkgs.cudatoolkit_10_1
+     , pkg ? super.torch
+     }: pkg.overrideAttrs (old:
+      {
+        preConfigure =
+          if (!enableCuda) then ''
+            export USE_CUDA=0
+          '' else ''
+            export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${cudatoolkit}/targets/x86_64-linux/lib"
+          '';
+        preFixup = lib.optionalString (!enableCuda) ''
+          # For some reason pytorch retains a reference to libcuda even if it
+          # is explicitly disabled with USE_CUDA=0.
+          find $out -name "*.so" -exec ${pkgs.patchelf}/bin/patchelf --remove-needed libcuda.so.1 {} \;
+        '';
+        buildInputs = old.buildInputs ++ lib.optionals enableCuda [
+          pkgs.linuxPackages.nvidia_x11
+          pkgs.nccl.dev
+          pkgs.nccl.out
+        ];
+        propagatedBuildInputs = [
+          super.numpy
+          super.future
+        ];
+      })
+    )
+    { };
+
   # nix uses a dash, poetry uses an underscore
   typing_extensions = super.typing_extensions or self.typing-extensions;
 
