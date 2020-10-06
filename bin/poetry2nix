@@ -23,6 +23,11 @@ parser_lock.add_argument(
 
 
 def fetch_git(pkg):
+    try:
+        reference = pkg["source"]["resolved_reference"]
+    except KeyError:
+        reference = pkg["source"]["reference"]
+
     return (
         pkg["name"],
         subprocess.run(
@@ -32,7 +37,7 @@ def fetch_git(pkg):
                 "--url",
                 pkg["source"]["url"],
                 "--rev",
-                pkg["source"]["reference"],
+                reference,
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
