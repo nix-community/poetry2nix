@@ -499,6 +499,31 @@ self: super:
     buildInputs = oa.buildInputs ++ [ self.pbr ];
   });
 
+  mpi4py = super.mpi4py.overridePythonAttrs (
+    old:
+    let
+      cfg = pkgs.writeTextFile {
+        name = "mpi.cfg";
+        text = (
+          lib.generators.toINI
+            { }
+            {
+              mpi = {
+                mpicc = "${pkgs.openmpi.outPath}/bin/mpicc";
+              };
+            }
+        );
+      };
+    in
+    {
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.openmpi ];
+      enableParallelBuilding = true;
+      preBuild = ''
+        ln -sf ${cfg} mpi.cfg
+      '';
+    }
+  );
+
   multiaddr = super.multiaddr.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ self.pytest-runner ];
