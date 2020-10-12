@@ -1230,4 +1230,13 @@ self: super:
     }
   );
 
+  supervisor = super.supervisor.overridePythonAttrs (
+    old: {
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        self.meld3
+        self.setuptools
+      ];
+    }
+  );
+
 }
