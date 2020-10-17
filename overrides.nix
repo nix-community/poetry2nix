@@ -832,6 +832,14 @@ self: super:
     }
   );
 
+  python-bugzilla = super.python-bugzilla.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = old.nativeBuildInputs ++ [
+        self.docutils
+      ];
+    }
+  );
+
   python-ldap = super.python-ldap.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.openldap pkgs.cyrus_sasl ];
