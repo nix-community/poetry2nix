@@ -1239,4 +1239,9 @@ self: super:
     }
   );
 
+  cytoolz = super.cytoolz.overridePythonAttrs (
+    old: {
+      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.toolz ];
+    }
+  );
 }
