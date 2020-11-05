@@ -8,20 +8,6 @@ import json
 import sys
 
 
-argparser = argparse.ArgumentParser(description="Poetry2nix CLI")
-
-subparsers = argparser.add_subparsers(dest="subcommand")
-subparsers.required = True
-
-parser_lock = subparsers.add_parser("lock", help="Generate overrides for git hashes",)
-parser_lock.add_argument(
-    "--lock", default="poetry.lock", help="Path to input poetry.lock",
-)
-parser_lock.add_argument(
-    "--out", default="poetry-git-overlay.nix", help="Output file",
-)
-
-
 def fetch_git(pkg):
     try:
         reference = pkg["source"]["resolved_reference"]
@@ -50,8 +36,24 @@ def indent(expr, spaces=2):
     return "\n".join([(i if l != "" else "") + l for l in expr.split("\n")])
 
 
-if __name__ == "__main__":
-    args = argparser.parse_args()
+def parse_args() -> argparse.Namespace:
+    argparser = argparse.ArgumentParser(description="Poetry2nix CLI")
+
+    subparsers = argparser.add_subparsers(dest="subcommand")
+    subparsers.required = True
+
+    parser_lock = subparsers.add_parser("lock", help="Generate overrides for git hashes",)
+    parser_lock.add_argument(
+        "--lock", default="poetry.lock", help="Path to input poetry.lock",
+    )
+    parser_lock.add_argument(
+        "--out", default="poetry-git-overlay.nix", help="Output file",
+    )
+    return argparser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
 
     with open(args.lock) as lockf:
         lock = toml.load(lockf)
@@ -106,3 +108,7 @@ if __name__ == "__main__":
         fout.write(expr)
 
     print(f"Wrote {args.out}")
+
+
+if __name__ == "__main__":
+    main()
