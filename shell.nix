@@ -18,5 +18,6 @@ pkgs.mkShell {
     pkgs.poetry
     pkgs.niv
     pkgs.jq
+    pkgs.nix-prefetch-git
   ];
 }
