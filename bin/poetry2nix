@@ -7,8 +7,10 @@ import toml
 import json
 import sys
 
+from typing import Dict, Any, Tuple
 
-def fetch_git(pkg):
+
+def fetch_git(pkg: Dict[str, Any]) -> Tuple[str, subprocess.CompletedProcess]:
     try:
         reference = pkg["source"]["resolved_reference"]
     except KeyError:
@@ -31,7 +33,7 @@ def fetch_git(pkg):
     )
 
 
-def indent(expr, spaces=2):
+def indent(expr: str, spaces: int = 2) -> str:
     i = " " * spaces
     return "\n".join([(i if l != "" else "") + l for l in expr.split("\n")])
 
