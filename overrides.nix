@@ -93,7 +93,7 @@ self: super:
     (
       super.cffi.overridePythonAttrs (
         old: {
-          buildInputs = old.buildInputs ++ [ pkgs.libffi ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
         }
       )
     );
@@ -321,6 +321,17 @@ self: super:
   jaraco-functools = super.jaraco-functools.overridePythonAttrs (
     old: {
       dontPreferSetupPy = true;
+    }
+  );
+
+  jira = super.jira.overridePythonAttrs (
+    old: {
+      inherit (pkgs.python3Packages.jira) patches;
+      buildInputs = old.buildInputs ++ [
+        self.pytestrunner
+        self.cryptography
+        self.pyjwt
+      ];
     }
   );
 
@@ -818,6 +829,14 @@ self: super:
   pyopenssl = super.pyopenssl.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
+    }
+  );
+
+  python-bugzilla = super.python-bugzilla.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = old.nativeBuildInputs ++ [
+        self.docutils
+      ];
     }
   );
 
