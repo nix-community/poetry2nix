@@ -17,5 +17,6 @@ pkgs.mkShell {
     pkgs.nixpkgs-fmt
     pkgs.poetry
     pkgs.niv
+    pkgs.jq
   ];
 }
