@@ -1164,6 +1164,13 @@ self: super:
     )
     { };
 
+  typeguard = super.typeguard.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.py \
+        --replace 'setup()' 'setup(version="${old.version}")'
+    '';
+  });
+
   # nix uses a dash, poetry uses an underscore
   typing_extensions = super.typing_extensions or self.typing-extensions;
 
