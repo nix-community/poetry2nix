@@ -106,6 +106,12 @@ self: super:
     }
   );
 
+  colour = super.colour.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ self.d2to1 ];
+    }
+  );
+
   configparser = super.configparser.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
