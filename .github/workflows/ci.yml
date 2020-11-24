@@ -12,7 +12,7 @@ jobs:
     env:
       NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/master.tar.gz"
     steps:
-    - uses: cachix/install-nix-action@v8
+    - uses: cachix/install-nix-action@v12
     - uses: actions/checkout@v1
     - name: Check format
       run: ./check-fmt
