@@ -29,7 +29,7 @@ jobs:
     steps:
     - uses: cachix/install-nix-action@v12
     - uses: actions/checkout@v1
-    - uses: cachix/cachix-action@v6
+    - uses: cachix/cachix-action@v8
       with:
         name: poetry2nix
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
