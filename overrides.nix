@@ -120,6 +120,8 @@ self: super:
 
   cryptography = super.cryptography.overridePythonAttrs (
     old: {
+      nativeBuildInputs = old.nativeBuildInputs or []
+        ++ stdenv.lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi;
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
     }
   );
@@ -620,8 +622,8 @@ self: super:
       withMysql = old.passthru.withMysql or false;
     in
     {
-      buildInputs = old.buildInputs ++ [ self.cython pkgs.sqlite ];
-      propagatedBuildInputs = old.propagatedBuildInputs
+      buildInputs = old.buildInputs or [] ++ [ pkgs.sqlite ];
+      propagatedBuildInputs = old.propagatedBuildInputs or []
         ++ lib.optional withPostgres self.psycopg2
         ++ lib.optional withMysql self.mysql-connector;
     }
@@ -638,8 +640,8 @@ self: super:
     # "Vendor" dependencies (for build-system support)
     postPatch = ''
       echo "import sys" >> poetry/__init__.py
-      for path in ''${PYTHONPATH//:/ }; do echo $path; done | uniq | while read path; do
-        echo "sys.path.insert(0, \"$path\")" >> poetry/__init__.py
+      for path in $propagatedBuildInputs; do
+          echo "sys.path.insert(0, \"$path\")" >> poetry/__init__.py
       done
     '';
 
