@@ -120,7 +120,7 @@ self: super:
 
   cryptography = super.cryptography.overridePythonAttrs (
     old: {
-      nativeBuildInputs = old.nativeBuildInputs or []
+      nativeBuildInputs = old.nativeBuildInputs or [ ]
         ++ stdenv.lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi;
       buildInputs = old.buildInputs ++ [ pkgs.openssl ];
     }
@@ -622,8 +622,8 @@ self: super:
       withMysql = old.passthru.withMysql or false;
     in
     {
-      buildInputs = old.buildInputs or [] ++ [ pkgs.sqlite ];
-      propagatedBuildInputs = old.propagatedBuildInputs or []
+      buildInputs = old.buildInputs or [ ] ++ [ pkgs.sqlite ];
+      propagatedBuildInputs = old.propagatedBuildInputs or [ ]
         ++ lib.optional withPostgres self.psycopg2
         ++ lib.optional withMysql self.mysql-connector;
     }
