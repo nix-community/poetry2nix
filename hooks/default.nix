@@ -1,11 +1,11 @@
 { python
-, callPackage
 , makeSetupHook
 , yj
 , wheel
 , pip
 }:
 let
+  callPackage = python.pythonForBuild.pkgs.callPackage;
   pythonInterpreter = python.pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
 in
