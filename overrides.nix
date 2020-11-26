@@ -976,6 +976,15 @@ self: super:
     }
   );
 
+  pytest-django = super.pytest-django.overridePythonAttrs (
+    old: {
+      postPatch = ''
+        substituteInPlace setup.py --replace "'pytest>=3.6'," ""
+        substituteInPlace setup.py --replace "'pytest>=3.6'" ""
+      '';
+    }
+  );
+
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
   python-jose = super.python-jose.overridePythonAttrs (
