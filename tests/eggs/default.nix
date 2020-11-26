@@ -2,9 +2,7 @@
 let
   drv = poetry2nix.mkPoetryApplication {
     python = python37;
-    pyproject = ./pyproject.toml;
-    poetrylock = ./poetry.lock;
-    src = lib.cleanSource ./.;
+    projectDir = ./.;
   };
 in
 runCommandNoCC "egg-test"

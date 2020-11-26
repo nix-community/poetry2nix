@@ -91,7 +91,10 @@ pythonPackages.callPackage
         "setuptools-scm"
         "toml" # Toml is an extra for setuptools-scm
       ];
-      baseBuildInputs = lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm;
+      baseBuildInputs =
+        lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm
+        ++ lib.optional (! lib.elem name [ "pip" "setuptools" "wheel" ]) pythonPackages.wheel
+      ;
       format = if isLocal then "pyproject" else if isGit then "pyproject" else fileInfo.format;
     in
     buildPythonPackage {
