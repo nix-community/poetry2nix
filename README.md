@@ -207,6 +207,32 @@ in pkgs.poetry2nix.mkPoetryApplication {
 }
 ```
 
+## Using the flake
+
+For the experimental flakes functionality we provide poetry2nix as a flake providing an overlay
+to use with [nixpkgs](https://nixos.org/nixpkgs/manual).
+
+#### Example
+
+```nix
+{
+    description = "Your flake using poetry2nix";
+
+    inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+    inputs.utils.url = "github:numtide/flake-utils";
+    inputs.poetry2nix-src.url = "github:nix-community/poetry2nix";
+
+    outputs = {nixpkgs, utils, poetry2nix-src, self}: utils.lib.eachDefaultSystem (system: let
+
+      pkgs = import nixpkgs { inherit system; overlays = [ poetry2nix-src.overlay ]; };
+
+    in
+      {
+         # use pkgs.poetry2nix here.
+      });
+  }
+```
+
 ## Contributing
 
 Contributions to this project are welcome in the form of GitHub PRs. Please consider the following before creating PRs:
