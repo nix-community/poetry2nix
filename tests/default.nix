@@ -6,12 +6,28 @@ let
   pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; };
   pep425Python37 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python37; };
   pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; };
+
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
-  callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
+
+  mkCallTest = pkgs: test: attrs:
+    let
+      poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
+      poetry2nix = import ./.. { inherit pkgs;inherit poetry; };
+    in
+    pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
+
+  callTest = mkCallTest pkgs;
+  callTestCross = mkCallTest (
+    if pkgs.system == "x86_64-linux"
+    then pkgs.pkgsCross.aarch64-multiplatform
+    else pkgs.pkgsCross.gnu64
+  );
+
 in
 builtins.removeAttrs
 {
   trivial = callTest ./trivial { };
+  cross = (callTestCross ./trivial { }).overrideAttrs (old: { name = "test-cross"; });
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };
