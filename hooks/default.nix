@@ -1,6 +1,6 @@
 { python
+, buildPackages
 , makeSetupHook
-, yj
 , wheel
 , pip
 }:
@@ -20,7 +20,7 @@ in
           deps = [ ];
           substitutions = {
             inherit pythonInterpreter;
-            yj = "${yj}/bin/yj";
+            yj = "${buildPackages.yj}/bin/yj";
             pyprojectPatchScript = "${./pyproject-without-path.py}";
           };
         } ./remove-path-dependencies.sh
