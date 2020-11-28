@@ -1303,6 +1303,15 @@ self: super:
     }
   );
 
+  packaging = super.packaging.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++
+        # From 20.5 until 20.7, packaging used flit for packaging (heh)
+        # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
+        lib.optional (lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8") [ self.flit-core ];
+    }
+  );
+
   supervisor = super.supervisor.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
