@@ -5,8 +5,5 @@ let
     projectDir = ./.;
   };
 in
-runCommandNoCC "egg-test"
-{ } ''
-  ${drv}/bin/egg-test
-  touch $out
-''
+assert lib.strings.hasSuffix ".egg" (lib.elemAt drv.passthru.python.pkgs.pyasn1.src.urls 0);
+runCommandNoCC "egg-test" {} "touch $out"
