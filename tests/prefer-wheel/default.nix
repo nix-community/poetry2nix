@@ -1,7 +1,6 @@
 { lib, poetry2nix, python37 }:
 let
   drv = poetry2nix.mkPoetryApplication {
-    python = python37;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;

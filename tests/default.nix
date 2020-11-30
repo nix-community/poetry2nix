@@ -43,7 +43,6 @@ builtins.removeAttrs
 
   # Test building poetry
   inherit poetry;
-  poetry-python2 = poetry.override { python = pkgs.python2; };
 
   poetry-env =
     let
