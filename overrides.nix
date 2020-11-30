@@ -633,6 +633,13 @@ self: super:
     }
   );
 
+  osqp = super.osqp.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.cmake ];
+      dontUseCmakeConfigure = true;
+    }
+  );
+
   parsel = super.parsel.overridePythonAttrs (
     old: rec {
       nativeBuildInputs = old.nativeBuildInputs ++ [ self.pytest-runner ];
