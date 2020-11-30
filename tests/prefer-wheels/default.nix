@@ -7,4 +7,4 @@ let
   };
   isWheelAttr = py.python.pkgs.tensorflow.src.isWheel or false;
 in
-assert isWheelAttr; runCommand "prefer-wheels" {} "touch $out"
+assert isWheelAttr; runCommand "prefer-wheels" { } "touch $out"

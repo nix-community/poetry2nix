@@ -1033,13 +1033,6 @@ self: super:
     }
   );
 
-  # setuptools-scm = builtins.trace "OWO" super.setuptools-scm.overridePythonAttrs (
-  #   old: {
-  #     format = "setuptools";
-  #     buildInputs = old.buildInputs or [ ] ++ [ self.wheel self.setuptools self.pip ];
-  #   }
-  # );
-
   pandas = super.pandas.overridePythonAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [ self.cython ];

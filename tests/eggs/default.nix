@@ -6,4 +6,4 @@ let
   };
 in
 assert lib.strings.hasSuffix ".egg" (lib.elemAt drv.passthru.python.pkgs.pyasn1.src.urls 0);
-runCommandNoCC "egg-test" {} "touch $out"
+runCommandNoCC "egg-test" { } "touch $out"
