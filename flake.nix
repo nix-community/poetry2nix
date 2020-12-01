@@ -16,15 +16,22 @@
       );
     in
     {
-
       overlay = import ./overlay.nix;
 
-      # TODO: I feel like `packages` is the wrong place for the poetry2nix attr
-      packages = forAllSystems (
-        system: {
-          inherit (nixpkgsFor.${system}) poetry poetry2nix;
-        }
+      packages = forAllSystems (system: {
+        inherit (nixpkgsFor.${system}) poetry;
+      }
       );
 
+      apps = forAllSystems (system: {
+        poetry = {
+          type = "app";
+          program = self.packages."${system}".poetry + "/bin/poetry";
+        };
+      });
+
+      defaultApp = forAllSystems (system:
+        self.apps."${system}".poetry
+      );
     };
 }
