@@ -561,6 +561,12 @@ self: super:
     }
   );
 
+  mysqlclient = super.mysqlclient.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++ [ pkgs.libmysqlclient ];
+    }
+  );
+
   netcdf4 = super.netcdf4.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [
