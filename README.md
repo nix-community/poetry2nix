@@ -97,7 +97,7 @@ The `env` attribute of the attribute set created by `mkPoetryEnv` contains a she
 ```nix
 { pkgs ? import <nixpkgs> {} }:
 let
-  myAppEnv = poetry2nix.mkPoetryEnv {
+  myAppEnv = pkgs.poetry2nix.mkPoetryEnv {
     projectDir = ./.;
     editablePackageSources = {
       my-app = ./src;
@@ -111,7 +111,7 @@ For a shell environment including external dependencies, pass the app environmen
 ```nix
 { pkgs ? import <nixpkgs> {} }:
 let
-  myAppEnv = poetry2nix.mkPoetryEnv {
+  myAppEnv = pkgs.poetry2nix.mkPoetryEnv {
     projectDir = ./.;
     editablePackageSources = {
       my-app = ./src;
