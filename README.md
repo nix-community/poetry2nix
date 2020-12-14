@@ -91,6 +91,38 @@ poetry2nix.mkPoetryEnv {
 
 See [./tests/editable/default.nix](./tests/editable/default.nix) for a working example of an editable package.
 
+#### Example shell.nix
+The `env` attribute of the attribute set created by `mkPoetryEnv` contains a shell environment.
+
+```nix
+{ pkgs ? import <nixpkgs> {} }:
+let
+  myAppEnv = pkgs.poetry2nix.mkPoetryEnv {
+    projectDir = ./.;
+    editablePackageSources = {
+      my-app = ./src;
+    };
+  };
+in myAppEnv.env
+```
+
+#### Example shell.nix with external dependencies
+For a shell environment including external dependencies, pass the app environment and dependency packages (for example, `pkgs.hello`) as build inputs to `pkgs.mkShell`.
+```nix
+{ pkgs ? import <nixpkgs> {} }:
+let
+  myAppEnv = pkgs.poetry2nix.mkPoetryEnv {
+    projectDir = ./.;
+    editablePackageSources = {
+      my-app = ./src;
+    };
+  };
+in
+pkgs.mkShell {
+  buildInputs = [ myAppEnv pkgs.hello ];
+}
+```
+
 ### mkPoetryPackages
 Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poetryLock }`. Where `python` is the interpreter specified, `poetryPackages` is a list of all generated python packages, `pyProject` is the parsed `pyproject.toml` and `poetryLock` is the parsed `poetry.lock` file. `mkPoetryPackages` takes an attribute set with the following attributes (attributes without default are mandatory):
 
