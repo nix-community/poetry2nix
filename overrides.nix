@@ -132,6 +132,18 @@ self: super:
     }
   );
 
+  datadog-lambda = super.datadog-lambda.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace "setuptools==" "setuptools>="
+    '';
+    buildInputs = old.buildInputs ++ [ self.setuptools ];
+  });
+
+  ddtrace = super.ddtrace.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs ++
+      (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]) ++ [ self.cython ];
+  });
+
   dictdiffer = super.dictdiffer.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ self.pytest-runner ];
