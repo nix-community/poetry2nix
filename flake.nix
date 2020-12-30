@@ -1,37 +1,29 @@
 {
   description = "Poetry2nix flake";
 
-  outputs = { self, nixpkgs }:
-    let
-      # TODO: There must be a better way to provide arch-agnostic flakes..
-      systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
-      # Memoize nixpkgs for different platforms for efficiency.
-      nixpkgsFor = forAllSystems (
-        system:
-        import nixpkgs {
-          inherit system;
-          overlays = [ self.overlay ];
-        }
-      );
-    in
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+
+  outputs = { self, nixpkgs, flake-utils }:
     {
       overlay = import ./overlay.nix;
-
-      packages = forAllSystems (system: {
-        inherit (nixpkgsFor.${system}) poetry;
-      }
-      );
-
-      apps = forAllSystems (system: {
-        poetry = {
-          type = "app";
-          program = self.packages."${system}".poetry + "/bin/poetry";
+    } // (flake-utils.lib.eachDefaultSystem (system:
+      let
+        myNixpkgs = import nixpkgs {
+          inherit system;
+          overlays = [ self.overlay ];
         };
-      });
+      in
+      rec {
+        packages = {
+          inherit (myNixpkgs) poetry;
+        };
+        defaultPackage = packages.poetry;
 
-      defaultApp = forAllSystems (system:
-        self.apps."${system}".poetry
-      );
-    };
+        apps = {
+          poetry = flake-utils.lib.mkApp { drv = packages.poetry; };
+        };
+
+        defaultApp = apps.poetry;
+      }));
 }
