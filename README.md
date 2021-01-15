@@ -10,6 +10,8 @@ The _poetry2nix_ public API consists of the following attributes:
 - [mkPoetryApplication](#mkPoetryApplication): Creates a Python application.
 - [mkPoetryEnv](#mkPoetryEnv): Creates a Python environment with an interpreter and all packages from `poetry.lock`.
 - [mkPoetryPackages](#mkPoetryPackages): Creates an attribute set providing access to the generated packages and other artifacts.
+- [mkPoetryScriptsPackage](#mkPoetryScriptsPackage): Creates a package containing the scripts from `tool.poetry.scripts` of the `pyproject.toml`.
+- [mkPoetryEditablePackage](#mkPoetryEditablePackage): Creates a package containing editable sources. Changes in the specified paths will be reflected in an interactive nix-shell session without the need to restart it.
 - [defaultPoetryOverrides](#defaultPoetryOverrides): A set of bundled overrides fixing problems with Python packages.
 - [overrides.withDefaults](#overrideswithDefaults): A convenience function for specifying overrides on top of the defaults.
 - [overrides.withoutDefaults](#overrideswithoutDefaults): A convenience function for specifying overrides without defaults.
@@ -80,6 +82,7 @@ poetry2nix.mkPoetryEnv {
 
 See [./tests/env/default.nix](./tests/env/default.nix) for a working example.
 
+#### Example with editable packages
 ```nix
 poetry2nix.mkPoetryEnv {
     projectDir = ./.;
@@ -131,6 +134,60 @@ Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poet
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
 - **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
+- **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
+
+#### Example
+```nix
+poetry2nix.mkPoetryPackages {
+    projectDir = ./.;
+    python = python35;
+}
+```
+
+### mkPoetryScriptsPackage
+Creates a package containing the scripts from `tool.poetry.scripts` of the `pyproject.toml`:
+
+- **projectDir**: path to the root of the project.
+- **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
+- **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
+
+#### Example
+```nix
+poetry2nix.mkPoetryScriptsPackage {
+    projectDir = ./.;
+    python = python35;
+}
+```
+
+### mkPoetryEditablePackage
+Creates a package containing editable sources. Changes in the specified paths will be reflected in an interactive nix-shell session without the need to restart it:
+
+- **projectDir**: path to the root of the project.
+- **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
+- **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
+- **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
+
+#### Example
+```nix
+poetry2nix.mkPoetryEditablePackage {
+    projectDir = ./.;
+    python = python35;
+    editablePackageSources = {
+        my-app = ./src;
+    };
+}
+```
+
+
+### mkPoetryPackages
+Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poetryLock }`. Where `python` is the interpreter specified, `poetryPackages` is a list of all generated python packages, `pyProject` is the parsed `pyproject.toml` and `poetryLock` is the parsed `poetry.lock` file. `mkPoetryPackages` takes an attribute set with the following attributes (attributes without default are mandatory):
+
+- **projectDir**: path to the root of the project.
+- **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
+- **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
+- **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
+- **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
+- **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
 
 #### Example
 ```nix
