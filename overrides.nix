@@ -1273,11 +1273,9 @@ self: super:
         pkgs.python3.pkgs.override {
           python = self.python;
         }
-      ).wheel.overridePythonAttrs (
-        old: {
-          inherit (super.wheel) pname name version src;
-        }
-      );
+      ).wheel.override {
+        inherit (self) buildPythonPackage bootstrapped-pip setuptools;
+      };
     in
     if isWheel then wheelPackage else sourcePackage;
 
