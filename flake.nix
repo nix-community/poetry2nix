@@ -9,21 +9,24 @@
       overlay = import ./overlay.nix;
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
-        myNixpkgs = import nixpkgs {
+        pkgs = import nixpkgs {
           inherit system;
           overlays = [ self.overlay ];
         };
       in
       rec {
         packages = {
-          inherit (myNixpkgs) poetry;
+          inherit (pkgs) poetry;
+          poetry2nix = pkgs.poetry2nix.cli;
         };
-        defaultPackage = packages.poetry;
+
+        defaultPackage = packages.poetry2nix;
 
         apps = {
           poetry = flake-utils.lib.mkApp { drv = packages.poetry; };
+          poetry2nix = flake-utils.lib.mkApp { drv = packages.poetry2nix; };
         };
 
-        defaultApp = apps.poetry;
+        defaultApp = apps.poetry2nix;
       }));
 }
