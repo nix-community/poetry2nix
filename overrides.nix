@@ -1405,5 +1405,19 @@ self: super:
     }
   );
 
+  # pyee cannot find `vcversioner` and other "setup requirements", so it tries to
+  # download them from the internet, which only works when nix sandboxing is disabled.
+  # Additionally, since pyee uses vcversioner to specify its version, we need to do this
+  # manually specify its version.
+  pyee = super.pyee.overrideAttrs (
+    old: {
+      postPatch = old.postPatch or "" + ''
+        sed -i setup.py \
+          -e '/setup_requires/,/],/d' \
+          -e 's/vcversioner={},/version="${old.version}",/'
+      '';
+    }
+  );
+
   
 }
