@@ -1180,9 +1180,9 @@ self: super:
           # is explicitly disabled with USE_CUDA=0.
           find $out -name "*.so" -exec ${pkgs.patchelf}/bin/patchelf --remove-needed libcuda.so.1 {} \;
         '';
-        buildInputs = (old.buildInputs or [])
-        ++ [ self.typing-extensions ]
-        ++ lib.optionals enableCuda [
+        buildInputs = (old.buildInputs or [ ])
+          ++ [ self.typing-extensions ]
+          ++ lib.optionals enableCuda [
           pkgs.linuxPackages.nvidia_x11
           pkgs.nccl.dev
           pkgs.nccl.out
