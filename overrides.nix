@@ -1398,5 +1398,12 @@ self: super:
     }
   );
 
+  watchdog = super.watchdog.overrideAttrs (
+    old: {
+      buildInputs = old.buildInputs or []
+        ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
+    }
+  );
+
   
 }
