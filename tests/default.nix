@@ -19,7 +19,7 @@ builtins.removeAttrs
   pep425 = pkgs.callPackage ./pep425 { inherit pep425;inherit pep425OSX;inherit pep425Python37; };
   env = callTest ./env { };
   git-deps = callTest ./git-deps { };
-  git-deps-pinned = callTest ./git-deps-pinned { };
+  # git-deps-pinned = callTest ./git-deps-pinned { };
   cli = poetry2nix;
   path-deps = callTest ./path-deps { };
   path-deps-level2 = callTest ./path-deps-level2 { };
