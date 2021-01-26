@@ -31,7 +31,7 @@ pythonPackages.callPackage
       inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromPypi moduleName;
 
       inherit (import ./pep425.nix {
-        inherit lib python;
+        inherit lib poetryLib python;
         inherit (pkgs) stdenv;
       }) selectWheel
         ;
