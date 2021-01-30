@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
 , poetry ? null
-, poetryLib ? import ./lib.nix { inherit lib pkgs; }
+, poetryLib ? import ./lib.nix { inherit lib pkgs; stdenv = pkgs.stdenv; }
 }:
 let
   inherit (poetryLib) isCompatible readTOML moduleName;
