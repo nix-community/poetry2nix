@@ -984,6 +984,10 @@ self: super:
 
   pytest = super.pytest.overridePythonAttrs (
     old: {
+      # Fixes https://github.com/pytest-dev/pytest/issues/7891
+      postPatch = old.postPatch or "" + ''
+        sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
+      '';
       doCheck = false;
     }
   );
@@ -1310,6 +1314,15 @@ self: super:
   hashids = super.hashids.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ self.flit-core ];
+    }
+  );
+
+  packaging = super.packaging.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs ++
+        # From 20.5 until 20.7, packaging used flit for packaging (heh)
+        # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
+        lib.optional (lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8") [ self.flit-core ];
     }
   );
 
