@@ -56,7 +56,7 @@ self: super:
   av = super.av.overridePythonAttrs (
     old: {
       nativeBuildInputs = old.nativeBuildInputs ++ [
-        pkgs.pkgconfig
+        pkgs.pkg-config
       ];
       buildInputs = old.buildInputs ++ [ pkgs.ffmpeg_4 ];
     }
@@ -246,7 +246,7 @@ self: super:
   h5py = super.h5py.overridePythonAttrs (
     old:
     if old.format != "wheel" then rec {
-      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
       buildInputs = old.buildInputs ++ [ pkgs.hdf5 self.pkgconfig self.cython ];
       configure_flags = "--hdf5=${pkgs.hdf5}";
       postConfigure = ''
@@ -398,7 +398,7 @@ self: super:
   );
 
   libvirt-python = super.libvirt-python.overridePythonAttrs ({ nativeBuildInputs ? [ ], ... }: {
-    nativeBuildInputs = nativeBuildInputs ++ [ pkgs.pkgconfig ];
+    nativeBuildInputs = nativeBuildInputs ++ [ pkgs.pkg-config ];
     propagatedBuildInputs = [ pkgs.libvirt ];
   });
 
@@ -433,7 +433,7 @@ self: super:
 
   lxml = super.lxml.overridePythonAttrs (
     old: {
-      nativeBuildInputs = with pkgs; old.nativeBuildInputs ++ [ pkgconfig libxml2.dev libxslt.dev ];
+      nativeBuildInputs = with pkgs; old.nativeBuildInputs ++ [ pkg-config libxml2.dev libxslt.dev ];
       buildInputs = with pkgs; old.buildInputs ++ [ libxml2 libxslt ];
     }
   );
@@ -464,7 +464,7 @@ self: super:
         ++ lib.optional stdenv.isDarwin [ Cocoa ];
 
       nativeBuildInputs = old.nativeBuildInputs ++ [
-        pkgs.pkgconfig
+        pkgs.pkg-config
       ];
 
       postPatch = ''
@@ -662,7 +662,7 @@ self: super:
 
   pillow = super.pillow.overridePythonAttrs (
     old: {
-      nativeBuildInputs = [ pkgs.pkgconfig ] ++ old.nativeBuildInputs;
+      nativeBuildInputs = [ pkgs.pkg-config ] ++ old.nativeBuildInputs;
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ old.buildInputs;
     }
   );
@@ -753,7 +753,7 @@ self: super:
 
             nativeBuildInputs = old.nativeBuildInputs ++ [
               self.cython
-              pkgs.pkgconfig
+              pkgs.pkg-config
               pkgs.cmake
             ];
 
@@ -802,7 +802,7 @@ self: super:
         nativeBuildInputs = old.nativeBuildInputs ++ [
           pkgs.meson
           pkgs.ninja
-          pkgs.pkgconfig
+          pkgs.pkg-config
         ];
 
         propagatedBuildInputs = old.propagatedBuildInputs ++ [
@@ -869,7 +869,7 @@ self: super:
 
   pygobject = super.pygobject.overridePythonAttrs (
     old: {
-      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
       buildInputs = old.buildInputs ++ [ pkgs.glib pkgs.gobject-introspection ];
     }
   );
@@ -920,7 +920,7 @@ self: super:
         format = "other";
 
         nativeBuildInputs = old.nativeBuildInputs ++ [
-          pkgs.pkgconfig
+          pkgs.pkg-config
           pkgs.qt5.qmake
           pkgs.xorg.lndir
           pkgs.qt5.qtbase
@@ -1085,7 +1085,7 @@ self: super:
 
   pyzmq = super.pyzmq.overridePythonAttrs (
     old: {
-      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.zeromq ];
     }
   );
@@ -1190,7 +1190,7 @@ self: super:
   tables = super.tables.overridePythonAttrs (
     old: {
       HDF5_DIR = "${pkgs.hdf5}";
-      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
+      nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
       propagatedBuildInputs = old.nativeBuildInputs ++ [ pkgs.hdf5 self.numpy self.numexpr ];
     }
   );
