@@ -71,13 +71,13 @@ in
 lib.makeScope pkgs.newScope (self: {
 
   # Poetry2nix version
-  version = "1.14.0";
+  version = "1.15.0";
 
   /* Returns a package of editable sources whose changes will be available without needing to restart the
      nix-shell.
      In editablePackageSources you can pass a mapping from package name to source directory to have
      those packages available in the resulting environment, whose source changes are immediately available.
-     
+
   */
   mkPoetryEditablePackage =
     { projectDir ? null
