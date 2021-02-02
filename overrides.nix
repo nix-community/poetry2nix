@@ -654,6 +654,28 @@ self: super:
     }
   );
 
+  # Work around https://github.com/nix-community/poetry2nix/issues/244
+  # where git deps are not picked up as they should
+  pip =
+    if lib.versionAtLeast super.pip.version "20.3" then
+      super.pip.overridePythonAttrs
+        (old:
+          let
+            pname = "pip";
+            version = "20.2.4";
+          in
+          {
+            name = pname + "-" + version;
+            inherit version;
+            src = pkgs.fetchFromGitHub {
+              owner = "pypa";
+              repo = pname;
+              rev = version;
+              sha256 = "eMVV4ftgV71HLQsSeaOchYlfaJVgzNrwUynn3SA1/Do=";
+              name = "${pname}-${version}-source";
+            };
+          }) else super.pip;
+
   poetry-core = super.poetry-core.overridePythonAttrs (old: {
     # "Vendor" dependencies (for build-system support)
     postPatch = ''
@@ -1275,13 +1297,15 @@ self: super:
         format = "wheel";
       };
       # If "wheel" is built from source
-      sourcePackage = (
+      sourcePackage = ((
         pkgs.python3.pkgs.override {
           python = self.python;
         }
       ).wheel.override {
         inherit (self) buildPythonPackage bootstrapped-pip setuptools;
-      };
+      }).overrideAttrs (old: {
+        inherit (super.wheel) pname name version src;
+      });
     in
     if isWheel then wheelPackage else sourcePackage;
 
