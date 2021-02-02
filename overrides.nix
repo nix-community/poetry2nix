@@ -93,7 +93,7 @@ self: super:
     (
       super.cffi.overridePythonAttrs (
         old: {
-          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.libffi ];
         }
       )
     );

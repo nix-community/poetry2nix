@@ -9,12 +9,12 @@ let
 
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
 
-  mkCallTest = pkgs: test: attrs:
+  mkCallTest = targetPkgs: test: attrs:
     let
-      poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
-      poetry2nix = import ./.. { inherit pkgs;inherit poetry; };
+      poetry2nix = import ./.. { pkgs = targetPkgs; inherit poetry; };
+      poetry = targetPkgs.callPackage ../pkgs/poetry { python = targetPkgs.python3; inherit poetry2nix; };
     in
-    pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
+    targetPkgs.callPackage test ({ inherit poetry2nix; } // attrs);
 
   callTest = mkCallTest pkgs;
   callTestCross = mkCallTest (
@@ -27,7 +27,7 @@ in
 builtins.removeAttrs
 {
   trivial = callTest ./trivial { };
-  cross = (callTestCross ./trivial { }).overrideAttrs (old: { name = "test-cross"; });
+  cross = (callTestCross ./cross { }).overrideAttrs (old: { name = "test-cross"; });
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };
