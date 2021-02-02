@@ -1034,6 +1034,28 @@ self: super:
     }
   );
 
+  # pytest-splinter seems to put a .marker file in an empty directory
+  # presumably so it's tracked by and can be installed with MANIFEST.in, see
+  # https://github.com/pytest-dev/pytest-splinter/commit/a48eeef662f66ff9d3772af618748e73211a186b
+  #
+  # This directory then gets used as an empty initial profile directory and is
+  # zipped up. But if the .marker file is in the Nix store, it has the
+  # creation date of 1970, and Zip doesn't work with such old files, so it
+  # fails at runtime!
+  #
+  # We fix this here by just removing the file after the installation
+  #
+  # The error you get without this is:
+  #
+  # E           ValueError: ZIP does not support timestamps before 1980
+  # /nix/store/55b9ip7xkpimaccw9pa0vacy5q94f5xa-python3-3.7.6/lib/python3.7/zipfile.py:357: ValueError
+  pytest-splinter = super.pytest-splinter.overrideAttrs (old: {
+    postInstall = old.postInstall or "" + ''
+      rm $out/${super.python.sitePackages}/pytest_splinter/profiles/firefox/.marker
+    '';
+  });
+
+
   ffmpeg-python = super.ffmpeg-python.overridePythonAttrs (
     old: {
       buildInputs = old.buildInputs ++ [ self.pytest-runner ];
@@ -1366,4 +1388,47 @@ self: super:
       propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.toolz ];
     }
   );
+
+  # For some reason the toml dependency of tqdm declared here:
+  # https://github.com/tqdm/tqdm/blob/67130a23646ae672836b971e1086b6ae4c77d930/pyproject.toml#L2
+  # is not translated correctly to a nix dependency.
+  tqdm = super.tqdm.overrideAttrs (
+    old: {
+      buildInputs = [ super.toml ] ++ old.buildInputs;
+    }
+  );
+
+  watchdog = super.watchdog.overrideAttrs (
+    old: {
+      buildInputs = old.buildInputs or [ ]
+        ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
+    }
+  );
+
+  # pyee cannot find `vcversioner` and other "setup requirements", so it tries to
+  # download them from the internet, which only works when nix sandboxing is disabled.
+  # Additionally, since pyee uses vcversioner to specify its version, we need to do this
+  # manually specify its version.
+  pyee = super.pyee.overrideAttrs (
+    old: {
+      postPatch = old.postPatch or "" + ''
+        sed -i setup.py \
+          -e '/setup_requires/,/],/d' \
+          -e 's/vcversioner={},/version="${old.version}",/'
+      '';
+    }
+  );
+
+  # nixpkgs has setuptools_scm 4.1.2
+  # but newrelic has a seemingly unnecessary version constraint for <4
+  # So we patch that out
+  newrelic = super.newrelic.overridePythonAttrs (
+    old: {
+      postPatch = old.postPatch or "" + ''
+        substituteInPlace setup.py --replace '"setuptools_scm>=3.2,<4"' '"setuptools_scm"'
+      '';
+    }
+  );
+
+
 }
