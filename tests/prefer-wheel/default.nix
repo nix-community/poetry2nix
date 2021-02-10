@@ -11,9 +11,15 @@ let
           maturin = super.maturin.override {
             preferWheel = true;
           };
+          cryptography = super.cryptography.override {
+            preferWheel = true;
+          };
         }
       );
   };
   isWheelAttr = drv.passthru.python.pkgs.maturin.src.isWheel or false;
+  isWheelAttr2 = drv.passthru.python.pkgs.cryptography.src.isWheel or false;
 in
-assert isWheelAttr; drv
+assert isWheelAttr;
+assert isWheelAttr2;
+drv
