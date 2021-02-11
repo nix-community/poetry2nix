@@ -127,8 +127,11 @@ self: super:
   cryptography = super.cryptography.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ])
+        ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
         ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi;
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+    } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
+      CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
     }
   );
 
