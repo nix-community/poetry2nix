@@ -283,7 +283,7 @@ self: super:
       patchPhase = ''
         substituteInPlace setup.py \
           --replace "/usr/include/openjpeg-2.3" \
-                    "${pkgs.openjpeg.dev}/include/openjpeg-2.3"
+                    "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}
         substituteInPlace setup.py \
           --replace "/usr/include/jxrlib" \
                     "$out/include/libjxr"
