@@ -82,7 +82,7 @@ self: super:
   );
 
   celery = super.celery.overridePythonAttrs (old: {
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
   });
 
   cssselect2 = super.cssselect2.overridePythonAttrs (
@@ -379,8 +379,8 @@ self: super:
   );
 
   jsonslicer = super.jsonslicer.overridePythonAttrs (old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkgconfig ];
-    buildInputs = old.buildInputs ++ [ pkgs.yajl ];
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.yajl ];
   });
 
   jupyter = super.jupyter.overridePythonAttrs (
