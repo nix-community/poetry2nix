@@ -250,6 +250,15 @@ self: super:
     }
   );
 
+  gdal = super.gdal.overridePythonAttrs (
+    old: {
+      preBuild = (old.preBuild or "") + ''
+        substituteInPlace setup.cfg \
+          --replace "../../apps/gdal-config" '${pkgs.gdal}/bin/gdal-config'
+      '';
+    }
+  );
+
   grandalf = super.grandalf.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
@@ -375,6 +384,15 @@ self: super:
         self.cryptography
         self.pyjwt
       ];
+    }
+  );
+
+  jsondiff = super.jsondiff.overridePythonAttrs (
+    old: {
+      preBuild = (old.preBuild or "") + ''
+        substituteInPlace setup.py \
+          --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
+      '';
     }
   );
 
@@ -558,6 +576,13 @@ self: super:
     buildInputs = oa.buildInputs ++ [ self.pbr ];
   });
 
+  moto = super.moto.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++
+        [ self.sshpubkeys ];
+    }
+  );
+
   mpi4py = super.mpi4py.overridePythonAttrs (
     old:
     let
@@ -671,6 +696,12 @@ self: super:
   parsel = super.parsel.overridePythonAttrs (
     old: rec {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
+    }
+  );
+
+  pdal = super.pdal.overridePythonAttrs (
+    old: {
+      PDAL_CONFIG = "${pkgs.pdal}/bin/pdal-config";
     }
   );
 
@@ -920,6 +951,16 @@ self: super:
     }
   );
 
+  pyproj = super.pyproj.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++
+        [ self.cython ];
+      PROJ_DIR = "${pkgs.proj}";
+      PROJ_LIBDIR = "${pkgs.proj}/lib";
+      PROJ_INCDIR = "${pkgs.proj.dev}/include";
+    }
+  );
+
   python-bugzilla = super.python-bugzilla.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
@@ -1071,12 +1112,9 @@ self: super:
 
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
-  python-jose = super.python-jose.overridePythonAttrs (
+  pytest-pylint = super.pytest-pylint.overridePythonAttrs (
     old: {
-      postPath = ''
-        substituteInPlace setup.py --replace "'pytest-runner'," ""
-        substituteInPlace setup.py --replace "'pytest-runner'" ""
-      '';
+      buildInputs = [ self.pytest-runner ];
     }
   );
 
@@ -1101,6 +1139,11 @@ self: super:
     '';
   });
 
+  python-jose = super.python-jose.overridePythonAttrs (
+    old: {
+      buildInputs = [ self.pytest-runner ];
+    }
+  );
 
   ffmpeg-python = super.ffmpeg-python.overridePythonAttrs (
     old: {
