@@ -9,8 +9,6 @@ on:
 jobs:
   nixpkgs-fmt:
     runs-on: ubuntu-latest
-    env:
-      NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
     steps:
     - uses: cachix/install-nix-action@v12
     - uses: actions/checkout@v1
@@ -22,10 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        nixpkgs_version: ["master"]
         # os: [ubuntu-latest, macos-latest]
-    env:
-      NIX_PATH: "nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz"
     steps:
     - uses: cachix/install-nix-action@v12
     - uses: actions/checkout@v1

@@ -1,4 +1,12 @@
-{ pkgs ? import <nixpkgs> { } }:
+let
+  sources = import ../nix/sources.nix;
+in
+{ pkgs ? import sources.nixpkgs {
+    overlays = [
+      (import ../overlay.nix)
+    ];
+  }
+}:
 let
   poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
   poetry2nix = import ./.. { inherit pkgs;inherit poetry; };
@@ -31,7 +39,7 @@ builtins.removeAttrs
     inherit poetry;
     inherit (pkgs) postgresql;
   };
-  # pyqt5 = callTest ./pyqt5 { };
+  pyqt5 = callTest ./pyqt5 { };
   eggs = callTest ./eggs { };
   extras = callTest ./extras { };
   source-filter = callTest ./source-filter { };
