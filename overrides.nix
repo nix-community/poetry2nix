@@ -993,6 +993,8 @@ self: super:
       old: {
         format = "other";
 
+        dontWrapQtApps = true;
+
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
           pkgs.pkg-config
           pkgs.qt5.qmake
