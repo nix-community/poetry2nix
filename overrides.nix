@@ -277,14 +277,34 @@ self: super:
 
   h5py = super.h5py.overridePythonAttrs (
     old:
-    if old.format != "wheel" then rec {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
-      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.hdf5 self.pkgconfig self.cython ];
-      configure_flags = "--hdf5=${pkgs.hdf5}";
-      postConfigure = ''
-        ${self.python.executable} setup.py configure ${configure_flags}
-      '';
-    } else old
+    if old.format != "wheel" then
+      (
+        let
+          mpi = pkgs.hdf5.mpi;
+          mpiSupport = pkgs.hdf5.mpiSupport;
+        in
+        {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+          buildInputs =
+            (old.buildInputs or [ ])
+            ++ [ pkgs.hdf5 self.pkgconfig self.cython ]
+            ++ lib.optional mpiSupport mpi
+          ;
+          propagatedBuildInputs =
+            old.propagatedBuildInputs
+            ++ lib.optionals mpiSupport [ self.mpi4py self.openssh ]
+          ;
+          preBuild = if mpiSupport then "export CC=${mpi}/bin/mpicc" else "";
+          HDF5_DIR = "${pkgs.hdf5}";
+          HDF5_MPI = if mpiSupport then "ON" else "OFF";
+          # avoid strict pinning of numpy
+          postPatch = ''
+            substituteInPlace setup.py \
+              --replace "numpy ==" "numpy >="
+          '';
+          pythonImportsCheck = [ "h5py" ];
+        }
+      ) else old
   );
 
   horovod = super.horovod.overridePythonAttrs (
