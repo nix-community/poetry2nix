@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "mk-poetry-packages"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Tests if mkPoetryPackages API is stable"
+authors = []
 
 [tool.poetry.dependencies]
 python = "^3.8"
