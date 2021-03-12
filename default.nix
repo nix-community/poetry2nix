@@ -161,7 +161,7 @@ lib.makeScope pkgs.newScope (self: {
       compatible = partitions.right;
       incompatible = partitions.wrong;
 
-      # Create an overriden version of pythonPackages
+      # Create an overridden version of pythonPackages
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
       # closure as python can only ever have one version of a dependency
@@ -227,7 +227,10 @@ lib.makeScope pkgs.newScope (self: {
 
       inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; includeBuildSystem = false; };
 
-      storePackages = builtins.foldl' (acc: v: acc ++ v) [ ] (lib.attrValues inputAttrs);
+      currentPython = pkgs.lib.attrByPath [ python.pname ] python pkgs;
+      requiredPythonModules = currentPython.pkgs.requiredPythonModules;
+      # TODO: This deserves a comment
+      storePackages = requiredPythonModules (builtins.foldl' (acc: v: acc ++ v) [ ] (lib.attrValues inputAttrs));
     in
     {
       python = py;

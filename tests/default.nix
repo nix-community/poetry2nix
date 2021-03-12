@@ -49,6 +49,7 @@ builtins.removeAttrs
   editable = callTest ./editable { };
   editable-egg = callTest ./editable-egg { };
   ansible-molecule = callTest ./ansible-molecule { };
+  mk-poetry-packages = callTest ./mk-poetry-packages { };
 
   # Test building poetry
   inherit poetry;
