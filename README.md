@@ -329,8 +329,11 @@ Contributions to this project are welcome in the form of GitHub PRs. Please cons
 - This project uses [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt) for formatting the Nix code. You can use
 `nix-shell --run "nixpkgs-fmt .` to format everything.
 - If you are planning to make any considerable changes, you should first present your plans in a GitHub issue so it can be discussed.
-- If you add new features please consider adding tests.
+- If you add new features please consider adding tests. You can run them locally as follows:
 
+```bash
+nix-build --keep-going --show-trace tests/default.nix
+```
 
 ## License
 _poetry2nix_ is released under the terms of the MIT license.
