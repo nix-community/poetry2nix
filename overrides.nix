@@ -250,6 +250,15 @@ self: super:
     }
   );
 
+  fiona = super.fiona.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gdal_2 ];
+      nativeBuildInputs = [
+        pkgs.gdal_2 # for gdal-config
+      ];
+    }
+  );
+
   gdal = super.gdal.overridePythonAttrs (
     old: {
       preBuild = (old.preBuild or "") + ''
@@ -638,6 +647,12 @@ self: super:
     }
   );
 
+  munch = super.munch.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+    }
+  );
+
   mysqlclient = super.mysqlclient.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libmysqlclient ];
@@ -959,6 +974,13 @@ self: super:
     }
   );
 
+  pygeos = super.pygeos.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.geos ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.geos ];
+    }
+  );
+
   pygobject = super.pygobject.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
@@ -1244,6 +1266,15 @@ self: super:
 
   rmfuse = super.rmfuse.overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+  });
+
+  rtree = super.rtree.overridePythonAttrs (old: {
+    propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [ ]) ++ [ pkgs.libspatialindex ];
+    postPatch = ''
+      substituteInPlace rtree/finder.py --replace \
+        "find_library('spatialindex_c')" \
+        "'${pkgs.libspatialindex}/lib/libspatialindex_c${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}'"
+    '';
   });
 
   scipy = super.scipy.overridePythonAttrs (
