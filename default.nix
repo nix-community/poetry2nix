@@ -227,8 +227,7 @@ lib.makeScope pkgs.newScope (self: {
 
       inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; includeBuildSystem = false; };
 
-      currentPython = pkgs.lib.attrByPath [ python.pname ] python pkgs;
-      requiredPythonModules = currentPython.pkgs.requiredPythonModules;
+      requiredPythonModules = python.pkgs.requiredPythonModules;
       /* Include all the nested dependencies which are required for each package.
          This guarantees that using the "poetryPackages" attribute will return
          complete list of dependencies for the poetry project to be portable.
