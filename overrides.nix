@@ -275,6 +275,19 @@ self: super:
     }
   );
 
+  grpcio = super.grpcio.overridePythonAttrs (old: {
+    nativeBuildInputs = [ self.cython pkgs.pkg-config ];
+    buildInputs = [ pkgs.c-ares pkgs.openssl pkgs.zlib ];
+
+    outputs = [ "out" "dev" ];
+
+    GRPC_BUILD_WITH_BORING_SSL_ASM = "";
+    GRPC_PYTHON_BUILD_SYSTEM_OPENSSL = 1;
+    GRPC_PYTHON_BUILD_SYSTEM_ZLIB = 1;
+    GRPC_PYTHON_BUILD_SYSTEM_CARES = 1;
+    DISABLE_LIBC_COMPATIBILITY = 1;
+  });
+
   h3 = super.h3.overridePythonAttrs (
     old: {
       preBuild = (old.preBuild or "") + ''
