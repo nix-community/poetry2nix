@@ -288,6 +288,10 @@ self: super:
     DISABLE_LIBC_COMPATIBILITY = 1;
   });
 
+  grpcio-tools = super.grpcio-tools.overridePythonAttrs (old: {
+    outputs = [ "out" "dev" ];
+  });
+
   h3 = super.h3.overridePythonAttrs (
     old: {
       preBuild = (old.preBuild or "") + ''
