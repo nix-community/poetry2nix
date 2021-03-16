@@ -276,8 +276,8 @@ self: super:
   );
 
   grpcio = super.grpcio.overridePythonAttrs (old: {
-    nativeBuildInputs = [ self.cython pkgs.pkg-config ];
-    buildInputs = [ pkgs.c-ares pkgs.openssl pkgs.zlib ];
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.cython pkgs.pkg-config ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.c-ares pkgs.openssl pkgs.zlib ];
 
     outputs = [ "out" "dev" ];
 
