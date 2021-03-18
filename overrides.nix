@@ -672,6 +672,7 @@ self: super:
 
   mysqlclient = super.mysqlclient.overridePythonAttrs (
     old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libmysqlclient ];
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libmysqlclient ];
     }
   );
