@@ -1560,6 +1560,20 @@ self: super:
     }
   );
 
+  sentencepiece = super.sentencepiece.overridePythonAttrs (
+    old: {
+      dontUseCmakeConfigure = true;
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+        pkgs.pkg-config
+        pkgs.cmake
+        pkgs.gperftools
+      ];
+      buildInputs = (old.buildInputs or [ ]) ++ [
+        pkgs.sentencepiece
+      ];
+    }
+  );
+
   supervisor = super.supervisor.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
