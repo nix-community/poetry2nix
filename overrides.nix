@@ -1388,6 +1388,14 @@ self: super:
     }
   );
 
+  # The tokenizers build requires a complex rust setup (cf. nixpkgs override)
+  #
+  # Instead of providing a full source build, we use a wheel to keep
+  # the complexity manageable for now.
+  tokenizers = super.tokenizers.override {
+    preferWheel = true;
+  };
+
   torch = lib.makeOverridable
     ({ enableCuda ? false
      , cudatoolkit ? pkgs.cudatoolkit_10_1
@@ -1549,6 +1557,28 @@ self: super:
         # From 20.5 until 20.7, packaging used flit for packaging (heh)
         # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
         lib.optional (lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8") [ self.flit-core ];
+    }
+  );
+
+  sentencepiece = super.sentencepiece.overridePythonAttrs (
+    old: {
+      dontUseCmakeConfigure = true;
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+        pkgs.pkg-config
+        pkgs.cmake
+        pkgs.gperftools
+      ];
+      buildInputs = (old.buildInputs or [ ]) ++ [
+        pkgs.sentencepiece
+      ];
+    }
+  );
+
+  sentence-transformers = super.sentence-transformers.overridePythonAttrs (
+    old: {
+      buildInputs =
+        (old.buildInputs or [ ])
+        ++ [ self.typing-extensions ];
     }
   );
 
