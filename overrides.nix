@@ -1574,6 +1574,14 @@ self: super:
     }
   );
 
+  sentence-transformers = super.sentence-transformers.overridePythonAttrs (
+    old: {
+      buildInputs =
+        (old.buildInputs or [ ])
+        ++ [ self.typing-extensions ];
+    }
+  );
+
   supervisor = super.supervisor.overridePythonAttrs (
     old: {
       propagatedBuildInputs = old.propagatedBuildInputs ++ [
