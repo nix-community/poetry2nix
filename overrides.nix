@@ -1388,6 +1388,14 @@ self: super:
     }
   );
 
+  # The tokenizers build requires a complex rust setup (cf. nixpkgs override)
+  #
+  # Instead of providing a full source build, we use a wheel to keep
+  # the complexity manageable for now.
+  tokenizers = super.tokenizers.override {
+    preferWheel = true;
+  };
+
   torch = lib.makeOverridable
     ({ enableCuda ? false
      , cudatoolkit ? pkgs.cudatoolkit_10_1
