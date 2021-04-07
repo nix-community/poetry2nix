@@ -1638,5 +1638,50 @@ self: super:
     }
   );
 
+  wxpython = super.wxpython.overridePythonAttrs (old: rec{
+    DOXYGEN = "${pkgs.doxygen}/bin/doxygen";
+
+    localPython = self.python.withPackages (ps: with ps; [
+      setuptools
+      numpy
+      six
+    ]);
+
+    nativeBuildInputs = with pkgs; [
+      which
+      doxygen
+      gtk3
+      pkg-config
+      autoPatchelfHook
+    ] ++ old.nativeBuildInputs;
+
+    buildInputs = with pkgs; [
+      gtk3
+      webkitgtk
+      ncurses
+      SDL2
+      xorg.libXinerama
+      xorg.libSM
+      xorg.libXxf86vm
+      xorg.libXtst
+      xorg.xorgproto
+      gst_all_1.gstreamer
+      gst_all_1.gst-plugins-base
+      libGLU
+      libGL
+      libglvnd
+      mesa
+    ] ++ old.buildInputs;
+
+    buildPhase = ''
+      ${localPython.interpreter} build.py -v build_wx
+      ${localPython.interpreter} build.py -v dox etg --nodoc sip
+      ${localPython.interpreter} build.py -v build_py
+    '';
+
+    installPhase = ''
+      ${localPython.interpreter} setup.py install --skip-build --prefix=$out
+    '';
+  });
 
 }
