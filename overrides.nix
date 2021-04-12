@@ -178,7 +178,7 @@ self: super:
     super.django.overridePythonAttrs (
       old: {
         propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [ ])
-          ++ [ pkgs.gettext ];
+          ++ [ pkgs.gettext self.pytest-runner ];
       }
     )
   );
@@ -190,6 +190,36 @@ self: super:
           touch LICENSE
         fi
       '' + (old.configurePhase or "");
+    }
+  );
+
+  django-cors-headers = super.django-cors-headers.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
+    }
+  );
+
+  django-hijack = super.django-hijack.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
+    }
+  );
+
+  django-prometheus = super.django-prometheus.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
+    }
+  );
+
+  django-rosetta = super.django-rosetta.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
+    }
+  );
+
+  django-stubs-ext = super.django-stubs-ext.overridePythonAttrs (
+    old: {
+      prePatch = (old.prePatch or "") + "touch ../LICENSE.txt";
     }
   );
 
@@ -778,7 +808,7 @@ self: super:
 
   pillow = super.pillow.overridePythonAttrs (
     old: {
-      nativeBuildInputs = [ pkgs.pkg-config ] ++ (old.nativeBuildInputs or [ ]);
+      nativeBuildInputs = [ pkgs.pkg-config self.pytest-runner ] ++ (old.nativeBuildInputs or [ ]);
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ (old.buildInputs or [ ]);
     }
   );
@@ -1436,6 +1466,12 @@ self: super:
     '';
   });
 
+  typed_ast = super.typed-ast.overridePythonAttrs (old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [
+      self.pytest-runner
+    ];
+  });
+
   # nix uses a dash, poetry uses an underscore
   typing_extensions = super.typing_extensions or self.typing-extensions;
 
@@ -1485,6 +1521,7 @@ self: super:
   weasyprint = super.weasyprint.overridePythonAttrs (
     old: {
       inherit (pkgs.python3.pkgs.weasyprint) patches;
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
   );
