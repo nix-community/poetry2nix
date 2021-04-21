@@ -1454,6 +1454,7 @@ self: super:
         propagatedBuildInputs = [
           self.numpy
           self.future
+          self.typing-extensions
         ];
       })
     )
