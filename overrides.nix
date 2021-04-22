@@ -1454,9 +1454,32 @@ self: super:
         propagatedBuildInputs = [
           self.numpy
           self.future
+          self.typing-extensions
         ];
       })
     )
+    { };
+
+  torchvision = lib.makeOverridable
+    ({ enableCuda ? false
+     , cudatoolkit ? pkgs.cudatoolkit_10_1
+     , pkg ? super.torchvision
+     }: pkg.overrideAttrs (old: {
+
+      # without that autoPatchelfHook will fail because cudatoolkit is not in LD_LIBRARY_PATH
+      autoPatchelfIgnoreMissingDeps = true;
+      buildInputs = (old.buildInputs or [ ])
+        ++ [ self.torch ]
+        ++ lib.optionals enableCuda [
+        cudatoolkit
+      ];
+      preConfigure =
+        if (enableCuda) then ''
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${self.torch}/${self.python.sitePackages}/torch/lib:${lib.makeLibraryPath [ cudatoolkit "${cudatoolkit}" ]}"
+        '' else ''
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${self.torch}/${self.python.sitePackages}/torch/lib"
+        '';
+    }))
     { };
 
   typeguard = super.typeguard.overridePythonAttrs (old: {
