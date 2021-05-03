@@ -1245,6 +1245,12 @@ self: super:
     }
   );
 
+  python-snappy = super.python-snappy.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.snappy ];
+    }
+  );
+
   ffmpeg-python = super.ffmpeg-python.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
