@@ -1626,6 +1626,13 @@ self: super:
     }
   );
 
+  psutil = super.psutil.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++
+        lib.optional stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.IOKit;
+    }
+  );
+
   sentencepiece = super.sentencepiece.overridePythonAttrs (
     old: {
       dontUseCmakeConfigure = true;
