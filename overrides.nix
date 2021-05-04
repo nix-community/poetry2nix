@@ -12,6 +12,12 @@ self: super:
     }
   );
 
+  aiohttp-swagger3 = super.aiohttp-swagger3.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = old.nativeBuildInputs ++ [ self.pytest-runner ];
+    }
+  );
+
   ansible = super.ansible.overridePythonAttrs (
     old: {
 
