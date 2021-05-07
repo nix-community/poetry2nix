@@ -8,13 +8,13 @@ self: super:
 {
   automat = super.automat.overridePythonAttrs (
     old: rec {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.m2r ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.m2r ];
     }
   );
 
   aiohttp-swagger3 = super.aiohttp-swagger3.overridePythonAttrs (
     old: {
-      nativeBuildInputs = old.nativeBuildInputs ++ [ self.pytest-runner ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
     }
   );
 
@@ -27,7 +27,7 @@ self: super:
 
       # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
       # in a correct manner.
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.pycrypto
         self.paramiko
         self.jinja2
@@ -176,7 +176,7 @@ self: super:
   dictdiffer = super.dictdiffer.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
     }
   );
 
@@ -353,7 +353,7 @@ self: super:
             ++ lib.optional mpiSupport mpi
           ;
           propagatedBuildInputs =
-            old.propagatedBuildInputs
+            (old.propagatedBuildInputs or [ ])
             ++ lib.optionals mpiSupport [ self.mpi4py self.openssh ]
           ;
           preBuild = if mpiSupport then "export CC=${mpi}/bin/mpicc" else "";
@@ -371,7 +371,7 @@ self: super:
 
   horovod = super.horovod.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.mpi ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.mpi ];
     }
   );
 
@@ -435,7 +435,7 @@ self: super:
   # importlib-metadata has an incomplete dependency specification
   importlib-metadata = super.importlib-metadata.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ lib.optional self.python.isPy2 self.pathlib2;
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ lib.optional self.python.isPy2 self.pathlib2;
 
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
@@ -450,7 +450,7 @@ self: super:
 
   isort = super.isort.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.setuptools ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
     }
   );
 
@@ -526,7 +526,7 @@ self: super:
 
   lap = super.lap.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.numpy
       ];
     }
@@ -562,7 +562,7 @@ self: super:
 
   lockfile = super.lockfile.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pbr ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pbr ];
     }
   );
 
@@ -609,7 +609,7 @@ self: super:
         EOF
       '';
 
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         pkgs.libpng
         pkgs.freetype
       ]
@@ -689,7 +689,7 @@ self: super:
       };
     in
     {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.mpi ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.mpi ];
       enableParallelBuilding = true;
       preBuild = ''
         ln -sf ${cfg} mpi.cfg
@@ -728,7 +728,7 @@ self: super:
         self.cython
       ];
 
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         pkgs.zlib
         pkgs.netcdf
         pkgs.hdf5
@@ -815,7 +815,7 @@ self: super:
     in
     {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
-      propagatedBuildInputs = old.propagatedBuildInputs or [ ]
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
         ++ lib.optional withPostgres self.psycopg2
         ++ lib.optional withMysql self.mysql-connector;
     }
@@ -970,7 +970,7 @@ self: super:
           pkgs.pkg-config
         ];
 
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
           pkgs.cairo
           pkgs.xlibsWrapper
         ];
@@ -1289,7 +1289,7 @@ self: super:
   pyzmq = super.pyzmq.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.zeromq ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.zeromq ];
     }
   );
 
@@ -1356,7 +1356,7 @@ self: super:
     old:
     if old.format != "wheel" then {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gfortran ];
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.pybind11 ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pybind11 ];
       setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
       enableParallelBuilding = true;
       buildInputs = (old.buildInputs or [ ]) ++ [ self.numpy.blas ];
@@ -1517,7 +1517,7 @@ self: super:
   });
 
   typed_ast = super.typed-ast.overridePythonAttrs (old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
       self.pytest-runner
     ];
   });
@@ -1527,7 +1527,7 @@ self: super:
 
   urwidtrees = super.urwidtrees.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.urwid
       ];
     }
@@ -1620,7 +1620,7 @@ self: super:
       ) else super.zipp
   ).overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.toml
       ];
     }
@@ -1678,7 +1678,7 @@ self: super:
 
   supervisor = super.supervisor.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.meld3
         self.setuptools
       ];
@@ -1687,7 +1687,7 @@ self: super:
 
   cytoolz = super.cytoolz.overridePythonAttrs (
     old: {
-      propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.toolz ];
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.toolz ];
     }
   );
 
@@ -1749,7 +1749,7 @@ self: super:
         gtk3
         pkg-config
         autoPatchelfHook
-      ] ++ old.nativeBuildInputs;
+      ] ++ (old.nativeBuildInputs or [ ]);
 
       buildInputs = with pkgs; [
         gtk3
