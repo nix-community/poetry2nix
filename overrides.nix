@@ -706,6 +706,12 @@ self: super:
     }
   );
 
+  mypy = super.mypy.overridePythonAttrs (
+    old: {
+      MYPY_USE_MYPYC = pkgs.stdenv.buildPlatform.is64bit;
+    }
+  );
+
   mysqlclient = super.mysqlclient.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libmysqlclient ];
