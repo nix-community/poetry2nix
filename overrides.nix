@@ -1071,6 +1071,12 @@ self: super:
     }
   );
 
+  pyproject-flake8 = super.pyproject-flake8.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
+    }
+  );
+
   python-bugzilla = super.python-bugzilla.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
