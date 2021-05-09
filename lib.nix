@@ -135,6 +135,22 @@ let
     })
   );
 
+  fetchFromLegacy = lib.makeOverridable (
+    { python, pname, url, file, hash }:
+    pkgs.runCommand file
+      {
+        nativeBuildInputs = [ python ];
+        impureEnvVars = lib.fetchers.proxyImpureEnvVars;
+        SSL_CERT_FILE = "${pkgs.cacert.out}/etc/ssl/certs/ca-bundle.crt";
+        outputHashMode = "flat";
+        outputHashAlgo = "sha256";
+        outputHash = hash;
+      } ''
+      python ${./fetch_from_legacy.py} ${url} ${pname} ${file}
+      mv ${file} $out
+    ''
+  );
+
   getBuildSystemPkgs =
     { pythonPackages
     , pyProject
@@ -201,6 +217,7 @@ in
 {
   inherit
     fetchFromPypi
+    fetchFromLegacy
     getManyLinuxDeps
     isCompatible
     readTOML
