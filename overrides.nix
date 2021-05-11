@@ -1302,6 +1302,16 @@ self: super:
     }
   );
 
+  pyusb = super.pyusb.overridePythonAttrs (
+    old: {
+      postPatch = ''
+        libusb=${pkgs.libusb1.out}/lib/libusb-1.0${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
+        test -f $libusb || { echo "ERROR: $libusb doesn't exist, please update/fix this build expression."; exit 1; }
+        sed -i -e "s|find_library=None|find_library=lambda _:\"$libusb\"|" usb/backend/libusb1.py
+      '';
+    }
+  );
+
   pyzmq = super.pyzmq.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
