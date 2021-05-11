@@ -369,6 +369,22 @@ self: super:
       ) else old
   );
 
+  hid = super.hid.overridePythonAttrs (
+    old: {
+      postPatch = ''
+        found=
+        for name in libhidapi-hidraw libhidapi-libusb libhidapi-iohidmanager libhidapi; do
+          full_path=${pkgs.hidapi.out}/lib/$name${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
+          if test -f $full_path; then
+            found=t
+            sed -i -e "s|'$name\..*'|'$full_path'|" hid/__init__.py
+          fi
+        done
+        test -n "$found" || { echo "ERROR: No known libraries found in ${pkgs.hidapi.out}/lib, please update/fix this build expression."; exit 1; }
+      '';
+    }
+  );
+
   horovod = super.horovod.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.mpi ];
