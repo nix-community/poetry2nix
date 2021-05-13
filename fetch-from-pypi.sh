@@ -9,7 +9,7 @@ curl="curl            \
  --cookie-jar cookies \
  --insecure           \
  --speed-time 5       \
- -#                   \
+ --progress-bar       \
  --fail               \
  $curlOpts            \
  $NIX_CURL_FLAGS"
