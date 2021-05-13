@@ -14,7 +14,7 @@ curl="curl            \
  $curlOpts            \
  $NIX_CURL_FLAGS"
 
-echo "Trying to fetch wheel with predicted URL: $predictedURL"
+echo "Trying to fetch with predicted URL: $predictedURL"
 
 $curl $predictedURL --output $out && exit 0
 

@@ -93,17 +93,19 @@ let
   );
 
 
-  # Fetch the wheels from the PyPI index.
-  # We need to first get the proper URL to the wheel.
+  # Fetch from the PyPI index.
+  # At first we try to fetch the predicated URL but if that fails we
+  # will use the Pypi API to determine the correct URL.
   # Args:
   #   pname: package name
   #   file: filename including extension
+  #   version: the version string of the dependency
   #   hash: SRI hash
   #   kind: Language implementation and version tag
-  fetchWheelFromPypi = lib.makeOverridable (
-    { pname, file, hash, kind, curlOpts ? "" }:
+  fetchFromPypi = lib.makeOverridable (
+    { pname, file, version, hash, kind, curlOpts ? "" }:
     let
-      version = builtins.elemAt (builtins.split "-" file) 2;
+      predictedURL = predictURLFromPypi { inherit pname file hash kind; };
     in
     (pkgs.stdenvNoCC.mkDerivation {
       name = file;
@@ -111,7 +113,7 @@ let
         pkgs.curl
         pkgs.jq
       ];
-      isWheel = true;
+      isWheel = lib.strings.hasSuffix "whl" file;
       system = "builtin";
 
       preferLocalBuild = true;
@@ -119,36 +121,20 @@ let
         "NIX_CURL_FLAGS"
       ];
 
-      predictedURL = predictURLFromPypi { inherit pname file hash kind; };
-      inherit pname file version curlOpts;
+      inherit pname file version curlOpts predictedURL;
 
-      builder = ./fetch-wheel.sh;
+      builder = ./fetch-from-pypi.sh;
 
       outputHashMode = "flat";
       outputHashAlgo = "sha256";
       outputHash = hash;
+
+      passthru = {
+        urls = [ predictedURL ]; # retain compatibility with nixpkgs' fetchurl
+      };
     })
   );
 
-  # Fetch the artifacts from the PyPI index. Since we get all
-  # info we need from the lock file we don't use nixpkgs' fetchPyPi
-  # as it modifies casing while not providing anything we don't already
-  # have.
-  #
-  # Args:
-  #   pname: package name
-  #   file: filename including extension
-  #   hash: SRI hash
-  #   kind: Language implementation and version tag https://www.python.org/dev/peps/pep-0427/#file-name-convention
-  fetchFromPypi = lib.makeOverridable (
-    { pname, file, hash, kind }:
-    if lib.strings.hasSuffix "whl" file then fetchWheelFromPypi { inherit pname file hash kind; }
-    else
-      pkgs.fetchurl {
-        url = predictURLFromPypi { inherit pname file hash kind; };
-        inherit hash;
-      }
-  );
   getBuildSystemPkgs =
     { pythonPackages
     , pyProject
@@ -215,7 +201,6 @@ in
 {
   inherit
     fetchFromPypi
-    fetchWheelFromPypi
     getManyLinuxDeps
     isCompatible
     readTOML
