@@ -263,6 +263,16 @@ self: super:
     '';
   };
 
+  # remove eth-hash dependency because eth-hash also depends on eth-utils causing a cycle.
+  eth-utils = super.eth-utils.overridePythonAttrs (old: {
+    propagatedBuildInputs =
+      builtins.filter (i: i.pname != "eth-hash") old.propagatedBuildInputs;
+    preConfigure = ''
+      ${old.preConfigure or ""}
+      sed -i '/eth-hash/d' setup.py
+    '';
+  });
+
   faker = super.faker.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
@@ -279,6 +289,10 @@ self: super:
       '';
     }
   );
+
+  fastecdsa = super.fastecdsa.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs ++ [ pkgs.gmp.dev ];
+  });
 
   fastparquet = super.fastparquet.overridePythonAttrs (
     old: {
@@ -1096,6 +1110,10 @@ self: super:
     }
   );
 
+  pytezos = super.pytezos.override (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libsodium ];
+  });
+
   python-bugzilla = super.python-bugzilla.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
@@ -1412,6 +1430,17 @@ self: super:
       enableParallelBuilding = true;
     }
   );
+
+  secp256k1 = super.secp256k1.overridePythonAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig pkgs.autoconf pkgs.automake pkgs.libtool ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
+    doCheck = false;
+    # Local setuptools versions like "x.y.post0" confuse an internal check
+    postPatch = ''
+      substituteInPlace setup.py \
+        --replace 'setuptools_version.' '"${self.setuptools.version}".'
+    '';
+  });
 
   shapely = super.shapely.overridePythonAttrs (
     old: {
