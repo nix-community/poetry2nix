@@ -28,7 +28,7 @@ pythonPackages.callPackage
     }@args:
     let
       inherit (pkgs) stdenv;
-      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromPypi moduleName;
+      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi moduleName;
 
       inherit (import ./pep425.nix {
         inherit lib poetryLib python;
@@ -48,6 +48,7 @@ pythonPackages.callPackage
       isGit = isSource && source.type == "git";
       isUrl = isSource && source.type == "url";
       isLocal = isSource && source.type == "directory";
+      isLegacy = isSource && source.type == "legacy";
       localDepPath = toPath source.url;
 
       buildSystemPkgs =
@@ -171,6 +172,14 @@ pythonPackages.callPackage
             }
         else if isLocal then
           (poetryLib.cleanPythonSources { src = localDepPath; })
+        else if isLegacy then
+          fetchFromLegacy
+            {
+              pname = name;
+              inherit python;
+              inherit (fileInfo) file hash;
+              inherit (source) url;
+            }
         else
           fetchFromPypi {
             pname = name;

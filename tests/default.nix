@@ -20,6 +20,7 @@ in
 builtins.removeAttrs
 {
   trivial = callTest ./trivial { };
+  legacy = callTest ./legacy { };
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };
