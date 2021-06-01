@@ -141,7 +141,6 @@ let
       {
         nativeBuildInputs = [ python ];
         impureEnvVars = lib.fetchers.proxyImpureEnvVars;
-        SSL_CERT_FILE = "${pkgs.cacert.out}/etc/ssl/certs/ca-bundle.crt";
         outputHashMode = "flat";
         outputHashAlgo = "sha256";
         outputHash = hash;
