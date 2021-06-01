@@ -175,6 +175,7 @@ pythonPackages.callPackage
           fetchFromPypi {
             pname = name;
             inherit (fileInfo) file hash kind;
+            inherit version;
           };
     }
   )
