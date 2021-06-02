@@ -89,7 +89,7 @@ let
   #   kind: Language implementation and version tag
   predictURLFromPypi = lib.makeOverridable (
     { pname, file, hash, kind }:
-    "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}"
+    "https://files.pythonhosted.org/packages/${kind}/${builtins.substring 0 1 file}/${pname}/${file}"
   );
 
 
