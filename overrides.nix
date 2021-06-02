@@ -636,6 +636,10 @@ self: super:
         cat > setup.cfg <<EOF
         [libs]
         system_freetype = True
+      '' + lib.optionalString stdenv.isDarwin ''
+        # LTO not working in darwin stdenv, see NixOS/nixpkgs/pull/19312
+        enable_lto = false
+      '' + ''
         EOF
       '';
 
