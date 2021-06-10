@@ -1851,4 +1851,11 @@ self: super:
     }
   );
 
+  lazy-object-proxy = super.lazy-object-proxy.overridePythonAttrs (
+    old: {
+      # disable the removal of pyproject.toml, required because of setuptools_scm
+      dontPreferSetupPy = true;
+    }
+  );
+
 }
