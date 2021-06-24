@@ -5,12 +5,12 @@
 # https://discuss.python.org/t/pip-download-just-the-source-packages-no-building-no-metadata-etc/4651/12
 
 import sys
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 from html.parser import HTMLParser
 import urllib.request
 import shutil
 import ssl
-import os
+from os.path import normpath
 
 
 # Parse the legacy index page to extract the href and package names
@@ -66,10 +66,23 @@ if urlparse(parser.sources[package_filename]).netloc == '':
     package_url = index_url + "/" + parser.sources[package_filename]
 else:
     package_url = parser.sources[package_filename]
-print("Downloading %s" % package_url)
+
+# Handle urls containing "../"
+parsed_url = urlparse(package_url)
+real_package_url = urlunparse(
+    (
+        parsed_url.scheme,
+        parsed_url.netloc,
+        normpath(parsed_url.path),
+        parsed_url.params,
+        parsed_url.query,
+        parsed_url.fragment,
+    )
+)
+print("Downloading %s" % real_package_url)
 
 response = urllib.request.urlopen(
-    package_url,
+    real_package_url,
     context=context)
 
 with response as r:
