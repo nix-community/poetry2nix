@@ -1,0 +1,73 @@
+
+version: 2.1
+
+workflows:
+  version: 2
+
+  workflow:
+    jobs:
+      - Linux
+      - MacOS
+
+jobs:
+
+  Linux:
+    docker:
+      - image: nixos/nix
+
+    steps:
+
+      - checkout
+
+      - run:
+          name: Build
+          command: |
+            nix-shell --run "python --version"
+
+  MacOS:
+    macos:
+      xcode: 11.4.1
+
+    steps:
+
+      - run:
+          name: Install Nix
+          command: |
+            # Nix installation adapted from
+            # https://github.com/cachix/install-nix-action/blob/master/lib/install-nix.sh
+            set -euo pipefail
+
+            # This paragraph's steps are copied from
+            # https://github.com/NixOS/nix/blob/26fcab53e05ce66f5533f0f07ed13d727a891c8d/scripts/create-darwin-volume.sh
+            echo nix | sudo tee -a /etc/synthetic.conf
+            /System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -B
+            disk=$(diskutil info -plist / | xpath "/plist/dict/key[text()='ParentWholeDisk']/following-sibling::string[1]/text()" 2>/dev/null)
+            sudo diskutil apfs addVolume "$disk" APFS 'Nix Store' -mountpoint /nix
+
+            # Can't be bothered to get a daemon installation to work, so we'll
+            # just do a single-user installation instead.
+            sudo diskutil enableOwnership /nix
+            sudo chown -R "$(whoami)" /nix
+
+            sh <(curl -sS --retry 5 --retry-connrefused -L https://nixos.org/nix/install) </dev/null --no-channel-add
+
+            # Disable spotlight indexing of /nix to speed up performance
+            sudo mdutil -i off /nix
+
+            sudo mkdir -p /etc/nix
+            echo "max-jobs = auto" | sudo tee -a /etc/nix/nix.conf
+
+            # macOS needs certificates hints
+            cert_file=/nix/var/nix/profiles/per-user/$(whoami)/profile/etc/ssl/certs/ca-bundle.crt
+            echo "export NIX_SSL_CERT_FILE=$cert_file" >> $BASH_ENV
+
+            # Set paths
+            echo "export PATH=/nix/var/nix/profiles/per-user/$(whoami)/profile/bin:\$PATH" >> $BASH_ENV
+
+      - checkout
+
+      - run:
+          name: Build
+          command: |
+            nix-shell --run "python --version"
+
