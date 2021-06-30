@@ -52,6 +52,7 @@ builtins.removeAttrs
   ansible-molecule = callTest ./ansible-molecule { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   markupsafe2 = callTest ./markupsafe2 { };
+  pendulum = callTest ./pendulum { };
 
   # Test building poetry
   inherit poetry;
