@@ -1865,4 +1865,28 @@ self: super:
     '';
   });
 
+  pygraphviz = super.pygraphviz.overridePythonAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.graphviz ];
+  });
+
+  pyjsg = super.pyjsg.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
+
+  pyshex = super.pyshex.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
+
+  pyshexc = super.pyshexc.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
+
+  shexjsg = super.shexjsg.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
+
+  sparqlslurper = super.sparqlslurper.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
 }
