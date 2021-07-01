@@ -44,9 +44,13 @@ package_filename = sys.argv[3]
 
 print("Reading index %s" % index_url)
 
+context = ssl.create_default_context()
+context.check_hostname = False
+context.verify_mode = ssl.CERT_NONE
+
 response = urllib.request.urlopen(
     index_url,
-    context=ssl.CERT_NONE)
+    context=context)
 index = response.read()
 
 parser = Pep503()
@@ -66,7 +70,7 @@ print("Downloading %s" % package_url)
 
 response = urllib.request.urlopen(
     package_url,
-    context=ssl.CERT_NONE)
+    context=context)
 
 with response as r:
     shutil.copyfileobj(r, package_file)
