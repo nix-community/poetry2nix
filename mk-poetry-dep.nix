@@ -71,7 +71,10 @@ pythonPackages.callPackage
           sourceDist = builtins.filter isSdist fileCandidates;
           eggs = builtins.filter isEgg fileCandidates;
           entries = (if preferWheel then binaryDist ++ sourceDist else sourceDist ++ binaryDist) ++ eggs;
-          lockFileEntry = builtins.head entries;
+          lockFileEntry = (
+            if lib.length entries > 0 then builtins.head entries
+            else throw "Missing suitable source/wheel file entry for ${name}"
+          );
           _isEgg = isEgg lockFileEntry;
         in
         rec {
