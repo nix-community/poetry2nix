@@ -28,6 +28,10 @@ builtins.removeAttrs
   top-packages-2 = callTest ./common-pkgs-2 { };
   pep425 = pkgs.callPackage ./pep425 { inherit pep425;inherit pep425OSX;inherit pep425Python37; };
   env = callTest ./env { };
+  file-src-deps = callTest ./file-src-deps { };
+  file-src-deps-level2 = callTest ./file-src-deps-level2 { };
+  file-wheel-deps = callTest ./file-wheel-deps { };
+  file-wheel-deps-level2 = callTest ./file-wheel-deps-level2 { };
   git-deps = callTest ./git-deps { };
   git-deps-pinned = callTest ./git-deps-pinned { };
   cli = poetry2nix;
