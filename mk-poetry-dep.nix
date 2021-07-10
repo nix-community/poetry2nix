@@ -47,7 +47,8 @@ pythonPackages.callPackage
       isSource = source != null;
       isGit = isSource && source.type == "git";
       isUrl = isSource && source.type == "url";
-      isLocal = isSource && source.type == "directory";
+      isDirectory = isSource && source.type == "directory";
+      isFile = isSource && source.type == "file";
       isLegacy = isSource && source.type == "legacy";
       localDepPath = toPath source.url;
 
@@ -97,7 +98,7 @@ pythonPackages.callPackage
         "toml" # Toml is an extra for setuptools-scm
       ];
       baseBuildInputs = lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm;
-      format = if isLocal || isGit || isUrl then "pyproject" else fileInfo.format;
+      format = if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
     in
     buildPythonPackage {
       pname = moduleName name;
@@ -121,7 +122,7 @@ pythonPackages.callPackage
         baseBuildInputs
         ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools
         ++ lib.optional (!isSource) (getManyLinuxDeps fileInfo.name).pkg
-        ++ lib.optional isLocal buildSystemPkgs
+        ++ lib.optional isDirectory buildSystemPkgs
         ++ lib.optional (!__isBootstrap) pythonPackages.poetry
       );
 
@@ -173,8 +174,10 @@ pythonPackages.callPackage
             {
               inherit (source) url;
             }
-        else if isLocal then
+        else if isDirectory then
           (poetryLib.cleanPythonSources { src = localDepPath; })
+        else if isFile then
+          localDepPath
         else if isLegacy then
           fetchFromLegacy
             {
