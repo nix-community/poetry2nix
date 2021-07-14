@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "file-wheel-deps"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+trivial = { path = "../trivial/dist/trivial-0.1.0-py3-none-any.whl" }
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
