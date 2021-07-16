@@ -298,28 +298,12 @@ in pkgs.poetry2nix.mkPoetryApplication {
 
 ## Using the flake
 
-For the experimental flakes functionality we provide poetry2nix as a flake providing an overlay
-to use with [nixpkgs](https://nixos.org/nixpkgs/manual).
+For the experimental flakes functionality we provide _poetry2nix_ as a flake providing an overlay
+to use with [nixpkgs](https://nixos.org/nixpkgs/manual). Additionally, the flake provides
+a flake template to quickly start using _poetry2nix_ in a project:
 
-#### Example
-
-```nix
-{
-    description = "Your flake using poetry2nix";
-
-    inputs.nixpkgs.url = "github:NixOS/nixpkgs";
-    inputs.utils.url = "github:numtide/flake-utils";
-    inputs.poetry2nix-src.url = "github:nix-community/poetry2nix";
-
-    outputs = {nixpkgs, utils, poetry2nix-src, self}: utils.lib.eachDefaultSystem (system: let
-
-      pkgs = import nixpkgs { inherit system; overlays = [ poetry2nix-src.overlay ]; };
-
-    in
-      {
-         # use pkgs.poetry2nix here.
-      });
-  }
+```sh
+nix flake --template github:nix-community/poetry2nix
 ```
 
 ## Contributing

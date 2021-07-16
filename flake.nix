@@ -5,8 +5,18 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
   outputs = { self, nixpkgs, flake-utils }:
-    {
+    rec {
       overlay = import ./overlay.nix;
+
+      templates = {
+        app = {
+          path = ./templates/app;
+          description = "An example of a NixOS container";
+        };
+      };
+
+      defaultTemplate = templates.app;
+
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
