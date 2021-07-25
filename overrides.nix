@@ -1381,6 +1381,12 @@ self: super:
     }
   );
 
+  requests-unixsocket = super.requests-unixsocket.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pbr ];
+    }
+  );
+
   rlp = super.rlp.overridePythonAttrs {
     preConfigure = ''
       substituteInPlace setup.py --replace \'setuptools-markdown\' ""
