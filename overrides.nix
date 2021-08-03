@@ -969,6 +969,7 @@ self: super:
             ];
 
             PYARROW_BUILD_TYPE = "release";
+            PYARROW_WITH_DATASET = true;
             PYARROW_WITH_PARQUET = true;
             PYARROW_CMAKE_OPTIONS = [
               "-DCMAKE_INSTALL_RPATH=${ARROW_HOME}/lib"
