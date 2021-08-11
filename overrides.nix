@@ -1388,6 +1388,10 @@ self: super:
     }
   );
 
+  requestsexceptions = super.requestsexceptions.overridePythonAttrs (old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [ self.pbr ];
+  });
+
   rlp = super.rlp.overridePythonAttrs {
     preConfigure = ''
       substituteInPlace setup.py --replace \'setuptools-markdown\' ""
