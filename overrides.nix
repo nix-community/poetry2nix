@@ -1907,4 +1907,8 @@ self: super:
   sparqlslurper = super.sparqlslurper.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
   });
+
+  tomli = super.tomli.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
+  });
 }
