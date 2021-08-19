@@ -163,11 +163,11 @@ pythonPackages.callPackage
       src =
         if isGit then
           (
-            builtins.fetchGit {
+            builtins.fetchGit ({
               inherit (source) url;
               rev = source.resolved_reference or source.reference;
-              ref = sourceSpec.branch or sourceSpec.rev or (if sourceSpec?tag then "refs/tags/${sourceSpec.tag}" else "HEAD");
-            }
+              ref = sourceSpec.branch or (if sourceSpec ? tag then "refs/tags/${sourceSpec.tag}" else "HEAD");
+            } // (if sourceSpec ? rev then { allRefs = true; } else { }))
           )
         else if isUrl then
           builtins.fetchTarball
