@@ -1426,6 +1426,13 @@ self: super:
     '';
   });
 
+  ruamel-yaml = super.ruamel-yaml.overridePythonAttrs (
+    old: {
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
+        ++ [ self.ruamel-yaml-clib ];
+    }
+  );
+
   scipy = super.scipy.overridePythonAttrs (
     old:
     if old.format != "wheel" then {
