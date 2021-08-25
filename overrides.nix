@@ -1479,6 +1479,10 @@ self: super:
     }
   );
 
+  shellcheck-py = super.shellcheck-py.override {
+    preferWheel = true;
+  };
+
   shellingham =
     if lib.versionAtLeast super.shellingham.version "1.3.2" then
       (
