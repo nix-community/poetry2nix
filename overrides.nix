@@ -1285,6 +1285,12 @@ self: super:
     }
   );
 
+  pytest-randomly = super.pytest-randomly.overrideAttrs (old: {
+    postPatch = old.postPatch or "" + ''
+      sed -i 's/importlib-metadata >= 3.6.0 ; python_version < "3.10"//' setup.cfg
+    '';
+  });
+
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
   pytest-pylint = super.pytest-pylint.overridePythonAttrs (
