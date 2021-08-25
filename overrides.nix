@@ -760,7 +760,11 @@ self: super:
 
   mypy = super.mypy.overridePythonAttrs (
     old: {
-      MYPY_USE_MYPYC = pkgs.stdenv.buildPlatform.is64bit;
+      MYPY_USE_MYPYC =
+        # is64bit: unfortunately the build would exhaust all possible memory on i686-linux.
+        stdenv.buildPlatform.is64bit
+        # Derivation fails to build since v0.900 if mypyc is enabled.
+        && lib.strings.versionOlder old.version "0.900";
     }
   );
 
