@@ -1900,7 +1900,7 @@ self: super:
   pendulum = super.pendulum.overridePythonAttrs (old: {
     # Technically incorrect, but fixes the build error..
     preInstall = lib.optionalString stdenv.isLinux ''
-      mv ./dist/*.whl $(echo ./dist/*.whl | sed s/'manylinux_[0-9]*_[0-9]*'/'manylinux1'/)
+      mv --no-clobber ./dist/*.whl $(echo ./dist/*.whl | sed s/'manylinux_[0-9]*_[0-9]*'/'manylinux1'/)
     '';
   });
 
