@@ -94,6 +94,14 @@ self: super:
     }
   );
 
+  borgbackup = super.borgbackup.overridePythonAttrs (
+    old: {
+      BORG_OPENSSL_PREFIX = pkgs.openssl.dev;
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl pkgs.acl ];
+    }
+  );
+
   cairocffi = super.cairocffi.overridePythonAttrs (
     old: {
       inherit (pkgs.python3.pkgs.cairocffi) patches;
@@ -1683,6 +1691,14 @@ self: super:
       substituteInPlace setup.py --replace \'setuptools-markdown\' ""
     '';
   };
+
+  weblate-language-data = super.weblate-language-data.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [
+        self.translate-toolkit
+      ];
+    }
+  );
 
   wheel =
     let
