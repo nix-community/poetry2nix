@@ -1504,6 +1504,25 @@ self: super:
     }
   );
 
+  shellcheck-py = super.shellcheck-py.overridePythonAttrs (old: {
+
+    # Make fetching/installing external binaries no-ops
+    preConfigure =
+      let
+        fakeCommand = "type('FakeCommand', (Command,), {'initialize_options': lambda self: None, 'finalize_options': lambda self: None, 'run': lambda self: None})";
+      in
+      ''
+        substituteInPlace setup.py \
+          --replace "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
+          --replace "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
+      '';
+
+    propagatedUserEnvPkgs = (old.propagatedUserEnvPkgs or [ ]) ++ [
+      pkgs.shellcheck
+    ];
+
+  });
+
   shellingham =
     if lib.versionAtLeast super.shellingham.version "1.3.2" then
       (
