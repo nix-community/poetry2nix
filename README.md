@@ -303,7 +303,7 @@ to use with [nixpkgs](https://nixos.org/nixpkgs/manual). Additionally, the flake
 a flake template to quickly start using _poetry2nix_ in a project:
 
 ```sh
-nix flake --template github:nix-community/poetry2nix
+nix flake init --template github:nix-community/poetry2nix
 ```
 
 ## Contributing
