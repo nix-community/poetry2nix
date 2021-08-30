@@ -1971,4 +1971,10 @@ self: super:
   tomli = super.tomli.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
   });
+
+  virtualenv = super.virtualenv.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.cfg --replace 'platformdirs>=2,<3' 'platformdirs'
+    '';
+  });
 }
