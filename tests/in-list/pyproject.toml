@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test_sqlalchemy"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+SQLAlchemy = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

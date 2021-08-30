@@ -34,6 +34,7 @@ builtins.removeAttrs
   file-wheel-deps-level2 = callTest ./file-wheel-deps-level2 { };
   git-deps = callTest ./git-deps { };
   git-deps-pinned = callTest ./git-deps-pinned { };
+  in-list = callTest ./in-list { };
   cli = poetry2nix;
   path-deps = callTest ./path-deps { };
   path-deps-level2 = callTest ./path-deps-level2 { };
