@@ -173,6 +173,11 @@ self: super:
     }
   );
 
+  cwcwidth = super.cwcwidth.overridePythonAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ])
+      ++ [ self.cython ];
+  });
+
   daphne = super.daphne.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
@@ -911,6 +916,12 @@ self: super:
             };
           }) else super.pip;
 
+  platformdirs = super.platformdirs.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
+    '';
+  });
+
   poetry-core = super.poetry-core.overridePythonAttrs (old: {
     # "Vendor" dependencies (for build-system support)
     postPatch = ''
@@ -1343,6 +1354,10 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.snappy ];
     }
   );
+
+  pythran = super.pythran.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
+  });
 
   ffmpeg-python = super.ffmpeg-python.overridePythonAttrs (
     old: {
