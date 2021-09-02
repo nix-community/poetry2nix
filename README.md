@@ -178,25 +178,6 @@ poetry2nix.mkPoetryEditablePackage {
 }
 ```
 
-
-### mkPoetryPackages
-Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poetryLock }`. Where `python` is the interpreter specified, `poetryPackages` is a list of all generated python packages, `pyProject` is the parsed `pyproject.toml` and `poetryLock` is the parsed `poetry.lock` file. `mkPoetryPackages` takes an attribute set with the following attributes (attributes without default are mandatory):
-
-- **projectDir**: path to the root of the project.
-- **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
-- **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
-- **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
-- **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
-- **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
-
-#### Example
-```nix
-poetry2nix.mkPoetryPackages {
-    projectDir = ./.;
-    python = python35;
-}
-```
-
 ### defaultPoetryOverrides
 
 _poetry2nix_ bundles a set of default overrides that fix problems with various Python packages. These overrides are implemented in [overrides.nix](./overrides.nix).
