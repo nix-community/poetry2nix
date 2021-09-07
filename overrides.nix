@@ -595,7 +595,27 @@ self: super:
   });
 
   llvmlite = super.llvmlite.overridePythonAttrs (
-    old: {
+    old:
+    let
+      llvm =
+        if lib.versionAtLeast old.version "0.37.0" then
+          pkgs.llvmPackages_11.llvm
+        else if (lib.versionOlder old.version "0.37.0" && lib.versionAtLeast old.version "0.34.0") then
+          pkgs.llvmPackages_10.llvm
+        else if (lib.versionOlder old.version "0.34.0" && lib.versionAtLeast old.version "0.33.0") then
+          pkgs.llvmPackages_9.llvm
+        else if (lib.versionOlder old.version "0.33.0" && lib.versionAtLeast old.version "0.29.0") then
+          pkgs.llvmPackages_8.llvm
+        else if (lib.versionOlder old.version "0.28.0" && lib.versionAtLeast old.version "0.27.0") then
+          pkgs.llvmPackages_7.llvm
+        else if (lib.versionOlder old.version "0.27.0" && lib.versionAtLeast old.version "0.23.0") then
+          pkgs.llvmPackages_6.llvm
+        else if (lib.versionOlder old.version "0.23.0" && lib.versionAtLeast old.version "0.21.0") then
+          pkgs.llvmPackages_5.llvm
+        else
+          pkgs.llvm; # Likely to fail.
+    in
+    {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.llvm ];
 
       # Disable static linking
@@ -608,12 +628,12 @@ self: super:
 
       # Set directory containing llvm-config binary
       preConfigure = ''
-        export LLVM_CONFIG=${pkgs.llvm}/bin/llvm-config
+        export LLVM_CONFIG=${llvm.dev}/bin/llvm-config
       '';
 
       __impureHostDeps = lib.optionals pkgs.stdenv.isDarwin [ "/usr/lib/libm.dylib" ];
 
-      passthru = old.passthru // { llvm = pkgs.llvm; };
+      passthru = old.passthru // { llvm = llvm; };
     }
   );
 
