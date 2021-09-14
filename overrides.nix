@@ -594,6 +594,10 @@ self: super:
     propagatedBuildInputs = [ pkgs.libvirt ];
   });
 
+  licensecheck = super.licensecheck.overridePythonAttrs (old: {
+    dontPreferSetupPy = true;
+  });
+
   llvmlite = super.llvmlite.overridePythonAttrs (
     old:
     let
