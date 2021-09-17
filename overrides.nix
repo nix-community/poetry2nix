@@ -568,6 +568,13 @@ self: super:
     }
   );
 
+  jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
+    old: rec {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.jupyter-packaging ];
+    }
+  );
+
+
   keyring = super.keyring.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [
