@@ -94,6 +94,13 @@ self: super:
     }
   );
 
+  # https://github.com/nix-community/poetry2nix/issues/375
+  black = super.black.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace 'platformdirs>=2' 'platformdirs'
+    '';
+  });
+
   borgbackup = super.borgbackup.overridePythonAttrs (
     old: {
       BORG_OPENSSL_PREFIX = pkgs.openssl.dev;
