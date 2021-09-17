@@ -707,6 +707,7 @@ self: super:
         cat > setup.cfg <<EOF
         [libs]
         system_freetype = True
+        system_qhull = True
       '' + lib.optionalString stdenv.isDarwin ''
         # LTO not working in darwin stdenv, see NixOS/nixpkgs/pull/19312
         enable_lto = false
@@ -717,11 +718,16 @@ self: super:
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         pkgs.libpng
         pkgs.freetype
+        pkgs.qhull
       ]
         ++ lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
         ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
         ++ lib.optionals enableQt [ self.pyqt5 ]
       ;
+
+      preBuild = ''
+        cp -r ${pkgs.qhull} .
+      '';
 
       inherit (super.matplotlib) patches;
     }
@@ -744,6 +750,12 @@ self: super:
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.autoPatchelfHook ];
 
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.zlib self.cppy ];
+    }
+  );
+
+  mmdet = super.mmdet.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.pytorch ];
     }
   );
 
@@ -887,6 +899,12 @@ self: super:
         blas = blas;
         inherit blasImplementation cfg;
       };
+    }
+  );
+
+  opencv-python = super.opencv-python.overridePythonAttrs (
+    old: rec {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.scikit-build ];
     }
   );
 
@@ -1426,6 +1444,13 @@ self: super:
     }
   );
 
+  pywavelets = super.pywavelets.overridePythonAttrs (
+    old: {
+      HDF5_DIR = "${pkgs.hdf5}";
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.hdf5 ];
+    }
+  );
+
   pyzmq = super.pyzmq.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
@@ -1593,6 +1618,7 @@ self: super:
 
   tables = super.tables.overridePythonAttrs (
     old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
       HDF5_DIR = "${pkgs.hdf5}";
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
       propagatedBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.hdf5 self.numpy self.numexpr ];
@@ -1607,6 +1633,27 @@ self: super:
       ];
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
+    }
+  );
+
+  tensorboard = super.tensorboard.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [
+        self.wheel
+        self.absl-py
+      ];
+      HDF5_DIR = "${pkgs.hdf5}";
+      propagatedBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+        pkgs.hdf5
+        self.google-auth-oauthlib
+        self.tensorboard-plugin-wit
+        self.numpy
+        self.markdown
+        self.tensorboard-data-server
+        self.grpcio
+        self.protobuf
+        self.werkzeug
+      ];
     }
   );
 
