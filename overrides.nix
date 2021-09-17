@@ -58,6 +58,12 @@ self: super:
     '';
   });
 
+  argcomplete = super.argcomplete.overridePythonAttrs (
+    old: rec {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.importlib-metadata ];
+    }
+  );
+
   arpeggio = super.arpeggio.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
