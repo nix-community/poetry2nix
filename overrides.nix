@@ -358,6 +358,12 @@ self: super:
     }
   );
 
+  gitpython = super.gitpython.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.typing-extensions ];
+    }
+  );
+
   grpcio = super.grpcio.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.cython pkgs.pkg-config ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.c-ares pkgs.openssl pkgs.zlib ];
