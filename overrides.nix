@@ -1611,9 +1611,9 @@ self: super:
       (
         super.shellingham.overridePythonAttrs (
           old:
-            if old.format != "wheel" then {
-              format = "pyproject";
-            } else old
+          if old.format != "wheel" then {
+            format = "pyproject";
+          } else old
         )
       ) else super.shellingham;
 
