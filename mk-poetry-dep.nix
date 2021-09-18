@@ -38,7 +38,7 @@ pythonPackages.callPackage
       fileCandidates =
         let
           supportedRegex = ("^.*(" + builtins.concatStringsSep "|" supportedExtensions + ")");
-          matchesVersion = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." ] [ "\\." ] version + ".*$") fname != null;
+          matchesVersion = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." "+" ] [ "\\." "\\+" ] version + ".*$") fname != null;
           hasSupportedExtension = fname: builtins.match supportedRegex fname != null;
           isCompatibleEgg = fname: ! lib.strings.hasSuffix ".egg" fname || lib.strings.hasSuffix "py${python.pythonVersion}.egg" fname;
         in
