@@ -1610,9 +1610,10 @@ self: super:
     if lib.versionAtLeast super.shellingham.version "1.3.2" then
       (
         super.shellingham.overridePythonAttrs (
-          old: {
-            format = "pyproject";
-          }
+          old:
+            if old.format != "wheel" then {
+              format = "pyproject";
+            } else old
         )
       ) else super.shellingham;
 
