@@ -1333,7 +1333,7 @@ self: super:
   );
 
   pytest-randomly = super.pytest-randomly.overrideAttrs (old: {
-    propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
       self.importlib-metadata
     ];
   });
