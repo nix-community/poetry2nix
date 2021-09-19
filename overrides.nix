@@ -2074,7 +2074,7 @@ self: super:
   });
 
   tomli = super.tomli.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit-core ];
   });
 
   virtualenv = super.virtualenv.overridePythonAttrs (old: {
