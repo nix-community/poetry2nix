@@ -96,6 +96,7 @@ pythonPackages.callPackage
         "setuptools_scm"
         "setuptools-scm"
         "toml" # Toml is an extra for setuptools-scm
+        "tomli" # tomli is an extra for later versions of setuptools-scm
       ];
       baseBuildInputs = lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm;
       format = if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
