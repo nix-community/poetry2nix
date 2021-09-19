@@ -1352,6 +1352,8 @@ self: super:
 
   pytest = super.pytest.overridePythonAttrs (
     old: {
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.importlib-metadata ];
+
       # Fixes https://github.com/pytest-dev/pytest/issues/7891
       postPatch = old.postPatch or "" + ''
         sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
@@ -1368,12 +1370,6 @@ self: super:
       '';
     }
   );
-
-  pytest-randomly = super.pytest-randomly.overrideAttrs (old: {
-    postPatch = old.postPatch or "" + ''
-      sed -i 's/importlib-metadata >= 3.6.0 ; python_version < "3.10"//' setup.cfg
-    '';
-  });
 
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
