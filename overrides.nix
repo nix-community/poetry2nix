@@ -1606,17 +1606,6 @@ self: super:
 
   });
 
-  shellingham =
-    if lib.versionAtLeast super.shellingham.version "1.3.2" then
-      (
-        super.shellingham.overridePythonAttrs (
-          old:
-          if old.format != "wheel" then {
-            format = "pyproject";
-          } else old
-        )
-      ) else super.shellingham;
-
   tables = super.tables.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
