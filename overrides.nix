@@ -100,6 +100,12 @@ self: super:
     }
   );
 
+  black = super.black.overridePythonAttrs (
+    old: {
+      dontPreferSetupPy = true;
+    }
+  );
+
   borgbackup = super.borgbackup.overridePythonAttrs (
     old: {
       BORG_OPENSSL_PREFIX = pkgs.openssl.dev;
