@@ -1370,9 +1370,9 @@ self: super:
   );
 
   pytest-randomly = super.pytest-randomly.overrideAttrs (old: {
-    postPatch = old.postPatch or "" + ''
-      sed -i 's/importlib-metadata >= 3.6.0 ; python_version < "3.10"//' setup.cfg
-    '';
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+      self.importlib-metadata
+    ];
   });
 
   pytest-runner = super.pytest-runner or super.pytestrunner;
