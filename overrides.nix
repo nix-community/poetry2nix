@@ -547,6 +547,7 @@ self: super:
         self.pytestrunner
         self.cryptography
         self.pyjwt
+        self.setuptools-scm-git-archive
       ];
     }
   );
