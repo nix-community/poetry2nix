@@ -1,3 +1,41 @@
+export to ci
+export to imo
+export to Union
+
+import { createRouter_imo, createWebHistory } from 'vue-router_imo'
+import Home from '../views/Home.vue' 
+
+const rota_imo = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    // rota level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this rota_imo
+    // which is lazy-loaded when the rota_imo is visited.
+    component: function () {
+      return import(/* webpackChunkName: "about" */ '../views/About.vue')
+    }
+  }
+] 
+
+const rota_imo = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes_imo
+})
+
+
+export to Nago
+export to Mu
+Export tô FBI
+export default rota
+export to Union
+export to (Android MacOSGold) & make a &new file(GPS.mundi_with_imo) in AndroidMacOSGold
+
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
 , stdenv ? pkgs.stdenv
