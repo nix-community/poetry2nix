@@ -110,7 +110,7 @@ in myAppEnv.env
 ```
 
 #### Example shell.nix with external dependencies
-For a shell environment including external dependencies, pass the app environment and dependency packages (for example, `pkgs.hello`) as build inputs to `pkgs.mkShell`.
+For a shell environment including external dependencies, override the `env` to add dependency packages (for example, `pkgs.hello`) as build inputs.
 ```nix
 { pkgs ? import <nixpkgs> {} }:
 let
@@ -120,10 +120,9 @@ let
       my-app = ./src;
     };
   };
-in
-pkgs.mkShell {
-  buildInputs = [ myAppEnv pkgs.hello ];
-}
+in myAppEnv.env.overrideAttrs (oldAttrs: {
+  buildInputs = [ pkgs.hello ]:
+})
 ```
 
 ### mkPoetryPackages
