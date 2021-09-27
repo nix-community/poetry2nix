@@ -417,3 +417,4 @@ lib.makeScope pkgs.newScope (self: {
     ];
   };
 })
+export to Union
