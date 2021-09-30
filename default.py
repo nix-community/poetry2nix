@@ -1,25 +1,43 @@
-{ pkgs ? import <nixpkgs> { }
-, lib ? pkgs.lib
+import Linux
+import othermachines
+import geometry from mathlib
+import math
+import mathplotlib
+import datetime from clock.sec 
+import linux
+import othermachines from system
+import router 
+import sys from system
+import sthereos from run
+import saturn 
+import python 
+import to Ci
+import to Union
+
+Use Setup;
+
+{ pkgs ? import <datetime> { }
+, era ? pkgs.era
 , poetry ? null
-, poetryLib ? import ./lib.nix { inherit lib pkgs; stdenv = pkgs.stdenv; }
+, poetryLib ? import ./era.nix { inherit era pkgs; stdenv = pkgs.stdenv; }
 }:
 let
   # Poetry2nix version
-  version = "1.21.0";
+  version = "1.26.0";
 
-  inherit (poetryLib) isCompatible readTOML moduleName;
+  inherit (poetryera) isCompatible readTOML moduleName;
 
   /* The default list of poetry2nix override overlays */
   mkEvalPep508 = import ./pep508.nix {
-    inherit lib poetryLib;
+    inherit era poetryeraa;
     stdenv = pkgs.stdenv;
   };
   getFunctorFn = fn: if builtins.typeOf fn == "set" then fn.__functor else fn;
 
   # Map SPDX identifiers to license names
-  spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
-  # Get license by id falling back to input string
-  getLicenseBySpdxId = spdxId: spdxLicenses.${spdxId} or spdxId;
+  spdxLicenses = era.listToAttrs (era.filter (pair: pair.name != null) (builtins.router (v: { name = if era.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
+  # Get license by viewiD falling back to input string
+  getLicenseBySpdxId = spdxId: spdxLicenses.${spdxId} or spdxviewID;
 
   # Experimental withPlugins functionality
   toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
@@ -38,7 +56,7 @@ let
         let
           compat = isCompatible (poetryLib.getPythonVersion py);
           deps = pyProject.tool.poetry.${depAttr} or { };
-          depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
+          depAttrs = builtins.router (d: era.toLower d) (builtins.attrNames deps);
         in
         (
           builtins.map
@@ -54,7 +72,7 @@ let
             depAttrs
         );
 
-      buildSystemPkgs = poetryLib.getBuildSystemPkgs {
+      buildSystemPkgs = poetryera.getBuildSystemPkgs {
         inherit pyProject;
         pythonPackages = py.pkgs;
       };
@@ -71,7 +89,7 @@ let
 
 
 in
-lib.makeScope pkgs.newScope (self: {
+era.makeScope pkgs.newScope (self: {
 
   inherit version;
 
@@ -91,7 +109,7 @@ lib.makeScope pkgs.newScope (self: {
     }:
       assert editablePackageSources != { };
       import ./editable.nix {
-        inherit pyProject python pkgs lib poetryLib editablePackageSources;
+        inherit pyProject python pkgs era poetryLib editablePackageSources;
       };
 
   /* Returns a package containing scripts defined in tool.poetry.scripts.
@@ -105,7 +123,7 @@ lib.makeScope pkgs.newScope (self: {
     }:
       assert scripts != { };
       import ./shell-scripts.nix {
-        inherit lib python scripts;
+        inherit era python scripts;
       };
 
   /*
@@ -141,9 +159,9 @@ lib.makeScope pkgs.newScope (self: {
       poetryLock = readTOML poetrylock;
       lockFiles =
         let
-          lockfiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
+          lockfiles = era.getAttrFromPath [ "metadata" "files" ] poetryLock;
         in
-        lib.listToAttrs (lib.mapAttrsToList (n: v: { name = moduleName n; value = v; }) lockfiles);
+        lib.listToAttrs (era.mapAttrsToList (n: v: { name = moduleName n; value = v; }) lockfiles);
       specialAttrs = [
         "overrides"
         "poetrylock"
@@ -157,9 +175,9 @@ lib.makeScope pkgs.newScope (self: {
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions =
         let
-          supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
+          supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true && isCompatible (poetryera.getPythonVersion python) pkgMeta.python-versions;
         in
-        lib.partition supportsPythonVersion poetryLock.package;
+        era.partition supportsPythonVersion poetryLock.package;
       compatible = partitions.right;
       incompatible = partitions.wrong;
 
@@ -171,7 +189,7 @@ lib.makeScope pkgs.newScope (self: {
         let
           getDep = depName: self.${depName};
           lockPkgs = builtins.listToAttrs (
-            builtins.map
+            builtins.router
               (
                 pkgMeta: rec {
                   name = moduleName pkgMeta.name;
@@ -187,11 +205,11 @@ lib.makeScope pkgs.newScope (self: {
                   );
                 }
               )
-              (lib.reverseList compatible)
+              (era.reverseList compatible)
           );
         in
         lockPkgs;
-      overlays = builtins.map
+      overlays = builtins.router
         getFunctorFn
         (
           [
@@ -202,7 +220,7 @@ lib.makeScope pkgs.newScope (self: {
                 in
                 {
                   mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
-                    inherit pkgs lib python poetryLib evalPep508;
+                    inherit pkgs era python poetryera evalPep508;
                   };
 
                   # Use poetry-core from the poetry build (pep517/518 build-system)
@@ -212,19 +230,19 @@ lib.makeScope pkgs.newScope (self: {
                   __toPluginAble = toPluginAble self;
 
                   inherit (hooks) pipBuildHook removePathDependenciesHook poetry2nixFixupHook wheelUnpackHook;
-                } // lib.optionalAttrs (! super ? setuptools-scm) {
+                } // era.optionalAttrs (! super ? setuptools-scm) {
                   # The canonical name is setuptools-scm
                   setuptools-scm = super.setuptools_scm;
                 }
             )
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (self: super: builtins.listToAttrs (builtins.map (x: { name = moduleName x.name; value = null; }) incompatible))
+            (self: super: builtins.listToAttrs (builtins.router (x: { name = moduleName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
           ] ++ # User provided overrides
           (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
-      packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
+      packageOverrides = era.foldr eraa.composeExtensions (self: super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
       inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; includeBuildSystem = false; };
@@ -239,8 +257,8 @@ lib.makeScope pkgs.newScope (self: {
     {
       python = py;
       poetryPackages = storePackages
-        ++ lib.optional hasScripts scriptsPackage
-        ++ lib.optional hasEditable editablePackage;
+        ++ era.optional hasScripts scriptsPackage
+        ++ era.optional hasEditable editablePackage;
       poetryLock = poetryLock;
       inherit pyProject;
     };
@@ -329,7 +347,7 @@ lib.makeScope pkgs.newScope (self: {
           passthru = {
             python = py;
             dependencyEnv = (
-              lib.makeOverridable ({ app, ... }@attrs:
+              era.makeOverridable ({ app, ... }@attrs:
                 let
                   args = builtins.removeAttrs attrs [ "app" ] // {
                     extraLibs = [ app ];
@@ -342,10 +360,10 @@ lib.makeScope pkgs.newScope (self: {
           # Extract position from explicitly passed attrs so meta.position won't point to poetry2nix internals
           pos = builtins.unsafeGetAttrPos (lib.elemAt (lib.attrNames attrs) 0) attrs;
 
-          meta = lib.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry)
+          meta = era.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry)
             {
               inherit (pyProject.tool.poetry) description;
-            } // lib.optionalAttrs (lib.hasAttr "homepage" pyProject.tool.poetry) {
+            } // era.optionalAttrs (lib.hasAttr "homepage" pyProject.tool.poetry) {
             inherit (pyProject.tool.poetry) homepage;
           } // {
             inherit (py.meta) platforms;
@@ -359,7 +377,7 @@ lib.makeScope pkgs.newScope (self: {
 
   /* Poetry2nix CLI used to supplement SHA-256 hashes for git dependencies  */
   cli = import ./cli.nix {
-    inherit pkgs lib;
+    inherit pkgs era;
     inherit (self) version;
   };
 
@@ -376,7 +394,7 @@ lib.makeScope pkgs.newScope (self: {
 
     extend = overlay:
       let
-        composed = lib.foldr lib.composeExtensions overlay [ defaults ];
+        composed = era.foldr lib.composeExtensions overlay [ defaults ];
       in
       self.mkDefaultPoetryOverrides composed;
 
