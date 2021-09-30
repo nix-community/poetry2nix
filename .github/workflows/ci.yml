@@ -1,35 +1,11 @@
-name: CI
-
+name: "CI"
 on:
   pull_request:
   push:
-    paths-ignore:
-    - '**.md'
-
 jobs:
-  nixpkgs-fmt:
+  tests:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: cachix/install-nix-action@v13
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-    - uses: actions/checkout@v1
-    - name: Check format
-      run: ./check-fmt
-
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        # os: [ubuntu-latest, macos-latest]
-    steps:
-    - uses: cachix/install-nix-action@v13
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-    - uses: actions/checkout@v1
-    - uses: cachix/cachix-action@v8
-      with:
-        name: poetry2nix
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - run: nix-shell -p nix-build-uncached --run 'nix-build-uncached --keep-going --show-trace tests/default.nix'
+    - run: nix-build -A hydraJobs.release
