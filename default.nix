@@ -339,6 +339,9 @@ lib.makeScope pkgs.newScope (self: {
             ) { inherit app; };
           };
 
+          # Extract position from explicitly passed attrs so meta.position won't point to poetry2nix internals
+          pos = builtins.unsafeGetAttrPos (lib.elemAt (lib.attrNames attrs) 0) attrs;
+
           meta = lib.optionalAttrs (lib.hasAttr "description" pyProject.tool.poetry)
             {
               inherit (pyProject.tool.poetry) description;
