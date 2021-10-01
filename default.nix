@@ -105,7 +105,7 @@ lib.makeScope pkgs.newScope (self: {
     }:
       assert scripts != { };
       import ./shell-scripts.nix {
-        inherit lib python scripts;
+        inherit lib python scripts projectDir;
       };
 
   /*
@@ -130,7 +130,7 @@ lib.makeScope pkgs.newScope (self: {
       scripts = pyProject.tool.poetry.scripts or { };
       hasScripts = scripts != { };
       scriptsPackage = self.mkPoetryScriptsPackage {
-        inherit python scripts;
+        inherit python scripts projectDir;
       };
 
       hasEditable = editablePackageSources != { };
@@ -264,7 +264,7 @@ lib.makeScope pkgs.newScope (self: {
     }:
     let
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels editablePackageSources;
+        inherit projectDir pyproject poetrylock overrides python pwd preferWheels editablePackageSources;
       };
 
       inherit (poetryPython) poetryPackages;

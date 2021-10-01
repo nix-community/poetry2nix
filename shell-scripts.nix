@@ -1,6 +1,7 @@
 { lib
 , scripts
 , python
+, projectDir ? null
 }:
 let
   mkScript = bin: entrypoint:
@@ -14,6 +15,11 @@ let
       #!${python.interpreter}
       import sys
       import re
+
+      ${lib.optionalString (projectDir != null) ''
+        # Add projectDir to load path
+        sys.path.insert(0, "${builtins.toString projectDir}")
+      ''}
 
       # Insert "" to add CWD to import path
       sys.path.insert(0, "")
