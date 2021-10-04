@@ -1854,13 +1854,14 @@ self: super:
     if lib.versionAtLeast super.zipp.version "2.0.0" then
       (
         super.zipp.overridePythonAttrs (
-          old: {
+          old:
+          if (old.format or "pyproject") != "wheel" then {
             prePatch = ''
               substituteInPlace setup.py --replace \
               'setuptools.setup()' \
               'setuptools.setup(version="${super.zipp.version}")'
             '';
-          }
+          } else old
         )
       ) else super.zipp
   ).overridePythonAttrs (
