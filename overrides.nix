@@ -2081,6 +2081,12 @@ self: super:
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit-core ];
   });
 
+  uwsgi = super.uwsgi.overridePythonAttrs (
+    old: rec {
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
+    }
+  );
+
   virtualenv = super.virtualenv.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.cfg --replace 'platformdirs>=2,<3' 'platformdirs'
