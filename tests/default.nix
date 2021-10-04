@@ -59,6 +59,7 @@ builtins.removeAttrs
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   markupsafe2 = callTest ./markupsafe2 { };
   pendulum = callTest ./pendulum { };
+  uwsgi = callTest ./uwsgi { };
 
   # Test building poetry
   inherit poetry;
