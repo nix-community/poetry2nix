@@ -169,11 +169,18 @@ pythonPackages.callPackage
       src =
         if isGit then
           (
-            builtins.fetchGit {
+            builtins.fetchGit ({
               inherit (source) url;
               rev = source.resolved_reference or source.reference;
               ref = sourceSpec.branch or sourceSpec.rev or (if sourceSpec?tag then "refs/tags/${sourceSpec.tag}" else "HEAD");
-            }
+            } // (
+              let
+                nixVersion = builtins.substring 0 3 builtins.nixVersion;
+              in
+              lib.optionalAttrs (lib.versionAtLeast nixVersion "2.4") {
+                allRefs = true;
+              }
+            ))
           )
         else if isUrl then
           builtins.fetchTarball
