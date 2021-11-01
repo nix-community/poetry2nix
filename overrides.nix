@@ -1367,7 +1367,6 @@ self: super:
       postPatch = old.postPatch or "" + ''
         sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
       '';
-      doCheck = false;
     }
   );
 
