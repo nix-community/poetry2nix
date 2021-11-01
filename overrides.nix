@@ -73,7 +73,6 @@ self: super:
   astroid = super.astroid.overridePythonAttrs (
     old: rec {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
-      doCheck = false;
     }
   );
 
