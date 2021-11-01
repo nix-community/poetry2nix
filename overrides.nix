@@ -1200,7 +1200,6 @@ self: super:
   pylint = super.pylint.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
-      doCheck = false;
     }
   );
 
