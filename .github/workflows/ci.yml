@@ -30,7 +30,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
         extra_nix_config: experimental-features = nix-command
     - uses: actions/checkout@v1
-    - uses: cachix/cachix-action@v8
+    - uses: cachix/cachix-action@v10
       with:
         name: poetry2nix
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
