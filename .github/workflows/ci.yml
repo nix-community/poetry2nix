@@ -13,6 +13,7 @@ jobs:
     - uses: cachix/install-nix-action@v13
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+        extra_nix_config: experimental-features = nix-command
     - uses: actions/checkout@v1
     - name: Check format
       run: ./check-fmt
@@ -27,6 +28,7 @@ jobs:
     - uses: cachix/install-nix-action@v13
       with:
         nix_path: nixpkgs=channel:nixos-unstable
+        extra_nix_config: experimental-features = nix-command
     - uses: actions/checkout@v1
     - uses: cachix/cachix-action@v8
       with:
