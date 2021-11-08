@@ -45,7 +45,7 @@ if __name__ == "__main__":
         "-f",
         "--fields-to-remove",
         nargs="+",
-        help="The fields to remove from the TOML",
+        help="The fields to remove from the dependency's JSON",
     )
 
     args = p.parse_args()
