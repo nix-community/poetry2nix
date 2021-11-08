@@ -14,7 +14,7 @@ def main(input, output, fields_to_remove):
     except KeyError:
         pass
     else:
-        for dep_name, dep in deps.items():
+        for dep in deps.values():
             if isinstance(dep, dict):
                 removed = 0
                 for field in fields_to_remove:
