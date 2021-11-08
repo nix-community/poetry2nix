@@ -16,10 +16,10 @@ def main(input, output, fields_to_remove):
     else:
         for dep in deps.values():
             if isinstance(dep, dict):
-                removed = 0
+                any_removed = False
                 for field in fields_to_remove:
-                    removed += dep.pop(field, None) is not None
-                if removed:
+                    any_removed |= dep.pop(field, None) is not None
+                if any_removed:
                     dep["version"] = "*"
 
     json.dump(data, output, separators=(",", ":"))
