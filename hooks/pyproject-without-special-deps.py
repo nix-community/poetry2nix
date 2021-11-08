@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Patch out path dependencies from a pyproject.json file
+# Patch out special dependencies (git and path) from a pyproject.json file
 
 import argparse
 import json
