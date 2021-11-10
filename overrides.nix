@@ -184,10 +184,22 @@ self: super:
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ])
         ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
-        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi;
+        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi
+        ++ lib.optional (lib.versionAtLeast old.version "3.5")
+        (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
     } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
       CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
+    } // lib.optionalAttrs (lib.versionAtLeast old.version "3.5") rec {
+      cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+        src = old.src;
+        sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
+        name = "${old.pname}-${old.version}";
+        # This hash could no longer be valid for cryptography versions
+        # different from 3.5.0
+        sha256 = "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI=";
+      };
+      cargoRoot = "src/rust";
     }
   );
 
