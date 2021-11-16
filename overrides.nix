@@ -2111,10 +2111,4 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
     sourceRoot = ".";
   });
-
-  virtualenv = super.virtualenv.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.cfg --replace 'platformdirs>=2,<3' 'platformdirs'
-    '';
-  });
 }
