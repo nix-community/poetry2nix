@@ -9,6 +9,7 @@ python = "^3.6"
 awscli-cwlogs = "^1.4.6"
 pytest = "^5.3.1"
 pyparsing = "^2.4.5"
+cryptography = "^3"
 decorator = "^4.4.1"
 flask = "^1.1.1"
 pluggy = "^0.13.1"
@@ -37,14 +38,24 @@ prompt-toolkit = "^3.0.0"
 atomicwrites = "^1.3.0"
 docker = "^4.1.0"
 importlib-metadata = "^0.23"
-argparse = "^1.4.0"
+
+# pip >=20.3 hardcodes its ignorance of a few modules that clash with stdlib
+# modules; one of those modules is argparse, so it can only be used where it's
+# actually required, otherwise pip thinks it's never installed
+#
+# Here's the hardcoded list:
+# https://github.com/pypa/pip/blob/e6891135776732d137ef3591d58d0de624521628/src/pip/_internal/utils/compat.py#L59
+#
+# Here's the code that skips over the list:
+# https://github.com/pypa/pip/blob/e6891135776732d137ef3591d58d0de624521628/src/pip/_internal/metadata/base.py#L194-L222
+argparse = { version = "^1.4.0", python = "<2.7" }
+
 packaging = "^19.2"
 zipp = "^0.6.0"
 google-resumable-media = "^0.5.0"
 multidict = "^4.6.1"
 sqlalchemy = "^1.3.11"
 kiwisolver = "^1.1.0"
-# mccabe = "^0.6.1"
 funcsigs = "^1.0.2"
 configparser = "^4.0.2"
 tornado = "^6.0.3"

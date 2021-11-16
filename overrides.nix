@@ -994,28 +994,6 @@ self: super:
     }
   );
 
-  # Work around https://github.com/nix-community/poetry2nix/issues/244
-  # where git deps are not picked up as they should
-  pip =
-    if lib.versionAtLeast super.pip.version "20.3" then
-      super.pip.overridePythonAttrs
-        (old:
-          let
-            pname = "pip";
-            version = "20.2.4";
-          in
-          {
-            name = pname + "-" + version;
-            inherit version;
-            src = pkgs.fetchFromGitHub {
-              owner = "pypa";
-              repo = pname;
-              rev = version;
-              sha256 = "eMVV4ftgV71HLQsSeaOchYlfaJVgzNrwUynn3SA1/Do=";
-              name = "${pname}-${version}-source";
-            };
-          }) else super.pip;
-
   platformdirs = super.platformdirs.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'

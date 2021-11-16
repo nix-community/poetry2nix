@@ -24,8 +24,8 @@ builtins.removeAttrs
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };
-  top-packages-1 = callTest ./common-pkgs-1 { };
-  top-packages-2 = callTest ./common-pkgs-2 { };
+  common-pkgs-1 = callTest ./common-pkgs-1 { };
+  common-pkgs-2 = callTest ./common-pkgs-2 { };
   pep425 = pkgs.callPackage ./pep425 { inherit pep425;inherit pep425OSX;inherit pep425Python37; };
   env = callTest ./env { };
   pytest-randomly = callTest ./pytest-randomly { };
