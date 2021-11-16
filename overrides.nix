@@ -162,6 +162,14 @@ self: super:
     }
   );
 
+  cloudflare = super.cloudflare.overridePythonAttrs (
+    old: {
+      postPatch = ''
+        rm -rf examples/*
+      '';
+    }
+  );
+
   colour = super.colour.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.d2to1 ];
