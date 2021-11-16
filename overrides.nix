@@ -73,7 +73,6 @@ self: super:
   astroid = super.astroid.overridePythonAttrs (
     old: rec {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
-      doCheck = false;
     }
   );
 
@@ -1208,7 +1207,6 @@ self: super:
   pylint = super.pylint.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
-      doCheck = false;
     }
   );
 
@@ -1376,7 +1374,6 @@ self: super:
       postPatch = old.postPatch or "" + ''
         sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
       '';
-      doCheck = false;
     }
   );
 
