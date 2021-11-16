@@ -871,7 +871,10 @@ self: super:
         # is64bit: unfortunately the build would exhaust all possible memory on i686-linux.
         stdenv.buildPlatform.is64bit
         # Derivation fails to build since v0.900 if mypyc is enabled.
-        && lib.strings.versionOlder old.version "0.900";
+        && (
+          lib.strings.versionOlder old.version "0.900"
+          || lib.strings.versionAtLeast old.version "0.910"
+        );
     }
   );
 
