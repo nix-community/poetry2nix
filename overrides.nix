@@ -1763,6 +1763,13 @@ self: super:
   # nix uses a dash, poetry uses an underscore
   typing_extensions = super.typing_extensions or self.typing-extensions;
 
+  typing-extensions = super.packaging.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++
+        lib.optional (lib.versionAtLeast old.version "4.0.0") [ self.flit-core ];
+    }
+  );
+
   urwidtrees = super.urwidtrees.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
