@@ -548,6 +548,13 @@ self: super:
     }
   );
 
+  importlib-resources = super.importlib-resources.overridePythonAttrs (
+    old: {
+      # disable the removal of pyproject.toml, required because of setuptools_scm
+      dontPreferSetupPy = true;
+    }
+  );
+
   intreehooks = super.intreehooks.overridePythonAttrs (
     old: {
       doCheck = false;
