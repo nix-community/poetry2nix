@@ -198,14 +198,20 @@ self: super:
     } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
       CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
     } // lib.optionalAttrs (lib.versionAtLeast old.version "3.5") rec {
-      cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
-        src = old.src;
-        sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
-        name = "${old.pname}-${old.version}";
-        # This hash could no longer be valid for cryptography versions
-        # different from 3.5.0
-        sha256 = "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI=";
-      };
+      cargoDeps =
+        let
+          getCargoHash = version:
+            if lib.versionOlder version "3.6" then "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI="
+            # This hash could no longer be valid for cryptography versions
+            # different from 3.6.0
+            else "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk=";
+        in
+        pkgs.rustPlatform.fetchCargoTarball {
+          src = old.src;
+          sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
+          name = "${old.pname}-${old.version}";
+          sha256 = getCargoHash old.version;
+        };
       cargoRoot = "src/rust";
     }
   );
