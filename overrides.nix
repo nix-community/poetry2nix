@@ -481,6 +481,10 @@ self: super:
     }
   );
 
+  httplib2 = super.httplib2.overridePythonAttrs (old: {
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyparsing ];
+  });
+
   imagecodecs = super.imagecodecs.overridePythonAttrs (
     old: {
       patchPhase = ''
