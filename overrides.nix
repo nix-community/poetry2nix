@@ -960,6 +960,10 @@ self: super:
     }
   );
 
+  paramiko = super.paramiko.overridePythonAttrs (old: {
+    doCheck = false; # requires networking
+  });
+
   parsel = super.parsel.overridePythonAttrs (
     old: rec {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
