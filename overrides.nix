@@ -642,6 +642,9 @@ self: super:
     }
   );
 
+  kerberos = super.kerberos.overrideAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libkrb5 ];
+  });
 
   keyring = super.keyring.overridePythonAttrs (
     old: {
