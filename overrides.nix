@@ -215,6 +215,13 @@ self: super:
       ++ [ self.cython ];
   });
 
+  cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+    postPatch = ''
+      substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+    '';
+  });
+
   daphne = super.daphne.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
