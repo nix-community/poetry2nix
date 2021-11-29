@@ -39,7 +39,7 @@ class Pep503(HTMLParser):
 
 url = sys.argv[1]
 package_name = sys.argv[2]
-index_url = url + "/" + package_name
+index_url = url + "/" + package_name + "/"
 package_filename = sys.argv[3]
 
 print("Reading index %s" % index_url)
