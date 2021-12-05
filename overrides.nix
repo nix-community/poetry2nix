@@ -766,10 +766,15 @@ self: super:
 
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
         pkgs.pkg-config
+      ] ++ lib.optional (lib.versionAtLeast super.matplotlib.version "3.5.0") [
+        self.setuptools-scm
+        self.setuptools-scm-git-archive
       ];
 
       postPatch = ''
-        cat > setup.cfg <<EOF
+        cat > '' +
+      (if lib.versionAtLeast super.matplotlib.version "3.5.0" then "mplsetup.cfg" else "setup.cfg") +
+      '' <<EOF
         [libs]
         system_freetype = True
         system_qhull = True
