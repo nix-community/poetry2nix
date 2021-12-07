@@ -1695,6 +1695,7 @@ self: super:
         self.grpcio
         self.protobuf
         self.werkzeug
+        self.absl-py
       ];
     }
   );
