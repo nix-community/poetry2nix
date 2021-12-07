@@ -2119,4 +2119,8 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
     sourceRoot = ".";
   });
+
+  wtforms = super.wtforms.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.Babel ];
+  });
 }
