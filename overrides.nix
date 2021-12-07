@@ -1582,7 +1582,9 @@ self: super:
   scipy = super.scipy.overridePythonAttrs (
     old:
     if old.format != "wheel" then {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gfortran ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++
+        [ pkgs.gfortran ] ++
+        lib.optional (lib.versionAtLeast super.scipy.version "1.7.0") [ self.cython self.pythran ];
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pybind11 ];
       setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
       enableParallelBuilding = true;
