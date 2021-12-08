@@ -144,14 +144,6 @@ lib.makeScope pkgs.newScope (self: {
           lockfiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
         in
         lib.listToAttrs (lib.mapAttrsToList (n: v: { name = moduleName n; value = v; }) lockfiles);
-      specialAttrs = [
-        "overrides"
-        "poetrylock"
-        "projectDir"
-        "pwd"
-        "preferWheels"
-      ];
-      passedAttrs = builtins.removeAttrs attrs specialAttrs;
       evalPep508 = mkEvalPep508 python;
 
       # Filter packages by their PEP508 markers & pyproject interpreter version
@@ -167,9 +159,8 @@ lib.makeScope pkgs.newScope (self: {
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
       # closure as python can only ever have one version of a dependency
-      baseOverlay = self: super:
+      baseOverlay = self: _super:
         let
-          getDep = depName: self.${depName};
           lockPkgs = builtins.listToAttrs (
             builtins.map
               (
@@ -218,13 +209,13 @@ lib.makeScope pkgs.newScope (self: {
                 }
             )
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (self: super: builtins.listToAttrs (builtins.map (x: { name = moduleName x.name; value = null; }) incompatible))
+            (_self: _super: builtins.listToAttrs (builtins.map (x: { name = moduleName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
           ] ++ # User provided overrides
           (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
-      packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
+      packageOverrides = lib.foldr lib.composeExtensions (_self: _super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
       inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; includeBuildSystem = false; };

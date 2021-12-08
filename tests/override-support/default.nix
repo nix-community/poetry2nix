@@ -6,9 +6,9 @@ let
     poetrylock = ./poetry.lock;
     pyproject = ./pyproject.toml;
     overrides = poetry2nix.overrides.withDefaults (
-      self: super: {
+      _self: super: {
         alembic = super.alembic.overrideAttrs (
-          old: {
+          _old: {
             TESTING_FOOBAR = 42;
           }
         );

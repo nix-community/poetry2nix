@@ -136,11 +136,11 @@ pythonPackages.callPackage
         let
           compat = isCompatible (poetryLib.getPythonVersion python);
           deps = lib.filterAttrs
-            (n: v: v)
+            (_n: v: v)
             (
               lib.mapAttrs
                 (
-                  n: v:
+                  _n: v:
                     let
                       constraints = v.python or "";
                       pep508Markers = v.markers or "";

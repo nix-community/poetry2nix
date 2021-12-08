@@ -10,7 +10,7 @@
       # Nixpkgs overlay providing the application
       overlay = nixpkgs.lib.composeManyExtensions [
         poetry2nix.overlay
-        (final: prev: {
+        (_final: prev: {
           # The application
           myapp = prev.poetry2nix.mkPoetryApplication {
             projectDir = ./.;

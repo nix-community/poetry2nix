@@ -10,9 +10,9 @@ poetry2nix.mkPoetryApplication {
     poetry2nix.defaultPoetryOverrides
     (import ./poetry-git-overlay.nix { inherit pkgs; })
     (
-      self: super: {
+      _self: super: {
         pyramid-deferred-sqla = super.pyramid-deferred-sqla.overridePythonAttrs (
-          old: {
+          _old: {
             postPatch = ''
               touch LICENSE
               substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""

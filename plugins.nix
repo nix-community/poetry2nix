@@ -11,7 +11,7 @@ let
     , buildInputs ? [ ]
     }:
     let
-      env = self.python.withPackages (ps: plugins);
+      env = self.python.withPackages (_ps: plugins);
     in
     stdenv.mkDerivation {
       pname = drv.pname + "-with-plugins";

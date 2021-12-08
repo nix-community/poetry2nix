@@ -100,7 +100,7 @@ self: super:
   );
 
   black = super.black.overridePythonAttrs (
-    old: {
+    _old: {
       dontPreferSetupPy = true;
     }
   );
@@ -156,13 +156,13 @@ self: super:
   );
 
   cheroot = super.cheroot.overridePythonAttrs (
-    old: {
+    _old: {
       dontPreferSetupPy = true;
     }
   );
 
   cloudflare = super.cloudflare.overridePythonAttrs (
-    old: {
+    _old: {
       postPatch = ''
         rm -rf examples/*
       '';
@@ -228,7 +228,7 @@ self: super:
     '';
   });
 
-  daphne = super.daphne.overridePythonAttrs (old: {
+  daphne = super.daphne.overridePythonAttrs (_old: {
     postPatch = ''
       substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
     '';
@@ -427,7 +427,7 @@ self: super:
     DISABLE_LIBC_COMPATIBILITY = 1;
   });
 
-  grpcio-tools = super.grpcio-tools.overridePythonAttrs (old: {
+  grpcio-tools = super.grpcio-tools.overridePythonAttrs (_old: {
     outputs = [ "out" "dev" ];
   });
 
@@ -473,7 +473,7 @@ self: super:
   );
 
   hid = super.hid.overridePythonAttrs (
-    old: {
+    _old: {
       postPatch = ''
         found=
         for name in libhidapi-hidraw libhidapi-libusb libhidapi-iohidmanager libhidapi; do
@@ -566,14 +566,14 @@ self: super:
   );
 
   importlib-resources = super.importlib-resources.overridePythonAttrs (
-    old: {
+    _old: {
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
     }
   );
 
   intreehooks = super.intreehooks.overridePythonAttrs (
-    old: {
+    _old: {
       doCheck = false;
     }
   );
@@ -617,7 +617,7 @@ self: super:
   );
 
   jsonpickle = super.jsonpickle.overridePythonAttrs (
-    old: {
+    _old: {
       dontPreferSetupPy = true;
     }
   );
@@ -628,7 +628,7 @@ self: super:
   });
 
   jupyter = super.jupyter.overridePythonAttrs (
-    old: rec {
+    _old: rec {
       # jupyter is a meta-package. Everything relevant comes from the
       # dependencies. It does however have a jupyter.py file that conflicts
       # with jupyter-core so this meta solves this conflict.
@@ -678,7 +678,7 @@ self: super:
     propagatedBuildInputs = [ pkgs.libvirt ];
   });
 
-  licensecheck = super.licensecheck.overridePythonAttrs (old: {
+  licensecheck = super.licensecheck.overridePythonAttrs (_old: {
     dontPreferSetupPy = true;
   });
 
@@ -992,7 +992,7 @@ self: super:
     }
   );
 
-  paramiko = super.paramiko.overridePythonAttrs (old: {
+  paramiko = super.paramiko.overridePythonAttrs (_old: {
     doCheck = false; # requires networking
   });
 
@@ -1003,7 +1003,7 @@ self: super:
   );
 
   pdal = super.pdal.overridePythonAttrs (
-    old: {
+    _old: {
       PDAL_CONFIG = "${pkgs.pdal}/bin/pdal-config";
     }
   );
@@ -1035,7 +1035,7 @@ self: super:
     '';
   });
 
-  poetry-core = super.poetry-core.overridePythonAttrs (old: {
+  poetry-core = super.poetry-core.overridePythonAttrs (_old: {
     # "Vendor" dependencies (for build-system support)
     postPatch = ''
       echo "import sys" >> poetry/__init__.py
@@ -1182,7 +1182,7 @@ self: super:
   });
 
   pygame = super.pygame.overridePythonAttrs (
-    old: rec {
+    _old: rec {
       nativeBuildInputs = [
         pkgs.pkg-config
         pkgs.SDL
@@ -1284,7 +1284,7 @@ self: super:
   );
 
   pytoml = super.pytoml.overridePythonAttrs (
-    old: {
+    _old: {
       doCheck = false;
     }
   );
@@ -1394,7 +1394,7 @@ self: super:
     );
 
   pytest-datadir = super.pytest-datadir.overridePythonAttrs (
-    old: {
+    _old: {
       postInstall = ''
         rm -f $out/LICENSE
       '';
@@ -1411,7 +1411,7 @@ self: super:
   );
 
   pytest-django = super.pytest-django.overridePythonAttrs (
-    old: {
+    _old: {
       postPatch = ''
         substituteInPlace setup.py --replace "'pytest>=3.6'," ""
         substituteInPlace setup.py --replace "'pytest>=3.6'" ""
@@ -1428,7 +1428,7 @@ self: super:
   pytest-runner = super.pytest-runner or super.pytestrunner;
 
   pytest-pylint = super.pytest-pylint.overridePythonAttrs (
-    old: {
+    _old: {
       buildInputs = [ self.pytest-runner ];
     }
   );
@@ -1455,7 +1455,7 @@ self: super:
   });
 
   python-jose = super.python-jose.overridePythonAttrs (
-    old: {
+    _old: {
       buildInputs = [ self.pytest-runner ];
     }
   );
@@ -1485,7 +1485,7 @@ self: super:
   );
 
   pyusb = super.pyusb.overridePythonAttrs (
-    old: {
+    _old: {
       postPatch = ''
         libusb=${pkgs.libusb1.out}/lib/libusb-1.0${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}
         test -f $libusb || { echo "ERROR: $libusb doesn't exist, please update/fix this build expression."; exit 1; }
@@ -1509,7 +1509,7 @@ self: super:
   );
 
   rockset = super.rockset.overridePythonAttrs (
-    old: rec {
+    _old: rec {
       postPatch = ''
         cp ./setup_rockset.py ./setup.py
       '';
@@ -1517,7 +1517,7 @@ self: super:
   );
 
   scaleapi = super.scaleapi.overridePythonAttrs (
-    old: {
+    _old: {
       postPatch = ''
         substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
       '';
@@ -1701,7 +1701,7 @@ self: super:
   );
 
   tensorflow = super.tensorflow.overridePythonAttrs (
-    old: {
+    _old: {
       postInstall = ''
         rm $out/bin/tensorboard
       '';
@@ -1709,7 +1709,7 @@ self: super:
   );
 
   tensorpack = super.tensorpack.overridePythonAttrs (
-    old: {
+    _old: {
       postPatch = ''
         substituteInPlace setup.cfg --replace "# will call find_packages()" ""
       '';
@@ -1811,7 +1811,7 @@ self: super:
   );
 
   vose-alias-method = super.vose-alias-method.overridePythonAttrs (
-    old: {
+    _old: {
       postInstall = ''
         rm -f $out/LICENSE
       '';
@@ -1883,7 +1883,7 @@ self: super:
         }
       ).wheel.override {
         inherit (self) buildPythonPackage bootstrapped-pip setuptools;
-      }).overrideAttrs (old: {
+      }).overrideAttrs (_old: {
         inherit (super.wheel) pname name version src;
       });
     in
@@ -2079,13 +2079,13 @@ self: super:
   );
 
   lazy-object-proxy = super.lazy-object-proxy.overridePythonAttrs (
-    old: {
+    _old: {
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
     }
   );
 
-  pendulum = super.pendulum.overridePythonAttrs (old: {
+  pendulum = super.pendulum.overridePythonAttrs (_old: {
     # Technically incorrect, but fixes the build error..
     preInstall = lib.optionalString stdenv.isLinux ''
       mv --no-clobber ./dist/*.whl $(echo ./dist/*.whl | sed s/'manylinux_[0-9]*_[0-9]*'/'manylinux1'/)

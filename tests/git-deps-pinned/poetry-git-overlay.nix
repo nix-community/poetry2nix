@@ -1,5 +1,5 @@
 { pkgs }:
-self: super: {
+_self: super: {
 
   alembic = super.alembic.overridePythonAttrs (
     _: {

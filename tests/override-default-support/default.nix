@@ -8,15 +8,15 @@ let
     overrides = [
       ((
         poetry2nix.defaultPoetryOverrides.overrideOverlay (
-          self: super: {
+          _self: super: {
             alembic = super.alembic.overrideAttrs (
-              old: {
+              _old: {
                 TESTING_FOOBAR = 42;
               }
             );
           }
         )
-      ).extend (pyself: pysuper: { })) # Test .extend for good measure
+      ).extend (_pyself: _pysuper: { })) # Test .extend for good measure
     ];
   };
 in
