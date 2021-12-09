@@ -633,12 +633,27 @@ self: super:
       # dependencies. It does however have a jupyter.py file that conflicts
       # with jupyter-core so this meta solves this conflict.
       meta.priority = 100;
+      
+      # remove, what is already present in jupyter-core
+      postInstall = ''
+        rm -f $out/lib/python*/site-packages/__pycache__/jupyter.cpython-39.pyc
+        rm -f $out/lib/python*/site-packages/jupyter.py
+      '';
     }
   );
 
   jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
     old: rec {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.jupyter-packaging ];
+    }
+  );
+  
+  jupyter-core = super.jupyter-core.overridePythonAttrs (
+    old: {
+      postInstall = ''
+        rm -f $out/lib/python*/site-packages/__pycache__/jupyter.cpython-39.pyc
+        rm -f $out/lib/python*/site-packages/jupyter.py
+      '';
     }
   );
 
