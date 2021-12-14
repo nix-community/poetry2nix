@@ -85,6 +85,13 @@ self: super:
     }
   );
 
+  argon2-cffi = super.argon2-cffi.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++
+        lib.optional (lib.versionAtLeast old.version "21.2.0") [ self.flit-core ];
+    }
+  );
+
   backports-entry-points-selectable = super.backports-entry-points-selectable.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.py --replace \
