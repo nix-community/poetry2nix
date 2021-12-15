@@ -208,10 +208,11 @@ self: super:
       cargoDeps =
         let
           getCargoHash = version:
-            if lib.versionOlder version "3.6" then "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI="
+            if lib.versionOlder version "3.6.0" then "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI="
+            else if lib.versionOlder version "3.6.1" then "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk="
             # This hash could no longer be valid for cryptography versions
-            # different from 3.6.0
-            else "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk=";
+            # different from 3.6.1
+            else "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
         in
         pkgs.rustPlatform.fetchCargoTarball {
           src = old.src;
