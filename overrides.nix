@@ -779,18 +779,13 @@ self: super:
         self.setuptools-scm-git-archive
       ];
 
-      postPatch = ''
-        cat > '' +
-      (if lib.versionAtLeast super.matplotlib.version "3.5.0" then "mplsetup.cfg" else "setup.cfg") +
-      '' <<EOF
+      MPLSETUPCFG = writeText "mplsetup.cfg" ''
         [libs]
         system_freetype = True
         system_qhull = True
       '' + lib.optionalString stdenv.isDarwin ''
         # LTO not working in darwin stdenv, see NixOS/nixpkgs/pull/19312
         enable_lto = false
-      '' + ''
-        EOF
       '';
 
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
