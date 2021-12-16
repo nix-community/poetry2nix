@@ -779,7 +779,7 @@ self: super:
         self.setuptools-scm-git-archive
       ];
 
-      MPLSETUPCFG = writeText "mplsetup.cfg" ''
+      MPLSETUPCFG = pkgs.writeText "mplsetup.cfg" ''
         [libs]
         system_freetype = True
         system_qhull = True
