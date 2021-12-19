@@ -129,7 +129,6 @@ pythonPackages.callPackage
         ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools
         ++ lib.optional (!isSource) (getManyLinuxDeps fileInfo.name).pkg
         ++ lib.optional isDirectory buildSystemPkgs
-        ++ lib.optional (!__isBootstrap) pythonPackages.poetry
       );
 
       propagatedBuildInputs =
