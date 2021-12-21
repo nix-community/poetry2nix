@@ -652,7 +652,7 @@ self: super:
     old: {
       postInstall = ''
         rm -f $out/lib/python*/site-packages/__pycache__/jupyter.cpython-39.pyc
-        rm -f $out/lib/python*/site-packages/jupyter.py
+        rm -f $out/${self.sitePackages}/jupyter.py
       '';
     }
   );
