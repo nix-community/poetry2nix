@@ -1123,7 +1123,7 @@ self: super:
             inherit ARROW_HOME;
 
             buildInputs = (old.buildInputs or [ ]) ++ [
-              pkgs.arrow-cpp
+              _arrow-cpp
             ];
 
             PYARROW_BUILD_TYPE = "release";
