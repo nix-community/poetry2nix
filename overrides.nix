@@ -1123,7 +1123,7 @@ self: super:
             inherit ARROW_HOME;
 
             PYARROW_BUILD_TYPE = "release";
-            PYARROW_WITH_FLIGHT = _arrow-cpp.enableFlight;
+            PYARROW_WITH_FLIGHT = if _arrow-cpp.enableFlight then 1 else 0;
             PYARROW_WITH_DATASET = 1;
             PYARROW_WITH_PARQUET = 1;
             PYARROW_CMAKE_OPTIONS = [
