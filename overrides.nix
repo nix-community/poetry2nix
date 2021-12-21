@@ -1124,8 +1124,8 @@ self: super:
 
             PYARROW_BUILD_TYPE = "release";
             PYARROW_WITH_FLIGHT = _arrow-cpp.enableFlight;
-            PYARROW_WITH_DATASET = true;
-            PYARROW_WITH_PARQUET = true;
+            PYARROW_WITH_DATASET = 1;
+            PYARROW_WITH_PARQUET = 1;
             PYARROW_CMAKE_OPTIONS = [
               "-DCMAKE_INSTALL_RPATH=${ARROW_HOME}/lib"
 
