@@ -1122,11 +1122,8 @@ self: super:
             PARQUET_HOME = _arrow-cpp;
             inherit ARROW_HOME;
 
-            buildInputs = (old.buildInputs or [ ]) ++ [
-              _arrow-cpp
-            ];
-
             PYARROW_BUILD_TYPE = "release";
+            PYARROW_WITH_FLIGHT = _arrow-cpp.enableFlight;
             PYARROW_WITH_DATASET = true;
             PYARROW_WITH_PARQUET = true;
             PYARROW_CMAKE_OPTIONS = [
