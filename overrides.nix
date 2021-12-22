@@ -615,6 +615,16 @@ self: super:
     }
   );
 
+  jq = super.jq.overridePythonAttrs (attrs: {
+    nativeBuildInputs = [ pkgs.jq ];
+    patches = [
+      (pkgs.fetchpatch {
+        url = "https://raw.githubusercontent.com/NixOS/nixpkgs/088da8735f6620b60d724aa7db742607ea216087/pkgs/development/python-modules/jq/jq-py-setup.patch";
+        sha256 = "sha256-MYvX3S1YGe0QsUtExtOtULvp++AdVrv+Fid4Jh1xewQ=";
+      })
+    ];
+  });
+
   jsondiff = super.jsondiff.overridePythonAttrs (
     old: {
       preBuild = (old.preBuild or "") + ''
