@@ -1103,7 +1103,7 @@ self: super:
             );
 
             ARROW_HOME = _arrow-cpp;
-            arrowCppVersion = parseMinor pkgs.arrow-cpp;
+            arrowCppVersion = parseMinor _arrow-cpp;
             pyArrowVersion = parseMinor super.pyarrow;
             errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
           in
@@ -1122,13 +1122,10 @@ self: super:
             PARQUET_HOME = _arrow-cpp;
             inherit ARROW_HOME;
 
-            buildInputs = (old.buildInputs or [ ]) ++ [
-              pkgs.arrow-cpp
-            ];
-
             PYARROW_BUILD_TYPE = "release";
-            PYARROW_WITH_DATASET = true;
-            PYARROW_WITH_PARQUET = true;
+            PYARROW_WITH_FLIGHT = if _arrow-cpp.enableFlight then 1 else 0;
+            PYARROW_WITH_DATASET = 1;
+            PYARROW_WITH_PARQUET = 1;
             PYARROW_CMAKE_OPTIONS = [
               "-DCMAKE_INSTALL_RPATH=${ARROW_HOME}/lib"
 
