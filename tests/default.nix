@@ -60,6 +60,7 @@ builtins.removeAttrs
   markupsafe2 = callTest ./markupsafe2 { };
   pendulum = callTest ./pendulum { };
   uwsgi = callTest ./uwsgi { };
+  jq = callTest ./jq { };
 
   # Test building poetry
   inherit poetry;

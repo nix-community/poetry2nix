@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-jq"
+version = "0.1.0"
+description = "Test of python jq package"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+jq = "^1.2.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
