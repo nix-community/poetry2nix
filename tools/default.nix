@@ -55,11 +55,6 @@ in
         pkgs.python3
         pkgs.nix
       ];
-      nixSrc = pkgs.runCommandNoCC "${pkgs.nix.name}-sources"
-        { } ''
-        mkdir $out
-        tar -x --strip=1 -f ${pkgs.nix.src} -C $out
-      '';
     in
     pkgs.writeScriptBin "poetry2nix-flamegraph" ''
       #!${pkgs.runtimeShell}
@@ -74,7 +69,7 @@ in
       # Run once to warm up
       nix-instantiate --expr '(import <nixpkgs> { overlays = [ (import ${srcPath + "/overlay.nix"}) ]; })' -A poetry
       nix-instantiate --trace-function-calls --expr '(import <nixpkgs> { overlays = [ (import ${srcPath + "/overlay.nix"}) ]; })' -A poetry 2> $workdir/traceFile
-      python3 ${nixSrc}/contrib/stack-collapse.py $workdir/traceFile > $workdir/traceFile.folded
+      python3 ${pkgs.nix.src}/contrib/stack-collapse.py $workdir/traceFile > $workdir/traceFile.folded
       flamegraph.pl $workdir/traceFile.folded > poetry2nix-flamegraph.svg
     '';
 
