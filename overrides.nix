@@ -2119,6 +2119,10 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
   });
 
+  selinux = super.selinux.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+  });
+
   shexjsg = super.shexjsg.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
   });
