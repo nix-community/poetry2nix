@@ -137,6 +137,13 @@ let
 
   fetchFromLegacy = lib.makeOverridable (
     { python, pname, url, file, hash }:
+    let
+      pathParts =
+        (builtins.filter
+          ({ prefix, path }: "NETRC" == prefix)
+          builtins.nixPath);
+      netrc_file = if (pathParts != [ ]) then (builtins.head pathParts).path else "";
+    in
     pkgs.runCommand file
       {
         nativeBuildInputs = [ python ];
@@ -144,6 +151,7 @@ let
         outputHashMode = "flat";
         outputHashAlgo = "sha256";
         outputHash = hash;
+        NETRC = netrc_file;
       } ''
       python ${./fetch_from_legacy.py} ${url} ${pname} ${file}
       mv ${file} $out
