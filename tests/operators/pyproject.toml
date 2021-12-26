@@ -6,7 +6,7 @@ authors = ["poetry2nix <poetry2nix@poetry.nix>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pytest-mypy = "^0.4.2"
+pytest-mypy = "^0.8.1"
 
 [tool.poetry.dev-dependencies]
 
