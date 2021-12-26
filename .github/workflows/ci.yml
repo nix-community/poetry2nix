@@ -2,9 +2,6 @@ name: CI
 
 on:
   pull_request:
-  push:
-    paths-ignore:
-    - '**.md'
 
 jobs:
   nixpkgs-fmt:
@@ -18,20 +15,32 @@ jobs:
     - name: Check format
       run: ./check-fmt
 
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        # os: [ubuntu-latest, macos-latest]
+  matrix_generate:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-    - uses: cachix/install-nix-action@v14
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-        extra_nix_config: experimental-features = nix-command
-    - uses: actions/checkout@v2.4.0
-    - uses: cachix/cachix-action@v10
-      with:
-        name: poetry2nix
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - run: nix-shell -p nix-build-uncached --run 'nix-build-uncached --keep-going --show-trace tests/default.nix'
+      - uses: actions/checkout@v2.4.0
+      - uses: cachix/install-nix-action@v14
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: experimental-features = nix-command
+      - id: set-matrix
+        run: ./.github/generate-matrix.py
+
+  builds:
+    needs: matrix_generate
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJSON(needs.matrix_generate.outputs.matrix)}}
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - uses: cachix/install-nix-action@v14
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: experimental-features = nix-command
+      - uses: cachix/cachix-action@v10
+        with:
+          name: poetry2nix
+          signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+      - run: nix-shell -p nix-build-uncached --run 'nix-build-uncached --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
