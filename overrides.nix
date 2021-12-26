@@ -20,11 +20,6 @@ self: super:
 
   ansible = super.ansible.overridePythonAttrs (
     old: {
-
-      prePatch = pkgs.python.pkgs.ansible.prePatch or "";
-
-      postInstall = pkgs.python.pkgs.ansible.postInstall or "";
-
       # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
       # in a correct manner.
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
@@ -40,6 +35,9 @@ self: super:
         self.dopy
         self.ncclient
       ];
+    } // lib.optionalAttrs (lib.versionOlder old.version "5.0") {
+      prePatch = pkgs.python.pkgs.ansible.prePatch or "";
+      postInstall = pkgs.python.pkgs.ansible.postInstall or "";
     }
   );
 
