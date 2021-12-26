@@ -20,11 +20,6 @@ self: super:
 
   ansible = super.ansible.overridePythonAttrs (
     old: {
-
-      prePatch = pkgs.python.pkgs.ansible.prePatch or "";
-
-      postInstall = pkgs.python.pkgs.ansible.postInstall or "";
-
       # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
       # in a correct manner.
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
@@ -40,6 +35,9 @@ self: super:
         self.dopy
         self.ncclient
       ];
+    } // lib.optionalAttrs (lib.versionOlder old.version "5.0") {
+      prePatch = pkgs.python.pkgs.ansible.prePatch or "";
+      postInstall = pkgs.python.pkgs.ansible.postInstall or "";
     }
   );
 
@@ -570,6 +568,10 @@ self: super:
 
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
+
+      postPatch = old.postPatch or "" + ''
+        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
+      '';
     }
   );
 
@@ -1810,7 +1812,12 @@ self: super:
   });
 
   # nix uses a dash, poetry uses an underscore
-  typing_extensions = super.typing_extensions or self.typing-extensions;
+  typing-extensions = (super.typing_extensions or super.typing-extensions).overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++
+        lib.optional (lib.versionAtLeast old.version "4.0.0") [ self.flit-core ];
+    }
+  );
 
   urwidtrees = super.urwidtrees.overridePythonAttrs (
     old: {
@@ -2117,6 +2124,10 @@ self: super:
 
   pyshexc = super.pyshexc.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
+
+  selinux = super.selinux.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
   });
 
   shexjsg = super.shexjsg.overridePythonAttrs (old: {

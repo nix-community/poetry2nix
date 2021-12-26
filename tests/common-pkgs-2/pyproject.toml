@@ -5,8 +5,7 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-awscli-cwlogs = "^1.4.6"
+python = "^3.9"
 pytest = "^5.3.1"
 pyparsing = "^2.4.5"
 cryptography = "^3"
@@ -37,7 +36,6 @@ httplib2 = "^0.14.0"
 prompt-toolkit = "^3.0.0"
 atomicwrites = "^1.3.0"
 docker = "^4.1.0"
-importlib-metadata = "^0.23"
 
 # pip >=20.3 hardcodes its ignorance of a few modules that clash with stdlib
 # modules; one of those modules is argparse, so it can only be used where it's
@@ -50,7 +48,6 @@ importlib-metadata = "^0.23"
 # https://github.com/pypa/pip/blob/e6891135776732d137ef3591d58d0de624521628/src/pip/_internal/metadata/base.py#L194-L222
 argparse = { version = "^1.4.0", python = "<2.7" }
 
-packaging = "^19.2"
 zipp = "^0.6.0"
 google-resumable-media = "^0.5.0"
 multidict = "^4.6.1"
@@ -69,8 +66,7 @@ pillow = "^6.2.1"
 psycopg2 = "^2.8.4"
 bcrypt = "^3.1.7"
 mccabe = "^0.6.1"
-awscli = "^1.16.292"
-matplotlib = "^3.3.4"
+matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
 

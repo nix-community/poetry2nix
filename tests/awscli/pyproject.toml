@@ -1,14 +1,13 @@
 [tool.poetry]
-name = "ansible-molecule"
+name = "test_awscli"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = []
 
 [tool.poetry.dependencies]
-python = "^3.9"
-jinja2 = "^3.0.3"
-ansible = "~5.1.0"
-molecule = "^3.5.2"
+python = "^3.8"
+awscli = "*"
+awscli-cwlogs = "*"
 
 [tool.poetry.dev-dependencies]
 

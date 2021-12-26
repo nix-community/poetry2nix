@@ -1,7 +1,7 @@
 /* It is assumed that propagated dependencies are included in the poetryPackages.
-   The "certifi" is direct dependency of "requests" library.
+  The "certifi" is direct dependency of "requests" library.
 
-   Note: this test assumes that "certifi" lib is going to be a dep of "requests" in the future.
+  Note: this test assumes that "certifi" lib is going to be a dep of "requests" in the future.
 */
 { lib, poetry2nix, python3, python37 }:
 let

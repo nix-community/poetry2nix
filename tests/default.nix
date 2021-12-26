@@ -9,7 +9,7 @@ in
 }:
 let
   poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
-  poetry2nix = import ./.. { inherit pkgs;inherit poetry; };
+  poetry2nix = import ./.. { inherit pkgs; inherit poetry; };
   poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
   pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; };
   pep425Python37 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python37; };
@@ -26,7 +26,7 @@ builtins.removeAttrs
   override-default = callTest ./override-default-support { };
   common-pkgs-1 = callTest ./common-pkgs-1 { };
   common-pkgs-2 = callTest ./common-pkgs-2 { };
-  pep425 = pkgs.callPackage ./pep425 { inherit pep425;inherit pep425OSX;inherit pep425Python37; };
+  pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
   env = callTest ./env { };
   pytest-randomly = callTest ./pytest-randomly { };
   file-src-deps = callTest ./file-src-deps { };
@@ -61,6 +61,7 @@ builtins.removeAttrs
   pendulum = callTest ./pendulum { };
   uwsgi = callTest ./uwsgi { };
   jq = callTest ./jq { };
+  awscli = callTest ./awscli { };
 
   # Test building poetry
   inherit poetry;
