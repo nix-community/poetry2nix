@@ -61,6 +61,7 @@ builtins.removeAttrs
   pendulum = callTest ./pendulum { };
   uwsgi = callTest ./uwsgi { };
   jq = callTest ./jq { };
+  awscli = callTest ./awscli { };
 
   # Test building poetry
   inherit poetry;
