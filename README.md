@@ -75,6 +75,7 @@ Creates an environment that provides a Python interpreter along with all depende
 - **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
+- **extraPackages**: A function taking a Python package set and returning a list of extra packages to include in the environment. This is intended for packages deliberately not added to `pyproject.toml` that you still want to include. An example of such a package may be `pip`. (_default:_ `(ps: [ ])`).
 
 #### Example
 ```nix
