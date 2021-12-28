@@ -1,5 +1,6 @@
 ---
 name: Issue report
+about: Report an issue with poetry2nix
 ---
 
 <!--
