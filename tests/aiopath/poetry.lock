@@ -1,0 +1,136 @@
+[[package]]
+name = "aiofile"
+version = "3.7.4"
+description = "Asynchronous file operations."
+category = "main"
+optional = false
+python-versions = ">3.4.*, <4"
+
+[package.dependencies]
+caio = ">=0.9.0,<0.10.0"
+
+[package.extras]
+develop = ["aiomisc", "asynctest", "pytest", "pytest-cov"]
+
+[[package]]
+name = "aiopath"
+version = "0.5.12"
+description = "📁 Async pathlib for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+aiofile = ">=3.5.0,<4"
+anyio = ">=3.2.0,<4"
+typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
+
+[[package]]
+name = "aiopath"
+version = "0.6.10"
+description = "📁 Async pathlib for Python"
+category = "main"
+optional = false
+python-versions = ">=3.10"
+
+[package.dependencies]
+aiofile = ">=3.5.0,<4"
+anyio = ">=3.2.0,<4"
+
+[[package]]
+name = "anyio"
+version = "3.4.0"
+description = "High level compatibility layer for multiple asynchronous event loop implementations"
+category = "main"
+optional = false
+python-versions = ">=3.6.2"
+
+[package.dependencies]
+idna = ">=2.8"
+sniffio = ">=1.1"
+typing-extensions = {version = "*", markers = "python_version < \"3.8\""}
+
+[package.extras]
+doc = ["sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "pytest (>=6.0)", "pytest-mock (>=3.6.1)", "trustme", "contextlib2", "uvloop (<0.15)", "mock (>=4)", "uvloop (>=0.15)"]
+trio = ["trio (>=0.16)"]
+
+[[package]]
+name = "caio"
+version = "0.9.3"
+description = "Asynchronous file IO for Linux Posix and Windows."
+category = "main"
+optional = false
+python-versions = ">=3.5.*, <4"
+
+[package.extras]
+develop = ["aiomisc", "pytest", "pytest-cov"]
+
+[[package]]
+name = "idna"
+version = "3.3"
+description = "Internationalized Domain Names in Applications (IDNA)"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "sniffio"
+version = "1.2.0"
+description = "Sniff out which async library your code is running under"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "typing-extensions"
+version = "4.0.1"
+description = "Backported and Experimental Type Hints for Python 3.6+"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[metadata]
+lock-version = "1.1"
+python-versions = ">=3.7,<3.11"
+content-hash = "f90ca25b9e4c811447e4f4bac6ac08a20365eda208fe7e1a5188497acea6c96a"
+
+[metadata.files]
+aiofile = [
+    {file = "aiofile-3.7.4-py3-none-any.whl", hash = "sha256:0e2a524e4714efda47ce8964b13d4da94cf553411f9f6da813df615a4cd73d95"},
+    {file = "aiofile-3.7.4.tar.gz", hash = "sha256:0aefa1d91d000d3a20a515d153db2ebf713076c7c94edf2fca85d3d83316abc5"},
+]
+aiopath = [
+    {file = "aiopath-0.5.12-py2.py3-none-any.whl", hash = "sha256:9d85fd17ef1cbc75c0e81619acb3a1632cf5e15ead459e57fef5ec85e0b7a1da"},
+    {file = "aiopath-0.5.12.tar.gz", hash = "sha256:de2f9401dd098b9a279afb265df5a6eb5b78f39c2c4f3871f671fc1dd4b21d64"},
+    {file = "aiopath-0.6.10-py2.py3-none-any.whl", hash = "sha256:44a5376de098b4875eefa4b4599f5ac99fd9451b88c314f237716571e16ccce2"},
+    {file = "aiopath-0.6.10.tar.gz", hash = "sha256:6ca97a864fe32478d53af6c40e1951de64ab01d6b402d88524ce72d80362eb7a"},
+]
+anyio = [
+    {file = "anyio-3.4.0-py3-none-any.whl", hash = "sha256:2855a9423524abcdd652d942f8932fda1735210f77a6b392eafd9ff34d3fe020"},
+    {file = "anyio-3.4.0.tar.gz", hash = "sha256:24adc69309fb5779bc1e06158e143e0b6d2c56b302a3ac3de3083c705a6ed39d"},
+]
+caio = [
+    {file = "caio-0.9.3-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:966575da339c004c2410b4a92a6b7639659a6e90f45849dafa839e9dd2177c77"},
+    {file = "caio-0.9.3-cp36-cp36m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:46f649cbd68c6762e0a2d6fc1ab69ab9b06ddcdaab52241514b8c7cce48be08a"},
+    {file = "caio-0.9.3-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:cccd691fa9eadb378ec2baf6bce6427640a629426a4dcd56d66b849a09c49949"},
+    {file = "caio-0.9.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:7331c49c6d9036a72ba9ae17de9804359b84c0c3c69bb9f3ab7020bf47f59a53"},
+    {file = "caio-0.9.3-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:e475ed5cadd550aef36b10a74613fa797e8141cd7360af71507ed29eaaf20b0b"},
+    {file = "caio-0.9.3-cp38-cp38-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:fa4b8f9538a2b52081edee7f972f6644f02149ae7d1ea9c3a7d55df9c1cc182f"},
+    {file = "caio-0.9.3-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:ab94072fb0b00ee0108acd938c9444b828bd9dd0afbb54059293c1e5e61f2a76"},
+    {file = "caio-0.9.3-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:4c10054e6bc19e619033bb6f6ef8000b334596f0a947de91462513e5f54054db"},
+    {file = "caio-0.9.3-py3-none-any.whl", hash = "sha256:fae7cd90da87effda72ec2ca85df67f6dc91e58c0dfb6244db4c4d32d1a43fb7"},
+    {file = "caio-0.9.3.tar.gz", hash = "sha256:2e46b0c008b8baadcac9c8acc66aa1fff58acae779a8a81479795a499f3a6a40"},
+]
+idna = [
+    {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
+    {file = "idna-3.3.tar.gz", hash = "sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"},
+]
+sniffio = [
+    {file = "sniffio-1.2.0-py3-none-any.whl", hash = "sha256:471b71698eac1c2112a40ce2752bb2f4a4814c22a54a3eed3676bc0f5ca9f663"},
+    {file = "sniffio-1.2.0.tar.gz", hash = "sha256:c4666eecec1d3f50960c6bdf61ab7bc350648da6c126e3cf6898d8cd4ddcd3de"},
+]
+typing-extensions = [
+    {file = "typing_extensions-4.0.1-py3-none-any.whl", hash = "sha256:7f001e5ac290a0c0401508864c7ec868be4e701886d5b573a9528ed3973d9d3b"},
+    {file = "typing_extensions-4.0.1.tar.gz", hash = "sha256:4ca091dea149f945ec56afb48dae714f21e8692ef22a395223bcd328961b6a0e"},
+]

@@ -62,6 +62,7 @@ builtins.removeAttrs
   uwsgi = callTest ./uwsgi { };
   jq = callTest ./jq { };
   awscli = callTest ./awscli { };
+  aiopath = callTest ./aiopath { };
 
   # Test building poetry
   inherit poetry;
