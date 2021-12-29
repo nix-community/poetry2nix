@@ -22,7 +22,9 @@ def main(input, output, fields_to_remove):
                 if any_removed:
                     dep["version"] = "*"
 
-    json.dump(data, output, separators=(",", ":"))
+    # Set ensure_ascii to False because TOML is valid UTF-8 so text that can't
+    # be represented in ASCII is perfectly legitimate
+    json.dump(data, output, separators=(",", ":"), ensure_ascii=False)
 
 
 if __name__ == "__main__":
