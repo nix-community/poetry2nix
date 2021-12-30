@@ -1044,6 +1044,13 @@ self: super:
     }
   );
 
+  pantalaimon = super.pantalaimon.overridePythonAttrs (old: {
+    nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.installShellFiles ];
+    postInstall = old.postInstall or "" + ''
+      installManPage docs/man/*.[1-9]
+    '';
+  });
+
   paramiko = super.paramiko.overridePythonAttrs (old: {
     doCheck = false; # requires networking
   });
