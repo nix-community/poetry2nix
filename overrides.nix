@@ -504,6 +504,13 @@ self: super:
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyparsing ];
   });
 
+  icecream = super.icecream.overridePythonAttrs (old: {
+    #  # ERROR: Could not find a version that satisfies the requirement executing>=0.3.1 (from icecream) (from versions: none)
+    postPatch = ''
+      substituteInPlace setup.py --replace 'executing>=0.3.1' 'executing'
+    '';
+  });
+
   imagecodecs = super.imagecodecs.overridePythonAttrs (
     old: {
       patchPhase = ''
