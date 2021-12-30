@@ -26,7 +26,11 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
           extra_nix_config: experimental-features = nix-command
       - id: set-matrix
-        run: ./.github/generate-matrix.py
+        run: |
+          set -euo pipefail
+
+          matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq '{attr: .}')"
+          echo "::set-output name=matrix::$matrix"
 
   builds:
     needs: matrix_generate
