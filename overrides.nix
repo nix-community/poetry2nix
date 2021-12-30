@@ -247,6 +247,36 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
   });
 
+  dbus-python = super.dbus-python.overridePythonAttrs (old: {
+    outputs = [ "out" "dev" ];
+
+    postPatch = old.postPatch or "" + ''
+      substituteInPlace ./configure --replace /usr/bin/file ${pkgs.file}/bin/file
+      substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
+    '';
+
+    configureFlags = (old.configureFlags or [ ]) ++ [
+      "PYTHON_VERSION=${lib.versions.major self.python.version}"
+    ];
+
+    preConfigure = lib.concatStringsSep "\n" [
+      (old.preConfigure or "")
+      (if (lib.versionAtLeast stdenv.hostPlatform.darwinMinVersion "11" && stdenv.isDarwin) then ''
+        MACOSX_DEPLOYMENT_TARGET=10.16
+      '' else "")
+    ];
+
+    preBuild = old.preBuild or "" + ''
+      make distclean
+    '';
+
+    nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+    buildInputs = old.buildInputs or [ ] ++ [ pkgs.dbus pkgs.dbus-glib ]
+      # My guess why it's sometimes trying to -lncurses.
+      # It seems not to retain the dependency anyway.
+      ++ lib.optional (! self.python ? modules) pkgs.ncurses;
+  });
+
   dcli = super.dcli.overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
   });
@@ -1476,6 +1506,12 @@ self: super:
   python-jose = super.python-jose.overridePythonAttrs (
     old: {
       buildInputs = [ self.pytest-runner ];
+    }
+  );
+
+  python-olm = super.python-olm.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs or [ ] ++ [ pkgs.olm ];
     }
   );
 
