@@ -1509,6 +1509,12 @@ self: super:
     }
   );
 
+  python-olm = super.python-olm.overridePythonAttrs (
+    old: {
+      buildInputs = old.buildInputs or [ ] ++ [ pkgs.olm ];
+    }
+  );
+
   python-snappy = super.python-snappy.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.snappy ];
