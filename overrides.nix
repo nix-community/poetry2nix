@@ -1503,6 +1503,13 @@ self: super:
     }
   );
 
+  pyudev = super.pyudev.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace src/pyudev/_ctypeslib/utils.py \
+        --replace "find_library(name)" "'${pkgs.lib.getLib pkgs.systemd}/lib/libudev.so'"
+    '';
+  });
+
   pyusb = super.pyusb.overridePythonAttrs (
     old: {
       postPatch = ''
