@@ -282,7 +282,10 @@ lib.makeScope pkgs.newScope (self: {
   */
   mkPoetryApplication =
     { projectDir ? null
-    , src ? self.cleanPythonSources { src = projectDir; }
+    , src ? (
+        # Assume that a project which is the result of a derivation is already adequately filtered
+        if lib.isDerivation projectDir then projectDir else self.cleanPythonSources { src = projectDir; }
+      )
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
     , overrides ? self.defaultPoetryOverrides
