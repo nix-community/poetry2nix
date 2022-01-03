@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Auto-update the Poetry package, but not tests
+  - package-ecosystem: "pip"
+    directory: "/pkgs"
+    schedule:
+      interval: "daily"
