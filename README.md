@@ -125,7 +125,7 @@ let
     };
   };
 in myAppEnv.env.overrideAttrs (oldAttrs: {
-  buildInputs = [ pkgs.hello ]:
+  buildInputs = [ pkgs.hello ];
 })
 ```
 
