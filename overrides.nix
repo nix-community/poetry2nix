@@ -1025,8 +1025,10 @@ self: super:
   );
 
   opencv-python = super.opencv-python.overridePythonAttrs (
-    old: rec {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.scikit-build ];
+    old: {
+      nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+      buildInputs = [ self.scikit-build ] ++ (old.buildInputs or [ ]);
+      dontUseCmakeConfigure = true;
     }
   );
 
