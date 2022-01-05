@@ -606,9 +606,9 @@ self: super:
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
 
-      postPatch = old.postPatch or "" + ''
+      postPatch = old.postPatch or "" + (lib.optionalString ((old.format or "") != "wheel") ''
         substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '';
+      '');
     }
   );
 
@@ -1025,8 +1025,10 @@ self: super:
   );
 
   opencv-python = super.opencv-python.overridePythonAttrs (
-    old: rec {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.scikit-build ];
+    old: {
+      nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+      buildInputs = [ self.scikit-build ] ++ (old.buildInputs or [ ]);
+      dontUseCmakeConfigure = true;
     }
   );
 
@@ -1321,7 +1323,11 @@ self: super:
     }
   );
 
-  pytezos = super.pytezos.override (old: {
+  pytaglib = super.pytaglib.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.taglib ];
+  });
+
+  pytezos = super.pytezos.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libsodium ];
   });
 
