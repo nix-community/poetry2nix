@@ -606,9 +606,9 @@ self: super:
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
 
-      postPatch = old.postPatch or "" + ''
+      postPatch = old.postPatch or "" + (lib.optionalString ((old.format or "") != "wheel") ''
         substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '';
+      '');
     }
   );
 
