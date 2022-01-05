@@ -190,7 +190,10 @@ lib.makeScope pkgs.newScope (self: {
               (lib.reverseList compatible)
           );
         in
-        lockPkgs;
+        lockPkgs // {
+          # Create a dummy null package for the current project in case any dependencies depend on the root project (issue #307)
+          ${pyProject.tool.poetry.name} = null;
+        };
       overlays = builtins.map
         getFunctorFn
         (
