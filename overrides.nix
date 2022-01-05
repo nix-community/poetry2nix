@@ -1327,7 +1327,7 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.taglib ];
   });
 
-  pytezos = super.pytezos.override (old: {
+  pytezos = super.pytezos.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libsodium ];
   });
 
