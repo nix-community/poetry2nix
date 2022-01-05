@@ -122,10 +122,10 @@ lib.makeScope pkgs.newScope (self: {
       # Example: { my-app = ./src; }
     , editablePackageSources ? { }
     , __isBootstrap ? false  # Hack: Always add Poetry as a build input unless bootstrapping
+    , pyProject ? readTOML pyproject
     }@attrs:
     let
       poetryPkg = poetry.override { inherit python; };
-      pyProject = readTOML pyproject;
 
       scripts = pyProject.tool.poetry.scripts or { };
       hasScripts = scripts != { };
@@ -267,15 +267,30 @@ lib.makeScope pkgs.newScope (self: {
     , extraPackages ? ps: [ ]
     }:
     let
+      inherit (lib) elem hasAttr;
+
+      pyProject = readTOML pyproject;
+
+      # Automatically add dependencies with develop = true as editable packages, but only if path dependencies
+      getEditableDeps = set: lib.mapAttrs
+        (name: value: projectDir + "/${value.path}")
+        (lib.filterAttrs (name: dep: dep.develop or false && hasAttr "path" dep) set);
+
+      editablePackageSources' = (
+        (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
+        // (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
+        // editablePackageSources
+      );
+
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels editablePackageSources;
+        inherit pyproject poetrylock overrides python pwd preferWheels pyProject;
+        editablePackageSources = editablePackageSources';
       };
 
       inherit (poetryPython) poetryPackages;
-      inherit (lib) elem;
 
       # Don't add editable sources to the environment since they will sometimes fail to build and are not useful in the development env
-      editableAttrs = lib.attrNames editablePackageSources;
+      editableAttrs = lib.attrNames editablePackageSources';
       envPkgs = builtins.filter (drv: ! lib.elem (drv.pname or drv.name or "") editableAttrs) poetryPackages;
 
     in
