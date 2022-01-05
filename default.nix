@@ -272,9 +272,14 @@ lib.makeScope pkgs.newScope (self: {
       };
 
       inherit (poetryPython) poetryPackages;
+      inherit (lib) elem;
+
+      # Don't add editable sources to the environment since they will sometimes fail to build and are not useful in the development env
+      editableAttrs = lib.attrNames editablePackageSources;
+      envPkgs = builtins.filter (drv: ! lib.elem (drv.pname or drv.name or "") editableAttrs) poetryPackages;
 
     in
-    poetryPython.python.withPackages (ps: poetryPackages ++ (extraPackages ps));
+    poetryPython.python.withPackages (ps: envPkgs ++ (extraPackages ps));
 
   /* Creates a Python application from pyproject.toml and poetry.lock
 
