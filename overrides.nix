@@ -1323,6 +1323,10 @@ self: super:
     }
   );
 
+  pytaglib = super.pytaglib.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.taglib ];
+  });
+
   pytezos = super.pytezos.override (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libsodium ];
   });
