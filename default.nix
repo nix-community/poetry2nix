@@ -133,9 +133,11 @@ lib.makeScope pkgs.newScope (self: {
         inherit python scripts;
       };
 
-      hasEditable = editablePackageSources != { };
+      editablePackageSources' = lib.filterAttrs (name: path: path != null) editablePackageSources;
+      hasEditable = editablePackageSources' != { };
       editablePackage = self.mkPoetryEditablePackage {
-        inherit pyProject python editablePackageSources;
+        inherit pyProject python;
+        editablePackageSources = editablePackageSources';
       };
 
       poetryLock = readTOML poetrylock;
