@@ -1622,6 +1622,12 @@ self: super:
     }
   );
 
+  requests-mock = super.requests-mock.overridePythonAttrs (
+    old: {
+      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ super.pbr ];
+    }
+  );
+
   requests-unixsocket = super.requests-unixsocket.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pbr ];
