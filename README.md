@@ -280,6 +280,10 @@ in pkgs.poetry2nix.mkPoetryApplication {
 }
 ```
 
+## How-to guides
+- [Package and deploy Python apps faster with Poetry and Nix](https://www.youtube.com/watch?v=TbIHRHy7_JM)
+This is a short (11 minutes) video tutorial by [Steve Purcell](https://github.com/purcell/) from [Tweag](https://tweag.io) walking you through how to get started with a small web development project.
+
 ## Using the flake
 
 For the experimental flakes functionality we provide _poetry2nix_ as a flake providing an overlay
