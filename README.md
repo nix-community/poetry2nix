@@ -6,6 +6,15 @@ _poetry2nix_ turns [Poetry](https://poetry.eustace.io/) projects into Nix deriva
 
 For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
+## Table of contents
+- [API](#api)
+- [How-to guides](#how-to-guides)
+- [Using the flake](#using-the-flake)
+- [Contributing](#contributing)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
+
 ## API
 
 The _poetry2nix_ public API consists of the following attributes:
