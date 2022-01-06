@@ -4,7 +4,7 @@
 # poetry2nix
 _poetry2nix_ turns [Poetry](https://poetry.eustace.io/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
 
-For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/). Development of `poetry2nix` has been supported by [Tweag](https://tweag.io).
+For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
 ## API
 
@@ -289,10 +289,6 @@ a flake template to quickly start using _poetry2nix_ in a project:
 ```sh
 nix flake init --template github:nix-community/poetry2nix
 ```
-
-## Contact
-- We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is)
-
 ## Contributing
 
 Contributions to this project are welcome in the form of GitHub PRs. Please consider the following before creating PRs:
@@ -305,6 +301,12 @@ Contributions to this project are welcome in the form of GitHub PRs. Please cons
 ```bash
 nix-build --keep-going --show-trace tests/default.nix
 ```
+
+## Contact
+We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
+
+## Acknowledgements
+Development of `poetry2nix` has been supported by [Tweag](https://tweag.io).
 
 ## License
 _poetry2nix_ is released under the terms of the MIT license.
