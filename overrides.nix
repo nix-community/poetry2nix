@@ -534,6 +534,12 @@ self: super:
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyparsing ];
   });
 
+  humanize = super.humanize.overridePythonAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
+    '';
+  });
+
   icecream = super.icecream.overridePythonAttrs (old: {
     #  # ERROR: Could not find a version that satisfies the requirement executing>=0.3.1 (from icecream) (from versions: none)
     postPatch = ''
@@ -616,6 +622,20 @@ self: super:
     old: {
       # disable the removal of pyproject.toml, required because of setuptools_scm
       dontPreferSetupPy = true;
+    }
+  );
+
+  inquirer = super.inquirer.overridePythonAttrs (
+    old: {
+      preBuild = old.preBuild or "" + ''
+        substituteInPlace setup.py --replace 'version = "3.0.0"' 'version = "${old.version}"'
+      '';
+      preConfigure = (old.preConfigure or "") + ''cat << EOF > requirements.txt
+blessed==1.19.0
+readchar==2.0.1
+python-editor==1.0.4
+EOF
+      '';
     }
   );
 
