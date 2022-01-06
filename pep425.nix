@@ -88,8 +88,8 @@ let
           if stdenv.isDarwin
           then
             if stdenv.targetPlatform.isAarch64
-            then (x: x.platform == "any" || ((hasInfix "macosx" x.platform) && lib.lists.any (e: hasSuffix e x.platform) [ "arm64" "aarch64" ]))
-            else (x: x.platform == "any" || ((hasInfix "macosx" x.platform) && hasSuffix "x86_64" x.platform))
+            then (x: x.platform == "any" || (hasInfix "macosx" x.platform && lib.lists.any (e: hasSuffix e x.platform) [ "arm64" "aarch64" ]))
+            else (x: x.platform == "any" || (hasInfix "macosx" x.platform && hasSuffix "x86_64" x.platform))
           else (x: x.platform == "any");
       filterWheel = x:
         let
