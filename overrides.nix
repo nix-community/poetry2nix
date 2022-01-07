@@ -1032,6 +1032,14 @@ self: super:
     }
   );
 
+  opencv-contrib-python = super.opencv-contrib-python.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+      buildInputs = [ self.scikit-build ] ++ (old.buildInputs or [ ]);
+      dontUseCmakeConfigure = true;
+    }
+  );
+
   openexr = super.openexr.overridePythonAttrs (
     old: rec {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openexr pkgs.ilmbase ];
