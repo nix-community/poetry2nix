@@ -104,6 +104,12 @@ self: super:
     }
   );
 
+  bjoern = super.bjoern.overridePythonAttrs (
+    old: {
+      buildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libev ];
+    }
+  );
+
   black = super.black.overridePythonAttrs (
     old: {
       dontPreferSetupPy = true;
