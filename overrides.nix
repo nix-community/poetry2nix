@@ -910,13 +910,6 @@ self: super:
     buildInputs = oa.buildInputs ++ [ self.pbr ];
   });
 
-  moto = super.moto.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        [ self.sshpubkeys ];
-    }
-  );
-
   mpi4py = super.mpi4py.overridePythonAttrs (
     old:
     let
