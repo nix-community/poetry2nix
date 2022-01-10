@@ -409,6 +409,13 @@ self: super:
     }
   );
 
+  fastapi = super.fastapi.overridePythonAttrs (
+    old: {
+      # Note: requires full flit, not just flit-core
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit ];
+    }
+  );
+
   fastecdsa = super.fastecdsa.overridePythonAttrs (old: {
     buildInputs = old.buildInputs ++ [ pkgs.gmp.dev ];
   });
@@ -1380,6 +1387,7 @@ self: super:
           pkgs.qt5.qtsvg
           pkgs.qt5.qtdeclarative
           pkgs.qt5.qtwebchannel
+          pkgs.qt5.qt3d
           # self.pyqt5-sip
           self.sip
         ]
