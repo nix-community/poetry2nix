@@ -63,6 +63,7 @@ builtins.removeAttrs
   jq = callTest ./jq { };
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };
+  fetched-projectdir = callTest ./fetched-projectdir { };
 
   # Test building poetry
   inherit poetry;
