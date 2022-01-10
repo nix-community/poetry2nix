@@ -1382,6 +1382,7 @@ self: super:
           pkgs.qt5.qtwebchannel
           # self.pyqt5-sip
           self.sip
+          pkgs.qt5.wrapQtAppsHook
         ]
           ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
           ++ lib.optional withMultimedia pkgs.qt5.qtmultimedia
@@ -1425,7 +1426,7 @@ self: super:
         postInstall = ''
           ln -s ${self.pyqt5-sip}/${self.python.sitePackages}/PyQt5/sip.* $out/${self.python.sitePackages}/PyQt5/
           for i in $out/bin/*; do
-            wrapProgram $i --prefix PYTHONPATH : "$PYTHONPATH"
+            wrapProgram $i --prefix PYTHONPATH : "$PYTHONPATH" --prefix QT_PLUGIN_PATH : "${pkgs.qt5.qtbase}/${pkgs.qt5.qtbase.qtPluginPrefix}"
           done
 
           # Let's make it a namespace package
