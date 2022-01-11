@@ -1749,7 +1749,7 @@ self: super:
   tables = super.tables.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
-      HDF5_DIR = "${pkgs.hdf5}";
+      HDF5_DIR = lib.getDev pkgs.hdf5;
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
       propagatedBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.hdf5 self.numpy self.numexpr ];
     }
