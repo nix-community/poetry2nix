@@ -84,7 +84,7 @@ if urlparse(parser.sources[package_filename]).netloc == '':
     package_url = urlunparse((
         parsed_url.scheme,
         parsed_url.netloc,
-        parser.sources[package_filename],
+        parsed_url.path + "/" + parser.sources[package_filename],
         None, None, None,
     ))
 else:
