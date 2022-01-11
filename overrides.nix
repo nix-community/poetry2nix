@@ -1700,6 +1700,18 @@ self: super:
     } else old
   );
 
+  scikit-image = super.scikit-image.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+        self.cython
+        self.pythran
+        self.packaging
+        self.wheel
+        self.numpy
+      ];
+    }
+  );
+
   scikit-learn = super.scikit-learn.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [
