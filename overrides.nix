@@ -1145,6 +1145,10 @@ self: super:
     }
   );
 
+  prettytable = super.prettytable.overridePythonAttrs (old: {
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+  });
+
   psycopg2 = super.psycopg2.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ])
