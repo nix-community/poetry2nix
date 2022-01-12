@@ -64,10 +64,10 @@ req = urllib.request.Request(index_url)
 if username and password:
     import base64
 
-    password_b64 = base64.b64encode(bytes(f"{username}:{password}", "utf-8")).decode(
+    password_b64 = base64.b64encode(":".join((username, password)).encode()).decode(
         "utf-8"
     )
-    req.add_header("Authorization", f"Basic {password_b64}")
+    req.add_header("Authorization", "Basic {}".format(password_b64))
 response = urllib.request.urlopen(req, context=context)
 index = response.read()
 
@@ -112,7 +112,7 @@ print("Downloading %s" % real_package_url)
 
 req = urllib.request.Request(real_package_url)
 if username and password:
-    req.add_unredirected_header("Authorization", f"Basic {password_b64}")
+    req.add_unredirected_header("Authorization", "Basic {}".format(password_b64))
 response = urllib.request.urlopen(req, context=context)
 
 with response as r:
