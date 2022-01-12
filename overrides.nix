@@ -248,6 +248,14 @@ self: super:
     '';
   });
 
+  cymem = super.cymem.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [
+        self.cython
+      ];
+    }
+  );
+
   daphne = super.daphne.overridePythonAttrs (old: {
     postPatch = ''
       substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
