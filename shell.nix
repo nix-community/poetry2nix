@@ -14,6 +14,7 @@ pkgs.mkShell {
 
   buildInputs = [
     tools.env
+    tools.py2-astparse
     tools.flamegraph
     tools.release
     pkgs.nixpkgs-fmt
