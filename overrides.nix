@@ -98,6 +98,14 @@ self: super:
     '';
   });
 
+  backports-functools-lru-cache = super.backports-functools-lru-cache.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace \
+        'setuptools.setup()' \
+        'setuptools.setup(version="${old.version}")'
+    '';
+  });
+
   bcrypt = super.bcrypt.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libffi ];
