@@ -6,10 +6,10 @@
 from poetry.packages.utils.utils import SUPPORTED_EXTENSIONS
 import json
 
-EXT_FILE = 'extensions.json'
+EXT_FILE = "extensions.json"
 
-if __name__ == '__main__':
-    with open(EXT_FILE, 'w') as f:
-        ext = set(ext.lstrip('.') for ext in SUPPORTED_EXTENSIONS)
-        ext.add('egg')
-        f.write(json.dumps(sorted(ext), indent=2) + '\n')
+if __name__ == "__main__":
+    with open(EXT_FILE, "w") as f:
+        ext = set(ext.lstrip(".") for ext in SUPPORTED_EXTENSIONS)
+        ext.add("egg")
+        f.write(json.dumps(sorted(ext), indent=2) + "\n")
