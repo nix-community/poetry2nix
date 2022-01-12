@@ -73,4 +73,8 @@ in
       flamegraph.pl $workdir/traceFile.folded > poetry2nix-flamegraph.svg
     '';
 
+  env = pkgs.poetry2nix.mkPoetryEnv {
+    projectDir = ./.;
+  };
+
 }

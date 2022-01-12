@@ -6,12 +6,14 @@ let
     ];
   };
   tools = pkgs.callPackage ./tools { };
+
 in
 pkgs.mkShell {
 
   NIX_PATH = "nixpkgs=${sources.nixpkgs}";
 
   buildInputs = [
+    tools.env
     tools.flamegraph
     tools.release
     pkgs.nixpkgs-fmt
