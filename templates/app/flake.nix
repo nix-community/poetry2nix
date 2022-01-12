@@ -24,11 +24,11 @@
           overlays = [ self.overlay ];
         };
       in
-      rec {
+      {
         apps = {
           myapp = pkgs.myapp;
         };
 
-        defaultApp = apps.myapp;
+        defaultApp = pkgs.myapp;
       }));
 }
