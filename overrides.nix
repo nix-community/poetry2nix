@@ -98,6 +98,14 @@ self: super:
     '';
   });
 
+  backports-functools-lru-cache = super.backports-functools-lru-cache.overridePythonAttrs (old: {
+    postPatch = ''
+      substituteInPlace setup.py --replace \
+        'setuptools.setup()' \
+        'setuptools.setup(version="${old.version}")'
+    '';
+  });
+
   bcrypt = super.bcrypt.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libffi ];
@@ -1136,6 +1144,10 @@ self: super:
       dontPreferSetupPy = true;
     }
   );
+
+  prettytable = super.prettytable.overridePythonAttrs (old: {
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+  });
 
   psycopg2 = super.psycopg2.overridePythonAttrs (
     old: {
@@ -2222,6 +2234,10 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
   });
 
+  pysqlite = super.pysqlite.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
+  });
+
   selinux = super.selinux.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
   });
@@ -2241,6 +2257,12 @@ self: super:
   uwsgi = super.uwsgi.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
     sourceRoot = ".";
+  });
+
+  wcwidth = super.wcwidth.overridePythonAttrs (old: {
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++
+      lib.optional self.isPy27 (self.backports-functools-lru-cache or self.backports_functools_lru_cache)
+    ;
   });
 
   wtforms = super.wtforms.overridePythonAttrs (old: {
