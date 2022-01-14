@@ -1357,6 +1357,10 @@ self: super:
     }
   );
 
+  pyrfr = super.pyrfr.overridePythonAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
+  });
+
   pytaglib = super.pytaglib.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.taglib ];
   });
