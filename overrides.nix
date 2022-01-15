@@ -838,7 +838,7 @@ self: super:
     old:
     let
       enableGhostscript = old.passthru.enableGhostscript or false;
-      enableGtk3 = old.passthru.enableTk or false;
+      enableGtk3 = old.passthru.enableGtk3 or false;
       enableQt = old.passthru.enableQt or false;
       enableTk = old.passthru.enableTk or false;
 
