@@ -457,6 +457,10 @@ self: super:
     }
   );
 
+  flatbuffers = super.flatbuffers.overrideAttrs (old: {
+    VERSION = old.version;
+  });
+
   gdal = super.gdal.overridePythonAttrs (
     old: {
       preBuild = (old.preBuild or "") + ''
