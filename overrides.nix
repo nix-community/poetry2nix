@@ -1339,6 +1339,13 @@ self: super:
     }
   );
 
+  pymssql = super.pymssql.overridePythonAttrs (old: {
+    buildInputs = (old.buildInputs or [ ])
+      ++ [ self.cython pkgs.openssl ];
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
+      ++ [ pkgs.freetds ];
+  });
+
   pyopenssl = super.pyopenssl.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
