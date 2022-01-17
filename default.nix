@@ -222,10 +222,21 @@ lib.makeScope pkgs.newScope (self: {
                   setuptools-scm = super.setuptools_scm;
                 }
             )
+
+            # Fix infinite recursion in a lot of packages because of checkInputs
+            (self: super: lib.mapAttrs
+              (name: value: (
+                if lib.isDerivation value && lib.hasAttr "overridePythonAttrs" value
+                then value.overridePythonAttrs (_: { doCheck = false; })
+                else value
+              ))
+              super)
+
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
             (self: super: builtins.listToAttrs (builtins.map (x: { name = moduleName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
+
           ] ++ # User provided overrides
           (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
