@@ -50,12 +50,6 @@ self: super:
     }
   );
 
-  anyio = super.anyio.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
-
   argcomplete = super.argcomplete.overridePythonAttrs (
     old: rec {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.importlib-metadata ];
@@ -90,20 +84,8 @@ self: super:
     }
   );
 
-  backports-entry-points-selectable = super.backports-entry-points-selectable.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace \
-        'setuptools.setup()' \
-        'setuptools.setup(version="${old.version}")'
-    '';
-  });
-
-  backports-functools-lru-cache = super.backports-functools-lru-cache.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace \
-        'setuptools.setup()' \
-        'setuptools.setup(version="${old.version}")'
-    '';
+  backcall = super.backcall.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
   });
 
   bcrypt = super.bcrypt.overridePythonAttrs (
@@ -115,12 +97,6 @@ self: super:
   bjoern = super.bjoern.overridePythonAttrs (
     old: {
       buildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libev ];
-    }
-  );
-
-  black = super.black.overridePythonAttrs (
-    old: {
-      dontPreferSetupPy = true;
     }
   );
 
@@ -174,11 +150,13 @@ self: super:
     }
   );
 
-  cheroot = super.cheroot.overridePythonAttrs (
-    old: {
-      dontPreferSetupPy = true;
-    }
-  );
+  cleo = super.cleo.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.poetry-core ];
+  });
+
+  clikit = super.clikit.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.poetry-core ];
+  });
 
   cloudflare = super.cloudflare.overridePythonAttrs (
     old: {
@@ -199,10 +177,14 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
+    }
+  );
 
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '';
+  crashtest = super.crashtest.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [
+        self.poetry-core
+      ];
     }
   );
 
@@ -419,8 +401,7 @@ self: super:
     old: {
       postPatch = ''
         substituteInPlace setup.py \
-          --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
-          --replace 'versioning="devcommit"' 'version="${old.version}"'
+          --replace 'setup_requires="setupmeta"' 'setup_requires=[]'
       '';
     }
   );
@@ -441,12 +422,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
   );
-
-  filelock = super.filelock.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
 
   fiona = super.fiona.overridePythonAttrs (
     old: {
@@ -563,6 +538,10 @@ self: super:
     }
   );
 
+  html5lib = super.html5lib.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
+  });
+
   httplib2 = super.httplib2.overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyparsing ];
   });
@@ -635,20 +614,6 @@ self: super:
   importlib-metadata = super.importlib-metadata.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ lib.optional self.python.isPy2 self.pathlib2;
-
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
-
-      postPatch = old.postPatch or "" + (lib.optionalString ((old.format or "") != "wheel") ''
-        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '');
-    }
-  );
-
-  importlib-resources = super.importlib-resources.overridePythonAttrs (
-    old: {
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
 
@@ -670,10 +635,12 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
+
+  jeepney = super.jeepney.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
+  });
 
   jira = super.jira.overridePythonAttrs (
     old: {
@@ -706,12 +673,6 @@ self: super:
     }
   );
 
-  jsonpickle = super.jsonpickle.overridePythonAttrs (
-    old: {
-      dontPreferSetupPy = true;
-    }
-  );
-
   jsonslicer = super.jsonslicer.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.yajl ];
@@ -741,9 +702,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '';
     }
   );
 
@@ -766,10 +724,6 @@ self: super:
   libvirt-python = super.libvirt-python.overridePythonAttrs ({ nativeBuildInputs ? [ ], ... }: {
     nativeBuildInputs = nativeBuildInputs ++ [ pkgs.pkg-config ];
     propagatedBuildInputs = [ pkgs.libvirt ];
-  });
-
-  licensecheck = super.licensecheck.overridePythonAttrs (old: {
-    dontPreferSetupPy = true;
   });
 
   llvmlite = super.llvmlite.overridePythonAttrs (
@@ -1087,6 +1041,10 @@ self: super:
     '';
   });
 
+  pastel = super.pastel.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.poetry-core ];
+  });
+
   paramiko = super.paramiko.overridePythonAttrs (old: {
     doCheck = false; # requires networking
   });
@@ -1124,12 +1082,6 @@ self: super:
     }
   );
 
-  platformdirs = super.platformdirs.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
-
   poetry-core = super.poetry-core.overridePythonAttrs (old: {
     # "Vendor" dependencies (for build-system support)
     postPatch = ''
@@ -1152,8 +1104,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
 
@@ -1816,8 +1766,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
 
@@ -1929,13 +1877,6 @@ self: super:
     }))
     { };
 
-  typeguard = super.typeguard.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py \
-        --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
-
   typed_ast = super.typed-ast.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
       self.pytest-runner
@@ -2038,21 +1979,7 @@ self: super:
     if isWheel then wheelPackage else sourcePackage;
 
   zipp = if super.zipp == null then null else
-  (
-    if lib.versionAtLeast super.zipp.version "2.0.0" then
-      (
-        super.zipp.overridePythonAttrs (
-          old:
-          if (old.format or "pyproject") != "wheel" then {
-            prePatch = ''
-              substituteInPlace setup.py --replace \
-              'setuptools.setup()' \
-              'setuptools.setup(version="${super.zipp.version}")'
-            '';
-          } else old
-        )
-      ) else super.zipp
-  ).overridePythonAttrs (
+  super.zipp.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.toml
@@ -2226,19 +2153,16 @@ self: super:
     }
   );
 
-  lazy-object-proxy = super.lazy-object-proxy.overridePythonAttrs (
-    old: {
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
-    }
-  );
-
   pendulum = super.pendulum.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.poetry ];
     # Technically incorrect, but fixes the build error..
     preInstall = lib.optionalString stdenv.isLinux ''
       mv --no-clobber ./dist/*.whl $(echo ./dist/*.whl | sed s/'manylinux_[0-9]*_[0-9]*'/'manylinux1'/)
     '';
+  });
+
+  ptyprocess = super.ptyprocess.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
   });
 
   pygraphviz = super.pygraphviz.overridePythonAttrs (old: {
@@ -2272,6 +2196,10 @@ self: super:
 
   sparqlslurper = super.sparqlslurper.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+  });
+
+  tomlkit = super.tomlkit.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs or [ ] ++ [ self.poetry-core ];
   });
 
   tomli = super.tomli.overridePythonAttrs (old: {
