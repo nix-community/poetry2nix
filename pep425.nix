@@ -1,7 +1,7 @@
 { lib, stdenv, poetryLib, python, isLinux ? stdenv.isLinux }:
 let
   inherit (lib.strings) hasSuffix hasInfix splitString removeSuffix;
-  inherit (poetryLib) targetMachine;
+  targetMachine = poetryLib.getTargetMachine stdenv;
 
   # The 'cpxy" as determined by `python.version`
   #
