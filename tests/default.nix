@@ -65,6 +65,9 @@ builtins.removeAttrs
   aiopath = callTest ./aiopath { };
   fetched-projectdir = callTest ./fetched-projectdir { };
 
+  # Inherit test cases from nixpkgs
+  inherit (pkgs) nixops nixopsUnstable rmfuse;
+
   # Test building poetry
   inherit poetry;
 

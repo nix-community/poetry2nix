@@ -5,6 +5,45 @@
 
 self: super:
 
+let
+
+  addFlit =
+    { drv
+    , cond ? true
+    , flitDrv ? self.flit-core
+    }: (
+      # Flit isn't available on Python2
+      if (cond && self.isPy3k) then
+        drv.overridePythonAttrs
+          (
+            old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ flitDrv ];
+            }
+          ) else drv
+    );
+
+  addPoetry =
+    { drv
+    , cond ? true
+    , poetryDrv ? self.poetry-core
+    }: (
+      if cond then
+        drv.overridePythonAttrs
+          (
+            old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ poetryDrv ];
+            }
+          ) else drv
+    );
+
+  addPbr = drv: drv.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+    }
+  );
+
+in
+
 {
   automat = super.automat.overridePythonAttrs (
     old: rec {
@@ -50,12 +89,6 @@ self: super:
     }
   );
 
-  anyio = super.anyio.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
-
   argcomplete = super.argcomplete.overridePythonAttrs (
     old: rec {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.importlib-metadata ];
@@ -83,28 +116,12 @@ self: super:
     }
   );
 
-  argon2-cffi = super.argon2-cffi.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        lib.optional (lib.versionAtLeast old.version "21.2.0") [ self.flit-core ];
-    }
-  );
+  argon2-cffi = addFlit {
+    drv = super.argon2-cffi;
+    cond = lib.versionAtLeast super.argon2-cffi.version "21.2.0";
+  };
 
-  backports-entry-points-selectable = super.backports-entry-points-selectable.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace \
-        'setuptools.setup()' \
-        'setuptools.setup(version="${old.version}")'
-    '';
-  });
-
-  backports-functools-lru-cache = super.backports-functools-lru-cache.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace \
-        'setuptools.setup()' \
-        'setuptools.setup(version="${old.version}")'
-    '';
-  });
+  backcall = addFlit { drv = super.backcall; };
 
   bcrypt = super.bcrypt.overridePythonAttrs (
     old: {
@@ -115,12 +132,6 @@ self: super:
   bjoern = super.bjoern.overridePythonAttrs (
     old: {
       buildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libev ];
-    }
-  );
-
-  black = super.black.overridePythonAttrs (
-    old: {
-      dontPreferSetupPy = true;
     }
   );
 
@@ -149,7 +160,10 @@ self: super:
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
   });
 
-  cssselect2 = super.cssselect2.overridePythonAttrs (
+  cssselect2 = (addFlit {
+    drv = super.cssselect2;
+    flitDrv = self.flit;
+  }).overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
@@ -174,11 +188,9 @@ self: super:
     }
   );
 
-  cheroot = super.cheroot.overridePythonAttrs (
-    old: {
-      dontPreferSetupPy = true;
-    }
-  );
+  cleo = addPoetry { drv = super.cleo; };
+
+  clikit = addPoetry { drv = super.clikit; };
 
   cloudflare = super.cloudflare.overridePythonAttrs (
     old: {
@@ -199,19 +211,17 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '';
     }
   );
+
+  crashtest = addPoetry { drv = super.crashtest; };
 
   cryptography = super.cryptography.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ])
-        ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
-        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi
-        ++ lib.optional (lib.versionAtLeast old.version "3.5")
+      ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
+      ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi
+      ++ lib.optional (lib.versionAtLeast old.version "3.5")
         (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
     } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
@@ -238,7 +248,7 @@ self: super:
 
   cwcwidth = super.cwcwidth.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ])
-      ++ [ self.cython ];
+    ++ [ self.cython ];
   });
 
   cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
@@ -294,9 +304,9 @@ self: super:
 
     nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
     buildInputs = old.buildInputs or [ ] ++ [ pkgs.dbus pkgs.dbus-glib ]
-      # My guess why it's sometimes trying to -lncurses.
-      # It seems not to retain the dependency anyway.
-      ++ lib.optional (! self.python ? modules) pkgs.ncurses;
+    # My guess why it's sometimes trying to -lncurses.
+    # It seems not to retain the dependency anyway.
+    ++ lib.optional (! self.python ? modules) pkgs.ncurses;
   });
 
   dcli = super.dcli.overridePythonAttrs (old: {
@@ -305,7 +315,7 @@ self: super:
 
   ddtrace = super.ddtrace.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++
-      (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]) ++ [ self.cython ];
+    (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]) ++ [ self.cython ];
   });
 
   dictdiffer = super.dictdiffer.overridePythonAttrs (
@@ -319,7 +329,7 @@ self: super:
     super.django.overridePythonAttrs (
       old: {
         propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [ ])
-          ++ [ pkgs.gettext self.pytest-runner ];
+        ++ [ pkgs.gettext self.pytest-runner ];
       }
     )
   );
@@ -419,18 +429,16 @@ self: super:
     old: {
       postPatch = ''
         substituteInPlace setup.py \
-          --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
-          --replace 'versioning="devcommit"' 'version="${old.version}"'
+          --replace 'setup_requires="setupmeta"' 'setup_requires=[]'
       '';
     }
   );
 
-  fastapi = super.fastapi.overridePythonAttrs (
-    old: {
-      # Note: requires full flit, not just flit-core
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit ];
-    }
-  );
+  fastapi = addFlit {
+    drv = super.fastapi;
+    # Note: requires full flit, not just flit-core
+    flitDrv = self.flit;
+  };
 
   fastecdsa = super.fastecdsa.overridePythonAttrs (old: {
     buildInputs = old.buildInputs ++ [ pkgs.gmp.dev ];
@@ -441,12 +449,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
   );
-
-  filelock = super.filelock.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
 
   fiona = super.fiona.overridePythonAttrs (
     old: {
@@ -476,6 +478,10 @@ self: super:
       doCheck = false;
     }
   );
+
+  graphql-core = addPoetry { drv = super.graphql-core; };
+
+  graphql-relay = addPoetry { drv = super.graphql-relay; };
 
   gitpython = super.gitpython.overridePythonAttrs (
     old: {
@@ -563,9 +569,13 @@ self: super:
     }
   );
 
+  html5lib = addFlit { drv = super.html5lib; };
+
   httplib2 = super.httplib2.overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyparsing ];
   });
+
+  hypothesis-graphql = addPoetry { drv = super.hypothesis-graphql; poetryDrv = self.poetry; };
 
   icecream = super.icecream.overridePythonAttrs (old: {
     #  # ERROR: Could not find a version that satisfies the requirement executing>=0.3.1 (from icecream) (from versions: none)
@@ -635,20 +645,6 @@ self: super:
   importlib-metadata = super.importlib-metadata.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ lib.optional self.python.isPy2 self.pathlib2;
-
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
-
-      postPatch = old.postPatch or "" + (lib.optionalString ((old.format or "") != "wheel") ''
-        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '');
-    }
-  );
-
-  importlib-resources = super.importlib-resources.overridePythonAttrs (
-    old: {
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
 
@@ -670,10 +666,10 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
+
+  jeepney = addFlit { drv = super.jeepney; };
 
   jira = super.jira.overridePythonAttrs (
     old: {
@@ -706,12 +702,6 @@ self: super:
     }
   );
 
-  jsonpickle = super.jsonpickle.overridePythonAttrs (
-    old: {
-      dontPreferSetupPy = true;
-    }
-  );
-
   jsonslicer = super.jsonslicer.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.yajl ];
@@ -741,9 +731,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      postPatch = ''
-        substituteInPlace setup.py --replace 'setuptools.setup()' 'setuptools.setup(version="${old.version}")'
-      '';
     }
   );
 
@@ -766,10 +753,6 @@ self: super:
   libvirt-python = super.libvirt-python.overridePythonAttrs ({ nativeBuildInputs ? [ ], ... }: {
     nativeBuildInputs = nativeBuildInputs ++ [ pkgs.pkg-config ];
     propagatedBuildInputs = [ pkgs.libvirt ];
-  });
-
-  licensecheck = super.licensecheck.overridePythonAttrs (old: {
-    dontPreferSetupPy = true;
   });
 
   llvmlite = super.llvmlite.overridePythonAttrs (
@@ -815,11 +798,7 @@ self: super:
     }
   );
 
-  lockfile = super.lockfile.overridePythonAttrs (
-    old: {
-      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pbr ];
-    }
-  );
+  lockfile = addPbr super.lockfile;
 
   lxml = super.lxml.overridePythonAttrs (
     old: {
@@ -850,9 +829,9 @@ self: super:
       XDG_RUNTIME_DIR = "/tmp";
 
       buildInputs = (old.buildInputs or [ ])
-        ++ lib.optional enableGhostscript pkgs.ghostscript
-        ++ lib.optional stdenv.isDarwin [ Cocoa ]
-        ++ [ self.certifi ];
+      ++ lib.optional enableGhostscript pkgs.ghostscript
+      ++ lib.optional stdenv.isDarwin [ Cocoa ]
+      ++ [ self.certifi ];
 
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
         pkgs.pkg-config
@@ -875,9 +854,9 @@ self: super:
         pkgs.freetype
         pkgs.qhull
       ]
-        ++ lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
-        ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
-        ++ lib.optionals enableQt [ self.pyqt5 ]
+      ++ lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
+      ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
+      ++ lib.optionals enableQt [ self.pyqt5 ]
       ;
 
       preBuild = ''
@@ -933,9 +912,7 @@ self: super:
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
       });
 
-  mongomock = super.mongomock.overridePythonAttrs (oa: {
-    buildInputs = oa.buildInputs ++ [ self.pbr ];
-  });
+  mongomock = addPbr super.mongomock;
 
   mpi4py = super.mpi4py.overridePythonAttrs (
     old:
@@ -968,11 +945,7 @@ self: super:
     }
   );
 
-  munch = super.munch.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-    }
-  );
+  munch = addPbr super.munch;
 
   mypy = super.mypy.overridePythonAttrs (
     old: {
@@ -1087,6 +1060,8 @@ self: super:
     '';
   });
 
+  pastel = addPoetry { drv = super.pastel; };
+
   paramiko = super.paramiko.overridePythonAttrs (old: {
     doCheck = false; # requires networking
   });
@@ -1112,8 +1087,8 @@ self: super:
     {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
-        ++ lib.optional withPostgres self.psycopg2
-        ++ lib.optional withMysql self.mysql-connector;
+      ++ lib.optional withPostgres self.psycopg2
+      ++ lib.optional withMysql self.mysql-connector;
     }
   );
 
@@ -1123,12 +1098,6 @@ self: super:
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ (old.buildInputs or [ ]);
     }
   );
-
-  platformdirs = super.platformdirs.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
 
   poetry-core = super.poetry-core.overridePythonAttrs (old: {
     # "Vendor" dependencies (for build-system support)
@@ -1152,8 +1121,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
 
@@ -1164,7 +1131,7 @@ self: super:
   psycopg2 = super.psycopg2.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ])
-        ++ lib.optional stdenv.isDarwin pkgs.openssl;
+      ++ lib.optional stdenv.isDarwin pkgs.openssl;
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.postgresql ];
     }
   );
@@ -1172,7 +1139,7 @@ self: super:
   psycopg2-binary = super.psycopg2-binary.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ])
-        ++ lib.optional stdenv.isDarwin pkgs.openssl;
+      ++ lib.optional stdenv.isDarwin pkgs.openssl;
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.postgresql ];
     }
   );
@@ -1341,9 +1308,9 @@ self: super:
 
   pymssql = super.pymssql.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ])
-      ++ [ self.cython pkgs.openssl ];
+    ++ [ self.cython pkgs.openssl ];
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
-      ++ [ pkgs.freetds ];
+    ++ [ pkgs.freetds ];
   });
 
   pyopenssl = super.pyopenssl.overridePythonAttrs (
@@ -1355,18 +1322,14 @@ self: super:
   pyproj = super.pyproj.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++
-        [ self.cython ];
+      [ self.cython ];
       PROJ_DIR = "${pkgs.proj}";
       PROJ_LIBDIR = "${pkgs.proj}/lib";
       PROJ_INCDIR = "${pkgs.proj.dev}/include";
     }
   );
 
-  pyproject-flake8 = super.pyproject-flake8.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
-    }
-  );
+  pyproject-flake8 = addFlit { drv = super.pyproject-flake8; };
 
   pyrfr = super.pyrfr.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
@@ -1400,6 +1363,8 @@ self: super:
     }
   );
 
+  pytzdata = addPoetry { drv = super.pytzdata; poetryDrv = self.poetry; };
+
   pyqt5 =
     let
       drv = super.pyqt5;
@@ -1426,10 +1391,10 @@ self: super:
           # self.pyqt5-sip
           self.sip
         ]
-          ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
-          ++ lib.optional withMultimedia pkgs.qt5.qtmultimedia
-          ++ lib.optional withWebKit pkgs.qt5.qtwebkit
-          ++ lib.optional withWebSockets pkgs.qt5.qtwebsockets
+        ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
+        ++ lib.optional withMultimedia pkgs.qt5.qtmultimedia
+        ++ lib.optional withWebKit pkgs.qt5.qtwebkit
+        ++ lib.optional withWebSockets pkgs.qt5.qtwebsockets
         ;
 
         buildInputs = (old.buildInputs or [ ]) ++ [
@@ -1439,9 +1404,9 @@ self: super:
           pkgs.qt5.qtdeclarative
           self.sip
         ]
-          ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
-          ++ lib.optional withWebKit pkgs.qt5.qtwebkit
-          ++ lib.optional withWebSockets pkgs.qt5.qtwebsockets
+        ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
+        ++ lib.optional withWebKit pkgs.qt5.qtwebkit
+        ++ lib.optional withWebSockets pkgs.qt5.qtwebsockets
         ;
 
         # Fix dbus mainloop
@@ -1530,6 +1495,8 @@ self: super:
       '';
     }
   );
+
+  pytest-httpserver = addPoetry { drv = super.pytest-httpserver; };
 
   pytest-randomly = super.pytest-randomly.overrideAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
@@ -1672,21 +1639,11 @@ self: super:
     }
   );
 
-  requests-mock = super.requests-mock.overridePythonAttrs (
-    old: {
-      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ super.pbr ];
-    }
-  );
+  requests-mock = addPbr super.requests-mock;
 
-  requests-unixsocket = super.requests-unixsocket.overridePythonAttrs (
-    old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pbr ];
-    }
-  );
+  requests-unixsocket = addPbr super.requests-unixsocket;
 
-  requestsexceptions = super.requestsexceptions.overridePythonAttrs (old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ self.pbr ];
-  });
+  requestsexceptions = addPbr super.requestsexceptions;
 
   rlp = super.rlp.overridePythonAttrs {
     preConfigure = ''
@@ -1694,8 +1651,15 @@ self: super:
     '';
   };
 
+  rsa = addPoetry { drv = super.rsa; };
 
-  rmfuse = super.rmfuse.overridePythonAttrs (old: {
+  rich = addPoetry { drv = super.rich; };
+
+  rmcl = addPoetry { drv = super.rmcl; };
+
+  rmrl = addPoetry { drv = super.rmrl; };
+
+  rmfuse = (addPoetry { drv = super.rmfuse; }).overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
   });
 
@@ -1711,7 +1675,7 @@ self: super:
   ruamel-yaml = super.ruamel-yaml.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
-        ++ [ self.ruamel-yaml-clib ];
+      ++ [ self.ruamel-yaml-clib ];
     }
   );
 
@@ -1719,8 +1683,8 @@ self: super:
     old:
     if old.format != "wheel" then {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++
-        [ pkgs.gfortran ] ++
-        lib.optional (lib.versionAtLeast super.scipy.version "1.7.0") [ self.cython self.pythran ];
+      [ pkgs.gfortran ] ++
+      lib.optional (lib.versionAtLeast super.scipy.version "1.7.0") [ self.cython self.pythran ];
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pybind11 ];
       setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
       enableParallelBuilding = true;
@@ -1816,8 +1780,6 @@ self: super:
       buildInputs = (old.buildInputs or [ ]) ++ [
         self.toml
       ];
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
     }
   );
 
@@ -1859,7 +1821,11 @@ self: super:
     }
   );
 
-  tinycss2 = super.tinycss2.overridePythonAttrs (
+  tinycss2 = (addFlit {
+    drv = super.tinycss2;
+    # Note: requires full flit, not just flit-core
+    flitDrv = self.flit;
+  }).overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
@@ -1916,8 +1882,8 @@ self: super:
       # without that autoPatchelfHook will fail because cudatoolkit is not in LD_LIBRARY_PATH
       autoPatchelfIgnoreMissingDeps = true;
       buildInputs = (old.buildInputs or [ ])
-        ++ [ self.torch ]
-        ++ lib.optionals enableCuda [
+      ++ [ self.torch ]
+      ++ lib.optionals enableCuda [
         cudatoolkit
       ];
       preConfigure =
@@ -1929,26 +1895,21 @@ self: super:
     }))
     { };
 
-  typeguard = super.typeguard.overridePythonAttrs (old: {
-    postPatch = ''
-      substituteInPlace setup.py \
-        --replace 'setup()' 'setup(version="${old.version}")'
-    '';
-  });
-
   typed_ast = super.typed-ast.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
       self.pytest-runner
     ];
   });
 
-  # nix uses a dash, poetry uses an underscore
-  typing-extensions = (super.typing_extensions or super.typing-extensions).overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        lib.optional (lib.versionAtLeast old.version "4.0.0") [ self.flit-core ];
-    }
-  );
+  typing-extensions =
+    let
+      # nix uses a dash, poetry uses an underscore
+      old = super.typing_extensions or super.typing-extensions;
+    in
+    addFlit {
+      drv = old;
+      cond = lib.versionAtLeast old.version "4.0.0";
+    };
 
   urwidtrees = super.urwidtrees.overridePythonAttrs (
     old: {
@@ -2038,21 +1999,7 @@ self: super:
     if isWheel then wheelPackage else sourcePackage;
 
   zipp = if super.zipp == null then null else
-  (
-    if lib.versionAtLeast super.zipp.version "2.0.0" then
-      (
-        super.zipp.overridePythonAttrs (
-          old:
-          if (old.format or "pyproject") != "wheel" then {
-            prePatch = ''
-              substituteInPlace setup.py --replace \
-              'setuptools.setup()' \
-              'setuptools.setup(version="${super.zipp.version}")'
-            '';
-          } else old
-        )
-      ) else super.zipp
-  ).overridePythonAttrs (
+  super.zipp.overridePythonAttrs (
     old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         self.toml
@@ -2066,25 +2013,23 @@ self: super:
     }
   );
 
-  hashids = super.hashids.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
-    }
-  );
+  hashids = addFlit { drv = super.hashids; };
 
-  packaging = super.packaging.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        # From 20.5 until 20.7, packaging used flit for packaging (heh)
-        # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
-        lib.optional (lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8") [ self.flit-core ];
-    }
-  );
+  packaging =
+    let
+      old = super.packaging;
+    in
+    addFlit {
+      drv = old;
+      # From 20.5 until 20.7, packaging used flit for packaging (heh)
+      # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
+      cond = lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8";
+    };
 
   psutil = super.psutil.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++
-        lib.optional stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.IOKit;
+      lib.optional stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.IOKit;
     }
   );
 
@@ -2137,7 +2082,7 @@ self: super:
   watchdog = super.watchdog.overrideAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ])
-        ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
+      ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
     }
   );
 
@@ -2165,6 +2110,9 @@ self: super:
       '';
     }
   );
+
+  # NixOps >=2 dependency
+  nixos-modules-contrib = addPoetry { drv = super.nixos-modules-contrib; poetryDrv = self.poetry; };
 
   wxpython = super.wxpython.overridePythonAttrs (old:
     let
@@ -2226,13 +2174,6 @@ self: super:
     }
   );
 
-  lazy-object-proxy = super.lazy-object-proxy.overridePythonAttrs (
-    old: {
-      # disable the removal of pyproject.toml, required because of setuptools_scm
-      dontPreferSetupPy = true;
-    }
-  );
-
   pendulum = super.pendulum.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.poetry ];
     # Technically incorrect, but fixes the build error..
@@ -2241,22 +2182,18 @@ self: super:
     '';
   });
 
+  ptyprocess = addFlit { drv = super.ptyprocess; };
+
   pygraphviz = super.pygraphviz.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.graphviz ];
   });
 
-  pyjsg = super.pyjsg.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  pyjsg = addPbr super.pyjsg;
 
-  pyshex = super.pyshex.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  pyshex = addPbr super.pyshex;
 
-  pyshexc = super.pyshexc.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  pyshexc = addPbr super.pyshexc;
 
   pysqlite = super.pysqlite.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
@@ -2266,17 +2203,13 @@ self: super:
     buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
   });
 
-  shexjsg = super.shexjsg.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  shexjsg = addPbr super.shexjsg;
 
-  sparqlslurper = super.sparqlslurper.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  sparqlslurper = addPbr super.sparqlslurper;
 
-  tomli = super.tomli.overridePythonAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit-core ];
-  });
+  tomlkit = addPoetry { drv = super.tomlkit; };
+
+  tomli = addFlit { drv = super.tomli; };
 
   uwsgi = super.uwsgi.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
@@ -2285,11 +2218,17 @@ self: super:
 
   wcwidth = super.wcwidth.overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++
-      lib.optional self.isPy27 (self.backports-functools-lru-cache or self.backports_functools_lru_cache)
+    lib.optional self.isPy27 (self.backports-functools-lru-cache or self.backports_functools_lru_cache)
     ;
   });
 
   wtforms = super.wtforms.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ self.Babel ];
   });
-}
+
+  xdg = addPoetry { drv = super.xdg; };
+
+} // (
+  # NixOps
+  (lib.mapAttrs (_: v: addPoetry { drv = v; poetryDrv = self.poetry; }) (lib.filterAttrs (n: _: lib.strings.hasPrefix "nixops" n) super))
+)
