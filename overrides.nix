@@ -31,7 +31,7 @@ let
         drv.overridePythonAttrs
           (
             old: {
-              buildInputs = (old.buildInputs or [ ]) ++ [ poetryDrv ];
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ poetryDrv ];
             }
           ) else drv
     );
@@ -175,7 +175,8 @@ in
     (
       super.cffi.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libffi ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
         }
       )
     );
@@ -220,10 +221,11 @@ in
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ])
       ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
-      ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) self.python.pythonForBuild.pkgs.cffi
+      ++ lib.optional (!self.isPyPy) self.python.pythonForBuild.pkgs.cffi
       ++ lib.optional (lib.versionAtLeast old.version "3.5")
         (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+      propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.cffi ];
     } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
       CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
     } // lib.optionalAttrs (lib.versionAtLeast old.version "35") rec {

@@ -1,5 +1,4 @@
 { autoPatchelfHook
-, pkgs
 , lib
 , python
 , buildPythonPackage
@@ -26,12 +25,11 @@ pythonPackages.callPackage
     , ...
     }@args:
     let
-      inherit (pkgs) stdenv;
+      inherit (python) stdenv;
       inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi moduleName;
 
       inherit (import ./pep425.nix {
-        inherit lib poetryLib python;
-        inherit (pkgs) stdenv;
+        inherit lib poetryLib python stdenv;
       }) selectWheel
         ;
       fileCandidates =

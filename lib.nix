@@ -219,7 +219,8 @@ let
   };
 
   # Machine tag for our target platform (if available)
-  targetMachine = manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name} or null;
+  getTargetMachine = stdenv: manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name} or null;
+
 in
 {
   inherit
@@ -233,6 +234,6 @@ in
     cleanPythonSources
     moduleName
     getPythonVersion
-    targetMachine
+    getTargetMachine
     ;
 }
