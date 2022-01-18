@@ -36,6 +36,12 @@ let
           ) else drv
     );
 
+  addPbr = drv: drv.overridePythonAttrs (
+    old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
+    }
+  );
+
 in
 
 {
@@ -792,11 +798,7 @@ in
     }
   );
 
-  lockfile = super.lockfile.overridePythonAttrs (
-    old: {
-      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pbr ];
-    }
-  );
+  lockfile = addPbr super.lockfile;
 
   lxml = super.lxml.overridePythonAttrs (
     old: {
@@ -910,9 +912,7 @@ in
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
       });
 
-  mongomock = super.mongomock.overridePythonAttrs (oa: {
-    buildInputs = oa.buildInputs ++ [ self.pbr ];
-  });
+  mongomock = addPbr super.mongomock;
 
   mpi4py = super.mpi4py.overridePythonAttrs (
     old:
@@ -945,11 +945,7 @@ in
     }
   );
 
-  munch = super.munch.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-    }
-  );
+  munch = addPbr super.munch;
 
   mypy = super.mypy.overridePythonAttrs (
     old: {
@@ -1643,21 +1639,11 @@ in
     }
   );
 
-  requests-mock = super.requests-mock.overridePythonAttrs (
-    old: {
-      propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ super.pbr ];
-    }
-  );
+  requests-mock = addPbr super.requests-mock;
 
-  requests-unixsocket = super.requests-unixsocket.overridePythonAttrs (
-    old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pbr ];
-    }
-  );
+  requests-unixsocket = addPbr super.requests-unixsocket;
 
-  requestsexceptions = super.requestsexceptions.overridePythonAttrs (old: {
-    nativeBuildInputs = old.nativeBuildInputs ++ [ self.pbr ];
-  });
+  requestsexceptions = addPbr super.requestsexceptions;
 
   rlp = super.rlp.overridePythonAttrs {
     preConfigure = ''
@@ -2203,17 +2189,11 @@ in
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.graphviz ];
   });
 
-  pyjsg = super.pyjsg.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  pyjsg = addPbr super.pyjsg;
 
-  pyshex = super.pyshex.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  pyshex = addPbr super.pyshex;
 
-  pyshexc = super.pyshexc.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  pyshexc = addPbr super.pyshexc;
 
   pysqlite = super.pysqlite.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
@@ -2223,13 +2203,9 @@ in
     buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
   });
 
-  shexjsg = super.shexjsg.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  shexjsg = addPbr super.shexjsg;
 
-  sparqlslurper = super.sparqlslurper.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.pbr ];
-  });
+  sparqlslurper = addPbr super.sparqlslurper;
 
   tomlkit = addPoetry { drv = super.tomlkit; };
 
