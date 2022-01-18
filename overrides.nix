@@ -816,10 +816,10 @@ in
   matplotlib = super.matplotlib.overridePythonAttrs (
     old:
     let
-      enableGhostscript = old.passthru.enableGhostscript or false;
-      enableGtk3 = old.passthru.enableGtk3 or false;
-      enableQt = old.passthru.enableQt or false;
-      enableTk = old.passthru.enableTk or false;
+      enableGhostscript = old.passthru.args.enableGhostscript or false;
+      enableGtk3 = old.passthru.args.enableGtk3 or false;
+      enableQt = old.passthru.args.enableQt or false;
+      enableTk = old.passthru.args.enableTk or false;
 
       inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
     in
