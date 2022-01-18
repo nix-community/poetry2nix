@@ -5,7 +5,22 @@
 
 self: super:
 
-{
+let
+
+  addFlit = {
+    drv
+    , cond ? true
+    , flitDrv ? self.flit-core
+  }: (
+    # Flit isn't available on Python2
+    if (cond && self.isPy3k) then drv.overridePythonAttrs (
+      old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ flitDrv ];
+      }
+    ) else drv
+  );
+
+in {
   automat = super.automat.overridePythonAttrs (
     old: rec {
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.m2r ];
@@ -77,16 +92,12 @@ self: super:
     }
   );
 
-  argon2-cffi = super.argon2-cffi.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        lib.optional (lib.versionAtLeast old.version "21.2.0") [ self.flit-core ];
-    }
-  );
+  argon2-cffi = addFlit {
+    drv = super.argon2-cffi;
+    cond = lib.versionAtLeast super.argon2-cffi.version "21.2.0";
+  };
 
-  backcall = super.backcall.overridePythonAttrs (old: {
-    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
-  });
+  backcall = addFlit { drv = super.backcall; };
 
   bcrypt = super.bcrypt.overridePythonAttrs (
     old: {
@@ -125,7 +136,10 @@ self: super:
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
   });
 
-  cssselect2 = super.cssselect2.overridePythonAttrs (
+  cssselect2 = (addFlit {
+    drv = super.cssselect2;
+    flitDrv = self.flit;
+  }).overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
@@ -406,12 +420,11 @@ self: super:
     }
   );
 
-  fastapi = super.fastapi.overridePythonAttrs (
-    old: {
-      # Note: requires full flit, not just flit-core
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit ];
-    }
-  );
+  fastapi = addFlit {
+    drv = super.fastapi;
+    # Note: requires full flit, not just flit-core
+    flitDrv = self.flit;
+  };
 
   fastecdsa = super.fastecdsa.overridePythonAttrs (old: {
     buildInputs = old.buildInputs ++ [ pkgs.gmp.dev ];
@@ -538,9 +551,7 @@ self: super:
     }
   );
 
-  html5lib = super.html5lib.overridePythonAttrs (old: {
-    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
-  });
+  html5lib = addFlit { drv = super.html5lib; };
 
   httplib2 = super.httplib2.overridePythonAttrs (old: {
     propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyparsing ];
@@ -638,9 +649,7 @@ self: super:
     }
   );
 
-  jeepney = super.jeepney.overridePythonAttrs (old: {
-    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
-  });
+  jeepney = addFlit { drv = super.jeepney; };
 
   jira = super.jira.overridePythonAttrs (
     old: {
@@ -1312,11 +1321,7 @@ self: super:
     }
   );
 
-  pyproject-flake8 = super.pyproject-flake8.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
-    }
-  );
+  pyproject-flake8 = addFlit { drv = super.pyproject-flake8; };
 
   pyrfr = super.pyrfr.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
@@ -1807,7 +1812,11 @@ self: super:
     }
   );
 
-  tinycss2 = super.tinycss2.overridePythonAttrs (
+  tinycss2 = (addFlit {
+    drv = super.tinycss2;
+    # Note: requires full flit, not just flit-core
+    flitDrv = self.flit;
+  }).overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
     }
@@ -1883,13 +1892,13 @@ self: super:
     ];
   });
 
-  # nix uses a dash, poetry uses an underscore
-  typing-extensions = (super.typing_extensions or super.typing-extensions).overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        lib.optional (lib.versionAtLeast old.version "4.0.0") [ self.flit-core ];
-    }
-  );
+  typing-extensions = let
+    # nix uses a dash, poetry uses an underscore
+    old = super.typing_extensions or super.typing-extensions;
+  in addFlit {
+    drv = old;
+    cond = lib.versionAtLeast old.version "4.0.0";
+  };
 
   urwidtrees = super.urwidtrees.overridePythonAttrs (
     old: {
@@ -1993,20 +2002,16 @@ self: super:
     }
   );
 
-  hashids = super.hashids.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ self.flit-core ];
-    }
-  );
+  hashids = addFlit { drv = super.hashids; };
 
-  packaging = super.packaging.overridePythonAttrs (
-    old: {
-      buildInputs = (old.buildInputs or [ ]) ++
-        # From 20.5 until 20.7, packaging used flit for packaging (heh)
-        # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
-        lib.optional (lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8") [ self.flit-core ];
-    }
-  );
+  packaging = let
+    old = super.packaging;
+  in addFlit {
+    drv = old;
+    # From 20.5 until 20.7, packaging used flit for packaging (heh)
+    # See https://github.com/pypa/packaging/pull/352 and https://github.com/pypa/packaging/pull/367
+    cond = lib.versionAtLeast old.version "20.5" && lib.versionOlder old.version "20.8";
+  };
 
   psutil = super.psutil.overridePythonAttrs (
     old: {
@@ -2161,9 +2166,7 @@ self: super:
     '';
   });
 
-  ptyprocess = super.ptyprocess.overridePythonAttrs (old: {
-    buildInputs = old.buildInputs or [ ] ++ [ self.flit-core ];
-  });
+  ptyprocess = addFlit { drv = super.ptyprocess; };
 
   pygraphviz = super.pygraphviz.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
@@ -2202,9 +2205,7 @@ self: super:
     buildInputs = old.buildInputs or [ ] ++ [ self.poetry-core ];
   });
 
-  tomli = super.tomli.overridePythonAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.flit-core ];
-  });
+  tomli = addFlit { drv = super.tomli; };
 
   uwsgi = super.uwsgi.overridePythonAttrs (old: {
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
