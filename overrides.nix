@@ -31,7 +31,7 @@ let
         drv.overridePythonAttrs
           (
             old: {
-              buildInputs = (old.buildInputs or [ ]) ++ [ poetryDrv ];
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ poetryDrv ];
             }
           ) else drv
     );
@@ -2174,8 +2174,9 @@ in
     }
   );
 
-  pendulum = super.pendulum.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ self.poetry ];
+  pendulum = (addPoetry {
+    drv = super.pendulum;
+  }).overridePythonAttrs (old: {
     # Technically incorrect, but fixes the build error..
     preInstall = lib.optionalString stdenv.isLinux ''
       mv --no-clobber ./dist/*.whl $(echo ./dist/*.whl | sed s/'manylinux_[0-9]*_[0-9]*'/'manylinux1'/)
