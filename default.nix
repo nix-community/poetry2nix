@@ -121,7 +121,6 @@ lib.makeScope pkgs.newScope (self: {
     , preferWheels ? false
       # Example: { my-app = ./src; }
     , editablePackageSources ? { }
-    , __isBootstrap ? false  # Hack: Always add Poetry as a build input unless bootstrapping
     , pyProject ? readTOML pyproject
     }@attrs:
     let
@@ -180,7 +179,6 @@ lib.makeScope pkgs.newScope (self: {
                   value = self.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd preferWheels;
-                      inherit __isBootstrap;
                       source = pkgMeta.source or null;
                       files = lockFiles.${name};
                       pythonPackages = self;
@@ -210,9 +208,9 @@ lib.makeScope pkgs.newScope (self: {
                     inherit pkgs lib python poetryLib evalPep508;
                   };
 
-                  # Use poetry-core from the poetry build (pep517/518 build-system)
-                  poetry-core = if __isBootstrap then null else poetryPkg.passthru.python.pkgs.poetry-core;
-                  poetry = if __isBootstrap then null else poetryPkg;
+                  # # Use poetry-core from the poetry build (pep517/518 build-system)
+                  poetry-core = poetryPkg.passthru.python.pkgs.poetry-core;
+                  poetry = poetryPkg;
 
                   __toPluginAble = toPluginAble self;
 
@@ -329,12 +327,11 @@ lib.makeScope pkgs.newScope (self: {
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
-    , __isBootstrap ? false  # Hack: Always add Poetry as a build input unless bootstrapping
     , ...
     }@attrs:
     let
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels __isBootstrap;
+        inherit pyproject poetrylock overrides python pwd preferWheels;
       };
       py = poetryPython.python;
 
