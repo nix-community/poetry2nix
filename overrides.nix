@@ -6,6 +6,7 @@
 self: super:
 
 let
+  inherit (self.python) stdenv;
 
   addFlit =
     { drv
@@ -177,8 +178,15 @@ in
     (
       super.cffi.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.buildPackages.pkg-config ];
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
+          prePatch = (old.prePatch or "") + lib.optionalString stdenv.isDarwin ''
+            # Remove setup.py impurities
+            substituteInPlace setup.py --replace "'-iwithsysroot/usr/include/ffi'" ""
+            substituteInPlace setup.py --replace "'/usr/include/ffi'," ""
+            substituteInPlace setup.py --replace '/usr/include/libffi' '${lib.getDev pkgs.libffi}/include'
+          '';
+
         }
       )
     );
