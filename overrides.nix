@@ -7,6 +7,10 @@ self: super:
 
 let
   inherit (self.python) stdenv;
+  inherit (pkgs.buildPackages) pkg-config;
+  inherit (pkgs) buildPackages;
+  pyBuildPackages = self.python.pythonForBuild.pkgs;
+  inherit (pyBuildPackages) cython;
 
   addFlit =
     { drv
@@ -113,7 +117,7 @@ in
   av = super.av.overridePythonAttrs (
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-        pkgs.pkg-config
+        pkg-config
       ];
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ffmpeg_4 ];
     }
@@ -141,7 +145,7 @@ in
   borgbackup = super.borgbackup.overridePythonAttrs (
     old: {
       BORG_OPENSSL_PREFIX = pkgs.openssl.dev;
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl pkgs.acl ];
     }
   );
@@ -178,7 +182,7 @@ in
     (
       super.cffi.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.buildPackages.pkg-config ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
           prePatch = (old.prePatch or "") + lib.optionalString stdenv.isDarwin ''
             # Remove setup.py impurities
@@ -231,7 +235,7 @@ in
     old: {
       nativeBuildInputs = (old.nativeBuildInputs or [ ])
       ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
-      ++ lib.optional (!self.isPyPy) self.python.pythonForBuild.pkgs.cffi
+      ++ lib.optional (!self.isPyPy) pyBuildPackages.cffi
       ++ lib.optional (lib.versionAtLeast old.version "3.5")
         (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
@@ -314,7 +318,7 @@ in
       make distclean
     '';
 
-    nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+    nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
     buildInputs = old.buildInputs or [ ] ++ [ pkgs.dbus pkgs.dbus-glib ]
     # My guess why it's sometimes trying to -lncurses.
     # It seems not to retain the dependency anyway.
@@ -502,7 +506,7 @@ in
   );
 
   grpcio = super.grpcio.overridePythonAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.cython pkgs.pkg-config ];
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.cython pkg-config ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.c-ares pkgs.openssl pkgs.zlib ];
 
     outputs = [ "out" "dev" ];
@@ -536,7 +540,7 @@ in
           mpiSupport = pkgs.hdf5.mpiSupport;
         in
         {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
           buildInputs =
             (old.buildInputs or [ ])
             ++ [ pkgs.hdf5 self.pkgconfig self.cython ]
@@ -763,7 +767,7 @@ in
   );
 
   libvirt-python = super.libvirt-python.overridePythonAttrs ({ nativeBuildInputs ? [ ], ... }: {
-    nativeBuildInputs = nativeBuildInputs ++ [ pkgs.pkg-config ];
+    nativeBuildInputs = nativeBuildInputs ++ [ pkg-config ];
     propagatedBuildInputs = [ pkgs.libvirt ];
   });
 
@@ -814,7 +818,7 @@ in
 
   lxml = super.lxml.overridePythonAttrs (
     old: {
-      nativeBuildInputs = with pkgs; (old.nativeBuildInputs or [ ]) ++ [ pkg-config libxml2.dev libxslt.dev ] ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
+      nativeBuildInputs = with pkgs.buildPackages; (old.nativeBuildInputs or [ ]) ++ [ pkg-config libxml2.dev libxslt.dev ] ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
       buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [ libxml2 libxslt ];
     }
   );
@@ -846,7 +850,7 @@ in
       ++ [ self.certifi ];
 
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-        pkgs.pkg-config
+        pkg-config
       ] ++ lib.optional (lib.versionAtLeast super.matplotlib.version "3.5.0") [
         self.setuptools-scm
         self.setuptools-scm-git-archive
@@ -1106,7 +1110,7 @@ in
 
   pillow = super.pillow.overridePythonAttrs (
     old: {
-      nativeBuildInputs = [ pkgs.pkg-config self.pytest-runner ] ++ (old.nativeBuildInputs or [ ]);
+      nativeBuildInputs = [ pkg-config self.pytest-runner ] ++ (old.nativeBuildInputs or [ ]);
       buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ (old.buildInputs or [ ]);
     }
   );
@@ -1181,7 +1185,7 @@ in
 
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
               self.cython
-              pkgs.pkg-config
+              pkg-config
               pkgs.cmake
             ];
 
@@ -1228,7 +1232,7 @@ in
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
           pkgs.meson
           pkgs.ninja
-          pkgs.pkg-config
+          pkg-config
         ];
 
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
@@ -1252,14 +1256,14 @@ in
   );
 
   pyfuse3 = super.pyfuse3.overridePythonAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.fuse3 ];
   });
 
   pygame = super.pygame.overridePythonAttrs (
     old: rec {
       nativeBuildInputs = [
-        pkgs.pkg-config
+        pkg-config
         pkgs.SDL
       ];
 
@@ -1307,7 +1311,7 @@ in
 
   pygobject = super.pygobject.overridePythonAttrs (
     old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.glib pkgs.gobject-introspection ];
     }
   );
@@ -1394,7 +1398,7 @@ in
         dontWrapQtApps = true;
 
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-          pkgs.pkg-config
+          pkg-config
           pkgs.qt5.qmake
           pkgs.xorg.lndir
           pkgs.qt5.qtbase
@@ -1609,7 +1613,7 @@ in
 
   pyzmq = super.pyzmq.overridePythonAttrs (
     old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.zeromq ];
     }
   );
@@ -1788,7 +1792,7 @@ in
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
       HDF5_DIR = lib.getDev pkgs.hdf5;
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
       propagatedBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.hdf5 self.numpy self.numexpr ];
     }
   );
@@ -2028,7 +2032,7 @@ in
     }
   );
 
-  credis = super.credis.overridePythonAttrs (
+  credis = (addPoetry { drv = super.credis; }).overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.cython ];
     }
@@ -2058,7 +2062,7 @@ in
     old: {
       dontUseCmakeConfigure = true;
       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-        pkgs.pkg-config
+        pkg-config
         pkgs.cmake
         pkgs.gperftools
       ];
@@ -2206,7 +2210,7 @@ in
   ptyprocess = addFlit { drv = super.ptyprocess; };
 
   pygraphviz = super.pygraphviz.overridePythonAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
     buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.graphviz ];
   });
 
