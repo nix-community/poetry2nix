@@ -2209,7 +2209,13 @@ in
   pyshexc = addPbr super.pyshexc;
 
   pysqlite = super.pysqlite.overridePythonAttrs (old: {
-    buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
+    propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.sqlite ];
+    patchPhase = ''
+      substituteInPlace "setup.cfg"                                     \
+              --replace "/usr/local/include" "${pkgs.sqlite.dev}/include"   \
+              --replace "/usr/local/lib" "${pkgs.sqlite.out}/lib"
+      ${lib.optionalString (!stdenv.isDarwin) ''export LDSHARED="$CC -pthread -shared"''}
+    '';
   });
 
   selinux = super.selinux.overridePythonAttrs (old: {
