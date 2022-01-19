@@ -66,6 +66,7 @@ builtins.removeAttrs
   aiopath = callTest ./aiopath { };
   fetched-projectdir = callTest ./fetched-projectdir { };
   extended-cross = callTest ./extended-cross { };
+  assorted-pkgs = callTest ./assorted-pkgs { };
 
   # Inherit test cases from nixpkgs
   inherit (pkgs) nixops nixopsUnstable rmfuse;
