@@ -64,6 +64,10 @@ in
 
   aiosqlite = addFlit { drv = super.aiosqlite; };
 
+  aioresponses = addPbr super.aioresponses;
+
+  aiofiles = addPoetry { drv = super.aiofiles; };
+
   ansible = super.ansible.overridePythonAttrs (
     old: {
       # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
@@ -127,6 +131,8 @@ in
     drv = super.argon2-cffi;
     cond = lib.versionAtLeast super.argon2-cffi.version "21.2.0";
   };
+
+  backoff = addPoetry { drv = super.backoff; poetryDrv = self.poetry; };
 
   backcall = addFlit { drv = super.backcall; };
 
@@ -220,6 +226,10 @@ in
       buildInputs = (old.buildInputs or [ ]) ++ [ self.d2to1 ];
     }
   );
+
+  colorclass = addPoetry { drv = super.colorclass; poetryDrv = self.poetry; };
+
+  colorhash = addPoetry { drv = super.colorhash; poetryDrv = self.poetry; };
 
   configparser = super.configparser.overridePythonAttrs (
     old: {
@@ -814,6 +824,8 @@ in
     }
   );
 
+  langcodes = addPoetry { drv = super.langcodes; };
+
   lockfile = addPbr super.lockfile;
 
   lxml = super.lxml.overridePythonAttrs (
@@ -837,11 +849,13 @@ in
       enableQt = old.passthru.args.enableQt or false;
       enableTk = old.passthru.args.enableTk or false;
 
+      interactive = enableTk || enableGtk3 || enableQt;
+
+      inherit (pkgs) tk tcl wayland qhull;
+      inherit (pkgs.xorg) libX11;
       inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
     in
     {
-      NIX_CFLAGS_COMPILE = lib.optionalString stdenv.isDarwin "-I${pkgs.libcxx}/include/c++/v1";
-
       XDG_RUNTIME_DIR = "/tmp";
 
       buildInputs = (old.buildInputs or [ ])
@@ -856,6 +870,17 @@ in
         self.setuptools-scm-git-archive
       ];
 
+      passthru.config = {
+        directories = { basedirlist = "."; };
+        libs = {
+          system_freetype = true;
+          system_qhull = true;
+        } // lib.optionalAttrs stdenv.isDarwin {
+          # LTO not working in darwin stdenv, see Nixpkgs #19312
+          enable_lto = false;
+        };
+      };
+
       MPLSETUPCFG = pkgs.writeText "mplsetup.cfg" ''
         [libs]
         system_freetype = True
@@ -865,10 +890,33 @@ in
         enable_lto = false
       '';
 
+      # Matplotlib tries to find Tcl/Tk by opening a Tk window and asking the
+      # corresponding interpreter object for its library paths. This fails if
+      # `$DISPLAY` is not set. The fallback option assumes that Tcl/Tk are both
+      # installed under the same path which is not true in Nix.
+      # With the following patch we just hard-code these paths into the install
+      # script.
+      postPatch =
+        let
+          tcl_tk_cache = ''"${tk}/lib", "${tcl}/lib", "${lib.strings.substring 0 3 tk.version}"'';
+        in
+        lib.optionalString enableTk ''
+          sed -i '/self.tcl_tk_cache = None/s|None|${tcl_tk_cache}|' setupext.py
+        '' + lib.optionalString (stdenv.isLinux && interactive) ''
+          # fix paths to libraries in dlopen calls (headless detection)
+          substituteInPlace src/_c_internal_utils.c \
+            --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
+            --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
+        '' +
+        # avoid matplotlib trying to download dependencies
+        ''
+          cp $MPLSETUPCFG mplsetup.cfg
+        '';
+
       propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
         pkgs.libpng
         pkgs.freetype
-        pkgs.qhull
+        qhull
       ]
       ++ lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
       ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
@@ -1107,6 +1155,8 @@ in
       ++ lib.optional withMysql self.mysql-connector;
     }
   );
+
+  pep440-version-utils = addPoetry { drv = super.pep440-version-utils; poetryDrv = self.poetry; };
 
   pillow = super.pillow.overridePythonAttrs (
     old: {
@@ -1657,6 +1707,8 @@ in
     }
   );
 
+  questionary = addPoetry { drv = super.questionary; };
+
   requests-mock = addPbr super.requests-mock;
 
   requests-unixsocket = addPbr super.requests-unixsocket;
@@ -1696,6 +1748,8 @@ in
       ++ [ self.ruamel-yaml-clib ];
     }
   );
+
+  # sanic = addPoetry { drv = super.sanic; };
 
   scipy = super.scipy.overridePythonAttrs (
     old:
@@ -1797,6 +1851,8 @@ in
     }
   );
 
+  tarsafe = addPoetry { drv = super.tarsafe; poetryDrv = self.poetry; };
+
   tempora = super.tempora.overridePythonAttrs (
     old: {
       # required for the extra "toml" dependency in setuptools_scm[toml]
@@ -1805,6 +1861,8 @@ in
       ];
     }
   );
+
+  terminaltables = addPoetry { drv = super.terminaltables; poetryDrv = self.poetry; };
 
   tensorboard = super.tensorboard.overridePythonAttrs (
     old: {
