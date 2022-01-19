@@ -1771,6 +1771,11 @@ in
 
   });
 
+  systemd-python = super.systemd-python.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs ++ [ pkgs.systemd ];
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
+  });
+
   tables = super.tables.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
