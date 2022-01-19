@@ -57,6 +57,8 @@ in
     }
   );
 
+  aiosqlite = addFlit { drv = super.aiosqlite; };
+
   ansible = super.ansible.overridePythonAttrs (
     old: {
       # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
@@ -1321,6 +1323,8 @@ in
     }
   );
 
+  pypika-tortoise = addPoetry { drv = super.pypika-tortoise; };
+
   pyproj = super.pyproj.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++
@@ -1767,6 +1771,11 @@ in
 
   });
 
+  systemd-python = super.systemd-python.overridePythonAttrs (old: {
+    buildInputs = old.buildInputs ++ [ pkgs.systemd ];
+    nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
+  });
+
   tables = super.tables.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ self.pywavelets ];
@@ -1896,6 +1905,8 @@ in
         '';
     }))
     { };
+
+  tortoise-orm = addPoetry { drv = super.tortoise-orm; };
 
   typed_ast = super.typed-ast.overridePythonAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
