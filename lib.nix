@@ -110,8 +110,8 @@ let
     (pkgs.stdenvNoCC.mkDerivation {
       name = file;
       nativeBuildInputs = [
-        pkgs.curl
-        pkgs.jq
+        pkgs.buildPackages.curl
+        pkgs.buildPackages.jq
       ];
       isWheel = lib.strings.hasSuffix "whl" file;
       system = "builtin";
