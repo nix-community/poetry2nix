@@ -65,6 +65,7 @@ builtins.removeAttrs
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };
   fetched-projectdir = callTest ./fetched-projectdir { };
+  extended-cross = callTest ./extended-cross { };
 
   # Inherit test cases from nixpkgs
   inherit (pkgs) nixops nixopsUnstable rmfuse;
