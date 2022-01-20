@@ -72,6 +72,14 @@ docs = ["Sphinx (>=4)", "furo (>=2021.7.5b38)", "proselint (>=0.10.2)", "sphinx-
 test = ["appdirs (==1.4.4)", "pytest (>=6)", "pytest-cov (>=2.7)", "pytest-mock (>=3.6)"]
 
 [[package]]
+name = "pynixutil"
+version = "0.5.0"
+description = "Utility functions for working with Nix in Python"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[[package]]
 name = "tomli"
 version = "1.2.3"
 description = "A lil' TOML parser"
@@ -90,7 +98,7 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a5ad398e01214edd1b90cc904036e0521c150e983480a329c352b02f178386c5"
+content-hash = "5611bf0fe9c11eca8d20586ec493a789fbe2a1eb6314395ad9d4733234dd7d50"
 
 [metadata.files]
 black = [
@@ -116,6 +124,10 @@ pathspec = [
 platformdirs = [
     {file = "platformdirs-2.4.1-py3-none-any.whl", hash = "sha256:1d7385c7db91728b83efd0ca99a5afb296cab9d0ed8313a45ed8ba17967ecfca"},
     {file = "platformdirs-2.4.1.tar.gz", hash = "sha256:440633ddfebcc36264232365d7840a970e75e1018d15b4327d11f91909045fda"},
+]
+pynixutil = [
+    {file = "pynixutil-0.5.0-py3-none-any.whl", hash = "sha256:81b933e0a2f9b9950cbeb236893992fffd1f1696632e5130cfeffe37a7344215"},
+    {file = "pynixutil-0.5.0.tar.gz", hash = "sha256:62e86960d67fef68e77f6a24d90015b3573a71d163c163e2ebc313d96235d1ab"},
 ]
 tomli = [
     {file = "tomli-1.2.3-py3-none-any.whl", hash = "sha256:e3069e4be3ead9668e21cb9b074cd948f7b3113fd9c8bba083f48247aab8b11c"},

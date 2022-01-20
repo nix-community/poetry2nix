@@ -1379,6 +1379,8 @@ in
     ++ [ pkgs.freetds ];
   });
 
+  pynixutil = addPoetry { drv = super.pynixutil; poetryDrv = self.poetry; };
+
   pyopenssl = super.pyopenssl.overridePythonAttrs (
     old: {
       buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
