@@ -7,6 +7,10 @@ let
   };
   tools = pkgs.callPackage ./tools { };
 
+  nix-build-uncached = import sources.nix-build-uncached {
+    inherit pkgs;
+  };
+
 in
 pkgs.mkShell {
 
@@ -23,5 +27,6 @@ pkgs.mkShell {
     pkgs.jq
     pkgs.nix-prefetch-git
     pkgs.nix-eval-jobs
+    nix-build-uncached
   ];
 }
