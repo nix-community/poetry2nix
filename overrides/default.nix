@@ -312,7 +312,7 @@ lib.composeManyExtensions [
 
       ddtrace = super.ddtrace.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++
-          (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
+          (lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
       });
 
       dictdiffer = super.dictdiffer.overridePythonAttrs (
@@ -1561,7 +1561,7 @@ lib.composeManyExtensions [
       pyudev = super.pyudev.overridePythonAttrs (old: {
         postPatch = ''
           substituteInPlace src/pyudev/_ctypeslib/utils.py \
-            --replace "find_library(name)" "'${pkgs.lib.getLib pkgs.systemd}/lib/libudev.so'"
+            --replace "find_library(name)" "'${lib.getLib pkgs.systemd}/lib/libudev.so'"
         '';
       });
 
@@ -2031,7 +2031,7 @@ lib.composeManyExtensions [
       watchdog = super.watchdog.overrideAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ])
-            ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
+            ++ lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
         }
       );
 
@@ -2119,14 +2119,6 @@ lib.composeManyExtensions [
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pyyaml ];
         }
       );
-
-      pendulum = super.pendulum.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.poetry ];
-        # Technically incorrect, but fixes the build error..
-        preInstall = lib.optionalString stdenv.isLinux ''
-          mv --no-clobber ./dist/*.whl $(echo ./dist/*.whl | sed s/'manylinux_[0-9]*_[0-9]*'/'manylinux1'/)
-        '';
-      });
 
       pygraphviz = super.pygraphviz.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
