@@ -232,7 +232,8 @@ lib.composeManyExtensions [
             ++ lib.optional (!self.isPyPy) pyBuildPackages.cffi
             ++ lib.optional (lib.versionAtLeast old.version "3.5")
             (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ]
+            ++ lib.optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
           propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.cffi ];
         } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
           CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
@@ -802,6 +803,19 @@ lib.composeManyExtensions [
 
           interactive = enableTk || enableGtk3 || enableQt;
 
+          passthru = {
+            config = {
+              directories = { basedirlist = "."; };
+              libs = {
+                system_freetype = true;
+                system_qhull = true;
+              } // lib.optionalAttrs stdenv.isDarwin {
+                # LTO not working in darwin stdenv, see Nixpkgs #19312
+                enable_lto = false;
+              };
+            };
+          };
+
           inherit (pkgs) tk tcl wayland qhull;
           inherit (pkgs.xorg) libX11;
           inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
@@ -809,10 +823,24 @@ lib.composeManyExtensions [
         {
           XDG_RUNTIME_DIR = "/tmp";
 
-          buildInputs = (old.buildInputs or [ ])
-            ++ lib.optional enableGhostscript pkgs.ghostscript
-            ++ lib.optional stdenv.isDarwin [ Cocoa ]
-            ++ [ self.certifi ];
+          buildInputs = old.buildInputs or [ ] ++ [
+            pkgs.which
+          ] ++ lib.optional enableGhostscript [
+            pkgs.ghostscript
+          ] ++ lib.optional stdenv.isDarwin [
+            Cocoa
+          ];
+
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+            self.certifi
+            pkgs.libpng
+            pkgs.freetype
+            qhull
+          ]
+            ++ lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
+            ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
+            ++ lib.optionals enableQt [ self.pyqt5 ]
+          ;
 
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
             pkg-config
@@ -821,25 +849,9 @@ lib.composeManyExtensions [
             self.setuptools-scm-git-archive
           ];
 
-          passthru.config = {
-            directories = { basedirlist = "."; };
-            libs = {
-              system_freetype = true;
-              system_qhull = true;
-            } // lib.optionalAttrs stdenv.isDarwin {
-              # LTO not working in darwin stdenv, see Nixpkgs #19312
-              enable_lto = false;
-            };
-          };
+          passthru = old.passthru or { } // passthru;
 
-          MPLSETUPCFG = pkgs.writeText "mplsetup.cfg" ''
-            [libs]
-            system_freetype = True
-            system_qhull = True
-          '' + lib.optionalString stdenv.isDarwin ''
-            # LTO not working in darwin stdenv, see NixOS/nixpkgs/pull/19312
-            enable_lto = false
-          '';
+          MPLSETUPCFG = pkgs.writeText "mplsetup.cfg" (lib.generators.toINI { } passthru.config);
 
           # Matplotlib tries to find Tcl/Tk by opening a Tk window and asking the
           # corresponding interpreter object for its library paths. This fails if
@@ -861,24 +873,11 @@ lib.composeManyExtensions [
             '' +
             # avoid matplotlib trying to download dependencies
             ''
-              cp $MPLSETUPCFG mplsetup.cfg
+              echo "[libs]
+              system_freetype=true
+              system_qhull=true" > mplsetup.cfg
             '';
 
-          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-            pkgs.libpng
-            pkgs.freetype
-            qhull
-          ]
-            ++ lib.optionals enableGtk3 [ pkgs.cairo self.pycairo pkgs.gtk3 pkgs.gobject-introspection self.pygobject3 ]
-            ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk self.tkinter pkgs.libX11 ]
-            ++ lib.optionals enableQt [ self.pyqt5 ]
-          ;
-
-          preBuild = ''
-            cp -r ${pkgs.qhull} .
-          '';
-
-          inherit (super.matplotlib) patches;
         }
       );
 
