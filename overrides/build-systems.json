@@ -1,0 +1,830 @@
+{
+  "adguardhome": [
+    "poetry-core"
+  ],
+  "aioambient": [
+    "poetry-core"
+  ],
+  "aiocurrencylayer": [
+    "poetry-core"
+  ],
+  "aioeafm": [
+    "poetry"
+  ],
+  "aiofiles": [
+    "poetry-core"
+  ],
+  "aioflo": [
+    "poetry-core"
+  ],
+  "aioguardian": [
+    "poetry-core"
+  ],
+  "aiohomekit": [
+    "poetry-core"
+  ],
+  "aiojobs": [
+    "flitBuildHook"
+  ],
+  "aiomultiprocess": [
+    "flit-core"
+  ],
+  "aiomusiccast": [
+    "poetry-core"
+  ],
+  "aionotion": [
+    "poetry-core"
+  ],
+  "aiopvpc": [
+    "poetry-core"
+  ],
+  "aiorecollect": [
+    "poetry-core"
+  ],
+  "aioresponses": [
+    "pbr"
+  ],
+  "aioridwell": [
+    "poetry-core"
+  ],
+  "aiorun": [
+    "flitBuildHook"
+  ],
+  "aiosqlite": [
+    "poetry-core"
+  ],
+  "aioswitcher": [
+    "poetry-core"
+  ],
+  "aiowatttime": [
+    "poetry-core"
+  ],
+  "ambee": [
+    "poetry-core"
+  ],
+  "amqtt": [
+    "poetry-core"
+  ],
+  "aria2p": [
+    "poetry"
+  ],
+  "async-dns": [
+    "poetry-core"
+  ],
+  "asyncmy": [
+    "poetry-core"
+  ],
+  "asyncstdlib": [
+    "flitBuildHook"
+  ],
+  "authcaptureproxy": [
+    "poetry-core"
+  ],
+  "backcall": [
+    "flit-core"
+  ],
+  "backoff": [
+    "poetry"
+  ],
+  "bandit": [
+    "pbr"
+  ],
+  "bash_kernel": [
+    "flitBuildHook"
+  ],
+  "bimmer-connected": [
+    "pbr"
+  ],
+  "build": [
+    "flit-core"
+  ],
+  "cattrs": [
+    "poetry-core"
+  ],
+  "censys": [
+    "poetry-core"
+  ],
+  "cleo": [
+    "poetry-core"
+  ],
+  "cliff": [
+    "pbr"
+  ],
+  "clikit": [
+    "poetry-core"
+  ],
+  "collections-extended": [
+    "poetry-core"
+  ],
+  "colorclass": [
+    "poetry"
+  ],
+  "colorhash": [
+    "poetry"
+  ],
+  "confuse": [
+    "flit-core",
+    "flitBuildHook"
+  ],
+  "crashtest": [
+    "poetry-core"
+  ],
+  "credis": [
+    "poetry-core"
+  ],
+  "cssselect2": [
+    "flit"
+  ],
+  "cyclonedx-python-lib": [
+    "poetry-core"
+  ],
+  "debtcollector": [
+    "pbr"
+  ],
+  "deezer-python": [
+    "poetry-core"
+  ],
+  "diagrams": [
+    "poetry-core"
+  ],
+  "django-graphiql-debug-toolbar": [
+    "poetry-core"
+  ],
+  "django-timezone-field": [
+    "poetry-core"
+  ],
+  "doc8": [
+    "pbr"
+  ],
+  "ecs-logging": [
+    "flit-core",
+    "flitBuildHook"
+  ],
+  "eebrightbox": [
+    "pbr"
+  ],
+  "elegy": [
+    "poetry"
+  ],
+  "elgato": [
+    "poetry-core"
+  ],
+  "elkm1-lib": [
+    "poetry-core"
+  ],
+  "elmax": [
+    "poetry-core"
+  ],
+  "enturclient": [
+    "poetry-core"
+  ],
+  "fastapi": [
+    "flitBuildHook"
+  ],
+  "fixtures": [
+    "pbr"
+  ],
+  "flipr-api": [
+    "poetry-core"
+  ],
+  "flit": [
+    "flit-core"
+  ],
+  "formbox": [
+    "flitBuildHook"
+  ],
+  "freebox-api": [
+    "poetry-core"
+  ],
+  "funcparserlib": [
+    "poetry-core"
+  ],
+  "furo": [
+    "flitBuildHook"
+  ],
+  "gaphas": [
+    "poetry-core"
+  ],
+  "generic": [
+    "poetry-core"
+  ],
+  "glances-api": [
+    "poetry-core"
+  ],
+  "gradient-utils": [
+    "poetry-core"
+  ],
+  "graphql-core": [
+    "poetry-core"
+  ],
+  "graphql-relay": [
+    "poetry-core"
+  ],
+  "gvm-tools": [
+    "poetry-core"
+  ],
+  "hacking": [
+    "pbr"
+  ],
+  "hashids": [
+    "flit-core"
+  ],
+  "hdate": [
+    "poetry-core"
+  ],
+  "html5lib": [
+    "flit-core"
+  ],
+  "hyperion-py": [
+    "poetry-core"
+  ],
+  "hypothesis-auto": [
+    "poetry"
+  ],
+  "hypothesis-graphql": [
+    "poetry"
+  ],
+  "icmplib": [
+    "pbr"
+  ],
+  "idasen": [
+    "poetry-core"
+  ],
+  "immutabledict": [
+    "poetry-core"
+  ],
+  "ipfshttpclient": [
+    "flitBuildHook"
+  ],
+  "isort": [
+    "poetry-core"
+  ],
+  "jedi-language-server": [
+    "poetry"
+  ],
+  "jeepney": [
+    "flit-core"
+  ],
+  "jenkins-job-builder": [
+    "pbr"
+  ],
+  "jinja2-git": [
+    "poetry-core"
+  ],
+  "jschema-to-python": [
+    "pbr"
+  ],
+  "json-schema-for-humans": [
+    "poetry-core"
+  ],
+  "keystoneauth1": [
+    "pbr"
+  ],
+  "langcodes": [
+    "poetry-core"
+  ],
+  "language-data": [
+    "poetry-core"
+  ],
+  "lc7001": [
+    "poetry-core"
+  ],
+  "ldappool": [
+    "pbr"
+  ],
+  "linecache2": [
+    "pbr"
+  ],
+  "loca": [
+    "flitBuildHook"
+  ],
+  "lockfile": [
+    "pbr"
+  ],
+  "luftdaten": [
+    "poetry-core"
+  ],
+  "maestral": [
+    "pbr"
+  ],
+  "matrix-nio": [
+    "poetry-core"
+  ],
+  "mcstatus": [
+    "poetry-core"
+  ],
+  "mdformat": [
+    "poetry-core"
+  ],
+  "mdurl": [
+    "flit-core"
+  ],
+  "mediafile": [
+    "flit-core",
+    "flitBuildHook"
+  ],
+  "mock": [
+    "pbr"
+  ],
+  "mongomock": [
+    "pbr"
+  ],
+  "motioneye-client": [
+    "poetry-core"
+  ],
+  "mox3": [
+    "pbr"
+  ],
+  "msoffcrypto-tool": [
+    "poetry-core"
+  ],
+  "munch": [
+    "pbr"
+  ],
+  "myhome": [
+    "poetry-core"
+  ],
+  "mypy-boto3-builder": [
+    "poetry-core"
+  ],
+  "nats-python": [
+    "poetry-core"
+  ],
+  "netdata": [
+    "poetry-core"
+  ],
+  "nixpkgs": [
+    "pbr"
+  ],
+  "notus-scanner": [
+    "poetry-core"
+  ],
+  "ntc-templates": [
+    "poetry-core"
+  ],
+  "omnikinverter": [
+    "poetry-core"
+  ],
+  "open-meteo": [
+    "poetry-core"
+  ],
+  "openstacksdk": [
+    "pbr"
+  ],
+  "ormar": [
+    "poetry-core"
+  ],
+  "os-service-types": [
+    "pbr"
+  ],
+  "osc-lib": [
+    "pbr"
+  ],
+  "oslo-concurrency": [
+    "pbr"
+  ],
+  "oslo-config": [
+    "pbr"
+  ],
+  "oslo-context": [
+    "pbr"
+  ],
+  "oslo-db": [
+    "pbr"
+  ],
+  "oslo-i18n": [
+    "pbr"
+  ],
+  "oslo-log": [
+    "pbr"
+  ],
+  "oslo-serialization": [
+    "pbr"
+  ],
+  "oslo-utils": [
+    "pbr"
+  ],
+  "oslotest": [
+    "pbr"
+  ],
+  "p1monitor": [
+    "poetry-core"
+  ],
+  "pastel": [
+    "poetry-core"
+  ],
+  "pendulum": [
+    "poetry-core"
+  ],
+  "pep440-version-utils": [
+    "poetry"
+  ],
+  "pep517": [
+    "flit-core"
+  ],
+  "pex": [
+    "flit-core",
+    "flitBuildHook"
+  ],
+  "pixelmatch": [
+    "poetry-core"
+  ],
+  "poetry": [
+    "poetry-core"
+  ],
+  "poetry2conda": [
+    "poetry"
+  ],
+  "pontos": [
+    "poetry-core"
+  ],
+  "ptyprocess": [
+    "flit-core"
+  ],
+  "pvo": [
+    "poetry-core"
+  ],
+  "py-synologydsm-api": [
+    "poetry-core"
+  ],
+  "py17track": [
+    "poetry-core"
+  ],
+  "pyairnow": [
+    "poetry"
+  ],
+  "pyairvisual": [
+    "poetry-core"
+  ],
+  "pyebus": [
+    "poetry-core"
+  ],
+  "pyflunearyou": [
+    "poetry-core"
+  ],
+  "pyiqvia": [
+    "poetry-core"
+  ],
+  "pyjsg": [
+    "pbr"
+  ],
+  "pykka": [
+    "poetry-core"
+  ],
+  "pymaven-patch": [
+    "pbr"
+  ],
+  "pymfy": [
+    "poetry-core"
+  ],
+  "pynixutil": [
+    "poetry"
+  ],
+  "pynuki": [
+    "poetry-core"
+  ],
+  "pyopenuv": [
+    "poetry-core"
+  ],
+  "pyopnsense": [
+    "pbr"
+  ],
+  "pypass": [
+    "pbr"
+  ],
+  "pypika-tortoise": [
+    "poetry-core"
+  ],
+  "pypoolstation": [
+    "poetry-core"
+  ],
+  "pyppeteer": [
+    "poetry-core"
+  ],
+  "pyproject-flake8": [
+    "flit-core"
+  ],
+  "pyquil": [
+    "poetry-core"
+  ],
+  "pyrmvtransport": [
+    "flit"
+  ],
+  "pyshex": [
+    "pbr"
+  ],
+  "pyshexc": [
+    "pbr"
+  ],
+  "pysnow": [
+    "poetry"
+  ],
+  "pytest-check": [
+    "flitBuildHook"
+  ],
+  "pytest-cid": [
+    "flitBuildHook"
+  ],
+  "pytest-httpserver": [
+    "poetry-core"
+  ],
+  "pytest-mockservers": [
+    "poetry-core"
+  ],
+  "pytest-raisin": [
+    "flit-core",
+    "flitBuildHook"
+  ],
+  "pytest-socket": [
+    "poetry-core"
+  ],
+  "python-awair": [
+    "poetry-core"
+  ],
+  "python-cinderclient": [
+    "pbr"
+  ],
+  "python-glanceclient": [
+    "pbr"
+  ],
+  "python-gvm": [
+    "poetry-core"
+  ],
+  "python-heatclient": [
+    "pbr"
+  ],
+  "python-ironicclient": [
+    "pbr"
+  ],
+  "python-jenkins": [
+    "pbr"
+  ],
+  "python-kasa": [
+    "poetry-core"
+  ],
+  "python-keystoneclient": [
+    "pbr"
+  ],
+  "python-manilaclient": [
+    "pbr"
+  ],
+  "python-miio": [
+    "poetry"
+  ],
+  "python-novaclient": [
+    "pbr"
+  ],
+  "python-openstackclient": [
+    "pbr"
+  ],
+  "python-songpal": [
+    "poetry-core"
+  ],
+  "python-swiftclient": [
+    "pbr"
+  ],
+  "pytile": [
+    "poetry-core"
+  ],
+  "pytzdata": [
+    "poetry"
+  ],
+  "pyvera": [
+    "poetry-core"
+  ],
+  "pywbem": [
+    "pbr"
+  ],
+  "pywemo": [
+    "poetry-core"
+  ],
+  "qcs-api-client": [
+    "poetry-core"
+  ],
+  "questionary": [
+    "poetry-core"
+  ],
+  "regenmaschine": [
+    "poetry-core"
+  ],
+  "remarshal": [
+    "poetry-core"
+  ],
+  "renault-api": [
+    "poetry-core"
+  ],
+  "requests-cache": [
+    "poetry-core"
+  ],
+  "requests-mock": [
+    "pbr"
+  ],
+  "requests-unixsocket": [
+    "pbr"
+  ],
+  "requestsexceptions": [
+    "pbr"
+  ],
+  "retry": [
+    "pbr"
+  ],
+  "rich": [
+    "poetry-core"
+  ],
+  "rmcl": [
+    "poetry-core"
+  ],
+  "rmfuse": [
+    "poetry-core"
+  ],
+  "rmrl": [
+    "poetry-core"
+  ],
+  "roombapy": [
+    "poetry-core"
+  ],
+  "roonapi": [
+    "poetry-core"
+  ],
+  "rsa": [
+    "poetry-core"
+  ],
+  "sanic": [
+    "poetry-core"
+  ],
+  "sarif-om": [
+    "pbr"
+  ],
+  "shexjsg": [
+    "pbr"
+  ],
+  "simplisafe-python": [
+    "poetry-core"
+  ],
+  "slowapi": [
+    "poetry-core"
+  ],
+  "solo-python": [
+    "flitBuildHook"
+  ],
+  "sparqlslurper": [
+    "pbr"
+  ],
+  "sphinx-inline-tabs": [
+    "flitBuildHook"
+  ],
+  "sphinx-jinja": [
+    "pbr"
+  ],
+  "sphinxcontrib-fulltoc": [
+    "pbr"
+  ],
+  "sphinxcontrib-spelling": [
+    "pbr"
+  ],
+  "spiderpy": [
+    "poetry-core"
+  ],
+  "sqlalchemy-migrate": [
+    "pbr"
+  ],
+  "sqlalchemy_migrate": [
+    "pbr"
+  ],
+  "ssdp": [
+    "pbr"
+  ],
+  "staticjinja": [
+    "poetry-core"
+  ],
+  "stestr": [
+    "pbr"
+  ],
+  "stevedore": [
+    "pbr"
+  ],
+  "structlog": [
+    "flitBuildHook"
+  ],
+  "subunit2sql": [
+    "pbr"
+  ],
+  "surepy": [
+    "poetry-core"
+  ],
+  "swift": [
+    "pbr"
+  ],
+  "synologydsm-api": [
+    "poetry-core"
+  ],
+  "tailscale": [
+    "poetry-core"
+  ],
+  "tarsafe": [
+    "poetry"
+  ],
+  "tempest": [
+    "pbr"
+  ],
+  "tenacity": [
+    "pbr"
+  ],
+  "terminaltables": [
+    "poetry"
+  ],
+  "tern": [
+    "pbr"
+  ],
+  "tesla-wall-connector": [
+    "poetry-core"
+  ],
+  "teslajsonpy": [
+    "poetry-core"
+  ],
+  "testrepository": [
+    "pbr"
+  ],
+  "testresources": [
+    "pbr"
+  ],
+  "testtools": [
+    "pbr"
+  ],
+  "threadpoolctl": [
+    "flitBuildHook"
+  ],
+  "tinycss2": [
+    "flitBuildHook"
+  ],
+  "tinydb": [
+    "poetry-core"
+  ],
+  "toggl-cli": [
+    "pbr"
+  ],
+  "tomli": [
+    "flit-core"
+  ],
+  "tomli-w": [
+    "flit-core"
+  ],
+  "tomlkit": [
+    "poetry-core"
+  ],
+  "tortoise-orm": [
+    "poetry-core"
+  ],
+  "traceback2": [
+    "pbr"
+  ],
+  "treeo": [
+    "poetry-core"
+  ],
+  "treex": [
+    "poetry-core"
+  ],
+  "twentemilieu": [
+    "poetry-core"
+  ],
+  "typical": [
+    "poetry-core"
+  ],
+  "typing-extensions": [
+    "flit-core"
+  ],
+  "unpaddedbase64": [
+    "poetry-core"
+  ],
+  "url-normalize": [
+    "poetry-core"
+  ],
+  "vehicle": [
+    "poetry-core"
+  ],
+  "virtualenvwrapper": [
+    "pbr"
+  ],
+  "wakeonlan": [
+    "poetry-core"
+  ],
+  "weasyprint": [
+    "flit-core"
+  ],
+  "wled": [
+    "poetry-core"
+  ],
+  "xdg": [
+    "poetry-core"
+  ],
+  "xpath-expressions": [
+    "poetry-core"
+  ],
+  "yaspin": [
+    "poetry-core"
+  ],
+  "zeversolarlocal": [
+    "flit-core",
+    "flitBuildHook"
+  ]
+}
