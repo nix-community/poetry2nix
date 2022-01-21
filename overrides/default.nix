@@ -859,10 +859,6 @@ lib.composeManyExtensions [
               substituteInPlace src/_c_internal_utils.c \
                 --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
                 --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
-            '' +
-            # avoid matplotlib trying to download dependencies
-            ''
-              cp $MPLSETUPCFG mplsetup.cfg
             '';
 
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
