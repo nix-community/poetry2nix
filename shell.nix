@@ -22,5 +22,6 @@ pkgs.mkShell {
     pkgs.niv
     pkgs.jq
     pkgs.nix-prefetch-git
+    pkgs.nix-eval-jobs
   ];
 }

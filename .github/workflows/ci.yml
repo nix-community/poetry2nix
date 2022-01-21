@@ -22,7 +22,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v2.4.0
     - name: Check format
-      run: nix-shell --run 'git ls-files | grep -P "\.py$" | xargs py2-astparse'
+      run: nix-shell --run 'git ls-files | grep -Pv "^tools" | grep -P "\.py$" | xargs py2-astparse'
 
   black-fmt:
     runs-on: ubuntu-latest
