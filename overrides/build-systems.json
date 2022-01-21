@@ -60,7 +60,7 @@
     "flitBuildHook"
   ],
   "aiosqlite": [
-    "poetry-core"
+    "flit-core"
   ],
   "aioswitcher": [
     "poetry-core"
