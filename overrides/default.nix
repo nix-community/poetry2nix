@@ -8,7 +8,11 @@ let
     { self
     , drv
     , attr
-    }: (
+    }:
+    let
+      buildSystem = if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
+    in
+    (
       # Flit only works on Python3
       if (attr == "flit-core" || attr == "flit") && !self.isPy3k then drv
       else
@@ -53,7 +57,6 @@ lib.composeManyExtensions [
       inherit (pkgs.buildPackages) pkg-config;
       inherit (pkgs) buildPackages;
       pyBuildPackages = self.python.pythonForBuild.pkgs;
-      inherit (pyBuildPackages) cython;
 
     in
 
@@ -200,14 +203,6 @@ lib.composeManyExtensions [
           )
         );
 
-      cftime = super.cftime.overridePythonAttrs (
-        old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            self.cython
-          ];
-        }
-      );
-
       cloudflare = super.cloudflare.overridePythonAttrs (
         old: {
           postPatch = ''
@@ -261,25 +256,12 @@ lib.composeManyExtensions [
         }
       );
 
-      cwcwidth = super.cwcwidth.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ])
-          ++ [ self.cython ];
-      });
-
       cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
         postPatch = ''
           substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
         '';
       });
-
-      cymem = super.cymem.overridePythonAttrs (
-        old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            self.cython
-          ];
-        }
-      );
 
       daphne = super.daphne.overridePythonAttrs (old: {
         postPatch = ''
@@ -330,7 +312,7 @@ lib.composeManyExtensions [
 
       ddtrace = super.ddtrace.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++
-          (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]) ++ [ self.cython ];
+          (pkgs.lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
       });
 
       dictdiffer = super.dictdiffer.overridePythonAttrs (
@@ -495,7 +477,7 @@ lib.composeManyExtensions [
       );
 
       grpcio = super.grpcio.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.cython pkg-config ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.c-ares pkgs.openssl pkgs.zlib ];
 
         outputs = [ "out" "dev" ];
@@ -532,7 +514,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
               buildInputs =
                 (old.buildInputs or [ ])
-                ++ [ pkgs.hdf5 self.pkgconfig self.cython ]
+                ++ [ pkgs.hdf5 self.pkgconfig ]
                 ++ lib.optional mpiSupport mpi
               ;
               propagatedBuildInputs =
@@ -995,10 +977,6 @@ lib.composeManyExtensions [
 
       netcdf4 = super.netcdf4.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            self.cython
-          ];
-
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
             pkgs.zlib
             pkgs.netcdf
@@ -1040,7 +1018,7 @@ lib.composeManyExtensions [
         in
         {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gfortran ];
-          buildInputs = (old.buildInputs or [ ]) ++ [ blas self.cython ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ blas ];
           enableParallelBuilding = true;
           preBuild = ''
             ln -s ${cfg} site.cfg
@@ -1195,7 +1173,6 @@ lib.composeManyExtensions [
               if arrowCppVersion != pyArrowVersion then throw errorMessage else {
 
                 nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-                  self.cython
                   pkg-config
                   pkgs.cmake
                 ];
@@ -1222,13 +1199,7 @@ lib.composeManyExtensions [
                 dontUseCmakeConfigure = true;
               }
             ) else
-          super.pyarrow.overridePythonAttrs (
-            old: {
-              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-                self.cython
-              ];
-            }
-          );
+          super.pyarrow;
 
       pycairo = (
         drv: (
@@ -1260,7 +1231,6 @@ lib.composeManyExtensions [
       pycocotools = super.pycocotools.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [
-            self.cython
             self.numpy
           ];
         }
@@ -1335,7 +1305,7 @@ lib.composeManyExtensions [
 
       pymssql = super.pymssql.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ])
-          ++ [ self.cython pkgs.openssl ];
+          ++ [ pkgs.openssl ];
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
           ++ [ pkgs.freetds ];
       });
@@ -1348,8 +1318,6 @@ lib.composeManyExtensions [
 
       pyproj = super.pyproj.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++
-            [ self.cython ];
           PROJ_DIR = "${pkgs.proj}";
           PROJ_LIBDIR = "${pkgs.proj}/lib";
           PROJ_INCDIR = "${pkgs.proj.dev}/include";
@@ -1637,12 +1605,6 @@ lib.composeManyExtensions [
         }
       );
 
-      pandas = super.pandas.overridePythonAttrs (
-        old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.cython ];
-        }
-      );
-
       panel = super.panel.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.nodejs ];
@@ -1691,7 +1653,7 @@ lib.composeManyExtensions [
         if old.format != "wheel" then {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++
             [ pkgs.gfortran ] ++
-            lib.optional (lib.versionAtLeast super.scipy.version "1.7.0") [ self.cython self.pythran ];
+            lib.optional (lib.versionAtLeast super.scipy.version "1.7.0") [ self.pythran ];
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pybind11 ];
           setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
           enableParallelBuilding = true;
@@ -1709,7 +1671,6 @@ lib.composeManyExtensions [
       scikit-image = super.scikit-image.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            self.cython
             self.pythran
             self.packaging
             self.wheel
@@ -1725,10 +1686,6 @@ lib.composeManyExtensions [
             pkgs.glibcLocales
           ] ++ lib.optionals stdenv.cc.isClang [
             pkgs.llvmPackages.openmp
-          ];
-
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            self.cython
           ];
 
           enableParallelBuilding = true;
@@ -1748,7 +1705,7 @@ lib.composeManyExtensions [
 
       shapely = super.shapely.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.geos self.cython ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.geos ];
           inherit (pkgs.python3.pkgs.shapely) patches GEOS_LIBRARY_PATH;
         }
       );
@@ -1929,7 +1886,6 @@ lib.composeManyExtensions [
         old: {
           inherit (pkgs.python3.pkgs.vispy) patches;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            self.cython
             self.setuptools-scm-git-archive
           ];
         }
@@ -2002,12 +1958,6 @@ lib.composeManyExtensions [
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
             self.toml
           ];
-        }
-      );
-
-      credis = super.credis.overridePythonAttrs (
-        old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.cython ];
         }
       );
 
