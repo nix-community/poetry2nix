@@ -20,7 +20,7 @@ import sys
 # This script evaluates nixpkgs and extracts a a few well known build systems and dumps them in a json file we can consume in the poetry2nix overrides
 
 
-# All known PEP-517 build systems
+# All known PEP-517 (or otherwise) build systems
 BUILD_SYSTEMS = [
     "poetry",
     "poetry-core",
@@ -28,6 +28,7 @@ BUILD_SYSTEMS = [
     "flit-core",
     "pbr",
     "flitBuildHook",
+    "cython",
 ]
 
 
