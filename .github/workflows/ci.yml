@@ -51,7 +51,7 @@ jobs:
           echo "::set-output name=matrix::$matrix"
 
   builds:
-    if: false
+    if: !matrix.cached
     needs: matrix_generate
     runs-on: ${{ matrix.os }}
     strategy:
