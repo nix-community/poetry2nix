@@ -47,10 +47,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq -rcM '{attr: ., os: ["ubuntu-latest", "macos-latest"]}')"
+          matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq -rcM '{attr: ., cached: true, os: ["ubuntu-latest", "macos-latest"]}')"
           echo "::set-output name=matrix::$matrix"
 
   builds:
+    if: ${{ matrix.cached }} != true
     needs: matrix_generate
     runs-on: ${{ matrix.os }}
     strategy:
