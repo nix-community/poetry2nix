@@ -665,6 +665,9 @@
   "ptyprocess": [
     "flit-core"
   ],
+  "publication": [
+    "flit"
+  ],
   "purepng": [
     "cython"
   ],
@@ -1044,6 +1047,9 @@
   "simplisafe-python": [
     "poetry-core"
   ],
+  "single-source": [
+    "poetry-core"
+  ],
   "slowapi": [
     "poetry-core"
   ],
@@ -1179,6 +1185,9 @@
   "toggl-cli": [
     "pbr"
   ],
+  "toml-sort": [
+    "poetry"
+  ],
   "tomli": [
     "flit-core"
   ],
@@ -1202,6 +1211,9 @@
   ],
   "twentemilieu": [
     "poetry-core"
+  ],
+  "typer": [
+    "flit-core"
   ],
   "typical": [
     "poetry-core"

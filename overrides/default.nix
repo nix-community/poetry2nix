@@ -174,6 +174,20 @@ lib.composeManyExtensions [
         }
       );
 
+      cattrs =
+        let
+          drv = super.cattrs;
+        in
+        if drv.version == "1.10.0" then
+          drv.overridePythonAttrs
+            (old: {
+              # 1.10.0 contains a pyproject.toml that requires a pre-release Poetry
+              # We can avoid using Poetry and use the generated setup.py
+              preConfigure = old.preConfigure or "" + ''
+                rm pyproject.toml
+              '';
+            }) else drv;
+
       celery = super.celery.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
       });
