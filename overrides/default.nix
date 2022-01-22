@@ -1682,9 +1682,10 @@ lib.composeManyExtensions [
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [
             pkgs.gfortran
-            pkgs.glibcLocales
           ] ++ lib.optionals stdenv.cc.isClang [
             pkgs.llvmPackages.openmp
+          ] ++ lib.optionals stdenv.isLinux [
+            pkgs.glibcLocales
           ];
 
           enableParallelBuilding = true;
