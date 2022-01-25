@@ -972,6 +972,9 @@
   "requestsexceptions": [
     "pbr"
   ],
+  "requirements-parser": [
+    "poetry-core"
+  ],
   "resampy": [
     "cython"
   ],
