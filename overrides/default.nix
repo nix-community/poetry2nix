@@ -2153,10 +2153,13 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
       });
 
-      uwsgi = super.uwsgi.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
-        sourceRoot = ".";
-      });
+      uwsgi = super.uwsgi.overridePythonAttrs
+        (old:
+          {
+            buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
+          } // lib.optionalAttrs (lib.versionAtLeast old.version "2.0.19" && lib.versionOlder old.version "2.0.20") {
+            sourceRoot = ".";
+          });
 
       wcwidth = super.wcwidth.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++
