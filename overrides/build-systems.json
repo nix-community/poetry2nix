@@ -99,6 +99,9 @@
   "authcaptureproxy": [
     "poetry-core"
   ],
+  "aws-error-utils": [
+    "poetry"
+  ],
   "backcall": [
     "flit-core"
   ],
@@ -252,11 +255,17 @@
   "fastapi": [
     "flitBuildHook"
   ],
+  "fastapi-restful": [
+    "poetry"
+  ],
   "fastavro": [
     "cython"
   ],
   "fastdtw": [
     "cython"
+  ],
+  "fhconfparser": [
+    "poetry-core"
   ],
   "finalfusion": [
     "cython"
@@ -438,6 +447,9 @@
   "libmr": [
     "cython"
   ],
+  "licensecheck": [
+    "poetry-core"
+  ],
   "line_profiler": [
     "cython"
   ],
@@ -475,6 +487,9 @@
     "cython"
   ],
   "matrix-nio": [
+    "poetry-core"
+  ],
+  "metprint": [
     "poetry-core"
   ],
   "mcstatus": [
@@ -661,6 +676,9 @@
   ],
   "primer3": [
     "cython"
+  ],
+  "prometheus-fastapi-instrumentator": [
+    "poetry"
   ],
   "ptyprocess": [
     "flit-core"
@@ -953,6 +971,9 @@
   ],
   "requestsexceptions": [
     "pbr"
+  ],
+  "requirements-parser": [
+    "poetry-core"
   ],
   "resampy": [
     "cython"
