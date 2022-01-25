@@ -99,6 +99,9 @@
   "authcaptureproxy": [
     "poetry-core"
   ],
+  "aws-error-utils": [
+    "poetry"
+  ],
   "backcall": [
     "flit-core"
   ],
@@ -251,6 +254,9 @@
   ],
   "fastapi": [
     "flitBuildHook"
+  ],
+  "fastapi-restful": [
+    "poetry"
   ],
   "fastavro": [
     "cython"
@@ -661,6 +667,9 @@
   ],
   "primer3": [
     "cython"
+  ],
+  "prometheus-fastapi-instrumentator": [
+    "poetry"
   ],
   "ptyprocess": [
     "flit-core"
