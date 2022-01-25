@@ -264,6 +264,9 @@
   "fastdtw": [
     "cython"
   ],
+  "fhconfparser": [
+    "poetry-core"
+  ],
   "finalfusion": [
     "cython"
   ],
@@ -444,6 +447,9 @@
   "libmr": [
     "cython"
   ],
+  "licensecheck": [
+    "poetry-core"
+  ],
   "line_profiler": [
     "cython"
   ],
@@ -481,6 +487,9 @@
     "cython"
   ],
   "matrix-nio": [
+    "poetry-core"
+  ],
+  "metprint": [
     "poetry-core"
   ],
   "mcstatus": [
