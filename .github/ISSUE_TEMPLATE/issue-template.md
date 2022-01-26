@@ -9,9 +9,11 @@ Is this an issue in the style of "package "X fails to build"?
 Most such issues aren't issues in poetry2nix as such, but rather an incomplete dependency specification.
 We don't have the capacity to act on most such issues, they often require domain knowledge and they generate noise in the issue tracker.
 
-The best way forward for these types of issues is _not_ to create an issue but to try to create an override yourself and submit a pull request.
-
-If you are struggling to create a pull request, come to the Matrix chat and we will happily help you through the process.
+Please take a look into known edge cases (https://github.com/nix-community/poetry2nix/blob/master/docs/edgecases.md),
+maybe it's already solved or you find an inspiration for your own solution.
+If you did not found your issue in list of known, then it will be more productive, faster and creates less burden on maintainer
+if you first try to discuss your case in Matrix chat (you can find information about it in README).
+Community will happily help to find soulution and if needed create issue or pull request
 -->
 
 ### Describe the issue
