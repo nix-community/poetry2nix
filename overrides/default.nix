@@ -582,6 +582,13 @@ lib.composeManyExtensions [
         '';
       });
 
+      igraph = super.igraph.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          dontUseCmakeConfigure = true;
+        }
+      );
+
       imagecodecs = super.imagecodecs.overridePythonAttrs (
         old: {
           patchPhase = ''
