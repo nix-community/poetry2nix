@@ -495,9 +495,6 @@
   "matrix-nio": [
     "poetry-core"
   ],
-  "metprint": [
-    "poetry-core"
-  ],
   "mcstatus": [
     "poetry-core"
   ],
@@ -513,6 +510,9 @@
   ],
   "memory-allocator": [
     "cython"
+  ],
+  "metprint": [
+    "poetry-core"
   ],
   "mock": [
     "pbr"
