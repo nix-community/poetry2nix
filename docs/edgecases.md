@@ -147,4 +147,4 @@ poetry2nix.mkPoetryApplication {
   });
 }
 ```
-This override will instruct underlying build logic to includ additional build dependency into inputs of `extralib`.
+This override will instruct underlying build logic to include additional build dependency into inputs of `extralib`.
