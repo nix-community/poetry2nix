@@ -523,6 +523,9 @@
   "mkdocs-autorefs": [
     "poetry"
   ],
+  "mkdocs-jupyter": [
+    "poetry-core"
+  ],
   "mkdocstrings": [
     "pdm-pep517"
   ],
