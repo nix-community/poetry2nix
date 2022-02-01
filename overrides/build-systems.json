@@ -258,6 +258,9 @@
   "enturclient": [
     "poetry-core"
   ],
+  "enumatch": [
+    "poetry"
+  ],
   "fastapi": [
     "flitBuildHook"
   ],
@@ -278,6 +281,12 @@
   ],
   "fixtures": [
     "pbr"
+  ],
+  "flake8-debugger": [
+    "poetry-core"
+  ],
+  "flake8-print": [
+    "poetry-core"
   ],
   "flipr-api": [
     "poetry-core"
@@ -649,6 +658,9 @@
   "p1monitor": [
     "poetry-core"
   ],
+  "paddle-client": [
+    "poetry"
+  ],
   "palace": [
     "cython"
   ],
@@ -799,6 +811,9 @@
   ],
   "pypass": [
     "pbr"
+  ],
+  "pyppeteer": [
+    "poetry"
   ],
   "pypika-tortoise": [
     "poetry-core"
