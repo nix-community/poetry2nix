@@ -429,6 +429,12 @@
   "json-schema-for-humans": [
     "poetry-core"
   ],
+  "jupyter-server": [
+    "jupyter-packaging"
+  ],
+  "jupyterlab": [
+    "jupyter-packaging"
+  ],
   "keystoneauth1": [
     "pbr"
   ],
@@ -514,6 +520,12 @@
   "metprint": [
     "poetry-core"
   ],
+  "mkdocs-autorefs": [
+    "poetry"
+  ],
+  "mkdocstrings": [
+    "pdm-pep517"
+  ],
   "mock": [
     "pbr"
   ],
@@ -549,6 +561,9 @@
   ],
   "nats-python": [
     "poetry-core"
+  ],
+  "nbclassic": [
+    "jupyter-packaging"
   ],
   "netcdf4": [
     "cython"
@@ -908,6 +923,9 @@
   ],
   "pytile": [
     "poetry-core"
+  ],
+  "pytkdocs": [
+    "pdm-pep517"
   ],
   "pytzdata": [
     "poetry"
