@@ -449,7 +449,7 @@ lib.composeManyExtensions [
         old: {
           postPatch = ''
             substituteInPlace setup.py \
-              --replace 'setup_requires="setupmeta"' 'setup_requires=[]'
+              --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
               --replace 'versioning="devcommit"' 'version="${old.version}"'
           '';
         }
