@@ -239,6 +239,14 @@ lib.composeManyExtensions [
         }
       );
 
+      confluent-kafka = super.confluent-kafka.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [
+            pkgs.rdkafka
+          ];
+        }
+      );
+
       cryptography = super.cryptography.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ])
