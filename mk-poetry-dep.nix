@@ -94,6 +94,7 @@ pythonPackages.callPackage
         "setuptools-scm"
         "toml" # Toml is an extra for setuptools-scm
         "tomli" # tomli is an extra for later versions of setuptools-scm
+        "flit-core"
         "packaging"
         "six"
         "pyparsing"
