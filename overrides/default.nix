@@ -1773,12 +1773,6 @@ lib.composeManyExtensions [
 
       });
 
-      strawberry-graphql = super.strawberry-graphql.overridePythonAttrs (old: {
-        preConfigure = ''
-          LC_ALL=UTF-8 sed -i "s/$(printf 🍓)/strawberry/g" pyproject.toml
-        '';
-      });
-
       systemd-python = super.systemd-python.overridePythonAttrs (old: {
         buildInputs = old.buildInputs ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
