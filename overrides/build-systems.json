@@ -227,6 +227,9 @@
   "django-timezone-field": [
     "poetry-core"
   ],
+  "dnspython": [
+    "poetry-core"
+  ],
   "doc8": [
     "pbr"
   ],
@@ -292,6 +295,9 @@
     "poetry-core"
   ],
   "flake8-print": [
+    "poetry-core"
+  ],
+  "flatten-dict": [
     "poetry-core"
   ],
   "flipr-api": [
@@ -420,7 +426,13 @@
   "immutabledict": [
     "poetry-core"
   ],
+  "installer": [
+    "flit-core"
+  ],
   "ipfshttpclient": [
+    "flitBuildHook"
+  ],
+  "ipwhl": [
     "flitBuildHook"
   ],
   "isort": [
@@ -818,9 +830,6 @@
   "pypass": [
     "pbr"
   ],
-  "pyppeteer": [
-    "poetry"
-  ],
   "pypika-tortoise": [
     "poetry-core"
   ],
@@ -1107,6 +1116,9 @@
   "seccomp": [
     "cython"
   ],
+  "sentinel": [
+    "poetry-core"
+  ],
   "sfepy": [
     "cython"
   ],
@@ -1172,6 +1184,9 @@
   ],
   "stevedore": [
     "pbr"
+  ],
+  "strawberry-graphql": [
+    "poetry"
   ],
   "streaming-form-data": [
     "cython"
