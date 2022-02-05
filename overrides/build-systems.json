@@ -610,6 +610,9 @@
   "nixpkgs": [
     "pbr"
   ],
+  "nkdfu": [
+    "flitBuildHook"
+  ],
   "notus-scanner": [
     "poetry-core"
   ],
@@ -728,6 +731,9 @@
   "preshed": [
     "cython"
   ],
+  "primecountpy": [
+    "cython"
+  ],
   "primer3": [
     "cython"
   ],
@@ -789,6 +795,9 @@
     "poetry-core"
   ],
   "pygame_sdl2": [
+    "cython"
+  ],
+  "pygeos": [
     "cython"
   ],
   "pyiqvia": [
@@ -1176,6 +1185,9 @@
   "staticjinja": [
     "poetry-core"
   ],
+  "statmake": [
+    "poetry-core"
+  ],
   "statsmodels": [
     "cython"
   ],
@@ -1292,6 +1304,9 @@
   ],
   "traceback2": [
     "pbr"
+  ],
+  "transmission-rpc": [
+    "poetry-core"
   ],
   "treeo": [
     "poetry-core"
