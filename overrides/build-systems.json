@@ -227,6 +227,9 @@
   "django-timezone-field": [
     "poetry-core"
   ],
+  "dnspython": [
+    "poetry-core"
+  ],
   "doc8": [
     "pbr"
   ],
