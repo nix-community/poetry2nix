@@ -1228,7 +1228,7 @@
     "cython"
   ],
   "testpath": [
-    "flit-core"
+    "flit"
   ],
   "testrepository": [
     "pbr"
