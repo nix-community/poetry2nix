@@ -634,6 +634,12 @@
   "open-meteo": [
     "poetry-core"
   ],
+  "openapi-schema-validator": [
+    "poetry-core"
+  ],
+  "openapi-spec-validator": [
+    "poetry-core"
+  ],
   "openstacksdk": [
     "pbr"
   ],
@@ -1205,6 +1211,9 @@
   ],
   "structlog": [
     "flitBuildHook"
+  ],
+  "structlog-sentry": [
+    "poetry-core"
   ],
   "subunit2sql": [
     "pbr"
