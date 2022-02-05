@@ -56,6 +56,7 @@ builtins.removeAttrs
   source-filter = callTest ./source-filter { };
   canonical-module-names = callTest ./canonical-module-names { };
   wandb = callTest ./wandb { };
+  utf8-pyproject = callTest ./utf8-pyproject { };
 
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = skipOSX (callTest ./dependency-environment { });

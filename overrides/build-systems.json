@@ -2,6 +2,12 @@
   "HTSeq": [
     "cython"
   ],
+  "sentinel": [
+    "poetry-core"
+  ],
+  "strawberry-graphql": [
+    "poetry"
+  ],
   "PyStemmer": [
     "cython"
   ],
