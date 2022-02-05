@@ -11,6 +11,9 @@
   "aioambient": [
     "poetry-core"
   ],
+  "aioboto3": [
+    "poetry"
+  ],
   "aiocurrencylayer": [
     "poetry-core"
   ],
@@ -28,6 +31,9 @@
   ],
   "aiohomekit": [
     "poetry-core"
+  ],
+  "aioitertools": [
+    "flit-core"
   ],
   "aiojobs": [
     "flitBuildHook"
