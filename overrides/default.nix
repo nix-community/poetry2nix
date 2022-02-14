@@ -1140,6 +1140,13 @@ lib.composeManyExtensions [
         }
       );
 
+      pikepdf = super.pikepdf.overridePythonAttrs (
+        old: {
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.qpdf self.pybind11 ];
+          pythonImportsCheck = old.pythonImportsCheck or [ ] ++ [ "pikepdf" ];
+        }
+      );
+
       pillow = super.pillow.overridePythonAttrs (
         old: {
           nativeBuildInputs = [ pkg-config self.pytest-runner ] ++ (old.nativeBuildInputs or [ ]);
