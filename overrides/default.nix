@@ -1353,6 +1353,20 @@ lib.composeManyExtensions [
         }
       );
 
+      pymediainfo = super.pymediainfo.overridePythonAttrs (
+        old: {
+          postPatch = (old.postPatch or "") + ''
+            substituteInPlace pymediainfo/__init__.py \
+              --replace "libmediainfo.0.dylib" \
+                        "${pkgs.libmediainfo}/lib/libmediainfo.0${stdenv.hostPlatform.extensions.sharedLibrary}" \
+              --replace "libmediainfo.dylib" \
+                        "${pkgs.libmediainfo}/lib/libmediainfo${stdenv.hostPlatform.extensions.sharedLibrary}" \
+              --replace "libmediainfo.so.0" \
+                        "${pkgs.libmediainfo}/lib/libmediainfo${stdenv.hostPlatform.extensions.sharedLibrary}.0"
+          '';
+        }
+      );
+
       pymssql = super.pymssql.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ])
           ++ [ pkgs.openssl ];
