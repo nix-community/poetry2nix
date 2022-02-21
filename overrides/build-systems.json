@@ -262,7 +262,7 @@
     "poetry-core"
   ],
   "entrypoints": [
-    "flit"
+    "flit-core"
   ],
   "enturclient": [
     "poetry-core"
