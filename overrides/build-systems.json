@@ -559,6 +559,9 @@
   "mkdocs-jupyter": [
     "poetry-core"
   ],
+  "mkdocs-literate-nav": [
+    "poetry"
+  ],
   "mkdocstrings": [
     "pdm-pep517"
   ],
