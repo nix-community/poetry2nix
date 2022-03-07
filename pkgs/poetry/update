@@ -1,11 +1,15 @@
 #!/usr/bin/env nix-shell
-#! nix-shell -i bash -p curl nix-prefetch-github jq
+#! nix-shell update-poetry-shell.nix -i bash
 
+set -x
 rev=$(curl -s https://api.github.com/repos/python-poetry/poetry/releases/latest | jq -r '.name')
+export NIX_PATH=nixpkgs=$(nix eval -f nixpkgs.nix --raw)
+# nix-prefetch-github requires 'nixpkgs' to be in NIX_PATH
 nix-prefetch-github --rev "$rev" python-poetry poetry > src.json
 echo >> src.json
 
-src=$(nix-build --no-out-link --expr 'with import <nixpkgs> {}; fetchFromGitHub (lib.importJSON ./src.json)')
-cp $src/pyproject.toml $src/poetry.lock .
+src=$(nix-build --no-out-link --expr 'with import (import ./nixpkgs.nix ) {}; fetchFromGitHub (lib.importJSON ./src.json)' --show-trace)
+echo "Printing source: $src"
+cp "$src/pyproject.toml" "$src/poetry.lock" .
 nix-shell -p poetry --run 'poetry lock'
-nix-build --expr '(import <nixpkgs> { overlays = [ (import ../../overlay.nix) ]; }).poetry'
+nix-build --expr '(import (import ./nixpkgs.nix) { overlays = [ (import ../../overlay.nix) ]; }).poetry' --show-trace
