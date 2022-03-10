@@ -239,6 +239,12 @@
   "dynd": [
     "cython"
   ],
+  "duckdb": [
+    "pybind11"
+  ],
+  "duckdb-engine": [
+    "poetry-core"
+  ],
   "ecs-logging": [
     "flit-core",
     "flitBuildHook"
@@ -552,6 +558,9 @@
   ],
   "mkdocs-jupyter": [
     "poetry-core"
+  ],
+  "mkdocs-literate-nav": [
+    "poetry"
   ],
   "mkdocstrings": [
     "pdm-pep517"
