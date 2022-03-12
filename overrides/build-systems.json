@@ -556,6 +556,9 @@
   "mkdocs-autorefs": [
     "poetry"
   ],
+  "mkdocs-gen-files": [
+    "poetry"
+  ],
   "mkdocs-jupyter": [
     "poetry-core"
   ],
