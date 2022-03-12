@@ -519,6 +519,9 @@
   "lxml": [
     "cython"
   ],
+  "lz4": [
+    "pkgconfig"
+  ],
   "maestral": [
     "pbr"
   ],
