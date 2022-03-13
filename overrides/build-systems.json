@@ -519,6 +519,9 @@
   "lxml": [
     "cython"
   ],
+  "lz4": [
+    "pkgconfig"
+  ],
   "maestral": [
     "pbr"
   ],
@@ -554,6 +557,9 @@
     "poetry-core"
   ],
   "mkdocs-autorefs": [
+    "poetry"
+  ],
+  "mkdocs-gen-files": [
     "poetry"
   ],
   "mkdocs-jupyter": [
