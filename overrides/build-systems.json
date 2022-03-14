@@ -557,7 +557,8 @@
     "poetry-core"
   ],
   "mkdocs-autorefs": [
-    "poetry"
+    "poetry",
+    "pdm-pep517"
   ],
   "mkdocs-gen-files": [
     "poetry"
