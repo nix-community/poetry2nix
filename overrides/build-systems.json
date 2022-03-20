@@ -917,6 +917,9 @@
   "pytest-mockservers": [
     "poetry-core"
   ],
+  "pytest-profiling": [
+    "setuptools-git"
+  ],
   "pytest-raisin": [
     "flit-core",
     "flitBuildHook"
