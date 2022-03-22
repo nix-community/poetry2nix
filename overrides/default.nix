@@ -989,12 +989,17 @@ lib.composeManyExtensions [
 
       mypy = super.mypy.overridePythonAttrs (
         old: {
-          patches = (old.patches or [ ]) ++ lib.optionals (lib.strings.versionAtLeast old.version "0.900") [
-            # FIXME: Remove patch after upstream has decided the proper solution.
-            #        https://github.com/python/mypy/pull/11143
+          # FIXME: Remove patch after upstream has decided the proper solution.
+          #        https://github.com/python/mypy/pull/11143
+          patches = (old.patches or [ ]) ++ lib.optionals ((lib.strings.versionAtLeast old.version "0.900") && lib.strings.versionOlder old.version "0.940") [
             (pkgs.fetchpatch {
               url = "https://github.com/python/mypy/commit/f1755259d54330cd087cae763cd5bbbff26e3e8a.patch";
               sha256 = "sha256-5gPahX2X6+/qUaqDQIGJGvh9lQ2EDtks2cpQutgbOHk=";
+            })
+          ] ++ lib.optionals (lib.strings.versionAtLeast old.version "0.940") [
+            (pkgs.fetchpatch {
+              url = "https://github.com/python/mypy/commit/e7869f05751561958b946b562093397027f6d5fa.patch";
+              sha256 = "sha256-waIZ+m3tfvYE4HJ8kL6rN/C4fMjvLEe9UoPbt9mHWIM=";
             })
           ];
           buildInputs = (old.buildInputs or [ ]) ++ [
