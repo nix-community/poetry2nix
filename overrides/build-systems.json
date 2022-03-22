@@ -851,6 +851,9 @@
   "pynuki": [
     "poetry-core"
   ],
+  "pyopencl": [
+    "pybind11"
+  ],
   "pyopenuv": [
     "poetry-core"
   ],
