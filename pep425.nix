@@ -76,26 +76,27 @@ let
           if targetMachine != null
           then
             (
-              x: x.platform == "any" || lib.lists.any (e: hasInfix e x.platform) [
+              p: p == "any" || lib.lists.any (e: hasInfix e p) [
                 "manylinux1_${targetMachine}"
                 "manylinux2010_${targetMachine}"
                 "manylinux2014_${targetMachine}"
               ]
             )
           else
-            (x: x.platform == "any")
+            (p: p == "any")
         else
           if stdenv.isDarwin
           then
             if stdenv.targetPlatform.isAarch64
-            then (x: x.platform == "any" || (hasInfix "macosx" x.platform && lib.lists.any (e: hasSuffix e x.platform) [ "arm64" "aarch64" ]))
-            else (x: x.platform == "any" || (hasInfix "macosx" x.platform && hasSuffix "x86_64" x.platform))
-          else (x: x.platform == "any");
+            then (p: p == "any" || (hasInfix "macosx" p && lib.lists.any (e: hasSuffix e p) [ "arm64" "aarch64" ]))
+            else (p: p == "any" || (hasInfix "macosx" p && hasSuffix "x86_64" p))
+          else (p: p == "any");
+      withPlatforms = x: lib.lists.any withPlatform (splitString "." x.platform);
       filterWheel = x:
         let
           f = toWheelAttrs x.file;
         in
-        (withPython pythonTag abiTag f) && (withPlatform f);
+        (withPython pythonTag abiTag f) && (withPlatforms f);
       filtered = builtins.filter filterWheel filesWithoutSources;
       choose = files:
         let
