@@ -1,6 +1,6 @@
 { lib, stdenv, poetryLib, python, isLinux ? stdenv.isLinux }:
 let
-  inherit (lib.strings) hasPrefix hasSuffix hasInfix splitString removePrefix removeSuffix;
+  inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removePrefix removeSuffix;
   targetMachine = poetryLib.getTargetMachine stdenv;
 
   # The 'cpxy" as determined by `python.version`
@@ -75,12 +75,9 @@ let
         then
           if targetMachine != null
           then
-            (
-              p: p == "any" || lib.lists.any (e: hasInfix e p) [
-                "manylinux1_${targetMachine}"
-                "manylinux2010_${targetMachine}"
-                "manylinux2014_${targetMachine}"
-              ]
+          # See PEP 600 for details.
+            (p:
+              builtins.match "any|manylinux(1|2010|2014)_${escapeRegex targetMachine}|manylinux_[0-9]+_[0-9]+_${escapeRegex targetMachine}" p != null
             )
           else
             (p: p == "any")
@@ -101,7 +98,7 @@ let
       choose = files:
         let
           osxMatches = [ "12_0" "11_0" "10_12" "10_11" "10_10" "10_9" "10_8" "10_7" "any" ];
-          linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" "any" ];
+          linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" "manylinux_" "any" ];
           chooseLinux = x: lib.take 1 (findBestMatches linuxMatches x);
           chooseOSX = x: lib.take 1 (findBestMatches osxMatches x);
         in
