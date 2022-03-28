@@ -188,6 +188,12 @@ lib.composeManyExtensions [
               '';
             }) else drv;
 
+      ccxt = super.ccxt.overridePythonAttrs (old: {
+        preBuild = ''
+          ln -s README.{rst,md}
+        '';
+      });
+
       celery = super.celery.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
       });
