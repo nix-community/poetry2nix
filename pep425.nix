@@ -1,6 +1,6 @@
 { lib, stdenv, poetryLib, python, isLinux ? stdenv.isLinux }:
 let
-  inherit (lib.strings) hasSuffix hasInfix splitString removeSuffix;
+  inherit (lib.strings) hasPrefix hasSuffix hasInfix splitString removePrefix removeSuffix;
   targetMachine = poetryLib.getTargetMachine stdenv;
 
   # The 'cpxy" as determined by `python.version`
@@ -52,10 +52,10 @@ let
   # x     = "cpXX" | "py2" | "py3" | "py2.py3"
   isPyVersionCompatible = pyver: x:
     let
-      normalize = y: ''cp${lib.strings.removePrefix "cp" (lib.strings.removePrefix "py" y)}'';
-      isCompat = p: x: lib.strings.hasPrefix (normalize x) p;
+      normalize = y: ''cp${removePrefix "cp" (removePrefix "py" y)}'';
+      isCompat = p: x: hasPrefix (normalize x) p;
     in
-    lib.lists.any (isCompat pyver) (lib.strings.splitString "." x);
+    lib.lists.any (isCompat pyver) (splitString "." x);
 
   #
   # Selects the best matching wheel file from a list of files
@@ -63,7 +63,7 @@ let
   selectWheel = files:
     let
       filesWithoutSources = (builtins.filter (x: hasSuffix ".whl" x.file) files);
-      isPyAbiCompatible = pyabi: x: x == "none" || lib.hasPrefix pyabi x || lib.hasPrefix x pyabi || (
+      isPyAbiCompatible = pyabi: x: x == "none" || hasPrefix pyabi x || hasPrefix x pyabi || (
         # The CPython stable ABI is abi3 as in the shared library suffix.
         python.passthru.implementation == "cpython" &&
           builtins.elemAt (lib.splitString "." python.version) 0 == "3" &&
