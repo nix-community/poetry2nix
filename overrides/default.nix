@@ -1221,6 +1221,15 @@ lib.composeManyExtensions [
         }
       );
 
+      py-solc-x = super.py-solc-x.overridePythonAttrs (
+        old: {
+          preConfigure = ''
+            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+          '';
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.requests self.semantic-version ];
+        }
+      );
+
       pyarrow =
         if lib.versionAtLeast super.pyarrow.version "0.16.0" then
           super.pyarrow.overridePythonAttrs
