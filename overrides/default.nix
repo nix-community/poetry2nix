@@ -237,6 +237,17 @@ lib.composeManyExtensions [
         }
       );
 
+      coincurve = super.coincurve.overridePythonAttrs (
+        old: {
+          # package setup logic
+          LIB_DIR = "${lib.getLib pkgs.secp256k1}/lib";
+
+          # for actual C toolchain build
+          NIX_CFLAGS_COMPILE = "-I ${lib.getDev pkgs.secp256k1}/include";
+          NIX_LDFLAGS = "-L ${lib.getLib pkgs.secp256k1}/lib";
+        }
+      );
+
       configparser = super.configparser.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [
