@@ -17,9 +17,14 @@ let
       if (attr == "flit-core" || attr == "flit") && !self.isPy3k then drv
       else
         drv.overridePythonAttrs (
-          old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.${attr} ];
-          }
+          old:
+          # We do not need the build system for wheels.
+          if old ? format && old.format == "wheel" then
+            { }
+          else
+            {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.${attr} ];
+            }
         )
     );
 
@@ -734,6 +739,10 @@ lib.composeManyExtensions [
         }
       );
 
+      jupyter-packaging = super.jupyter-packaging.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.wheel ];
+      });
+
       jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
         old: rec {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.jupyter-packaging ];
@@ -1083,6 +1092,14 @@ lib.composeManyExtensions [
           };
         }
       );
+
+      open3d = super.open3d.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ (with pkgs; [
+          udev
+        ]);
+        # TODO(Sem Mulder): Add overridable flags for CUDA/PyTorch/Tensorflow support.
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       opencv-python = super.opencv-python.overridePythonAttrs (
         old: {

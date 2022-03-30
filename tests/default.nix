@@ -31,6 +31,7 @@ builtins.removeAttrs
   common-pkgs-1 = callTest ./common-pkgs-1 { };
   common-pkgs-2 = callTest ./common-pkgs-2 { };
   pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
+  pep600 = skipOSX (callTest ./pep600 { });
   env = callTest ./env { };
   pytest-randomly = callTest ./pytest-randomly { };
   file-src-deps = callTest ./file-src-deps { };
