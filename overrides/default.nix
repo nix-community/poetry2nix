@@ -275,14 +275,17 @@ lib.composeManyExtensions [
             "35.0.0" = "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI=";
             "36.0.0" = "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk=";
             "36.0.1" = "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
+            "36.0.2" = "1a0ni1a3dbv2dvh6gx2i54z8v5j9m6asqg97kkv7gqb1ivihsbp8";
           }.${version} or null;
           sha256 = getCargoHash super.cryptography.version;
+          scrypto =
+            if lib.versionAtLeast super.cryptography.version "35" && sha256 == null then
+              (
+                super.cryptography.override { preferWheel = true; }
+              ) else super.cryptography;
         in
-        if lib.versionAtLeast super.cryptography.version "35" && sha256 == null then
+        scrypto.overridePythonAttrs
           (
-            super.cryptography.override { preferWheel = true; }
-          ) else
-          super.cryptography.overridePythonAttrs (
             old: {
               nativeBuildInputs = (old.nativeBuildInputs or [ ])
                 ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
@@ -294,7 +297,7 @@ lib.composeManyExtensions [
               propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.cffi ];
             } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
               CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
-            } // lib.optionalAttrs (lib.versionAtLeast old.version "35") rec {
+            } // lib.optionalAttrs (lib.versionAtLeast old.version "35" && sha256 != null) rec {
               cargoDeps =
                 pkgs.rustPlatform.fetchCargoTarball {
                   src = old.src;
