@@ -269,37 +269,42 @@ lib.composeManyExtensions [
         }
       );
 
-      cryptography = super.cryptography.overridePythonAttrs (
-        old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ])
-            ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
-            ++ lib.optional (!self.isPyPy) pyBuildPackages.cffi
-            ++ lib.optional (lib.versionAtLeast old.version "3.5")
-            (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ]
-            ++ lib.optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.cffi ];
-        } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
-          CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
-        } // lib.optionalAttrs (lib.versionAtLeast old.version "35") rec {
-          cargoDeps =
-            let
-              getCargoHash = version:
-                if lib.versionOlder version "36.0.0" then "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI="
-                else if lib.versionOlder version "36.0.1" then "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk="
-                # This hash could no longer be valid for cryptography versions
-                # different from 36.0.1
-                else "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
-            in
-            pkgs.rustPlatform.fetchCargoTarball {
-              src = old.src;
-              sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
-              name = "${old.pname}-${old.version}";
-              sha256 = getCargoHash old.version;
-            };
-          cargoRoot = "src/rust";
-        }
-      );
+      cryptography =
+        let
+          getCargoHash = version: {
+            "35.0.0" = "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI=";
+            "36.0.0" = "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk=";
+            "36.0.1" = "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
+          }.${version} or null;
+          sha256 = getCargoHash super.cryptography.version;
+        in
+        if lib.versionAtLeast super.cryptography.version "35" && sha256 == null then
+          (
+            super.cryptography.override { preferWheel = true; }
+          ) else
+          super.cryptography.overridePythonAttrs (
+            old: {
+              nativeBuildInputs = (old.nativeBuildInputs or [ ])
+                ++ lib.optional (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
+                ++ lib.optional (!self.isPyPy) pyBuildPackages.cffi
+                ++ lib.optional (lib.versionAtLeast old.version "3.5")
+                (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
+              buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ]
+                ++ lib.optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
+              propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.cffi ];
+            } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
+              CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
+            } // lib.optionalAttrs (lib.versionAtLeast old.version "35") rec {
+              cargoDeps =
+                pkgs.rustPlatform.fetchCargoTarball {
+                  src = old.src;
+                  sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
+                  name = "${old.pname}-${old.version}";
+                  inherit sha256;
+                };
+              cargoRoot = "src/rust";
+            }
+          );
 
       cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
