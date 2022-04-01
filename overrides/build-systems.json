@@ -8,6 +8,9 @@
   "adguardhome": [
     "poetry-core"
   ],
+  "aesara": [
+    "cython"
+  ],
   "aioambient": [
     "poetry-core"
   ],
@@ -31,6 +34,9 @@
   ],
   "aiohomekit": [
     "poetry-core"
+  ],
+  "aiohttp-remotes": [
+    "flitBuildHook"
   ],
   "aioitertools": [
     "flit-core"
@@ -68,6 +74,9 @@
   "aiosqlite": [
     "flit-core"
   ],
+  "aiosteamist": [
+    "poetry-core"
+  ],
   "aioswitcher": [
     "poetry-core"
   ],
@@ -82,6 +91,9 @@
   ],
   "apache-beam": [
     "cython"
+  ],
+  "argon2_cffi": [
+    "flitBuildHook"
   ],
   "aria2p": [
     "poetry"
@@ -102,7 +114,13 @@
   "atomman": [
     "cython"
   ],
+  "autarco": [
+    "poetry-core"
+  ],
   "authcaptureproxy": [
+    "poetry-core"
+  ],
+  "awesomeversion": [
     "poetry-core"
   ],
   "aws-error-utils": [
@@ -149,6 +167,12 @@
   ],
   "cftime": [
     "cython"
+  ],
+  "chispa": [
+    "poetry-core"
+  ],
+  "ciscoconfparse": [
+    "poetry-core"
   ],
   "cleo": [
     "poetry-core"
@@ -221,6 +245,9 @@
   "dipy": [
     "cython"
   ],
+  "discovery30303": [
+    "poetry-core"
+  ],
   "django-graphiql-debug-toolbar": [
     "poetry-core"
   ],
@@ -236,14 +263,17 @@
   "dtlssocket": [
     "cython"
   ],
-  "dynd": [
-    "cython"
-  ],
   "duckdb": [
     "pybind11"
   ],
   "duckdb-engine": [
     "poetry-core"
+  ],
+  "dunamai": [
+    "poetry-core"
+  ],
+  "dynd": [
+    "cython"
   ],
   "ecs-logging": [
     "flit-core",
@@ -254,6 +284,9 @@
   ],
   "eebrightbox": [
     "pbr"
+  ],
+  "eiswarnung": [
+    "poetry-core"
   ],
   "elegy": [
     "poetry"
@@ -336,6 +369,9 @@
   "gaphas": [
     "poetry-core"
   ],
+  "garages-amsterdam": [
+    "poetry-core"
+  ],
   "gbinder-python": [
     "cython"
   ],
@@ -358,6 +394,9 @@
     "poetry-core"
   ],
   "graphql-relay": [
+    "poetry-core"
+  ],
+  "gridnet": [
     "poetry-core"
   ],
   "grpcio": [
@@ -411,6 +450,9 @@
   "html5lib": [
     "flit-core"
   ],
+  "hypercorn": [
+    "poetry-core"
+  ],
   "hyperion-py": [
     "poetry-core"
   ],
@@ -419,6 +461,9 @@
   ],
   "hypothesis-graphql": [
     "poetry"
+  ],
+  "ibis-framework": [
+    "poetry-core"
   ],
   "icmplib": [
     "pbr"
@@ -432,8 +477,14 @@
   "immutabledict": [
     "poetry-core"
   ],
+  "inquirer": [
+    "poetry-core"
+  ],
   "installer": [
     "flit-core"
+  ],
+  "iodata": [
+    "cython"
   ],
   "ipfshttpclient": [
     "flitBuildHook"
@@ -491,6 +542,9 @@
   ],
   "libmr": [
     "cython"
+  ],
+  "libtmux": [
+    "poetry-core"
   ],
   "licensecheck": [
     "poetry-core"
@@ -557,8 +611,8 @@
     "poetry-core"
   ],
   "mkdocs-autorefs": [
-    "poetry",
-    "pdm-pep517"
+    "pdm-pep517",
+    "poetry"
   ],
   "mkdocs-gen-files": [
     "poetry"
@@ -611,10 +665,16 @@
   "nbclassic": [
     "jupyter-packaging"
   ],
+  "net2grid": [
+    "poetry-core"
+  ],
   "netcdf4": [
     "cython"
   ],
   "netdata": [
+    "poetry-core"
+  ],
+  "newversion": [
     "poetry-core"
   ],
   "nghttp2": [
@@ -655,6 +715,12 @@
   ],
   "openapi-spec-validator": [
     "poetry-core"
+  ],
+  "openevsewifi": [
+    "poetry-core"
+  ],
+  "openstackdocstheme": [
+    "pbr"
   ],
   "openstacksdk": [
     "pbr"
@@ -713,6 +779,9 @@
   "pastel": [
     "poetry-core"
   ],
+  "pathable": [
+    "poetry-core"
+  ],
   "peewee": [
     "cython"
   ],
@@ -728,6 +797,9 @@
   "pex": [
     "flit-core",
     "flitBuildHook"
+  ],
+  "pipenv-poetry-migrate": [
+    "poetry"
   ],
   "pixelmatch": [
     "poetry-core"
@@ -749,6 +821,9 @@
   ],
   "pplpy": [
     "cython"
+  ],
+  "preprocess-cancellation": [
+    "poetry-core"
   ],
   "preshed": [
     "cython"
@@ -789,16 +864,25 @@
   "pyarrow": [
     "cython"
   ],
+  "pyaussiebb": [
+    "poetry-core"
+  ],
   "pycangjie": [
     "cython"
   ],
   "pycapnp": [
     "cython"
   ],
+  "pycep-parser": [
+    "poetry-core"
+  ],
   "pyclipper": [
     "cython"
   ],
   "pycocotools": [
+    "cython"
+  ],
+  "pydantic": [
     "cython"
   ],
   "pydy": [
@@ -822,6 +906,9 @@
   "pygeos": [
     "cython"
   ],
+  "pyhumps": [
+    "poetry-core"
+  ],
   "pyiqvia": [
     "poetry-core"
   ],
@@ -835,6 +922,9 @@
     "poetry-core"
   ],
   "pyliblo": [
+    "cython"
+  ],
+  "pymatgen": [
     "cython"
   ],
   "pymaven-patch": [
@@ -861,8 +951,14 @@
   "pyopnsense": [
     "pbr"
   ],
+  "pyoverkiz": [
+    "poetry-core"
+  ],
   "pypass": [
     "pbr"
+  ],
+  "pyphen": [
+    "flit"
   ],
   "pypika-tortoise": [
     "poetry-core"
@@ -872,6 +968,9 @@
   ],
   "pyppeteer": [
     "poetry-core"
+  ],
+  "pyprecice": [
+    "cython"
   ],
   "pyproj": [
     "cython"
@@ -897,8 +996,23 @@
   "pyshexc": [
     "pbr"
   ],
+  "pysigma": [
+    "poetry-core"
+  ],
+  "pysigma-backend-splunk": [
+    "poetry-core"
+  ],
+  "pysigma-pipeline-crowdstrike": [
+    "poetry-core"
+  ],
+  "pysigma-pipeline-sysmon": [
+    "poetry-core"
+  ],
   "pysmf": [
     "cython"
+  ],
+  "pysml": [
+    "poetry-core"
   ],
   "pysnow": [
     "poetry"
@@ -908,6 +1022,9 @@
   ],
   "pytaglib": [
     "cython"
+  ],
+  "pytest-celery": [
+    "flitBuildHook"
   ],
   "pytest-check": [
     "flitBuildHook"
@@ -968,7 +1085,8 @@
     "pbr"
   ],
   "python-miio": [
-    "poetry"
+    "poetry",
+    "poetry-core"
   ],
   "python-novaclient": [
     "pbr"
@@ -1036,6 +1154,9 @@
   "qutip": [
     "cython"
   ],
+  "radios": [
+    "poetry-core"
+  ],
   "rasterio": [
     "cython"
   ],
@@ -1092,6 +1213,9 @@
   ],
   "rmrl": [
     "poetry-core"
+  ],
+  "rokuecp": [
+    "poetry"
   ],
   "roombapy": [
     "poetry-core"
@@ -1171,6 +1295,9 @@
   "single-source": [
     "poetry-core"
   ],
+  "single-version": [
+    "poetry-core"
+  ],
   "slowapi": [
     "poetry-core"
   ],
@@ -1187,6 +1314,9 @@
     "flitBuildHook"
   ],
   "sphinx-jinja": [
+    "pbr"
+  ],
+  "sphinxcontrib-apidoc": [
     "pbr"
   ],
   "sphinxcontrib-fulltoc": [
@@ -1209,6 +1339,9 @@
   ],
   "ssdp": [
     "pbr"
+  ],
+  "stack-data": [
+    "cython"
   ],
   "staticjinja": [
     "poetry-core"
@@ -1240,11 +1373,17 @@
   "subunit2sql": [
     "pbr"
   ],
+  "sumo": [
+    "cython"
+  ],
   "surepy": [
     "poetry-core"
   ],
   "swift": [
     "pbr"
+  ],
+  "swspotify": [
+    "poetry-core"
   ],
   "symengine": [
     "cython"
@@ -1297,6 +1436,9 @@
   "testtools": [
     "pbr"
   ],
+  "textual": [
+    "poetry-core"
+  ],
   "thinc": [
     "cython"
   ],
@@ -1305,6 +1447,9 @@
   ],
   "thriftpy2": [
     "cython"
+  ],
+  "tikzplotlib": [
+    "flit-core"
   ],
   "tinycss": [
     "cython"
@@ -1343,6 +1488,9 @@
     "poetry-core"
   ],
   "treex": [
+    "poetry-core"
+  ],
+  "ttls": [
     "poetry-core"
   ],
   "twentemilieu": [
