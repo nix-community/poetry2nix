@@ -41,6 +41,7 @@ if __name__ == "__main__":
                 },
                 indent=2,
             )
+            + "\n"
         )
 
     src = (
