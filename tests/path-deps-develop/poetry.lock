@@ -1,0 +1,20 @@
+[[package]]
+name = "dep1"
+version = "0.0.0"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+develop = true
+
+[package.source]
+type = "directory"
+url = "dep1"
+
+[metadata]
+lock-version = "1.1"
+python-versions = ">=3.6"
+content-hash = "fda111f4898026d22d40f4d601bf3782b8ef7795da41cb780d59894a4732f8bc"
+
+[metadata.files]
+dep1 = []
