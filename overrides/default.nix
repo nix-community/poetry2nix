@@ -1196,7 +1196,7 @@ lib.composeManyExtensions [
 
       pillow = super.pillow.overridePythonAttrs (
         old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) 
+          nativeBuildInputs = (old.nativeBuildInputs or [ ])
             ++ [ pkg-config self.pytest-runner ];
           buildInputs = with pkgs; (old.buildInputs or [ ])
             ++ [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ]
