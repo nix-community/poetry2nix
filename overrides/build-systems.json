@@ -807,6 +807,9 @@
   "poetry": [
     "poetry-core"
   ],
+  "poetry-dynamic-versioning": [
+    "poetry-core"
+  ],
   "poetry2conda": [
     "poetry"
   ],
@@ -953,6 +956,9 @@
   ],
   "pyoverkiz": [
     "poetry-core"
+  ],
+  "pyparsing": [
+    "flit-core"
   ],
   "pypass": [
     "pbr"
