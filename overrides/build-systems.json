@@ -807,11 +807,11 @@
   "poetry": [
     "poetry-core"
   ],
-  "poetry2conda": [
-    "poetry"
-  ],
   "poetry-dynamic-versioning": [
     "poetry-core"
+  ],
+  "poetry2conda": [
+    "poetry"
   ],
   "pomegranate": [
     "cython"
