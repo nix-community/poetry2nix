@@ -1196,8 +1196,12 @@ lib.composeManyExtensions [
 
       pillow = super.pillow.overridePythonAttrs (
         old: {
-          nativeBuildInputs = [ pkg-config self.pytest-runner ] ++ (old.nativeBuildInputs or [ ]);
-          buildInputs = with pkgs; [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ] ++ (old.buildInputs or [ ]);
+          nativeBuildInputs = (old.nativeBuildInputs or [ ])
+            ++ [ pkg-config self.pytest-runner ];
+          buildInputs = with pkgs; (old.buildInputs or [ ])
+            ++ [ freetype libjpeg zlib libtiff libwebp tcl lcms2 ]
+            ++ lib.optionals (lib.versionAtLeast old.version "7.1.0") [ xorg.libxcb ]
+            ++ lib.optionals (self.isPyPy) [ tk xorg.libX11 ];
         }
       );
 
