@@ -29,6 +29,9 @@
   "aioflo": [
     "poetry-core"
   ],
+  "aiogithubapi": [
+    "poetry-core"
+  ],
   "aioguardian": [
     "poetry-core"
   ],
@@ -89,7 +92,16 @@
   "amqtt": [
     "poetry-core"
   ],
+  "ansible-doctor": [
+    "poetry-core"
+  ],
+  "ansible-later": [
+    "poetry-core"
+  ],
   "apache-beam": [
+    "cython"
+  ],
+  "aplpy": [
     "cython"
   ],
   "argon2_cffi": [
@@ -120,6 +132,9 @@
   "authcaptureproxy": [
     "poetry-core"
   ],
+  "av": [
+    "cython"
+  ],
   "awesomeversion": [
     "poetry-core"
   ],
@@ -146,6 +161,9 @@
   ],
   "boltztrap2": [
     "cython"
+  ],
+  "bsblan": [
+    "poetry-core"
   ],
   "build": [
     "flit-core"
@@ -210,7 +228,8 @@
     "poetry-core"
   ],
   "cssselect2": [
-    "flit"
+    "flit",
+    "flit-core"
   ],
   "cwcwidth": [
     "cython"
@@ -301,7 +320,8 @@
     "poetry-core"
   ],
   "entrypoints": [
-    "flit"
+    "flit",
+    "flit-core"
   ],
   "enturclient": [
     "poetry-core"
@@ -727,6 +747,9 @@
   ],
   "openvino": [
     "cython"
+  ],
+  "ordered-set": [
+    "flit-core"
   ],
   "ormar": [
     "poetry-core"
@@ -1221,7 +1244,8 @@
     "poetry-core"
   ],
   "rokuecp": [
-    "poetry"
+    "poetry",
+    "poetry-core"
   ],
   "roombapy": [
     "poetry-core"
@@ -1306,6 +1330,9 @@
   ],
   "slowapi": [
     "poetry-core"
+  ],
+  "socksio": [
+    "flit-core"
   ],
   "solo-python": [
     "flitBuildHook"
@@ -1431,7 +1458,8 @@
     "cython"
   ],
   "testpath": [
-    "flit"
+    "flit",
+    "flit-core"
   ],
   "testrepository": [
     "pbr"
