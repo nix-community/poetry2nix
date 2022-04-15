@@ -1154,6 +1154,26 @@ lib.composeManyExtensions [
         }
       );
 
+      orjson =
+        let
+          getCargoHash = version: {
+            "3.6.7" = "1piy0b1gh56n8srzhyd1n971a6pqpgmwhr4v9a81wg0xkbva8g";
+            "3.6.8" = "sha256-vpfceVtYkU09xszNIihY1xbqGWieqDquxwsAmDH8jd4=";
+          }.${version} or null;
+        in
+        super.orjson.overridePythonAttrs (old: {
+          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            inherit (old) src;
+            name = "${old.pname}-${old.version}";
+            sha256 = getCargoHash old.version;
+          };
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+          buildInputs = (old.buildInputs or [ ]) ++ lib.optional pkgs.stdenv.isDarwin pkgs.libiconv;
+        });
+
       osqp = super.osqp.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cmake ];
