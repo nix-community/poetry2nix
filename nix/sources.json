@@ -1,16 +1,4 @@
 {
-    "nix-build-uncached": {
-        "branch": "master",
-        "description": "A CI friendly wrapper around nix-build.",
-        "homepage": "",
-        "owner": "Mic92",
-        "repo": "nix-build-uncached",
-        "rev": "8cc18174e8d351954d6fe1a2115988f7c1acd10c",
-        "sha256": "1hlbkfcv21q08d7kk0w8nbj02i4mpzws508fy8hng434x7fba7vx",
-        "type": "tarball",
-        "url": "https://github.com/Mic92/nix-build-uncached/archive/8cc18174e8d351954d6fe1a2115988f7c1acd10c.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "nixpkgs": {
         "branch": "nixos-unstable",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
