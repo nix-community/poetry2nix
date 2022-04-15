@@ -437,6 +437,17 @@ lib.composeManyExtensions [
         }
       );
 
+      # Setuptools >= 60 broke build_py_2to3
+      docutils =
+        if lib.versionOlder super.docutils.version "0.16" && lib.versionAtLeast super.setuptools.version "60" then
+          (
+            super.docutils.overridePythonAttrs (
+              old: {
+                SETUPTOOLS_USE_DISTUTILS = "stdlib";
+              }
+            )
+          ) else super.docutils;
+
       # Environment markers are not always included (depending on how a dep was defined)
       enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
 
