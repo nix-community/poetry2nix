@@ -1895,6 +1895,12 @@ lib.composeManyExtensions [
 
       });
 
+      soundfile = super.soundfile.overridePythonAttrs(old: {
+        postPatch = ''
+          substituteInPlace soundfile.py --replace "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${stdenv.hostPlatform.extensions.sharedLibrary}'"
+        '';
+      });
+
       systemd-python = super.systemd-python.overridePythonAttrs (old: {
         buildInputs = old.buildInputs ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
