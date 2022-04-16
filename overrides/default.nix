@@ -1157,7 +1157,7 @@ lib.composeManyExtensions [
       orjson =
         let
           getCargoHash = version: {
-            "3.6.7" = "1piy0b1gh56n8srzhyd1n971a6pqpgmwhr4v9a81wg0xkbva8g";
+            "3.6.7" = "sha256-sz2k9podPB6QSptkyOu7+BoVTrKhefizRtYU+MICPt4=";
             "3.6.8" = "sha256-vpfceVtYkU09xszNIihY1xbqGWieqDquxwsAmDH8jd4=";
           }.${version} or null;
         in
@@ -1165,7 +1165,7 @@ lib.composeManyExtensions [
           cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
-            sha256 = getCargoHash old.version;
+            hash = getCargoHash old.version;
           };
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
             pkgs.rustPlatform.cargoSetupHook
