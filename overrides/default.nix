@@ -1895,7 +1895,7 @@ lib.composeManyExtensions [
 
       });
 
-      soundfile = super.soundfile.overridePythonAttrs(old: {
+      soundfile = super.soundfile.overridePythonAttrs (old: {
         postPatch = ''
           substituteInPlace soundfile.py --replace "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${stdenv.hostPlatform.extensions.sharedLibrary}'"
         '';
