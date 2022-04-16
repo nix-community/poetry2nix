@@ -14,7 +14,7 @@ let
     in
     (
       # Flit only works on Python3
-      if (attr == "flit-core" || attr == "flit") && !self.isPy3k then drv
+      if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !self.isPy3k then drv
       else
         drv.overridePythonAttrs (
           old:

@@ -29,6 +29,7 @@ BUILD_SYSTEMS = [
     "pbr",
     "flitBuildHook",
     "cython",
+    "hatchling",
 ]
 
 

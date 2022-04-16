@@ -246,6 +246,9 @@
   "cysignals": [
     "cython"
   ],
+  "datadog": [
+    "hatchling"
+  ],
   "datrie": [
     "cython"
   ],
