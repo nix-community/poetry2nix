@@ -515,6 +515,9 @@
   "ipwhl": [
     "flitBuildHook"
   ],
+  "iso8601": [
+    "poetry-core"
+  ],
   "isort": [
     "poetry-core"
   ],
