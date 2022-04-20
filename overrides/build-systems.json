@@ -545,6 +545,9 @@
   "jupyterlab": [
     "jupyter-packaging"
   ],
+  "jupyterlab-pygments": [
+    "jupyter-packaging"
+  ],
   "keystoneauth1": [
     "pbr"
   ],
@@ -611,6 +614,9 @@
   "marisa-trie": [
     "cython"
   ],
+  "markdown-it-py": [
+    "flit-core"
+  ],
   "mask-rcnn": [
     "cython"
   ],
@@ -644,7 +650,8 @@
     "poetry"
   ],
   "mkdocs-jupyter": [
-    "poetry-core"
+    "poetry-core",
+    "ipython_genutils"
   ],
   "mkdocs-literate-nav": [
     "poetry"
@@ -1342,6 +1349,9 @@
   ],
   "solo-python": [
     "flitBuildHook"
+  ],
+  "soupsieve": [
+    "hatchling"
   ],
   "spacy-pkuseg": [
     "cython"
