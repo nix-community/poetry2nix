@@ -55,6 +55,16 @@ lib.composeManyExtensions [
         systems)
       buildSystems)
 
+  # Build systems with conditionals
+  (self: super: {
+
+    platformdirs =
+      if lib.versionAtLeast super.platformdirs.version "2.5.2"
+      then addBuildSystem { inherit self; drv = super.platformdirs; attr = "hatchling"; }
+      else super.platformdirs;
+
+  })
+
   # Build fixes
   (self: super:
     let
