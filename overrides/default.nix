@@ -8,6 +8,7 @@ let
     { self
     , drv
     , attr
+    , extraAttrs ? [ ]
     }:
     let
       buildSystem = if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
@@ -23,7 +24,7 @@ let
             { }
           else
             {
-              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.${attr} ];
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.${attr} ] ++ map (a: self.${a}) extraAttrs;
             }
         )
     );
@@ -60,7 +61,7 @@ lib.composeManyExtensions [
 
     platformdirs =
       if lib.versionAtLeast super.platformdirs.version "2.5.2"
-      then addBuildSystem { inherit self; drv = super.platformdirs; attr = "hatchling"; }
+      then addBuildSystem { inherit self; drv = super.platformdirs; attr = "hatchling"; extraAttrs = [ "hatch-vcs" ]; }
       else super.platformdirs;
 
   })
