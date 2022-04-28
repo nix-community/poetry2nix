@@ -596,6 +596,9 @@
   "lockfile": [
     "pbr"
   ],
+  "lsassy": [
+    "poetry-core"
+  ],
   "luftdaten": [
     "poetry-core"
   ],
@@ -653,8 +656,8 @@
     "poetry"
   ],
   "mkdocs-jupyter": [
-    "poetry-core",
-    "ipython_genutils"
+    "ipython_genutils",
+    "poetry-core"
   ],
   "mkdocs-literate-nav": [
     "poetry"
@@ -1025,6 +1028,9 @@
   ],
   "pyproject-flake8": [
     "flit-core"
+  ],
+  "pypsrp": [
+    "poetry-core"
   ],
   "pyquil": [
     "poetry-core"
