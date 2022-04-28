@@ -1029,6 +1029,9 @@
   "pyproject-flake8": [
     "flit-core"
   ],
+  "pypsrp": [
+    "poetry-core"
+  ],
   "pyquil": [
     "poetry-core"
   ],
