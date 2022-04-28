@@ -653,8 +653,8 @@
     "poetry"
   ],
   "mkdocs-jupyter": [
-    "poetry-core",
-    "ipython_genutils"
+    "ipython_genutils",
+    "poetry-core"
   ],
   "mkdocs-literate-nav": [
     "poetry"
