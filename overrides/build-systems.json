@@ -596,6 +596,9 @@
   "lockfile": [
     "pbr"
   ],
+  "lsassy": [
+    "poetry-core"
+  ],
   "luftdaten": [
     "poetry-core"
   ],
