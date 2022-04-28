@@ -282,6 +282,9 @@
   "doc8": [
     "pbr"
   ],
+  "docstring-parser": [
+    "poetry-core"
+  ],
   "dtlssocket": [
     "cython"
   ],
@@ -968,6 +971,9 @@
   ],
   "pymaven-patch": [
     "pbr"
+  ],
+  "pymdown-extensions": [
+    "hatchling"
   ],
   "pymfy": [
     "poetry-core"
