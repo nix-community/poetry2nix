@@ -866,6 +866,17 @@ lib.composeManyExtensions [
         }
       );
 
+      lsassy =
+        if super.lsassy.version == "3.1.1" then
+          super.lsassy.overridePythonAttrs
+            (old: {
+              # pyproject.toml contains a constraint `rich = "^10.6.0"` which is not replicated in setup.py
+              # hence pypi misses it and poetry pins rich to 11.0.0
+              preConfigure = (old.preConfigure or "") + ''
+                rm pyproject.toml
+              '';
+            }) else super.lsassy;
+
       lxml = super.lxml.overridePythonAttrs (
         old: {
           nativeBuildInputs = with pkgs.buildPackages; (old.nativeBuildInputs or [ ]) ++ [ pkg-config libxml2.dev libxslt.dev ] ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
