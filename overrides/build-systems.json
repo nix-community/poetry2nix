@@ -548,6 +548,9 @@
   "jupyterlab": [
     "jupyter-packaging"
   ],
+  "jupyterlab-code-formatter": [
+    "jupyter-packaging"
+  ],
   "jupyterlab-pygments": [
     "jupyter-packaging"
   ],
@@ -727,6 +730,9 @@
   ],
   "nkdfu": [
     "flitBuildHook"
+  ],
+  "notebook-shim": [
+    "jupyter-packaging"
   ],
   "notus-scanner": [
     "poetry-core"
