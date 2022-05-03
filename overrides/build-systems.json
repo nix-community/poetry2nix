@@ -126,6 +126,9 @@
   "atomman": [
     "cython"
   ],
+  "atpublic": [
+    "pdm-pep517"
+  ],
   "autarco": [
     "poetry-core"
   ],
