@@ -40,6 +40,7 @@ SKIP_ATTRS = {
     "packaging",
     "poetry",
     "flitBuildHook",
+    "platformdirs",
 }
 
 

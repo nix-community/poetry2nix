@@ -87,7 +87,8 @@ builtins.removeAttrs
   trivial-cross = skipOSX (callTest ./trivial-cross { });
 
   # Inherit test cases from nixpkgs
-  inherit (pkgs) nixops nixops_unstable;
+  nixops = pkgs.nixops;
+  nixops_unstable = skipOSX pkgs.nixops_unstable;
 
   # Rmfuse fails on darwin because osxfuse only implements fuse api v2
   rmfuse = skipOSX pkgs.rmfuse;
