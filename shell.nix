@@ -16,7 +16,6 @@ pkgs.mkShell {
     tools.env
     tools.py2-astparse
     tools.flamegraph
-    tools.release
     pkgs.nixpkgs-fmt
     pkgs.poetry
     pkgs.niv
