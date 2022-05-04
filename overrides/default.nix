@@ -1303,6 +1303,14 @@ lib.composeManyExtensions [
         }
       );
 
+      psycopg2cffi = super.psycopg2cffi.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ])
+            ++ lib.optional stdenv.isDarwin pkgs.openssl;
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.postgresql ];
+        }
+      );
+
       py-solc-x = super.py-solc-x.overridePythonAttrs (
         old: {
           preConfigure = ''
