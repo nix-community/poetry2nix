@@ -2,6 +2,9 @@ let
   sources = import ../nix/sources.nix;
 in
 { pkgs ? import sources.nixpkgs {
+    config = {
+      allowAliases = false;
+    };
     overlays = [
       (import ../overlay.nix)
     ];
@@ -11,9 +14,9 @@ let
   poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
   poetry2nix = import ./.. { inherit pkgs; inherit poetry; };
   poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
-  pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; };
+  pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
   pep425Python37 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python37; };
-  pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; };
+  pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; python = pkgs.python3; };
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
 
@@ -84,7 +87,7 @@ builtins.removeAttrs
   trivial-cross = skipOSX (callTest ./trivial-cross { });
 
   # Inherit test cases from nixpkgs
-  inherit (pkgs) nixops nixopsUnstable;
+  inherit (pkgs) nixops nixops_unstable;
 
   # Rmfuse fails on darwin because osxfuse only implements fuse api v2
   rmfuse = skipOSX pkgs.rmfuse;
