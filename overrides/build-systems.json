@@ -1234,6 +1234,9 @@
   "python-swiftclient": [
     "pbr"
   ],
+  "python-trovo": [
+    "poetry"
+  ],
   "python_openzwave": [
     "cython"
   ],
