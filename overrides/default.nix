@@ -1758,6 +1758,10 @@ lib.composeManyExtensions [
         }
       );
 
+      python-twitter = super.python-twitter.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
+      });
+
       pythran = super.pythran.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
       });
