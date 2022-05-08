@@ -6,13 +6,11 @@ remove-@kind@-dependencies-hook() {
     echo "Removing @kind@ dependencies"
 
     # Tell poetry not to resolve special dependencies. Any version is fine!
-    @yj@ -tj < pyproject.toml | \
-        @pythonInterpreter@ \
-        @pyprojectPatchScript@ \
-        --fields-to-remove @fields@ > pyproject.json
-    @yj@ -jt < pyproject.json > pyproject.toml
+    @pythonInterpreter@ \
+    @pyprojectPatchScript@ \
+      --fields-to-remove @fields@ < pyproject.toml > pyproject.formatted.toml
 
-    rm pyproject.json
+    mv pyproject.formatted.toml pyproject.toml
 
     echo "Finished removing @kind@ dependencies"
 }

@@ -3,15 +3,18 @@
 , makeSetupHook
 , wheel
 , pip
+, pkgs
 }:
 let
   callPackage = python.pythonForBuild.pkgs.callPackage;
   pythonInterpreter = python.pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
+  nonOverlayedPython = pkgs.python3.pythonForBuild.withPackages (ps: [ ps.tomlkit ]);
 in
 {
-
-  removePathDependenciesHook = callPackage
+  # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
+  # because building of tomlkit and its dependencies also use these hooks.
+  removePathDependenciesHook = nonOverlayedPython.pkgs.callPackage
     (
       {}:
       makeSetupHook
@@ -19,8 +22,7 @@ in
           name = "remove-path-dependencies.sh";
           deps = [ ];
           substitutions = {
-            inherit pythonInterpreter;
-            yj = "${buildPackages.yj}/bin/yj";
+            pythonInterpreter = nonOverlayedPython.interpreter;
             pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
             fields = [ "path" ];
             kind = "path";
@@ -29,15 +31,15 @@ in
     )
     { };
 
-  removeGitDependenciesHook = callPackage
-    ({}:
+  removeGitDependenciesHook = nonOverlayedPython.pkgs.callPackage
+    (
+      {}:
       makeSetupHook
         {
           name = "remove-git-dependencies.sh";
           deps = [ ];
           substitutions = {
-            inherit pythonInterpreter;
-            yj = "${buildPackages.yj}/bin/yj";
+            pythonInterpreter = nonOverlayedPython.interpreter;
             pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
             fields = [ "git" "branch" "rev" "tag" ];
             kind = "git";
@@ -89,6 +91,4 @@ in
         } ./wheel-unpack-hook.sh
     )
     { };
-
-
 }
