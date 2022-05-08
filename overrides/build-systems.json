@@ -229,6 +229,9 @@
     "flit-core",
     "flitBuildHook"
   ],
+  "copier": [
+    "poetry-core"
+  ],
   "cpyparsing": [
     "cython"
   ],
