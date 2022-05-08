@@ -735,6 +735,9 @@
   "mypy-boto3-builder": [
     "poetry-core"
   ],
+  "myst-parser": [
+    "flit-core"
+  ],
   "nats-python": [
     "poetry-core"
   ],
