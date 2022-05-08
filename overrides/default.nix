@@ -735,6 +735,14 @@ lib.composeManyExtensions [
         }
       );
 
+      jinja2-ansible-filters = super.jinja2-ansible-filters.overridePythonAttrs (
+        old: {
+          preBuild = (old.preBuild or "") + ''
+            echo "${old.version}" > VERSION
+          '';
+        }
+      );
+
       jira = super.jira.overridePythonAttrs (
         old: {
           inherit (pkgs.python3Packages.jira) patches;
