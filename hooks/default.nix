@@ -9,44 +9,40 @@ let
   callPackage = python.pythonForBuild.pkgs.callPackage;
   pythonInterpreter = python.pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
+
   nonOverlayedPython = pkgs.python3.pythonForBuild.withPackages (ps: [ ps.tomlkit ]);
+  makeRemoveSpecialDependenciesHook = { fields, kind }:
+    nonOverlayedPython.pkgs.callPackage
+      (
+        {}:
+        makeSetupHook
+          {
+            name = "remove-path-dependencies.sh";
+            deps = [ ];
+            substitutions = {
+              # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
+              # because building of tomlkit and its dependencies also use these hooks.
+              pythonPath = nonOverlayedPython.pkgs.makePythonPath [ nonOverlayedPython ];
+              pythonInterpreter = nonOverlayedPython.interpreter;
+              pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
+              fields = fields;
+              kind = kind;
+            };
+          } ./remove-special-dependencies.sh
+      )
+      { };
 in
 {
-  # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
-  # because building of tomlkit and its dependencies also use these hooks.
-  removePathDependenciesHook = nonOverlayedPython.pkgs.callPackage
-    (
-      {}:
-      makeSetupHook
-        {
-          name = "remove-path-dependencies.sh";
-          deps = [ ];
-          substitutions = {
-            pythonInterpreter = nonOverlayedPython.interpreter;
-            pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
-            fields = [ "path" ];
-            kind = "path";
-          };
-        } ./remove-special-dependencies.sh
-    )
-    { };
+  removePathDependenciesHook = makeRemoveSpecialDependenciesHook {
+    fields = [ "path" ];
+    kind = "path";
+  };
 
-  removeGitDependenciesHook = nonOverlayedPython.pkgs.callPackage
-    (
-      {}:
-      makeSetupHook
-        {
-          name = "remove-git-dependencies.sh";
-          deps = [ ];
-          substitutions = {
-            pythonInterpreter = nonOverlayedPython.interpreter;
-            pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
-            fields = [ "git" "branch" "rev" "tag" ];
-            kind = "git";
-          };
-        } ./remove-special-dependencies.sh
-    )
-    { };
+  removeGitDependenciesHook = makeRemoveSpecialDependenciesHook {
+    fields = [ "git" "branch" "rev" "tag" ];
+    kind = "git";
+  };
+
 
   pipBuildHook = callPackage
     (

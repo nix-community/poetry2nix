@@ -1,11 +1,16 @@
 remove-@kind@-dependencies-hook() {
+    # Tell poetry not to resolve special dependencies. Any version is fine!
+
     if ! test -f pyproject.toml; then
         return
     fi
 
     echo "Removing @kind@ dependencies"
 
-    # Tell poetry not to resolve special dependencies. Any version is fine!
+    # NOTE: We have to reset PYTHONPATH to avoid having propagatedBuildInputs
+    # from the currently building derivation leaking into our unrelated Python
+    # environment.
+    PYTHONPATH=@pythonPath@ \
     @pythonInterpreter@ \
     @pyprojectPatchScript@ \
       --fields-to-remove @fields@ < pyproject.toml > pyproject.formatted.toml
