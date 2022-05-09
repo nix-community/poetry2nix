@@ -12,7 +12,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v2.4.0
     - name: Check format
-      run: ./check-fmt
+      run: nix-shell --arg packages 'pkgs: [ pkgs.nixpkgs-fmt ]' --run 'nixpkgs-fmt --check .'
 
   py2-compat:
     runs-on: ubuntu-latest
