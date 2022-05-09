@@ -12,7 +12,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v2.4.0
     - name: Check format
-      run: nix-shell --arg packages 'pkgs: [ pkgs.nixpkgs-fmt ]' --run 'nixpkgs-fmt --check .'
+      run: nix-shell --arg packages 'pkgs:[ pkgs.nixpkgs-fmt ]' --run 'nixpkgs-fmt --check .'
 
   py2-compat:
     runs-on: ubuntu-latest
@@ -22,7 +22,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v2.4.0
     - name: Check format
-      run: nix-shell --arg packages 'pkgs: [ pkgs.p2nix-tools.py2-astparse ]' --run 'git ls-files | grep -Pv "^tools" | grep -P "\.py$" | xargs py2-astparse'
+      run: nix-shell --arg packages 'pkgs:[ pkgs.p2nix-tools.py2-astparse ]' --run 'git ls-files | grep -Pv "^tools" | grep -P "\.py$" | xargs py2-astparse'
 
   black-fmt:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v2.4.0
     - name: Check format
-      run: nix-shell --arg packages 'pkgs: [ pkgs.p2nix-tools.env ]' --run 'black --check .'
+      run: nix-shell --arg packages 'pkgs:[ pkgs.p2nix-tools.env ]' --run 'black --check .'
 
   matrix_generate:
     runs-on: ubuntu-latest
@@ -64,4 +64,4 @@ jobs:
         with:
           name: poetry2nix
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-      - run: nix-shell --arg packages 'pkgs: [ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
+      - run: nix-shell --arg packages 'pkgs:[ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
