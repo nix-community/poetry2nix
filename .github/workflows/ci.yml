@@ -32,7 +32,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v2.4.0
     - name: Check format
-      run: nix-shell --run 'black --check .'
+      run: nix-shell --arg packages 'pkgs: [ pkgs.p2nix-tools.env ]' --run 'black --check .'
 
   matrix_generate:
     runs-on: ubuntu-latest
