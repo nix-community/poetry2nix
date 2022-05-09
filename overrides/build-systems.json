@@ -717,6 +717,9 @@
   "monosat": [
     "cython"
   ],
+  "more-itertools": [
+    "flit-core"
+  ],
   "motioneye-client": [
     "poetry-core"
   ],
