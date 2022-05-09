@@ -940,6 +940,9 @@
   "prometheus-fastapi-instrumentator": [
     "poetry"
   ],
+  "prospector": [
+    "poetry-core"
+  ],
   "ptyprocess": [
     "flit-core"
   ],
