@@ -64,4 +64,4 @@ jobs:
         with:
           name: poetry2nix
           signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-      - run: nix-shell --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
+      - run: nix-shell --arg packages 'pkgs: [ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
