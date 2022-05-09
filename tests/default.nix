@@ -74,7 +74,7 @@ builtins.removeAttrs
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   markupsafe2 = callTest ./markupsafe2 { };
   pendulum = callTest ./pendulum { };
-  uwsgi = callTest ./uwsgi { };
+  # uwsgi = callTest ./uwsgi { };  # Commented out because build is flaky (unrelated to poetry2nix)
   jq = callTest ./jq { };
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };
