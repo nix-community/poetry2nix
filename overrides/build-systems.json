@@ -723,6 +723,9 @@
   "msgpack-numpy": [
     "cython"
   ],
+  "msgpack-types": [
+    "poetry"
+  ],
   "msoffcrypto-tool": [
     "poetry-core"
   ],
