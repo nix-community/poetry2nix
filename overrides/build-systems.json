@@ -242,6 +242,9 @@
     "cython",
     "poetry-core"
   ],
+  "cruft": [
+    "poetry-core"
+  ],
   "cssselect2": [
     "flit",
     "flit-core"
