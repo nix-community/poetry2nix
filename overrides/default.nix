@@ -1690,7 +1690,10 @@ lib.composeManyExtensions [
         old: {
           # Fixes https://github.com/pytest-dev/pytest/issues/7891
           postPatch = old.postPatch or "" + ''
-            sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
+            # sometimes setup.cfg doesn't exist
+            if [ -f setup.cfg ]; then
+              sed -i '/\[metadata\]/aversion = ${old.version}' setup.cfg
+            fi
           '';
         }
       );
