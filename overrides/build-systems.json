@@ -1623,6 +1623,9 @@
   "toggl-cli": [
     "pbr"
   ],
+  "toml-cli": [
+    "poetry"
+  ],
   "toml-sort": [
     "poetry"
   ],
