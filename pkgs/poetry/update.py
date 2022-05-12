@@ -43,6 +43,7 @@ if __name__ == "__main__":
             )
             + "\n"
         )
+        f.write("\n")
 
     src = (
         subprocess.run(
