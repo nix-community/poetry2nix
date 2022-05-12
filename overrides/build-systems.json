@@ -50,6 +50,9 @@
   "aiokafka": [
     "cython"
   ],
+  "aiolimiter": [
+    "poetry-core"
+  ],
   "aiomultiprocess": [
     "flit-core"
   ],
@@ -356,6 +359,9 @@
   "enumatch": [
     "poetry"
   ],
+  "envs": [
+    "poetry-core"
+  ],
   "exceptiongroup": [
     "flit-core",
     "flitBuildHook"
@@ -370,6 +376,9 @@
     "poetry"
   ],
   "fastavro": [
+    "cython"
+  ],
+  "fastbencode": [
     "cython"
   ],
   "fastdtw": [
@@ -435,6 +444,9 @@
   "gensim": [
     "cython"
   ],
+  "gidgethub": [
+    "flitBuildHook"
+  ],
   "glances-api": [
     "poetry-core"
   ],
@@ -485,6 +497,9 @@
   ],
   "hashids": [
     "flit-core"
+  ],
+  "hatch-vcs": [
+    "hatchling"
   ],
   "hdate": [
     "poetry-core"
@@ -822,6 +837,9 @@
   "openstacksdk": [
     "pbr"
   ],
+  "openstep-plist": [
+    "cython"
+  ],
   "openvino": [
     "cython"
   ],
@@ -902,6 +920,9 @@
     "poetry"
   ],
   "pixelmatch": [
+    "poetry-core"
+  ],
+  "pkgconfig": [
     "poetry-core"
   ],
   "poetry": [
@@ -1297,6 +1318,9 @@
   "qiskit-terra": [
     "cython"
   ],
+  "qstylizer": [
+    "pbr"
+  ],
   "questionary": [
     "poetry-core"
   ],
@@ -1456,6 +1480,9 @@
   ],
   "single-version": [
     "poetry-core"
+  ],
+  "skia-pathops": [
+    "cython"
   ],
   "slowapi": [
     "poetry-core"
