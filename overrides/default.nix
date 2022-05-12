@@ -518,6 +518,14 @@ lib.composeManyExtensions [
         }
       );
 
+      file-magic = super.file-magic.overridePythonAttrs (
+        old: {
+          postPatch = ''
+            substituteInPlace magic.py --replace "find_library('magic')" "'${pkgs.file}/lib/libmagic${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}'"
+          '';
+        }
+      );
+
       fiona = super.fiona.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gdal_2 ];
