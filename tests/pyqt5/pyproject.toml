@@ -6,8 +6,7 @@ authors = ["adisbladis <adisbladis@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pyqt5 = "^5.14.1"
-sip = "^5.1.0"
+PyQt5 = "^5.15.6"
 
 [tool.poetry.dev-dependencies]
 
