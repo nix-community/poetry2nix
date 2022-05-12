@@ -1677,6 +1677,9 @@
   "traceback2": [
     "pbr"
   ],
+  "traitlets": [
+    "flit-core"
+  ],
   "transmission-rpc": [
     "poetry-core"
   ],
