@@ -1351,6 +1351,9 @@
   "rich": [
     "poetry-core"
   ],
+  "rio-tiler": [
+    "flit-core"
+  ],
   "ripser": [
     "cython"
   ],
