@@ -964,6 +964,9 @@
   "prospector": [
     "poetry-core"
   ],
+  "protoletariat": [
+    "poetry-core"
+  ],
   "ptyprocess": [
     "flit-core"
   ],
