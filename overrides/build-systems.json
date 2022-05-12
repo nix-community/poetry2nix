@@ -1388,6 +1388,9 @@
   "sarif-om": [
     "pbr"
   ],
+  "sat-search": [
+    "pytest-runner"
+  ],
   "scikit-bio": [
     "cython"
   ],
