@@ -55,7 +55,7 @@ builtins.removeAttrs
     inherit poetry;
     inherit (pkgs) postgresql;
   };
-  pyqt5 = callTest ./pyqt5 { };
+  pyqt5 = skipOSX (callTest ./pyqt5 { });
   eggs = callTest ./eggs { };
   extras = callTest ./extras { };
   source-filter = callTest ./source-filter { };

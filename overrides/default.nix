@@ -74,6 +74,12 @@ lib.composeManyExtensions [
       inherit (pkgs) buildPackages;
       pyBuildPackages = self.python.pythonForBuild.pkgs;
 
+      selectQt5 = version:
+        let
+          selector = builtins.concatStringsSep "" (lib.take 2 (builtins.splitVersion version));
+        in
+          pkgs."qt${selector}" or pkgs.qt5;
+
     in
 
     {
@@ -1584,106 +1590,35 @@ lib.composeManyExtensions [
 
       pyqt5 =
         let
-          drv = super.pyqt5;
-          withConnectivity = drv.passthru.args.withConnectivity or false;
-          withMultimedia = drv.passthru.args.withMultimedia or false;
-          withWebKit = drv.passthru.args.withWebKit or false;
-          withWebSockets = drv.passthru.args.withWebSockets or false;
+          qt5 = selectQt5 super.pyqt5.version;
         in
         super.pyqt5.overridePythonAttrs (
           old: {
-            format = "other";
-
+            dontConfigure = true;
             dontWrapQtApps = true;
-
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-              pkg-config
-              pkgs.qt5.qmake
-              pkgs.xorg.lndir
-              pkgs.qt5.qtbase
-              pkgs.qt5.qtsvg
-              pkgs.qt5.qtdeclarative
-              pkgs.qt5.qtwebchannel
-              pkgs.qt5.qt3d
-              # self.pyqt5-sip
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+              self.pyqt-builder
               self.sip
-            ]
-              ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
-              ++ lib.optional withMultimedia pkgs.qt5.qtmultimedia
-              ++ lib.optional withWebKit pkgs.qt5.qtwebkit
-              ++ lib.optional withWebSockets pkgs.qt5.qtwebsockets
-            ;
+              qt5.full
+            ];
+          }
+        );
 
-            buildInputs = (old.buildInputs or [ ]) ++ [
-              pkgs.dbus
-              pkgs.qt5.qtbase
-              pkgs.qt5.qtsvg
-              pkgs.qt5.qtdeclarative
-              self.sip
-            ]
-              ++ lib.optional withConnectivity pkgs.qt5.qtconnectivity
-              ++ lib.optional withWebKit pkgs.qt5.qtwebkit
-              ++ lib.optional withWebSockets pkgs.qt5.qtwebsockets
-            ;
-
-            # Fix dbus mainloop
-            patches = pkgs.python3.pkgs.pyqt5.patches or [ ];
-
-            configurePhase = ''
-              runHook preConfigure
-
-              export PYTHONPATH=$PYTHONPATH:$out/${self.python.sitePackages}
-
-              mkdir -p $out/${self.python.sitePackages}/dbus/mainloop
-              ${self.python.executable} configure.py  -w \
-                --confirm-license \
-                --no-qml-plugin \
-                --bindir=$out/bin \
-                --destdir=$out/${self.python.sitePackages} \
-                --stubsdir=$out/${self.python.sitePackages}/PyQt5 \
-                --sipdir=$out/share/sip/PyQt5 \
-                --designer-plugindir=$out/plugins/designer
-
-              runHook postConfigure
-            '';
-
-            postInstall = ''
-              ln -s ${self.pyqt5-sip}/${self.python.sitePackages}/PyQt5/sip.* $out/${self.python.sitePackages}/PyQt5/
-              for i in $out/bin/*; do
-                wrapProgram $i --prefix PYTHONPATH : "$PYTHONPATH"
-              done
-
-              # Let's make it a namespace package
-              cat << EOF > $out/${self.python.sitePackages}/PyQt5/__init__.py
-              from pkgutil import extend_path
-              __path__ = extend_path(__path__, __name__)
-              EOF
-            '';
-
-            installCheckPhase =
-              let
-                modules = [
-                  "PyQt5"
-                  "PyQt5.QtCore"
-                  "PyQt5.QtQml"
-                  "PyQt5.QtWidgets"
-                  "PyQt5.QtGui"
-                ]
-                ++ lib.optional withWebSockets "PyQt5.QtWebSockets"
-                ++ lib.optional withWebKit "PyQt5.QtWebKit"
-                ++ lib.optional withMultimedia "PyQt5.QtMultimedia"
-                ++ lib.optional withConnectivity "PyQt5.QtConnectivity"
-                ;
-                imports = lib.concatMapStrings (module: "import ${module};") modules;
-              in
-              ''
-                echo "Checking whether modules can be imported..."
-                ${self.python.interpreter} -c "${imports}"
-              '';
-
-            doCheck = true;
-
-            enableParallelBuilding = true;
+      pyqt5-qt5 =
+        let
+          qt5 = selectQt5 super.pyqt5-qt5.version;
+        in
+        super.pyqt5-qt5.overridePythonAttrs (
+          old: {
+            dontWrapQtApps = true;
+            propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+              qt5.full
+              qt5.qtgamepad # As of 2022-05-13 not a port of qt5.full
+              pkgs.gtk3
+              pkgs.speechd
+              pkgs.postgresql
+              pkgs.unixODBC
+            ];
           }
         );
 
