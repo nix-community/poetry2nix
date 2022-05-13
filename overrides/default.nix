@@ -1891,7 +1891,7 @@ lib.composeManyExtensions [
 
           # Fix library paths
           postPatch = old.postPatch or "" + ''
-            ${self.python.pythonForBuild.interpreter} ${./shapely-rewrite.py} shapely/geos.py
+            ${pkgs.python3Minimal.interpreter} ${./shapely-rewrite.py} shapely/geos.py
           '';
         }
       );
