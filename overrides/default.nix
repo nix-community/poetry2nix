@@ -1555,6 +1555,15 @@ lib.composeManyExtensions [
         }
       );
 
+      pyparsing =
+        if (lib.versionAtLeast super.pyparsing.version "3.0.8") then
+          addBuildSystem
+            {
+              inherit self;
+              drv = super.pyparsing;
+              attr = "flit-core";
+            } else super.pyparsing;
+
       pyproj = super.pyproj.overridePythonAttrs (
         old: {
           PROJ_DIR = "${pkgs.proj}";
