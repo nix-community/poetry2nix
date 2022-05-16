@@ -163,6 +163,13 @@ lib.composeManyExtensions [
               attr = "flit-core";
             } else super.argon2-cffi;
 
+      awscrt = super.awscrt.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          dontUseCmakeConfigure = true;
+        }
+      );
+
       bcrypt = super.bcrypt.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libffi ];
