@@ -1690,6 +1690,7 @@
     "pbr"
   ],
   "traitlets": [
+    "flit-core",
     "hatchling"
   ],
   "transmission-rpc": [
