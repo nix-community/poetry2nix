@@ -985,6 +985,9 @@
   "pvo": [
     "poetry-core"
   ],
+  "py-multihash": [
+    "pytest-runner"
+  ],
   "py-synologydsm-api": [
     "poetry-core"
   ],
