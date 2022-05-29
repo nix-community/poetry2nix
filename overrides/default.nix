@@ -1907,7 +1907,7 @@ lib.composeManyExtensions [
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.geos ];
           inherit (pkgs.python3.pkgs.shapely) GEOS_LIBRARY_PATH;
 
-          GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
+          GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${lib.getLib stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
 
           # Fix library paths
           postPatch = old.postPatch or "" + ''
