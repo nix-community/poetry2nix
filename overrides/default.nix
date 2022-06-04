@@ -1461,6 +1461,14 @@ lib.composeManyExtensions [
         }
       );
 
+      pyfftw = super.pyfftw.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [
+          pkgs.fftw
+          pkgs.fftwFloat
+          pkgs.fftwLongDouble
+        ];
+      });
+
       pyfuse3 = super.pyfuse3.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.fuse3 ];
