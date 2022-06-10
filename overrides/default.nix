@@ -1112,8 +1112,8 @@ lib.composeManyExtensions [
             })
           ] ++ lib.optionals (lib.strings.versionAtLeast old.version "0.960") [
             (pkgs.fetchpatch {
-              url = "https://github.com/python/mypy/compare/a6166b2f..5b3c9888.patch";
-              sha256 = "sha256-3QY99ctkIv9PoNfcTKF9TZFBwAIVOqPLKBVP6rDQ9FU=";
+              url = "https://github.com/python/mypy/commit/2004ae023b9d3628d9f09886cbbc20868aee8554.patch";
+              sha256 = "sha256-y+tXvgyiECO5+66YLvaje8Bz5iPvfWNIBJcsnZ2nOdI=";
             })
           ];
         }
