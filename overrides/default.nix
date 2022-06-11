@@ -1898,7 +1898,8 @@ lib.composeManyExtensions [
         # Local setuptools versions like "x.y.post0" confuse an internal check
         postPatch = ''
           substituteInPlace setup.py \
-            --replace 'setuptools_version.' '"${self.setuptools.version}".'
+            --replace 'setuptools_version.' '"${self.setuptools.version}".' \
+            --replace 'pytest-runner==' 'pytest-runner>='
         '';
       });
 
