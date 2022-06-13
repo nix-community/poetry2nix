@@ -853,6 +853,13 @@ lib.composeManyExtensions [
         propagatedBuildInputs = [ pkgs.libvirt ];
       });
 
+      lightgbm = super.lightgbm.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          dontUseCmakeConfigure = true;
+        }
+      );
+
       llvmlite = super.llvmlite.overridePythonAttrs (
         old:
         let
