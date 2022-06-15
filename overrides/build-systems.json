@@ -1690,7 +1690,8 @@
     "pbr"
   ],
   "traitlets": [
-    "flit-core"
+    "flit-core",
+    "hatchling"
   ],
   "transmission-rpc": [
     "poetry-core"
