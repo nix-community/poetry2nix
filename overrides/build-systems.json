@@ -591,6 +591,9 @@
   "json-schema-for-humans": [
     "poetry-core"
   ],
+  "jsonschema": [
+    "hatchling"
+  ],
   "jupyter-server": [
     "jupyter-packaging"
   ],
