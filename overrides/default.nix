@@ -11,7 +11,23 @@ let
     , extraAttrs ? [ ]
     }:
     let
-      buildSystem = if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
+      buildSystem =
+        if builtins.isAttrs attr then
+          if builtins.hasAttr "from" attr then
+            if lib.versionAtLeast drv.version attr.from then
+              if builtins.hasAttr "until" attr then
+                if lib.versionOlder drv.version attr.until then
+                  self.${attr.buildSystem}
+                else
+                  null
+              else
+                self.${attr.buildSystem}
+            else
+              null
+          else
+            self.${attr.buildSystem}
+        else
+          if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
     in
     (
       # Flit only works on Python3
@@ -24,7 +40,10 @@ let
             { }
           else
             {
-              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.${attr} ] ++ map (a: self.${a}) extraAttrs;
+              nativeBuildInputs =
+                (old.nativeBuildInputs or [ ])
+                ++ (if !(builtins.isNull buildSystem) then [ buildSystem ] else [ ])
+                ++ map (a: self.${a}) extraAttrs;
             }
         )
     );
