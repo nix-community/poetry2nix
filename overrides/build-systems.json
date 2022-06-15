@@ -588,6 +588,9 @@
   "jschema-to-python": [
     "pbr"
   ],
+  "jsonschema": [
+    "hatchling"
+  ],
   "json-schema-for-humans": [
     "poetry-core"
   ],
