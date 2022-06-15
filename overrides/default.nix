@@ -24,6 +24,11 @@ let
                 self.${attr.buildSystem}
             else
               null
+          else if builtins.hasAttr "until" attr then
+            if lib.versionOlder drv.version attr.until then
+              self.${attr.buildSystem}
+            else
+              null
           else
             self.${attr.buildSystem}
         else
