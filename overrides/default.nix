@@ -857,6 +857,9 @@ lib.composeManyExtensions [
         old: {
           nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
           dontUseCmakeConfigure = true;
+          postConfigure = ''
+            export HOME=$(mktemp -d)
+          '';
         }
       );
 
