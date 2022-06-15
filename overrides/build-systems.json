@@ -1421,6 +1421,9 @@
   "rtmixer": [
     "cython"
   ],
+  "sane-python": [
+    "poetry-core"
+  ],
   "sanic": [
     "poetry-core"
   ],
