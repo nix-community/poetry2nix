@@ -648,6 +648,9 @@
   "linecache2": [
     "pbr"
   ],
+  "linz-logger": [
+    "poetry-core"
+  ],
   "llfuse": [
     "cython"
   ],
