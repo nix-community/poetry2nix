@@ -1740,6 +1740,9 @@
   "wakeonlan": [
     "poetry-core"
   ],
+  "wcmatch": [
+    "hatchling"
+  ],
   "weasyprint": [
     "flit-core"
   ],
