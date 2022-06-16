@@ -591,6 +591,9 @@
   "json-schema-for-humans": [
     "poetry-core"
   ],
+  "jsonschema": [
+    { "buildSystem": "hatchling", "from": "4.6.0" }
+  ],
   "jupyter-server": [
     "jupyter-packaging"
   ],
@@ -1690,7 +1693,8 @@
     "pbr"
   ],
   "traitlets": [
-    "flit-core"
+    { "buildSystem": "flit-core", "until": "5.2.1" },
+    { "buildSystem": "hatchling", "from": "5.2.1" }
   ],
   "transmission-rpc": [
     "poetry-core"
