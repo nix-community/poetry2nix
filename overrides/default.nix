@@ -13,24 +13,24 @@ let
     let
       buildSystem =
         if builtins.isAttrs attr then
-          if builtins.hasAttr "from" attr then
-            if lib.versionAtLeast drv.version attr.from then
-              if builtins.hasAttr "until" attr then
-                if lib.versionOlder drv.version attr.until then
-                  self.${attr.buildSystem}
-                else
-                  null
+          let
+            fromIsValid =
+              if builtins.hasAttr "from" attr then
+                lib.versionAtLeast drv.version attr.from
               else
-                self.${attr.buildSystem}
-            else
-              null
-          else if builtins.hasAttr "until" attr then
-            if lib.versionOlder drv.version attr.until then
-              self.${attr.buildSystem}
-            else
-              null
-          else
-            self.${attr.buildSystem}
+                true;
+            untilIsValid =
+              if builtins.hasAttr "until" attr then
+                lib.versionOlder drv.version attr.until
+              else
+                true;
+            intendedBuildSystem =
+              if attr.buildSystem == "cython" then
+                self.python.pythonForBuild.cython
+              else
+                self.${attr.buildSystem};
+          in
+          if fromIsValid && untilIsValid then intendedBuildSystem else null
         else
           if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
     in
@@ -47,7 +47,7 @@ let
             {
               nativeBuildInputs =
                 (old.nativeBuildInputs or [ ])
-                ++ (if !(builtins.isNull buildSystem) then [ buildSystem ] else [ ])
+                ++ lib.optionals (!(builtins.isNull buildSystem)) [ buildSystem ]
                 ++ map (a: self.${a}) extraAttrs;
             }
         )
