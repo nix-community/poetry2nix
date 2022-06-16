@@ -1693,7 +1693,8 @@
     "pbr"
   ],
   "traitlets": [
-    "flit-core"
+    { "buildSystem": "flit-core", "until": "5.2.1" },
+    { "buildSystem": "hatchling", "from": "5.2.1" }
   ],
   "transmission-rpc": [
     "poetry-core"
