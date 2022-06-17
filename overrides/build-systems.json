@@ -595,7 +595,7 @@
     "poetry-core"
   ],
   "jsonschema": [
-    { "buildSystem": "hatchling", "from": "4.6.0" }
+    { "buildSystem": "hatch-vcs", "from": "4.6.0" }
   ],
   "jupyter-server": [
     "jupyter-packaging"
