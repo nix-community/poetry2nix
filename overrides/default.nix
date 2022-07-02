@@ -2405,6 +2405,16 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ self.Babel ];
       });
 
+      nbconvert = super.nbconvert.overridePythonAttrs (_: {
+        postPatch = ''
+          substituteInPlace \
+            ./nbconvert/exporters/templateexporter.py \
+            --replace \
+            'root_dirs.extend(jupyter_path())' \
+            'root_dirs.extend(jupyter_path() + [os.path.join("@out@", "share", "jupyter")])' \
+            --subst-var out
+        '';
+      });
     }
   )
 
