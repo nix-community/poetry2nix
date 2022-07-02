@@ -2406,7 +2406,7 @@ lib.composeManyExtensions [
       });
 
       nbconvert = super.nbconvert.overridePythonAttrs (_: {
-        postPatch = ''
+        postPatch = lib.optionalString (lib.versionAtLeast self.nbconvert.version "6.5.0") ''
           substituteInPlace \
             ./nbconvert/exporters/templateexporter.py \
             --replace \
