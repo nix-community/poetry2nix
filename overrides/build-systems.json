@@ -567,6 +567,9 @@
   "ipwhl": [
     "flitBuildHook"
   ],
+  "ipykernel": [
+    "hatchling"
+  ],
   "iso8601": [
     "poetry-core"
   ],
@@ -597,6 +600,9 @@
   "jsonschema": [
     { "buildSystem": "hatchling", "from": "4.6.0" },
     { "buildSystem": "hatch-vcs", "from": "4.6.0" }
+  ],
+  "jupyter-client": [
+    "hatchling"
   ],
   "jupyter-server": [
     "jupyter-packaging"
