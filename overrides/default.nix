@@ -1596,6 +1596,14 @@ lib.composeManyExtensions [
         }
       );
 
+      pynput = super.pynput.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ])
+          ++ [ self.sphinx ];
+
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
+          ++ [ self.setuptools-lint ];
+      });
+
       pymssql = super.pymssql.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ])
           ++ [ pkgs.openssl ];
