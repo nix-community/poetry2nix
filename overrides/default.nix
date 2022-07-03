@@ -528,6 +528,12 @@ lib.composeManyExtensions [
         '';
       });
 
+      evdev = super.evdev.overridePythonAttrs (old: {
+        preConfigure = ''
+          substituteInPlace setup.py --replace /usr/include/linux ${pkgs.linuxHeaders}/include/linux
+        '';
+      });
+
       faker = super.faker.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
@@ -1589,6 +1595,14 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      pynput = super.pynput.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ])
+          ++ [ self.sphinx ];
+
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
+          ++ [ self.setuptools-lint ];
+      });
 
       pymssql = super.pymssql.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ])
