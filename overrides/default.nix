@@ -528,6 +528,12 @@ lib.composeManyExtensions [
         '';
       });
 
+      evdev = super.evdev.overridePythonAttrs (old: {
+        preConfigure = ''
+          substituteInPlace setup.py --replace /usr/include/linux ${pkgs.linuxHeaders}/include/linux
+        '';
+      });
+
       faker = super.faker.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
