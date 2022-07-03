@@ -1632,6 +1632,9 @@
   "terminaltables": [
     "poetry"
   ],
+  "terminado": [
+    "hatchling"
+  ],
   "tern": [
     "pbr"
   ],
