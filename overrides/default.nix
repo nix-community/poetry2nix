@@ -325,6 +325,7 @@ lib.composeManyExtensions [
             "36.0.1" = "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
             "36.0.2" = "1a0ni1a3dbv2dvh6gx2i54z8v5j9m6asqg97kkv7gqb1ivihsbp8";
             "37.0.2" = "sha256-qvrxvneoBXjP96AnUPyrtfmCnZo+IriHR5HbtWQ5Gk8=";
+            "37.0.3" = "sha256-Wz3cyyOT+J09a98xyh2N1pxpANdY1u3Z9PboIEwwaIc";
           }.${version} or null;
           sha256 = getCargoHash super.cryptography.version;
           scrypto =
