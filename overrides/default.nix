@@ -325,8 +325,10 @@ lib.composeManyExtensions [
             "36.0.1" = "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
             "36.0.2" = "1a0ni1a3dbv2dvh6gx2i54z8v5j9m6asqg97kkv7gqb1ivihsbp8";
             "37.0.2" = "sha256-qvrxvneoBXjP96AnUPyrtfmCnZo+IriHR5HbtWQ5Gk8=";
-            "37.0.3" = "sha256-Wz3cyyOT+J09a98xyh2N1pxpANdY1u3Z9PboIEwwaIc";
-          }.${version} or null;
+            "37.0.4" = "sha256-f8r6QclTwkgK20CNe9i65ZOqvSUeDc4Emv6BFBhh1hI";
+          }.${version} or (
+            lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
+          );
           sha256 = getCargoHash super.cryptography.version;
           scrypto =
             if lib.versionAtLeast super.cryptography.version "35" && sha256 == null then
