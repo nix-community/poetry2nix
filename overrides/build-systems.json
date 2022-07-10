@@ -604,6 +604,9 @@
   "jupyter-client": [
     "hatchling"
   ],
+  "jupyter-core": [
+    "hatchling"
+  ],
   "jupyter-server": [
     "jupyter-packaging"
   ],
