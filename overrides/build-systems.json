@@ -195,6 +195,9 @@
   "censys": [
     "poetry-core"
   ],
+  "cfel-pylint-checkers": [
+    "poetry-core"
+  ],
   "cftime": [
     "cython"
   ],
