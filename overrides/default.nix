@@ -2287,7 +2287,7 @@ lib.composeManyExtensions [
       # For some reason the toml dependency of tqdm declared here:
       # https://github.com/tqdm/tqdm/blob/67130a23646ae672836b971e1086b6ae4c77d930/pyproject.toml#L2
       # is not translated correctly to a nix dependency.
-      tqdm = super.tqdm.overrideAttrs (
+      tqdm = super.tqdm.overridePythonAttrs (
         old: {
           buildInputs = [ super.toml ] ++ (old.buildInputs or [ ]);
         }
