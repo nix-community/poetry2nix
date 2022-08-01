@@ -622,6 +622,9 @@
   "jupyterlab-pygments": [
     "jupyter-packaging"
   ],
+  "jupyterlab-server": [
+    "hatchling"
+  ],
   "keystoneauth1": [
     "pbr"
   ],
