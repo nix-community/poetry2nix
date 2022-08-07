@@ -474,6 +474,9 @@
   "gridnet": [
     "poetry-core"
   ],
+  "griffe": [
+    "pdm-pep517"
+  ],
   "grpcio": [
     "cython"
   ],
