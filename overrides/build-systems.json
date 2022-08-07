@@ -276,6 +276,9 @@
   "cysignals": [
     "cython"
   ],
+  "cysimdjson": [
+    "cython"
+  ],
   "datadog": [
     "hatchling"
   ],
@@ -734,6 +737,9 @@
   "metprint": [
     "poetry-core"
   ],
+  "minimal-dydb": [
+    "poetry-core"
+  ],
   "mkdocs-autorefs": [
     "pdm-pep517",
     "poetry"
@@ -1051,6 +1057,9 @@
   ],
   "pydantic": [
     "cython"
+  ],
+  "pydantic-dydb": [
+    "poetry-core"
   ],
   "pydy": [
     "cython"
@@ -1746,6 +1755,9 @@
     "flit-core"
   ],
   "typical": [
+    "poetry-core"
+  ],
+  "types-s3transfer": [
     "poetry-core"
   ],
   "typing-extensions": [
