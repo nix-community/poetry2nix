@@ -962,6 +962,9 @@
   "pkgconfig": [
     "poetry-core"
   ],
+  "pkgutil-resolve-name": [
+    "flit-core"
+  ],
   "plux": [
     "pytest-runner"
   ],
