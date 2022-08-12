@@ -279,6 +279,9 @@
   "cysimdjson": [
     "cython"
   ],
+  "darglint": [
+    "poetry"
+  ],
   "datadog": [
     "hatchling"
   ],
