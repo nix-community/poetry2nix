@@ -619,10 +619,16 @@
   "jupyter-server": [
     "jupyter-packaging"
   ],
+  "jupyter-server-mathjax": [
+    "jupyter-packaging"
+  ],
   "jupyterlab": [
     "jupyter-packaging"
   ],
   "jupyterlab-code-formatter": [
+    "jupyter-packaging"
+  ],
+  "jupyterlab-git": [
     "jupyter-packaging"
   ],
   "jupyterlab-pygments": [
