@@ -608,7 +608,8 @@
   ],
   "jsonschema": [
     { "buildSystem": "hatchling", "from": "4.6.0" },
-    { "buildSystem": "hatch-vcs", "from": "4.6.0" }
+    { "buildSystem": "hatch-vcs", "from": "4.6.0" },
+    { "buildSystem": "hatch-fancy-pypi-readme", "from": "4.11.0" }
   ],
   "jupyter-client": [
     "hatchling"
