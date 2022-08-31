@@ -7,7 +7,7 @@ let
   # Poetry2nix version
   version = "1.31.0";
 
-  inherit (poetryLib) isCompatible readTOML moduleName;
+  inherit (poetryLib) isCompatible readTOML moduleName underscorify;
 
   # Map SPDX identifiers to license names
   spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
@@ -182,7 +182,7 @@ lib.makeScope pkgs.newScope (self: {
                       source = pkgMeta.source or null;
                       files = lockFiles.${name};
                       pythonPackages = self;
-                      sourceSpec = pyProject.tool.poetry.dependencies.${name} or pyProject.tool.poetry.dev-dependencies.${name} or { };
+                      sourceSpec = pyProject.tool.poetry.dependencies.${underscorify pkgMeta.name} or pyProject.tool.poetry.dev-dependencies.${underscorify pkgMeta.name} or { };
                     }
                   );
                 }
