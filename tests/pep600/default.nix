@@ -1,7 +1,7 @@
-{ lib, poetry2nix, python3, runCommand }:
+{ lib, poetry2nix, python38, runCommand }:
 let
   env = poetry2nix.mkPoetryEnv {
-    python = python3;
+    python = python38;
     preferWheels = true;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
