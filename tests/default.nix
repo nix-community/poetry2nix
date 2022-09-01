@@ -4,6 +4,7 @@ in
 { pkgs ? import sources.nixpkgs {
     config = {
       allowAliases = false;
+      allowInsecurePredicate = x: true;
     };
     overlays = [
       (import ../overlay.nix)
