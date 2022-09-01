@@ -1368,21 +1368,30 @@ lib.composeManyExtensions [
         }
       );
 
-      poetry-core = super.poetry-core.overridePythonAttrs (old: {
-        # "Vendor" dependencies (for build-system support)
-        postPatch = ''
-          echo "import sys" >> poetry/__init__.py
-          for path in $propagatedBuildInputs; do
-              echo "sys.path.insert(0, \"$path\")" >> poetry/__init__.py
-          done
-        '';
+      poetry-core = super.poetry-core.overridePythonAttrs (old:
+        let
+          initFile =
+            if lib.versionOlder super.poetry-core.version "1.1"
+            then "poetry/__init__.py"
+            else "./src/poetry/core/__init__.py";
+        in
+        {
+          # "Vendor" dependencies (for build-system support)
+          postPatch = ''
+            find .
 
-        # Propagating dependencies leads to issues downstream
-        # We've already patched poetry to prefer "vendored" dependencies
-        postFixup = ''
-          rm $out/nix-support/propagated-build-inputs
-        '';
-      });
+            echo "import sys" >> ${initFile}
+            for path in $propagatedBuildInputs; do
+              echo "sys.path.insert(0, \"$path\")" >> ${initFile}
+            done
+          '';
+
+          # Propagating dependencies leads to issues downstream
+          # We've already patched poetry to prefer "vendored" dependencies
+          postFixup = ''
+            rm $out/nix-support/propagated-build-inputs
+          '';
+        });
 
       poetry-plugin-export = super.poetry-plugin-export.overridePythonAttrs (old: {
         dontUsePythonImportsCheck = true; # Requires poetry which isn't available during bootstrap
