@@ -1384,6 +1384,10 @@ lib.composeManyExtensions [
         '';
       });
 
+      poetry-plugin-export = super.poetry-plugin-export.overridePythonAttrs (old: {
+        dontUsePythonImportsCheck = true; # Requires poetry which isn't available during bootstrap
+      });
+
       portend = super.portend.overridePythonAttrs (
         old: {
           # required for the extra "toml" dependency in setuptools_scm[toml]

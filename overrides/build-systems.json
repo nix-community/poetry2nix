@@ -987,6 +987,9 @@
   "poetry-dynamic-versioning": [
     "poetry-core"
   ],
+  "poetry-plugin-export": [
+    "poetry"
+  ],
   "poetry2conda": [
     "poetry"
   ],
