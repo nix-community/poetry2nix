@@ -1,12 +1,13 @@
 { lib, poetry2nix, python3, runCommand }:
 
-let env = poetry2nix.mkPoetryEnv {
-  python = python3;
-  projectDir = ./.;
-  editablePackageSources = {
-    dep1 = null;
+let
+  env = poetry2nix.mkPoetryEnv {
+    python = python3;
+    projectDir = ./.;
+    editablePackageSources = {
+      dep1 = null;
+    };
   };
-};
 
 in
 lib.debug.runTests {
