@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "dependency-groups"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "dependency_groups"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.foo.dependencies]
+Flask = "^2.2.2"
+
+[tool.poetry.group.bar.dependencies]
+alembic = "^1.8.1"
+
+[tool.poetry.group.dev.dependencies]
+requests = "^2.28.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

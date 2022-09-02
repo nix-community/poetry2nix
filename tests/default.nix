@@ -110,6 +110,8 @@ builtins.removeAttrs
       touch $out
     '';
 
+  dependency-groups = callTest ./dependency-groups { };
+
   # And also test with pypy
   # poetry-pypy = poetry.override { python = pkgs.pypy; };
   # poetry-pypy3 = poetry.override { python = pkgs.pypy3; };

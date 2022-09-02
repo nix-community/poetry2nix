@@ -41,6 +41,7 @@ Creates a Python application using the Python interpreter specified based on the
 - **meta**: application [meta](https://nixos.org/nixpkgs/manual/#chap-meta) data (_default:_ `{}`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
+- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ ]`).
 
 Other attributes are passed through to `buildPythonApplication`.
 
@@ -87,6 +88,7 @@ Creates an environment that provides a Python interpreter along with all depende
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode. Note that path dependencies with `develop = true` will be installed in editable mode unless explicitly passed to `editablePackageSources` as `null`.  (_default:_ `{}`).
 - **extraPackages**: A function taking a Python package set and returning a list of extra packages to include in the environment. This is intended for packages deliberately not added to `pyproject.toml` that you still want to include. An example of such a package may be `pip`. (_default:_ `(ps: [ ])`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
+- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ "dev" ]`).
 
 #### Example
 ```nix
@@ -150,6 +152,7 @@ Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poet
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
+- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ ]`).
 
 #### Example
 ```nix

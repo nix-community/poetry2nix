@@ -22,19 +22,16 @@ let
     , pyProject
     , attrs
     , includeBuildSystem ? true
+    , groups ? [ ]
     }:
     let
       getInputs = attr: attrs.${attr} or [ ];
 
       # Get dependencies and filter out depending on interpreter version
-      getDeps = depAttr:
+      getDeps = depSet:
         let
           compat = isCompatible (poetryLib.getPythonVersion py);
-          deps =
-            pyProject.tool.poetry.${depAttr}
-              or pyProject.tool.poetry.group.${depAttr}.dependencies
-              or { };
-          depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames deps);
+          depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames depSet);
         in
         (
           builtins.map
@@ -42,7 +39,7 @@ let
               dep:
               let
                 pkg = py.pkgs."${moduleName dep}";
-                constraints = deps.${dep}.python or "";
+                constraints = depSet.${dep}.python or "";
                 isCompat = compat constraints;
               in
               if isCompat then pkg else null
@@ -60,9 +57,21 @@ let
     in
     {
       buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
-      propagatedBuildInputs = mkInput "propagatedBuildInputs" (getDeps "dependencies") ++ ([ py.pkgs.setuptools ]);
+      propagatedBuildInputs = mkInput "propagatedBuildInputs" (
+        (getDeps pyProject.tool.poetry."dependencies" or { })
+        ++ ([ py.pkgs.setuptools ])
+        ++ (
+          # >=poetry-1.2.0 dependency groups
+          if pyProject.tool.poetry.group or { } != { }
+          then lib.flatten (map (g: getDeps pyProject.tool.poetry.group.${g}.dependencies) groups)
+          else [ ]
+        )
+      );
       nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
-      checkInputs = mkInput "checkInputs" (getDeps "dev-dependencies" ++ getDeps "dev");
+      checkInputs = mkInput "checkInputs" (
+        getDeps (pyProject.tool.poetry."dev-dependencies" or { })  # <poetry-1.2.0
+        ++ getDeps (pyProject.tool.poetry.group."dev".dependencies or { })  # >=poetry-1.2.0
+      );
     };
 
 
@@ -118,6 +127,7 @@ lib.makeScope pkgs.newScope (self: {
       # Example: { my-app = ./src; }
     , editablePackageSources ? { }
     , pyProject ? readTOML pyproject
+    , groups ? [ ]
     }@attrs:
     let
       /* The default list of poetry2nix override overlays */
@@ -255,7 +265,7 @@ lib.makeScope pkgs.newScope (self: {
       packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
-      inputAttrs = mkInputAttrs { inherit py pyProject; attrs = { }; includeBuildSystem = false; };
+      inputAttrs = mkInputAttrs { inherit py pyProject groups; attrs = { }; includeBuildSystem = false; };
 
       requiredPythonModules = python.pkgs.requiredPythonModules;
       /* Include all the nested dependencies which are required for each package.
@@ -290,6 +300,7 @@ lib.makeScope pkgs.newScope (self: {
     , preferWheels ? false
     , editablePackageSources ? { }
     , extraPackages ? ps: [ ]
+    , groups ? [ "dev" ]
     }:
     let
       inherit (lib) elem hasAttr;
@@ -308,7 +319,12 @@ lib.makeScope pkgs.newScope (self: {
       allEditablePackageSources = (
         (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
         // (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
-        // (getEditableDeps (pyProject.tool.poetry.group.dev."dependencies" or { }))  # Poetry 1.2.0+
+        // (
+          # Poetry>=1.2.0
+          if pyProject.tool.poetry.group or { } != { } then
+            builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
+          else { }
+        )
         // editablePackageSources
       );
 
@@ -317,7 +333,7 @@ lib.makeScope pkgs.newScope (self: {
         excludedEditablePackageNames;
 
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels pyProject;
+        inherit pyproject poetrylock overrides python pwd preferWheels pyProject groups;
         editablePackageSources = editablePackageSources';
       };
 
@@ -350,11 +366,12 @@ lib.makeScope pkgs.newScope (self: {
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
+    , groups ? [ ]
     , ...
     }@attrs:
     let
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels;
+        inherit pyproject poetrylock overrides python pwd preferWheels groups;
       };
       py = poetryPython.python;
 
@@ -369,7 +386,7 @@ lib.makeScope pkgs.newScope (self: {
       ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
-      inputAttrs = mkInputAttrs { inherit py pyProject attrs; };
+      inputAttrs = mkInputAttrs { inherit py pyProject attrs groups; };
 
       app = py.pkgs.buildPythonPackage (
         passedAttrs // inputAttrs // {
