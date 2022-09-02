@@ -1,6 +1,6 @@
-{ lib, poetry2nix, python3 }:
+{ lib, poetry2nix, python39 }:
 
 poetry2nix.mkPoetryApplication {
-  python = python3;
+  python = python39;
   projectDir = ./.;
 }

@@ -1,12 +1,11 @@
 [tool.poetry]
 name = "utf8-pyproject"
 version = "0.1.0"
-description = ""
+description = "🌮"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-strawberry-graphql = "^0.95.3"
 
 [tool.poetry.dev-dependencies]
 

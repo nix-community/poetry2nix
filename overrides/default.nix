@@ -836,6 +836,15 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.yajl ];
       });
 
+      jsonschema =
+        if lib.versionAtLeast super.jsonschema.version "4.0.0"
+        then
+          super.jsonschema.overridePythonAttrs
+            (old: {
+              propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.importlib-resources ];
+            })
+        else super.jsonschema;
+
       jupyter = super.jupyter.overridePythonAttrs (
         old: rec {
           # jupyter is a meta-package. Everything relevant comes from the
@@ -1703,6 +1712,11 @@ lib.composeManyExtensions [
         in
         super.pyqt5.overridePythonAttrs (
           old: {
+            postPatch = ''
+              # Confirm license
+              sed -i s/"if tool == 'pep517':"/"if True:"/ project.py
+            '';
+
             dontConfigure = true;
             dontWrapQtApps = true;
             nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
