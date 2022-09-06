@@ -1184,7 +1184,7 @@ lib.composeManyExtensions [
             pkgs.tbb
             pkgs.numactl
             pkgs.libxml2
-          ] ++ (old.buildInputs or []);
+          ] ++ (old.buildInputs or [ ]);
         }
       );
 
