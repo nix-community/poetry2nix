@@ -1256,6 +1256,18 @@ lib.composeManyExtensions [
         }
       );
 
+      openvino = super.openvino.overridePythonAttrs (
+        old: {
+          buildInputs = [
+            pkgs.ocl-icd
+            pkgs.hwloc
+            pkgs.tbb
+            pkgs.numactl
+            pkgs.libxml2
+          ] ++ (old.buildInputs or [ ]);
+        }
+      );
+
       orjson =
         let
           getCargoHash = version: {
