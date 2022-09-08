@@ -182,7 +182,15 @@ lib.makeScope pkgs.newScope (self: {
                       source = pkgMeta.source or null;
                       files = lockFiles.${name};
                       pythonPackages = self;
-                      sourceSpec = pyProject.tool.poetry.dependencies.${underscorify pkgMeta.name} or pyProject.tool.poetry.dev-dependencies.${underscorify pkgMeta.name} or { };
+                      # Packages can be specified with underscores in pyproject.toml; check for
+                      # both possibilities.
+                      sourceSpec = with pyProject.tool.poetry; (
+                        dependencies.${pkgMeta.name} or
+                          dependencies.${underscorify pkgMeta.name} or
+                            dev-dependencies.${pkgMeta.name} or
+                              dev-dependencies.${underscorify pkgMeta.name} or
+                                { }
+                      );
                     }
                   );
                 }
