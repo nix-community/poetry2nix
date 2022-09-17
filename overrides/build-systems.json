@@ -561,6 +561,9 @@
   "idasen": [
     "poetry-core"
   ],
+  "idna": [
+    "flit-core"
+  ],
   "imagecodecs-lite": [
     "cython"
   ],
@@ -817,6 +820,9 @@
   ],
   "nbclassic": [
     "jupyter-packaging"
+  ],
+  "nbformat": [
+    "flit-core"
   ],
   "net2grid": [
     "poetry-core"
