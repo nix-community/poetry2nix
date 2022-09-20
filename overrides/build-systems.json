@@ -7990,6 +7990,9 @@
   "manhole": [
     "setuptools"
   ],
+  "manage-fastapi": [
+    "poetry"
+  ],
   "manimpango": [
     "cython",
     "setuptools"
