@@ -4682,7 +4682,8 @@
   ],
   "fastapi-mail": [
     "poetry-core",
-    "setuptools"
+    "setuptools",
+    "hatchling"
   ],
   "fastapi-restful": [
     "poetry"
