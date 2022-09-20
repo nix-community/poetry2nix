@@ -561,6 +561,9 @@
   "idasen": [
     "poetry-core"
   ],
+  "idna": [
+    "flit-core"
+  ],
   "imagecodecs-lite": [
     "cython"
   ],
