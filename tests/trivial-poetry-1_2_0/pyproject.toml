@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "trivial-poetry-1-2-0"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "trivial_poetry_1_2_0"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+alembic = "^1.8.1"
+Flask = "^2.2.2"
+
+[tool.poetry.group.dev.dependencies]
+requests = "^2.28.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

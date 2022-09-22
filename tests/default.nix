@@ -4,6 +4,7 @@ in
 { pkgs ? import sources.nixpkgs {
     config = {
       allowAliases = false;
+      allowInsecurePredicate = x: true;
     };
     overlays = [
       (import ../overlay.nix)
@@ -27,6 +28,10 @@ in
 builtins.removeAttrs
 {
   trivial = callTest ./trivial { };
+
+  # Uses the updated Poetry 1.2.0 format
+  trivial-poetry-1_2_0 = callTest ./trivial-poetry-1_2_0 { };
+
   legacy = callTest ./legacy { };
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
@@ -55,7 +60,7 @@ builtins.removeAttrs
     inherit poetry;
     inherit (pkgs) postgresql;
   };
-  pyqt5 = skipOSX (callTest ./pyqt5 { });
+  # pyqt5 = skipOSX (callTest ./pyqt5 { });
   eggs = callTest ./eggs { };
   extras = callTest ./extras { };
   source-filter = callTest ./source-filter { };
@@ -104,6 +109,8 @@ builtins.removeAttrs
       ${env}/bin/python -c 'import requests'
       touch $out
     '';
+
+  dependency-groups = callTest ./dependency-groups { };
 
   # And also test with pypy
   # poetry-pypy = poetry.override { python = pkgs.pypy; };

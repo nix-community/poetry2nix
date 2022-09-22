@@ -1,10 +1,9 @@
-{ lib, poetry2nix, python3 }:
+{ lib, poetry2nix, python39 }:
 
 poetry2nix.mkPoetryApplication {
-  python = python3;
+  python = python39;
   pyproject = ./pyproject.toml;
   poetrylock = ./poetry.lock;
   src = lib.cleanSource ./.;
-
   dontWrapQtApps = true;
 }
