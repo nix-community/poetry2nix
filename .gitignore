@@ -4,3 +4,5 @@ artifacts
 poetry2nix-flamegraph.svg
 .direnv
 flake.lock
+
+.idea/
