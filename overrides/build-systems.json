@@ -950,6 +950,9 @@
   "pandas": [
     "cython"
   ],
+  "parsita": [
+    "poetry"
+  ],
   "pastel": [
     "poetry-core"
   ],
