@@ -1285,7 +1285,9 @@ lib.composeManyExtensions [
             "3.6.8" = "sha256-vpfceVtYkU09xszNIihY1xbqGWieqDquxwsAmDH8jd4=";
             "3.7.2" = "sha256-2U37IhftNYjH7sV7Nh51YpR/WjmPmmzX/aGuHsFgwf4=";
             "3.7.9" = "sha256-QHzAhjHgm4XLxY2zUdnIsd/WWMI7dJLQQAvTXC+2asQ=";
-          }.${version} or null;
+          }.${version} or (
+            lib.warn "Unknown orjson version: '${version}'. Please update getCargoHash." lib.fakeHash
+          );
         in
         super.orjson.overridePythonAttrs (old: {
           cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
