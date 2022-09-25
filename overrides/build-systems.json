@@ -435,6 +435,9 @@
   "frozenlist": [
     "cython"
   ],
+  "ftfy": [
+    "poetry"
+  ],
   "funcparserlib": [
     "poetry-core"
   ],
@@ -1551,6 +1554,9 @@
   ],
   "shexjsg": [
     "pbr"
+  ],
+  "shortuuid": [
+    "poetry"
   ],
   "simplisafe-python": [
     "poetry-core"

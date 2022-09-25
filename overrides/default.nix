@@ -277,6 +277,12 @@ lib.composeManyExtensions [
           )
         );
 
+      contourpy = super.contourpy.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.pybind11 ];
+        }
+      );
+
       cloudflare = super.cloudflare.overridePythonAttrs (
         old: {
           postPatch = ''
@@ -1235,6 +1241,12 @@ lib.composeManyExtensions [
         }
       );
 
+      omegaconf = super.omegaconf.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.jdk ];
+        }
+      );
+
       open3d = super.open3d.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ (with pkgs; [
           udev
@@ -1243,13 +1255,16 @@ lib.composeManyExtensions [
         autoPatchelfIgnoreMissingDeps = true;
       });
 
-      opencv-python = super.opencv-python.overridePythonAttrs (
+      _opencv-python-override =
         old: {
           nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
           buildInputs = [ self.scikit-build ] ++ (old.buildInputs or [ ]);
           dontUseCmakeConfigure = true;
-        }
-      );
+        };
+
+      opencv-python = super.opencv-python.overridePythonAttrs self._opencv-python-override;
+
+      opencv-python-headless = super.opencv-python.overridePythonAttrs self._opencv-python-override;
 
       opencv-contrib-python = super.opencv-contrib-python.overridePythonAttrs (
         old: {
