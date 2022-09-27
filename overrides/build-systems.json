@@ -1684,6 +1684,10 @@
   "terminaltables": [
     "poetry"
   ],
+  "termcolor": [
+    "hatchling",
+    "hatch-vcs"
+  ],
   "terminado": [
     "hatchling"
   ],
