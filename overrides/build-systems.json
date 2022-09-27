@@ -1788,6 +1788,9 @@
   "typical": [
     "poetry-core"
   ],
+  "types-awscrt": [
+    "poetry-core"
+  ],
   "types-s3transfer": [
     "poetry-core"
   ],
