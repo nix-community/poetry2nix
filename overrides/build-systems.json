@@ -1803,6 +1803,9 @@
   "url-normalize": [
     "poetry-core"
   ],
+  "uvicorn": [
+    "hatchling"
+  ],
   "vehicle": [
     "poetry-core"
   ],
