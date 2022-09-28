@@ -741,6 +741,9 @@
   "mdformat": [
     "poetry-core"
   ],
+  "mdit-py-plugins": [
+    "flit-core"
+  ],
   "mdurl": [
     "flit-core"
   ],

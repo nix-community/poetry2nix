@@ -2048,6 +2048,12 @@ lib.composeManyExtensions [
         '';
       });
 
+      suds = super.suds.overridePythonAttrs (old: {
+        # Fix naming convention shenanigans.
+        # https://github.com/suds-community/suds/blob/a616d96b070ca119a532ff395d4a2a2ba42b257c/setup.py#L648
+        SUDS_PACKAGE = "suds";
+      });
+
       systemd-python = super.systemd-python.overridePythonAttrs (old: {
         buildInputs = old.buildInputs ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
