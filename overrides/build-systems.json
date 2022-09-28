@@ -388,7 +388,8 @@
     "cython"
   ],
   "fastapi": [
-    "flitBuildHook"
+    { "buildSystem": "flitBuildHook", "until": "0.84.0" },
+    { "buildSystem": "hatchling", "from": "0.84.0" }
   ],
   "fastapi-restful": [
     "poetry"
