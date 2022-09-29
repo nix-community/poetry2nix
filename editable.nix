@@ -7,6 +7,8 @@
 }:
 let
   name = poetryLib.normalizePackageName pyProject.tool.poetry.name;
+  underscoredName = builtins.replaceStrings [ "-" ] [ "_" ] name;
+  distInfoFolder = "${underscoredName}-${pyProject.tool.poetry.version}.dist-info";
 
   # Just enough standard PKG-INFO fields for an editable installation
   pkgInfoFields = {
@@ -41,11 +43,10 @@ let
         '')
           (lib.attrValues editablePackageSources)}
 
-        # Create a very simple egg so pkg_resources can find this package
-        # See https://setuptools.readthedocs.io/en/latest/formats.html for more info on the egg format
-        mkdir "${name}.egg-info"
-        cd "${name}.egg-info"
-        ln -s ${pkgInfoFile} PKG-INFO
+        # Generate a minimal dist-info so `pkg_resources` can find this package.
+        mkdir "${distInfoFolder}"
+        cd "${distInfoFolder}"
+        ln -s ${pkgInfoFile} METADATA
         ${lib.optionalString (pyProject.tool.poetry ? plugins) ''
           ln -s ${entryPointsFile} entry_points.txt
         ''}
