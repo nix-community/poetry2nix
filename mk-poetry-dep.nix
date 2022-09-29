@@ -26,7 +26,7 @@ pythonPackages.callPackage
     }@args:
     let
       inherit (python) stdenv;
-      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi moduleName;
+      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi normalizePackageName;
 
       inherit (import ./pep425.nix {
         inherit lib poetryLib python stdenv;
@@ -88,23 +88,10 @@ pythonPackages.callPackage
             else (builtins.elemAt (lib.strings.splitString "-" name) 2);
         };
 
-      # Prevent infinite recursion
-      skipSetupToolsSCM = [
-        "setuptools_scm"
-        "setuptools-scm"
-        "toml" # Toml is an extra for setuptools-scm
-        "tomli" # tomli is an extra for later versions of setuptools-scm
-        "flit-core"
-        "packaging"
-        "six"
-        "pyparsing"
-        "typing-extensions"
-      ];
-      baseBuildInputs = lib.optional (! lib.elem name skipSetupToolsSCM) pythonPackages.setuptools-scm;
       format = if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
     in
     buildPythonPackage {
-      pname = moduleName name;
+      pname = normalizePackageName name;
       version = version;
 
       inherit format;
@@ -124,10 +111,9 @@ pythonPackages.callPackage
       ];
 
       buildInputs = (
-        baseBuildInputs
-        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools
-        ++ lib.optional (!isSource) (getManyLinuxDeps fileInfo.name).pkg
+        lib.optional (!isSource) (getManyLinuxDeps fileInfo.name).pkg
         ++ lib.optional isDirectory buildSystemPkgs
+        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools
       );
 
       propagatedBuildInputs =
@@ -149,7 +135,7 @@ pythonPackages.callPackage
             );
           depAttrs = lib.attrNames deps;
         in
-        builtins.map (n: pythonPackages.${moduleName n}) depAttrs;
+        builtins.map (n: pythonPackages.${normalizePackageName n}) depAttrs;
 
       meta = {
         broken = ! isCompatible (poetryLib.getPythonVersion python) python-versions;

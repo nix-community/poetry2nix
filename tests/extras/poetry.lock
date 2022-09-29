@@ -327,7 +327,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "5a83192fb095e50ac54daf8b7d6c63abf824fdd5d87458b93bfe88b0e201c0c6"
+content-hash = "29715f340ec421fd9e3d4ec49f4363e9129714832fb17282c8b8dba9b3833db7"
 
 [metadata.files]
 boto3-stubs = [

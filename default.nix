@@ -7,7 +7,7 @@ let
   # Poetry2nix version
   version = "1.31.0";
 
-  inherit (poetryLib) isCompatible readTOML moduleName underscorify;
+  inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
 
   # Map SPDX identifiers to license names
   spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
@@ -16,6 +16,10 @@ let
 
   # Experimental withPlugins functionality
   toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
+
+  # List of known build systems that are passed through from nixpkgs unmodified
+  knownBuildSystems = builtins.fromJSON (builtins.readFile ./known-build-systems.json);
+  nixpkgsBuildSystems = lib.subtractLists [ "poetry" "poetry-core" ] knownBuildSystems;
 
   mkInputAttrs =
     { py
@@ -38,7 +42,7 @@ let
             (
               dep:
               let
-                pkg = py.pkgs."${moduleName dep}";
+                pkg = py.pkgs."${normalizePackageName dep}";
                 constraints = depSet.${dep}.python or "";
                 isCompat = compat constraints;
               in
@@ -59,7 +63,6 @@ let
       buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
       propagatedBuildInputs = mkInput "propagatedBuildInputs" (
         (getDeps pyProject.tool.poetry."dependencies" or { })
-        ++ ([ py.pkgs.setuptools ])
         ++ (
           # >=poetry-1.2.0 dependency groups
           if pyProject.tool.poetry.group or { } != { }
@@ -128,7 +131,7 @@ lib.makeScope pkgs.newScope (self: {
     , editablePackageSources ? { }
     , pyProject ? readTOML pyproject
     , groups ? [ ]
-    }@attrs:
+    }:
     let
       /* The default list of poetry2nix override overlays */
       mkEvalPep508 = import ./pep508.nix {
@@ -157,15 +160,7 @@ lib.makeScope pkgs.newScope (self: {
         let
           lockfiles = lib.getAttrFromPath [ "metadata" "files" ] poetryLock;
         in
-        lib.listToAttrs (lib.mapAttrsToList (n: v: { name = moduleName n; value = v; }) lockfiles);
-      specialAttrs = [
-        "overrides"
-        "poetrylock"
-        "projectDir"
-        "pwd"
-        "preferWheels"
-      ];
-      passedAttrs = builtins.removeAttrs attrs specialAttrs;
+        lib.listToAttrs (lib.mapAttrsToList (n: v: { name = normalizePackageName n; value = v; }) lockfiles);
       evalPep508 = mkEvalPep508 python;
 
       # Filter packages by their PEP508 markers & pyproject interpreter version
@@ -183,12 +178,15 @@ lib.makeScope pkgs.newScope (self: {
       # closure as python can only ever have one version of a dependency
       baseOverlay = self: super:
         let
-          getDep = depName: self.${depName};
           lockPkgs = builtins.listToAttrs (
             builtins.map
               (
-                pkgMeta: rec {
-                  name = moduleName pkgMeta.name;
+                pkgMeta:
+                if builtins.elem pkgMeta.name nixpkgsBuildSystems then {
+                  name = pkgMeta.name;
+                  value = super."${pkgMeta.name}";
+                } else rec {
+                  name = normalizePackageName pkgMeta.name;
                   value = self.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd preferWheels;
@@ -196,17 +194,16 @@ lib.makeScope pkgs.newScope (self: {
                       files = lockFiles.${name};
                       pythonPackages = self;
 
-                      # Packages can be specified with underscores in pyproject.toml; check for
-                      # both possibilities.
-                      sourceSpec = with pyProject.tool.poetry; (
-                        dependencies.${pkgMeta.name} or
-                          dependencies.${underscorify pkgMeta.name} or
-                            dev-dependencies.${pkgMeta.name} or
-                              dev-dependencies.${underscorify pkgMeta.name} or
-                                group.dev.dependencies.${underscorify pkgMeta.name} or # Poetry 1.2.0+
-                                  { }
-
-                      );
+                      sourceSpec =
+                        let
+                          normalizedName = normalizePackageName pkgMeta.name;
+                        in
+                        with pyProject.tool.poetry; (
+                          (normalizePackageSet dependencies).${normalizedName}
+                            or (normalizePackageSet dev-dependencies).${normalizedName}
+                            or (normalizePackageSet group.dev.dependencies).${normalizedName} # Poetry 1.2.0+
+                            or { }
+                        );
                     }
                   );
                 }
@@ -255,7 +252,7 @@ lib.makeScope pkgs.newScope (self: {
               super)
 
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (self: super: builtins.listToAttrs (builtins.map (x: { name = moduleName x.name; value = null; }) incompatible))
+            (self: super: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
 
@@ -303,7 +300,7 @@ lib.makeScope pkgs.newScope (self: {
     , groups ? [ "dev" ]
     }:
     let
-      inherit (lib) elem hasAttr;
+      inherit (lib) hasAttr;
 
       pyProject = readTOML pyproject;
 
@@ -395,7 +392,7 @@ lib.makeScope pkgs.newScope (self: {
             py.pkgs.removeGitDependenciesHook
           ];
         } // {
-          pname = moduleName pyProject.tool.poetry.name;
+          pname = normalizePackageName pyProject.tool.poetry.name;
           version = pyProject.tool.poetry.version;
 
           inherit src;
@@ -477,7 +474,7 @@ lib.makeScope pkgs.newScope (self: {
 
     Can be overriden by calling defaultPoetryOverrides.overrideOverlay which takes an overlay function
   */
-  defaultPoetryOverrides = self.mkDefaultPoetryOverrides (import ./overrides { inherit pkgs lib; });
+  defaultPoetryOverrides = self.mkDefaultPoetryOverrides (import ./overrides { inherit pkgs lib poetryLib; });
 
   /*
     Convenience functions for specifying overlays with or without the poerty2nix default overrides

@@ -8,12 +8,16 @@ let
     genList (i: if i == idx then value else (builtins.elemAt list i)) (length list)
   );
 
-  # Do some canonicalisation of module names
-  moduleName = name: lib.toLower (lib.replaceStrings [ "_" "." ] [ "-" "-" ] name);
+  # Normalize package names as per PEP 503
+  normalizePackageName = name:
+    let
+      parts = builtins.split "[-_.]+" name;
+      partsWithoutSeparator = builtins.filter (x: builtins.typeOf x == "string") parts;
+    in
+    lib.strings.toLower (lib.strings.concatStringsSep "-" partsWithoutSeparator);
 
-  # For some reason, poetry replaces underscores with dashes in module
-  # names, this has to be reversed sometimes
-  underscorify = name: (lib.replaceStrings [ "-" ] [ "_" ] name);
+  # Normalize an entire attrset of packages
+  normalizePackageSet = lib.attrsets.mapAttrs' (name: value: lib.attrsets.nameValuePair (normalizePackageName name) value);
 
   # Get a full semver pythonVersion from a python derivation
   getPythonVersion = python:
@@ -237,8 +241,8 @@ in
     getBuildSystemPkgs
     satisfiesSemver
     cleanPythonSources
-    moduleName
-    underscorify
+    normalizePackageName
+    normalizePackageSet
     getPythonVersion
     getTargetMachine
     ;

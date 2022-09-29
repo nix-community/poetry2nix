@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-setuptools-scm = { version = "^3.4", extras = ["toml"] }
+setuptools-scm = { version = ">=3.4", extras = ["toml"] }
 
 # Extra with dash in the name should work
 boto3-stubs = {extras = ["cognito-idp"], version = "^1.17.82"}
