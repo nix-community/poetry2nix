@@ -174,6 +174,9 @@
   "boltztrap2": [
     "cython"
   ],
+  "botocore-stubs": [
+    "poetry-core"
+  ],
   "bracex": [
     "hatchling"
   ],
@@ -237,6 +240,9 @@
   "confuse": [
     "flit-core",
     "flitBuildHook"
+  ],
+  "contourpy": [
+    "pybind11"
   ],
   "copier": [
     "poetry-core"
@@ -385,7 +391,8 @@
     "cython"
   ],
   "fastapi": [
-    "flitBuildHook"
+    { "buildSystem": "flitBuildHook", "until": "0.84.0" },
+    { "buildSystem": "hatchling", "from": "0.84.0" }
   ],
   "fastapi-restful": [
     "poetry"
@@ -434,6 +441,9 @@
   ],
   "frozenlist": [
     "cython"
+  ],
+  "ftfy": [
+    "poetry"
   ],
   "funcparserlib": [
     "poetry-core"
@@ -737,6 +747,9 @@
   "mdformat": [
     "poetry-core"
   ],
+  "mdit-py-plugins": [
+    "flit-core"
+  ],
   "mdurl": [
     "flit-core"
   ],
@@ -949,6 +962,9 @@
   ],
   "pandas": [
     "cython"
+  ],
+  "parsita": [
+    "poetry"
   ],
   "pastel": [
     "poetry-core"
@@ -1549,6 +1565,9 @@
   "shexjsg": [
     "pbr"
   ],
+  "shortuuid": [
+    "poetry"
+  ],
   "simplisafe-python": [
     "poetry-core"
   ],
@@ -1678,6 +1697,10 @@
   "terminaltables": [
     "poetry"
   ],
+  "termcolor": [
+    "hatchling",
+    "hatch-vcs"
+  ],
   "terminado": [
     "hatchling"
   ],
@@ -1782,6 +1805,9 @@
   "typical": [
     "poetry-core"
   ],
+  "types-awscrt": [
+    "poetry-core"
+  ],
   "types-s3transfer": [
     "poetry-core"
   ],
@@ -1796,6 +1822,9 @@
   ],
   "url-normalize": [
     "poetry-core"
+  ],
+  "uvicorn": [
+    "hatchling"
   ],
   "vehicle": [
     "poetry-core"
@@ -1817,6 +1846,9 @@
   ],
   "weasyprint": [
     "flit-core"
+  ],
+  "widgetsnbextension": [
+    "jupyter-packaging"
   ],
   "wled": [
     "poetry-core"
