@@ -30,5 +30,11 @@
         };
 
         defaultApp = pkgs.myapp;
+
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            (python310.withPackages (ps: with ps; [ poetry ]))
+          ];
+        };
       }));
 }
