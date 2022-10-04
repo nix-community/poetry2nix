@@ -194,13 +194,37 @@ lib.composeManyExtensions [
           dontUseCmakeConfigure = true;
         }
       );
-
-      bcrypt = super.bcrypt.overridePythonAttrs (
-        old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libffi ];
-        }
-      );
-
+      bcrypt =
+        let
+          getCargoHash = version: {
+            "4.0.0" = "sha256-HvfRLyUhlXVuvxWrtSDKx3rMKJbjvuiMcDY6g+pYFS0=";
+          }.${version} or (
+            lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
+          );
+          sha256 = getCargoHash super.bcrypt.version;
+        in
+        super.bcrypt.overridePythonAttrs (
+          old: {
+            buildInputs = (old.buildInputs or [ ])
+              ++ [ pkgs.libffi ]
+              ++ lib.optionals (lib.versionAtLeast old.version "4" && stdenv.isDarwin)
+              [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
+            nativeBuildInputs = with pkgs;
+              (old.nativeBuildInputs or [ ])
+                ++ lib.optionals (lib.versionAtLeast old.version "4")
+                (with pkgs.rustPlatform; [ rust.rustc rust.cargo cargoSetupHook self.setuptools-rust ]);
+          } // lib.optionalAttrs (lib.versionAtLeast old.version "4") rec {
+            cargoDeps =
+              pkgs.rustPlatform.fetchCargoTarball
+                {
+                  src = old.src;
+                  sourceRoot = "${old.pname}-${old.version}/src/_bcrypt";
+                  name = "${old.pname}-${old.version}";
+                  sha256 = getCargoHash old.version;
+                };
+            cargoRoot = "src/_bcrypt";
+          }
+        );
       bjoern = super.bjoern.overridePythonAttrs (
         old: {
           buildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libev ];
