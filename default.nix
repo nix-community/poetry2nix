@@ -211,7 +211,11 @@ lib.makeScope pkgs.newScope (self: {
                   );
                 }
               )
-              (lib.reverseList compatible)
+              (lib.reverseList (
+                # To prevent bootstrapping issues we grab setuptools and setuptools-scm from nixpkgs.
+                # This means we need to filter them from poetry.lock.
+                builtins.filter (pkgMeta: pkgMeta.name != "setuptools" && pkgMeta.name != "setuptools-scm") compatible)
+              )
           );
         in
         lockPkgs // {
