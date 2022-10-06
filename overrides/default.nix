@@ -1302,9 +1302,10 @@ lib.composeManyExtensions [
       );
 
       open3d = super.open3d.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ (with pkgs; [
-          udev
-        ]);
+        buildInputs = (old.buildInputs or [ ]) ++ [
+          pkgs.udev
+          pkgs.libusb1
+        ];
         # TODO(Sem Mulder): Add overridable flags for CUDA/PyTorch/Tensorflow support.
         autoPatchelfIgnoreMissingDeps = true;
       });
