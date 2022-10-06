@@ -1747,6 +1747,10 @@ lib.composeManyExtensions [
         }
       );
 
+      pyrealsense2 = super.pyrealsense2.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libusb1.out ];
+      });
+
       pyrfr = super.pyrfr.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
       });
