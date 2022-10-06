@@ -2299,6 +2299,11 @@ lib.composeManyExtensions [
           cargoDeps = pkgs.rustPlatform.importCargoLock {
             lockFile = "${src.out}/Cargo.lock";
           };
+          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+            pkgs.darwin.apple_sdk.frameworks.Security
+            pkgs.darwin.apple_sdk.frameworks.CoreServices
+            pkgs.libiconv
+          ];
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
             pkgs.rustPlatform.cargoSetupHook
             pkgs.rustPlatform.maturinBuildHook
