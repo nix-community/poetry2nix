@@ -33,6 +33,7 @@ builtins.removeAttrs
   trivial-poetry-1_2_0 = callTest ./trivial-poetry-1_2_0 { };
 
   legacy = callTest ./legacy { };
+  black = callTest ./black { };
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };

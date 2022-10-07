@@ -1887,8 +1887,18 @@
     "setuptools"
   ],
   "black": [
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "22.10.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "22.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "22.10.0"
+    }
   ],
   "black-macchiato": [
     "setuptools"
