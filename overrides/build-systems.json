@@ -1893,6 +1893,18 @@
     "setuptools"
   ],
   "black": [
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "22.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "22.10.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "22.10.0"
+    },
     "setuptools",
     "setuptools-scm"
   ],
