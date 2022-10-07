@@ -106,6 +106,11 @@ pythonPackages.callPackage
         pythonPackages.poetry2nixFixupHook
       ]
       ++ lib.optional (!isSource && (getManyLinuxDeps fileInfo.name).str != null) autoPatchelfHook
+      ++ lib.optionals (format == "wheel") [
+        pythonPackages.wheelUnpackHook
+        pythonPackages.pipInstallHook
+        pythonPackages.setuptools
+      ]
       ++ lib.optionals (format == "pyproject") [
         pythonPackages.removePathDependenciesHook
         pythonPackages.removeGitDependenciesHook
