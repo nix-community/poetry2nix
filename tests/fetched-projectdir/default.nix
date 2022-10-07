@@ -4,8 +4,8 @@ poetry2nix.mkPoetryApplication {
   projectDir = fetchFromGitHub {
     owner = "nix-community";
     repo = "pynixutil";
-    rev = "91706ca404b6df42d6ee00649d7990465ea3d30b";
-    sha256 = "sha256-pAChip8C/9ZwSoT9qox1j54ai35qb/sVhL1nPxmsYVI=";
+    rev = "d27d778dc9109227b927ab88fedb2e3c2d6a7265";
+    sha256 = "sha256-+Ey384Nz6hvDZAA5OYO0EAGkGjY9Kz4134CRIMjEeyg=";
   };
   python = python39;
 }

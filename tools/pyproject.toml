@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-black = "^21.12b0"
+black = "*"
 pynixutil = "^0.5.0"
 
 [tool.poetry.dev-dependencies]

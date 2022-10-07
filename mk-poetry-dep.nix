@@ -94,7 +94,8 @@ pythonPackages.callPackage
       pname = normalizePackageName name;
       version = version;
 
-      inherit format;
+      # Circumvent output separation (https://github.com/NixOS/nixpkgs/pull/190487)
+      format = if format == "pyproject" then "poetry2nix" else format;
 
       doCheck = false; # We never get development deps
 
@@ -105,9 +106,15 @@ pythonPackages.callPackage
         pythonPackages.poetry2nixFixupHook
       ]
       ++ lib.optional (!isSource && (getManyLinuxDeps fileInfo.name).str != null) autoPatchelfHook
+      ++ lib.optionals (format == "wheel") [
+        pythonPackages.wheelUnpackHook
+        pythonPackages.pipInstallHook
+        pythonPackages.setuptools
+      ]
       ++ lib.optionals (format == "pyproject") [
         pythonPackages.removePathDependenciesHook
         pythonPackages.removeGitDependenciesHook
+        pythonPackages.pipBuildHook
       ];
 
       buildInputs = (
