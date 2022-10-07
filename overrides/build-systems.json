@@ -1893,6 +1893,9 @@
   "black-macchiato": [
     "setuptools"
   ],
+  "blacken-docs": [
+    "setuptools"
+  ],
   "bleach": [
     "setuptools"
   ],
