@@ -198,10 +198,10 @@ lib.makeScope pkgs.newScope (self: {
                         let
                           normalizedName = normalizePackageName pkgMeta.name;
                         in
-                        with pyProject.tool.poetry; (
-                          (normalizePackageSet dependencies).${normalizedName}
-                            or (normalizePackageSet dev-dependencies).${normalizedName}
-                            or (normalizePackageSet group.dev.dependencies).${normalizedName} # Poetry 1.2.0+
+                        (
+                          (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
+                            or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
+                            or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies { }).${normalizedName} # Poetry 1.2.0+
                             or { }
                         );
                     }
