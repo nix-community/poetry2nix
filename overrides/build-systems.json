@@ -16530,6 +16530,9 @@
   "types-colorama": [
     "setuptools"
   ],
+  "types-cryptography": [
+    "setuptools"
+  ],
   "types-dateutil": [
     "setuptools"
   ],

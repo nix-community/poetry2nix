@@ -67,6 +67,7 @@ builtins.removeAttrs
   eggs = callTest ./eggs { };
   extras = callTest ./extras { };
   source-filter = callTest ./source-filter { };
+  types-cryptography = callTest ./types-cryptography { };
   canonical-module-names = callTest ./canonical-module-names { };
   wandb = callTest ./wandb { };
   utf8-pyproject = callTest ./utf8-pyproject { };

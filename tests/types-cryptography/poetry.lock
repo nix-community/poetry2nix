@@ -1,0 +1,18 @@
+[[package]]
+name = "types-cryptography"
+version = "3.3.23"
+description = "Typing stubs for cryptography"
+category = "main"
+optional = false
+python-versions = "*"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.10"
+content-hash = "a97f2f349a843a979ee979eeabfa14f36cbe9e896b5c85a42c5946de84fcc0a3"
+
+[metadata.files]
+types-cryptography = [
+    {file = "types-cryptography-3.3.23.tar.gz", hash = "sha256:b85c45fd4d3d92e8b18e9a5ee2da84517e8fff658e3ef5755c885b1c2a27c1fe"},
+    {file = "types_cryptography-3.3.23-py3-none-any.whl", hash = "sha256:913b3e66a502edbf4bfc3bb45e33ab476040c56942164a7ff37bd1f0ef8ef783"},
+]
