@@ -50,6 +50,7 @@ builtins.removeAttrs
   git-deps = callTest ./git-deps { };
   git-deps-pinned = callTest ./git-deps-pinned { };
   in-list = callTest ./in-list { };
+  iteration-utilities = callTest ./iteration-utilities { };
   cli = poetry2nix;
   path-deps = callTest ./path-deps { };
   path-deps-develop = callTest ./path-deps-develop { };
