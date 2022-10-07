@@ -75,5 +75,6 @@ if __name__ == "__main__":
         )
         .stdout.decode()
         .split()[-1]
+        .rstrip(")")
         == rev
     )
