@@ -51,6 +51,7 @@ builtins.removeAttrs
   git-deps-pinned = callTest ./git-deps-pinned { };
   in-list = callTest ./in-list { };
   iteration-utilities = callTest ./iteration-utilities { };
+  jinja2-ansible-filters = callTest ./jinja2-ansible-filters { };
   cli = poetry2nix;
   path-deps = callTest ./path-deps { };
   path-deps-develop = callTest ./path-deps-develop { };

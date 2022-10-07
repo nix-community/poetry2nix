@@ -6918,6 +6918,9 @@
   "jinja2": [
     "setuptools"
   ],
+  "jinja2-ansible-filters": [
+    "setuptools"
+  ],
   "jinja2-git": [
     "poetry-core",
     "setuptools"
