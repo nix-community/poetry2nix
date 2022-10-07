@@ -41,6 +41,7 @@ builtins.removeAttrs
   pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
   pep600 = skipOSX (callTest ./pep600 { });
   env = callTest ./env { };
+  erppeek = callTest ./erppeek { };
   pytest-randomly = callTest ./pytest-randomly { };
   file-src-deps = callTest ./file-src-deps { };
   file-src-deps-level2 = callTest ./file-src-deps-level2 { };

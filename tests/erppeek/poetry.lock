@@ -1,0 +1,18 @@
+[[package]]
+name = "erppeek"
+version = "1.7.1"
+description = "Versatile tool for browsing Odoo / OpenERP data"
+category = "main"
+optional = false
+python-versions = "*"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.10"
+content-hash = "0b705e8fdb9bc322f77a61c1f4b56a9471064a30bd77d1909a2c3d5f573dc24e"
+
+[metadata.files]
+erppeek = [
+    {file = "ERPpeek-1.7.1-py2.py3-none-any.whl", hash = "sha256:5db9f4c758cac025c5c1b96418ef4ec1db604a2f9365ed6f1f893af38ce83ee1"},
+    {file = "ERPpeek-1.7.1.tar.gz", hash = "sha256:0c30bdea453fd5daff1f40e508b919035e51004588dc56dc4c17349477d7e65f"},
+]
