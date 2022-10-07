@@ -259,10 +259,6 @@
     "poetry-core",
     "setuptools"
   ],
-  "aiopath": [
-    "poetry-core",
-    "setuptools"
-  ],
   "aiofiles": [
     "poetry-core",
     "setuptools"
@@ -399,6 +395,10 @@
     "setuptools"
   ],
   "aioopenexchangerates": [
+    "poetry-core",
+    "setuptools"
+  ],
+  "aiopath": [
     "poetry-core",
     "setuptools"
   ],
@@ -729,6 +729,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "ansible-molecule": [
+    "setuptools"
+  ],
   "ansible-runner": [
     "pbr",
     "setuptools"
@@ -801,6 +804,9 @@
     "setuptools"
   ],
   "applicationinsights": [
+    "setuptools"
+  ],
+  "appnope": [
     "setuptools"
   ],
   "apprise": [
@@ -1252,6 +1258,12 @@
   "aws-xray-sdk": [
     "setuptools"
   ],
+  "awscli": [
+    "setuptools"
+  ],
+  "awscli-cwlogs": [
+    "setuptools"
+  ],
   "awscrt": [
     "setuptools"
   ],
@@ -1673,6 +1685,10 @@
   "backports-shutil-which": [
     "setuptools"
   ],
+  "backports-ssl-match-hostname": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "backports-tempfile": [
     "setuptools",
     "setuptools-scm"
@@ -2042,6 +2058,9 @@
   "boto3": [
     "setuptools"
   ],
+  "boto3-stubs": [
+    "setuptools"
+  ],
   "botocore": [
     "setuptools"
   ],
@@ -2248,10 +2267,10 @@
   "cachy": [
     "setuptools"
   ],
-  "cairo-lang": [
+  "caio": [
     "setuptools"
   ],
-  "caio": [
+  "cairo-lang": [
     "setuptools"
   ],
   "cairocffi": [
@@ -4387,6 +4406,9 @@
   "enum-compat": [
     "setuptools"
   ],
+  "enum34": [
+    "setuptools"
+  ],
   "enumatch": [
     "poetry"
   ],
@@ -5249,6 +5271,9 @@
     "setuptools"
   ],
   "future-typing": [
+    "setuptools"
+  ],
+  "futures": [
     "setuptools"
   ],
   "fuzzyfinder": [
@@ -6713,6 +6738,9 @@
     "setuptools"
   ],
   "ipaddr": [
+    "setuptools"
+  ],
+  "ipaddress": [
     "setuptools"
   ],
   "ipdb": [
@@ -8633,6 +8661,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "mypy-boto3-cognito-idp": [
+    "setuptools"
+  ],
   "mypy-boto3-s3": [
     "setuptools"
   ],
@@ -9105,6 +9136,10 @@
   ],
   "nvchecker": [
     "setuptools"
+  ],
+  "nvidia-ml-py3": [
+    "setuptools",
+    "setuptools-scm"
   ],
   "nwdiag": [
     "setuptools"
@@ -12445,6 +12480,9 @@
     "cython",
     "setuptools"
   ],
+  "pysqlite": [
+    "setuptools"
+  ],
   "pysqlitecipher": [
     "setuptools"
   ],
@@ -14422,6 +14460,9 @@
   "sacn": [
     "setuptools"
   ],
+  "sacred": [
+    "setuptools"
+  ],
   "sacremoses": [
     "setuptools"
   ],
@@ -14502,6 +14543,9 @@
     "setuptools"
   ],
   "scancode-toolkit": [
+    "setuptools"
+  ],
+  "scandir": [
     "setuptools"
   ],
   "scapy": [
@@ -14673,6 +14717,9 @@
     "setuptools"
   ],
   "selenium": [
+    "setuptools"
+  ],
+  "selinux": [
     "setuptools"
   ],
   "semantic-version": [
@@ -15690,6 +15737,10 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "subprocess32": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "subunit": [
     "setuptools"
   ],
@@ -16620,7 +16671,13 @@
   "types-futures": [
     "setuptools"
   ],
+  "types-html5lib": [
+    "setuptools"
+  ],
   "types-ipaddress": [
+    "setuptools"
+  ],
+  "types-jsonschema": [
     "setuptools"
   ],
   "types-protobuf": [
@@ -16664,6 +16721,9 @@
   ],
   "typical": [
     "poetry-core",
+    "setuptools"
+  ],
+  "typing": [
     "setuptools"
   ],
   "typing-extensions": [
