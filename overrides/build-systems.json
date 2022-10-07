@@ -2,6 +2,9 @@
   "aadict": [
     "setuptools"
   ],
+  "apache-libcloud": [
+    "setuptools"
+  ],
   "aafigure": [
     "setuptools"
   ],
@@ -2007,6 +2010,9 @@
     "setuptools-scm"
   ],
   "boschshcpy": [
+    "setuptools"
+  ],
+  "boto": [
     "setuptools"
   ],
   "boto3": [
@@ -7565,6 +7571,9 @@
   "libvirt": [
     "setuptools"
   ],
+  "libvirt-python": [
+    "setuptools"
+  ],
   "license-expression": [
     "setuptools",
     "setuptools-scm"
@@ -12814,6 +12823,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "python-digitalocean": [
+    "setuptools"
+  ],
   "python-baseconv": [
     "setuptools"
   ],
@@ -16586,7 +16598,8 @@
     "setuptools"
   ],
   "typing-extensions": [
-    "flit-core"
+    "flit-core",
+    "setuptools"
   ],
   "typing-inspect": [
     "setuptools"
