@@ -66,7 +66,7 @@ pillow = "^6.2.1"
 psycopg2 = "^2.8.4"
 bcrypt = "^3.1.7"
 mccabe = "^0.6.1"
-matplotlib = "^3.5.1"
+# matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
 
