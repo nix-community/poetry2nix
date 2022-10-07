@@ -60,6 +60,7 @@ builtins.removeAttrs
   pre-commit-po-hooks = callTest ./pre-commit-po-hooks { };
   preferWheel = callTest ./prefer-wheel { };
   prefer-wheels = callTest ./prefer-wheels { };
+  pyyaml-include = callTest ./pyyaml-include { };
   closure-size = callTest ./closure-size {
     inherit poetry;
     inherit (pkgs) postgresql;
