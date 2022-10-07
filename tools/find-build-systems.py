@@ -2,11 +2,13 @@
 from concurrent.futures import ThreadPoolExecutor
 from itertools import chain
 from posix import cpu_count
+import re
 from typing import (
     Dict,
     List,
     Set,
 )
+from pathlib import Path
 import subprocess
 import pynixutil
 import tempfile
@@ -21,16 +23,8 @@ import sys
 
 
 # All known PEP-517 (or otherwise) build systems
-BUILD_SYSTEMS = [
-    "poetry",
-    "poetry-core",
-    "flit",
-    "flit-core",
-    "pbr",
-    "flitBuildHook",
-    "cython",
-    "hatchling",
-]
+with (Path(__file__).parent.parent / "known-build-systems.json").open() as _fd:
+    BUILD_SYSTEMS = json.load(_fd)
 
 
 # Skip these attributes as they have more complex conditions manually
@@ -40,8 +34,14 @@ SKIP_ATTRS = {
     "packaging",
     "poetry",
     "flitBuildHook",
+    "jsonschema",
     "platformdirs",
+    "traitlets",
 }
+
+
+def normalize(name):
+    return re.sub(r"[-_.]+", "-", name).lower()
 
 
 def find_known_systems() -> Dict[str, str]:
@@ -130,15 +130,31 @@ def get_build_systems(known_systems) -> Dict[str, List[str]]:
     return {attr: systems for attr, systems in build_systems.items() if systems}
 
 
+BLOCKLIST = {"poetry", "poetry-core"}
+
+
+def merge_systems(s):
+    simple = {i for i in s if isinstance(i, str)}
+    complex = [i for i in s if isinstance(i, dict)]
+    complex_names = {i["buildSystem"] for i in complex}
+    new_simple = simple - complex_names
+    return complex + sorted(list(new_simple))
+
+
 def merge(prev_content, new_content):
     content = {}
     for attr, systems in chain(prev_content.items(), new_content.items()):
-        s = content.setdefault(attr, set())
+        attr = normalize(attr)
+        s = content.setdefault(attr, [])
         for system in systems:
-            s.add(system)
+            s.append(system)
 
     # Return with sorted data
-    return {attr: sorted(content[attr]) for attr in sorted(content.keys())}
+    return {
+        attr: merge_systems(content[attr])
+        for attr in sorted(content.keys())
+        if attr not in BLOCKLIST
+    }
 
 
 def main():

@@ -1,6 +1,7 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
 , stdenv ? pkgs.stdenv
+, poetryLib
 }:
 
 let
@@ -38,6 +39,7 @@ let
       # Flit only works on Python3
       if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !self.isPy3k then drv
       else if drv == null then null
+      else if drv ? overridePythonAttrs == false then drv
       else
         drv.overridePythonAttrs (
           old:
@@ -57,6 +59,8 @@ let
 
 in
 lib.composeManyExtensions [
+  # normalize all the names
+  (self: super: poetryLib.normalizePackageSet super)
 
   # NixOps
   (self: super:
@@ -81,22 +85,11 @@ lib.composeManyExtensions [
         systems)
       buildSystems)
 
-  # Build systems with conditionals
-  (self: super: {
-
-    platformdirs =
-      if lib.versionAtLeast super.platformdirs.version "2.5.2"
-      then addBuildSystem { inherit self; drv = super.platformdirs; attr = "hatchling"; extraAttrs = [ "hatch-vcs" ]; }
-      else super.platformdirs;
-
-  })
-
   # Build fixes
   (self: super:
     let
       inherit (self.python) stdenv;
       inherit (pkgs.buildPackages) pkg-config;
-      inherit (pkgs) buildPackages;
       pyBuildPackages = self.python.pythonForBuild.pkgs;
 
       selectQt5 = version:
@@ -109,7 +102,7 @@ lib.composeManyExtensions [
 
     {
       automat = super.automat.overridePythonAttrs (
-        old: rec {
+        old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.m2r ];
         }
       );
@@ -153,7 +146,7 @@ lib.composeManyExtensions [
       );
 
       argcomplete = super.argcomplete.overridePythonAttrs (
-        old: rec {
+        old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.importlib-metadata ];
         }
       );
@@ -165,7 +158,7 @@ lib.composeManyExtensions [
       );
 
       astroid = super.astroid.overridePythonAttrs (
-        old: rec {
+        old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
         }
       );
@@ -657,6 +650,11 @@ lib.composeManyExtensions [
         outputs = [ "out" "dev" ];
       });
 
+      gunicorn = super.gunicorn.overridePythonAttrs (old: {
+        # actually needs setuptools as a runtime dependency
+        propagatedBuildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+      });
+
       h3 = super.h3.overridePythonAttrs (
         old: {
           preBuild = (old.preBuild or "") + ''
@@ -877,7 +875,7 @@ lib.composeManyExtensions [
         else super.jsonschema;
 
       jupyter = super.jupyter.overridePythonAttrs (
-        old: rec {
+        old: {
           # jupyter is a meta-package. Everything relevant comes from the
           # dependencies. It does however have a jupyter.py file that conflicts
           # with jupyter-core so this meta solves this conflict.
@@ -890,7 +888,7 @@ lib.composeManyExtensions [
       });
 
       jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
-        old: rec {
+        old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.jupyter-packaging ];
         }
       );
@@ -1131,11 +1129,11 @@ lib.composeManyExtensions [
                   excludes = [ "pyproject.toml" ];
                 })
               ];
-              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
             }
           )) else
           super.molecule.overridePythonAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
           });
 
       mpi4py = super.mpi4py.overridePythonAttrs (
@@ -1300,7 +1298,7 @@ lib.composeManyExtensions [
       );
 
       openexr = super.openexr.overridePythonAttrs (
-        old: rec {
+        old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openexr pkgs.ilmbase ];
           NIX_CFLAGS_COMPILE = [ "-I${pkgs.openexr.dev}/include/OpenEXR" "-I${pkgs.ilmbase.dev}/include/OpenEXR" ];
         }
@@ -1385,7 +1383,7 @@ lib.composeManyExtensions [
       });
 
       parsel = super.parsel.overridePythonAttrs (
-        old: rec {
+        old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
         }
       );
@@ -1934,7 +1932,7 @@ lib.composeManyExtensions [
       );
 
       rockset = super.rockset.overridePythonAttrs (
-        old: rec {
+        old: {
           postPatch = ''
             cp ./setup_rockset.py ./setup.py
           '';
