@@ -5,7 +5,7 @@
 }:
 let
   # Poetry2nix version
-  version = "1.32.1";
+  version = "1.33.0";
 
   inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
 
