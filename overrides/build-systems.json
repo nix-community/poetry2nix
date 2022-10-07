@@ -13617,6 +13617,9 @@
     "flit-core",
     "setuptools"
   ],
+  "pyyaml-include": [
+    "setuptools"
+  ],
   "pyzbar": [
     "setuptools"
   ],
