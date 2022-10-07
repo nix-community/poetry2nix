@@ -56,6 +56,7 @@ builtins.removeAttrs
   path-deps-develop = callTest ./path-deps-develop { };
   path-deps-level2 = callTest ./path-deps-level2 { };
   operators = callTest ./operators { };
+  pre-commit-po-hooks = callTest ./pre-commit-po-hooks { };
   preferWheel = callTest ./prefer-wheel { };
   prefer-wheels = callTest ./prefer-wheels { };
   closure-size = callTest ./closure-size {

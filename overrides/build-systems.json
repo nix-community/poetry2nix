@@ -10273,6 +10273,9 @@
   "pre-commit-hooks": [
     "setuptools"
   ],
+  "pre-commit-po-hooks": [
+    "setuptools"
+  ],
   "precis-i18n": [
     "setuptools"
   ],

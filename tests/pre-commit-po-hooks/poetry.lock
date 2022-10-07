@@ -1,0 +1,22 @@
+[[package]]
+name = "pre-commit-po-hooks"
+version = "1.7.3"
+description = "pre-commit hooks for PO files"
+category = "main"
+optional = false
+python-versions = ">=3.6.1"
+
+[package.extras]
+dev = ["bump2version", "pytest (==6.2.4)", "pytest-cov (==2.12.1)"]
+test = ["pytest (==6.2.4)", "pytest-cov (==2.12.1)"]
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.10"
+content-hash = "0cd5423ff6c5878b8854f23a2dfdf64ee9d7a61dc934256d88c9db0b8b7342a6"
+
+[metadata.files]
+pre-commit-po-hooks = [
+    {file = "pre_commit_po_hooks-1.7.3-py2.py3-none-any.whl", hash = "sha256:10bd4a15b8abc68a7dfff6eeeb52d02bd67ed8db2ef104a9ba81d2e233037517"},
+    {file = "pre_commit_po_hooks-1.7.3.tar.gz", hash = "sha256:945aa4a00943803bb03c0119724c5f1de74743d34ccb03b7ba9011683dbbdf5a"},
+]
