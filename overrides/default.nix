@@ -341,6 +341,10 @@ lib.composeManyExtensions [
         }
       );
 
+      copier = super.copier.overrideAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.git ];
+      });
+
       cryptography =
         let
           getCargoHash = version: {
