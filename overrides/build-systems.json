@@ -255,6 +255,14 @@
   "aioextensions": [
     "setuptools"
   ],
+  "aiofile": [
+    "poetry-core",
+    "setuptools"
+  ],
+  "aiopath": [
+    "poetry-core",
+    "setuptools"
+  ],
   "aiofiles": [
     "poetry-core",
     "setuptools"
@@ -2241,6 +2249,9 @@
     "setuptools"
   ],
   "cairo-lang": [
+    "setuptools"
+  ],
+  "caio": [
     "setuptools"
   ],
   "cairocffi": [
