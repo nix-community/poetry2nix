@@ -4390,6 +4390,9 @@
   "eradicate": [
     "setuptools"
   ],
+  "erppeek": [
+    "setuptools"
+  ],
   "escapism": [
     "setuptools"
   ],
