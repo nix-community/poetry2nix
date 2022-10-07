@@ -9248,29 +9248,84 @@
     "setuptools-scm"
   ],
   "opentelemetry-api": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.13.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.13.0"
+    }
   ],
   "opentelemetry-exporter-otlp-proto-http": [
-    "hatchling",
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
   ],
   "opentelemetry-instrumentation": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
   ],
   "opentelemetry-instrumentation-asyncpg": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
   ],
   "opentelemetry-instrumentation-httpx": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
   ],
   "opentelemetry-proto": [
-    "hatchling"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.13.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.13.0"
+    }
   ],
   "opentelemetry-sdk": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.13.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.13.0"
+    }
   ],
   "opentelemetry-semantic-conventions": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.33b0"
+    }
   ],
   "opentimestamps": [
     "setuptools"
