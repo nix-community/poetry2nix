@@ -8801,7 +8801,18 @@
     "setuptools-scm"
   ],
   "nbformat": [
-    "flit-core",
+    {
+      "buildSystem": "hatchling",
+      "from": "5.6.0"
+    },
+    {
+      "buildSystem": "hatch-nodejs-version",
+      "from": "5.6.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "5.4.0"
+    },
     "setuptools"
   ],
   "nbmerge": [
