@@ -3977,6 +3977,10 @@
     "setuptools-scm"
   ],
   "docformatter": [
+    {
+      "buildSystem": "poetry-core",
+      "from": "1.5.0"
+    },
     "setuptools"
   ],
   "docker": [
@@ -7198,6 +7202,10 @@
     "setuptools"
   ],
   "jupyter-core": [
+    {
+      "buildSystem": "hatchling",
+      "from": "4.11.0"
+    },
     "setuptools"
   ],
   "jupyter-lsp": [
@@ -8243,6 +8251,9 @@
   "migen": [
     "setuptools"
   ],
+  "mike": [
+    "setuptools"
+  ],
   "milc": [
     "setuptools"
   ],
@@ -8326,6 +8337,9 @@
   "mkdocs-gen-files": [
     "poetry"
   ],
+  "mkdocs-git-revision-date-localized-plugin": [
+    "setuptools"
+  ],
   "mkdocs-gitlab": [
     "setuptools"
   ],
@@ -8337,6 +8351,9 @@
     "poetry"
   ],
   "mkdocs-macros": [
+    "setuptools"
+  ],
+  "mkdocs-macros-plugin": [
     "setuptools"
   ],
   "mkdocs-material": [
@@ -8352,6 +8369,9 @@
     "setuptools"
   ],
   "mkdocs-swagger-ui-tag": [
+    "setuptools"
+  ],
+  "mkdocs-table-reader-plugin": [
     "setuptools"
   ],
   "mkdocstrings": [
@@ -13725,6 +13745,7 @@
     "setuptools"
   ],
   "pyzmq": [
+    "packaging",
     "setuptools"
   ],
   "pyzufall": [
@@ -17085,6 +17106,9 @@
     "setuptools"
   ],
   "versiontools": [
+    "setuptools"
+  ],
+  "verspec": [
     "setuptools"
   ],
   "vertica-python": [
