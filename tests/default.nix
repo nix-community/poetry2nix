@@ -123,5 +123,7 @@ builtins.removeAttrs
   manylinux = callTest ./manylinux { };
   shapely = callTest ./shapely { };
   setuptools = callTest ./setuptools { };
+
+  scientific = callTest ./scientific { };
 }
   skipTests
