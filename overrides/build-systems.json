@@ -1942,6 +1942,9 @@
   "black-macchiato": [
     "setuptools"
   ],
+  "blacken-docs": [
+    "setuptools"
+  ],
   "bleach": [
     "setuptools"
   ],
@@ -4464,6 +4467,9 @@
   "eradicate": [
     "setuptools"
   ],
+  "erppeek": [
+    "setuptools"
+  ],
   "escapism": [
     "setuptools"
   ],
@@ -6873,6 +6879,9 @@
   "itemloaders": [
     "setuptools"
   ],
+  "iteration-utilities": [
+    "setuptools"
+  ],
   "itsdangerous": [
     "setuptools"
   ],
@@ -6999,6 +7008,9 @@
     "setuptools"
   ],
   "jinja2": [
+    "setuptools"
+  ],
+  "jinja2-ansible-filters": [
     "setuptools"
   ],
   "jinja2-git": [
@@ -10426,6 +10438,9 @@
   "pre-commit-hooks": [
     "setuptools"
   ],
+  "pre-commit-po-hooks": [
+    "setuptools"
+  ],
   "precis-i18n": [
     "setuptools"
   ],
@@ -13779,6 +13794,9 @@
     "flit-core",
     "setuptools"
   ],
+  "pyyaml-include": [
+    "setuptools"
+  ],
   "pyzbar": [
     "setuptools"
   ],
@@ -16719,6 +16737,9 @@
     "poetry-core"
   ],
   "types-colorama": [
+    "setuptools"
+  ],
+  "types-cryptography": [
     "setuptools"
   ],
   "types-dateutil": [
