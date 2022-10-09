@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "test-group"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyparsing = "^2.4.5"
+
+[tool.poetry.group.dev.dependencies]
+
+[tool.poetry.group.test.dependencies]
+pytest = "^6"
+
+[build-system]
+requires = ["poetry-core>=1.1"]
+build-backend = "poetry.core.masonry.api"
