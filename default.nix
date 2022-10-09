@@ -182,36 +182,31 @@ lib.makeScope pkgs.newScope (self: {
             builtins.map
               (
                 pkgMeta:
-                if builtins.elem pkgMeta.name nixpkgsBuildSystems then {
-                  name = pkgMeta.name;
-                  value = super."${pkgMeta.name}";
-                } else rec {
-                  name = normalizePackageName pkgMeta.name;
+                let normalizedName = normalizePackageName pkgMeta.name; in
+                {
+                  name = normalizedName;
                   value = self.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd preferWheels;
                       source = pkgMeta.source or null;
-                      files = lockFiles.${name};
+                      files = lockFiles.${normalizedName};
                       pythonPackages = self;
 
-                      sourceSpec =
-                        let
-                          normalizedName = normalizePackageName pkgMeta.name;
-                        in
-                        (
-                          (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
-                            or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
-                            or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies { }).${normalizedName} # Poetry 1.2.0+
-                            or { }
-                        );
+                      sourceSpec = (
+                        (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
+                          or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
+                          or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies { }).${normalizedName} # Poetry 1.2.0+
+                          or { }
+                      );
                     }
                   );
                 }
               )
               (lib.reverseList compatible)
           );
+          buildSystems = builtins.listToAttrs (builtins.map (x: { name = x; value = super.${x}; }) nixpkgsBuildSystems);
         in
-        lockPkgs // {
+        lockPkgs // buildSystems // {
           # Create a dummy null package for the current project in case any dependencies depend on the root project (issue #307)
           ${pyProject.tool.poetry.name} = null;
         };

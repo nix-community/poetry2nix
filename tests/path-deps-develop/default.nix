@@ -7,6 +7,12 @@ let
     editablePackageSources = {
       dep1 = null;
     };
+
+    overrides = poetry2nix.overrides.withDefaults (self: super: {
+      dep1 = super.dep1.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+      });
+    });
   };
 
 in

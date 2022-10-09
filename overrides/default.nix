@@ -194,7 +194,6 @@ lib.composeManyExtensions [
           }.${version} or (
             lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
-          sha256 = getCargoHash super.bcrypt.version;
         in
         super.bcrypt.overridePythonAttrs (
           old: {
@@ -206,7 +205,7 @@ lib.composeManyExtensions [
               (old.nativeBuildInputs or [ ])
                 ++ lib.optionals (lib.versionAtLeast old.version "4")
                 (with pkgs.rustPlatform; [ rust.rustc rust.cargo cargoSetupHook self.setuptools-rust ]);
-          } // lib.optionalAttrs (lib.versionAtLeast old.version "4") rec {
+          } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
             cargoDeps =
               pkgs.rustPlatform.fetchCargoTarball
                 {
@@ -266,6 +265,10 @@ lib.composeManyExtensions [
       });
 
       celery = super.celery.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+      });
+
+      cerberus = super.cerberus.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
       });
 
@@ -806,6 +809,12 @@ lib.composeManyExtensions [
         }
       );
 
+      ipython = super.ipython.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+        }
+      );
+
       isort = super.isort.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
@@ -884,7 +893,7 @@ lib.composeManyExtensions [
       );
 
       jupyter-packaging = super.jupyter-packaging.overridePythonAttrs (old: {
-        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.wheel ];
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools self.wheel ];
       });
 
       jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
@@ -1058,6 +1067,9 @@ lib.composeManyExtensions [
             self.setuptools-scm
             self.setuptools-scm-git-archive
           ];
+
+          # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
+          hardeningDisable = if stdenv.isDarwin then [ "strictoverflow" ] else [ ];
 
           passthru = old.passthru or { } // passthru;
 
@@ -1251,6 +1263,8 @@ lib.composeManyExtensions [
           };
         in
         {
+          # fails to build with format=pyproject and setuptools >= 65
+          format = if (old.format == "poetry2nix") then "setuptools" else old.format;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gfortran ];
           buildInputs = (old.buildInputs or [ ]) ++ [ blas ];
           enableParallelBuilding = true;
