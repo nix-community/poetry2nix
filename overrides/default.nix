@@ -2583,6 +2583,12 @@ lib.composeManyExtensions [
             'root_dirs.extend(jupyter_path())' \
             'root_dirs.extend(jupyter_path() + [os.path.join("@out@", "share", "jupyter")])' \
             --subst-var out
+        '' + lib.optionalString (lib.versionAtLeast self.nbconvert.version "7.0") ''
+          substituteInPlace \
+            ./hatch_build.py \
+            --replace \
+            'if self.target_name not in ["wheel", "sdist"]:' \
+            'if True:'
         '';
       });
     }

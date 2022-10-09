@@ -11133,6 +11133,9 @@
   "pydeps": [
     "setuptools"
   ],
+  "pydeprecate": [
+    "setuptools"
+  ],
   "pydes": [
     "setuptools"
   ],
