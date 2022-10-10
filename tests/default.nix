@@ -50,9 +50,9 @@ builtins.removeAttrs
   git-deps-pinned = callTest ./git-deps-pinned { };
   in-list = callTest ./in-list { };
   cli = poetry2nix;
-  # path-deps = callTest ./path-deps { };
-  # path-deps-develop = callTest ./path-deps-develop { };
-  # path-deps-level2 = callTest ./path-deps-level2 { };
+  path-deps = callTest ./path-deps { };
+  path-deps-develop = callTest ./path-deps-develop { };
+  path-deps-level2 = callTest ./path-deps-level2 { };
   operators = callTest ./operators { };
   preferWheel = callTest ./prefer-wheel { };
   prefer-wheels = callTest ./prefer-wheels { };
