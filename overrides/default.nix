@@ -1473,8 +1473,6 @@ lib.composeManyExtensions [
         {
           # "Vendor" dependencies (for build-system support)
           postPatch = ''
-            find .
-
             echo "import sys" >> ${initFile}
             for path in $propagatedBuildInputs; do
               echo "sys.path.insert(0, \"$path\")" >> ${initFile}
