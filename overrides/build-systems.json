@@ -4682,7 +4682,8 @@
   ],
   "fastapi-mail": [
     "poetry-core",
-    "setuptools"
+    "setuptools",
+    "hatchling"
   ],
   "fastapi-restful": [
     "poetry"
@@ -7988,6 +7989,9 @@
   ],
   "manhole": [
     "setuptools"
+  ],
+  "manage-fastapi": [
+    "poetry"
   ],
   "manimpango": [
     "cython",
