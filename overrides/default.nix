@@ -130,9 +130,21 @@ lib.composeManyExtensions [
             self.dopy
             self.ncclient
           ];
-        } // lib.optionalAttrs (lib.versionOlder old.version "5.0") {
-          prePatch = pkgs.python.pkgs.ansible.prePatch or "";
-          postInstall = pkgs.python.pkgs.ansible.postInstall or "";
+        }
+      );
+
+      ansible-base = super.ansible-base.overridePythonAttrs (
+        old:
+        {
+          prePatch = ''sed -i "s/\[python, /[/" lib/ansible/executor/task_executor.py'';
+          postInstall = ''
+            for m in docs/man/man1/*; do
+                install -vD $m -t $out/share/man/man1
+            done
+          '';
+        }
+        // lib.optionalAttrs (lib.versionOlder old.version "2.4") {
+          prePatch = ''sed -i "s,/usr/,$out," lib/ansible/constants.py'';
         }
       );
 
@@ -1290,9 +1302,10 @@ lib.composeManyExtensions [
       );
 
       open3d = super.open3d.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ (with pkgs; [
-          udev
-        ]);
+        buildInputs = (old.buildInputs or [ ]) ++ [
+          pkgs.udev
+          pkgs.libusb1
+        ];
         # TODO(Sem Mulder): Add overridable flags for CUDA/PyTorch/Tensorflow support.
         autoPatchelfIgnoreMissingDeps = true;
       });
@@ -1733,6 +1746,10 @@ lib.composeManyExtensions [
           PROJ_INCDIR = "${pkgs.proj.dev}/include";
         }
       );
+
+      pyrealsense2 = super.pyrealsense2.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libusb1.out ];
+      });
 
       pyrfr = super.pyrfr.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
