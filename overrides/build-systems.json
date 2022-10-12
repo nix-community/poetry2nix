@@ -3935,6 +3935,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "djangorestframework-stubs": [
+    "setuptools"
+  ],
   "djmail": [
     "setuptools"
   ],
