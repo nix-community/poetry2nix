@@ -16779,6 +16779,9 @@
   "types-jsonschema": [
     "setuptools"
   ],
+  "types-markdown": [
+    "setuptools"
+  ],
   "types-protobuf": [
     "setuptools"
   ],
