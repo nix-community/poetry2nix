@@ -14647,6 +14647,9 @@
   "schema": [
     "setuptools"
   ],
+  "schemainspect": [
+    "setuptools"
+  ],
   "schema-salad": [
     "setuptools"
   ],
