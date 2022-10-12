@@ -3698,6 +3698,9 @@
   "django-colorful": [
     "setuptools"
   ],
+  "django-colorfield": [
+    "setuptools"
+  ],
   "django-compat": [
     "setuptools"
   ],
