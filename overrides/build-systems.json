@@ -16634,6 +16634,9 @@
   "tunigo": [
     "setuptools"
   ],
+  "tusker": [
+    "poetry"
+  ],
   "turnt": [
     "flitBuildHook",
     "setuptools"
