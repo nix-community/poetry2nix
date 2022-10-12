@@ -10597,6 +10597,9 @@
   "psycopg2": [
     "setuptools"
   ],
+  "psycopg2-binary": [
+    "setuptools"
+  ],
   "psycopg2cffi": [
     "setuptools"
   ],
