@@ -8278,6 +8278,9 @@
   "migen": [
     "setuptools"
   ],
+  "migra": [
+    "poetry-core"
+  ],
   "mike": [
     "setuptools"
   ],
@@ -15610,6 +15613,9 @@
     "setuptools"
   ],
   "sqlalchemy-utils": [
+    "setuptools"
+  ],
+  "sqlbag": [
     "setuptools"
   ],
   "sqlglot": [
