@@ -203,6 +203,7 @@ lib.composeManyExtensions [
         let
           getCargoHash = version: {
             "4.0.0" = "sha256-HvfRLyUhlXVuvxWrtSDKx3rMKJbjvuiMcDY6g+pYFS0=";
+            "4.0.1" = "sha256-lDWX69YENZFMu7pyBmavUZaalGvFqbHSHfkwkzmDQaY=";
           }.${version} or (
             lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
