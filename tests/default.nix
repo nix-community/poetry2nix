@@ -105,7 +105,10 @@ builtins.removeAttrs
 
   poetry-env =
     let
-      env = poetry2nix.mkPoetryEnv { projectDir = ../pkgs/poetry; };
+      env = poetry2nix.mkPoetryEnv {
+        projectDir = ../pkgs/poetry;
+        groups = [ "typing" ];
+      };
     in
     pkgs.runCommand "poetry-env-test" { } ''
       ${env}/bin/python -c 'import requests'
