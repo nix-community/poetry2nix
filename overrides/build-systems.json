@@ -1702,6 +1702,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "backports-zoneinfo": [
+    "setuptools"
+  ],
   "bagit": [
     "setuptools",
     "setuptools-scm"
@@ -8354,6 +8357,10 @@
     "setuptools"
   ],
   "mkdocs": [
+    {
+      "buildSystem": "hatchling",
+      "from": "1.4.1"
+    },
     "setuptools"
   ],
   "mkdocs-autorefs": [
