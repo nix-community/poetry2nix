@@ -4748,6 +4748,9 @@
   "fasttext": [
     "setuptools"
   ],
+  "faust-streaming": [
+    "setuptools"
+  ],
   "favicon": [
     "setuptools"
   ],
@@ -8457,6 +8460,9 @@
     "setuptools"
   ],
   "mockupdb": [
+    "setuptools"
+  ],
+  "mode-streaming": [
     "setuptools"
   ],
   "moderngl": [
@@ -13378,6 +13384,9 @@
   "python-sat": [
     "setuptools"
   ],
+  "python-schema-registry-client": [
+    "setuptools"
+  ],
   "python-simple-hipchat": [
     "setuptools"
   ],
@@ -15894,6 +15903,9 @@
     "setuptools"
   ],
   "svgwrite": [
+    "setuptools"
+  ],
+  "svix-ksuid": [
     "setuptools"
   ],
   "swagger-spec-validator": [
