@@ -3695,6 +3695,9 @@
   "django-cleanup": [
     "setuptools"
   ],
+  "django-cockroachdb": [
+    "setuptools"
+  ],
   "django-colorful": [
     "setuptools"
   ],
@@ -10595,6 +10598,9 @@
     "setuptools"
   ],
   "psycopg2": [
+    "setuptools"
+  ],
+  "psycopg2-binary": [
     "setuptools"
   ],
   "psycopg2cffi": [
