@@ -17647,6 +17647,9 @@
   "wsgitools": [
     "setuptools"
   ],
+  "wslink": [
+    "setuptools"
+  ],
   "wsnsimpy": [
     "setuptools"
   ],
