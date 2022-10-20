@@ -129,6 +129,7 @@ builtins.removeAttrs
   setuptools = callTest ./setuptools { };
 
   scientific = callTest ./scientific { };
+  scipy1_9 = callTest ./scipy1_9 { };
   test-group = callTest ./test-group { };
 }
   skipTests
