@@ -202,7 +202,7 @@ lib.makeScope pkgs.newScope (self: {
                       sourceSpec = (
                         (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
                           or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
-                          or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies { }).${normalizedName} # Poetry 1.2.0+
+                          or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies or { }).${normalizedName} # Poetry 1.2.0+
                           or { }
                       );
                     }
