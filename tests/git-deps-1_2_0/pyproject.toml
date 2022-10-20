@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "git-deps"
+version = "0.1.0"
+description = "poetry2nix test"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.group.dev.dependencies]
+colorama = { git = "https://github.com/tartley/colorama.git", rev = "4321bbfda9aa190acdad05eb901d3b59439f0ec9" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
