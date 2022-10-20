@@ -77,6 +77,7 @@ builtins.removeAttrs
 
   ansible-molecule = callTest ./ansible-molecule { };
   bcrypt = callTest ./bcrypt { };
+  black = callTest ./black { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   markupsafe2 = callTest ./markupsafe2 { };
   pendulum = callTest ./pendulum { };
