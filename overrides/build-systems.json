@@ -11437,6 +11437,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pygltflib": [
+    "setuptools"
+  ],
   "pygmars": [
     "setuptools",
     "setuptools-scm"
