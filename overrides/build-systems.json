@@ -14557,6 +14557,9 @@
   "s3-credentials": [
     "setuptools"
   ],
+  "s3cmd": [
+    "setuptools"
+  ],
   "s3fs": [
     "setuptools"
   ],
