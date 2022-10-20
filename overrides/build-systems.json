@@ -14718,6 +14718,9 @@
   "scikit-optimize": [
     "setuptools"
   ],
+  "scikit-spatial": [
+    "poetry"
+  ],
   "scikit-survival": [
     "cython",
     "setuptools",
