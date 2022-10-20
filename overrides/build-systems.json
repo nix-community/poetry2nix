@@ -14749,6 +14749,9 @@
   "scmrepo": [
     "setuptools"
   ],
+  "scooby": [
+    "setuptools"
+  ],
   "scour": [
     "setuptools"
   ],
