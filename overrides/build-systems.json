@@ -1093,6 +1093,9 @@
   "asynctest": [
     "setuptools"
   ],
+  "asyncua": [
+    "setuptools"
+  ],
   "asyncwhois": [
     "setuptools"
   ],
