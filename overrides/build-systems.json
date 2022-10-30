@@ -10325,6 +10325,9 @@
   "plyvel": [
     "setuptools"
   ],
+  "pmdarima": [
+    "setuptools"
+  ],
   "pmsensor": [
     "setuptools"
   ],
