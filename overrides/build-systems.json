@@ -7905,6 +7905,9 @@
   "luhn": [
     "setuptools"
   ],
+  "lunarcalendar": [
+    "setuptools"
+  ],
   "lupa": [
     "cython",
     "setuptools"
