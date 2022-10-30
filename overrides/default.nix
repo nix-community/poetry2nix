@@ -312,6 +312,12 @@ lib.composeManyExtensions [
       cmdstanpy = super.cmdstanpy.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmdstan ];
+          patchPhase = ''
+            substituteInPlace cmdstanpy/model.py \
+              --replace 'cmd = [make]' \
+              'cmd = ["${pkgs.cmdstan}/bin/stan"]'
+          '';
+          CMDSTAN="${pkgs.cmdstan}";
         }
       );
 
@@ -1512,6 +1518,12 @@ lib.composeManyExtensions [
 
       prettytable = super.prettytable.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+      });
+
+      prophet = super.prophet.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmdstan self.cmdstanpy ];
+        PROPHET_REPACKAGE_CMDSTAN = "false";
+        CMDSTAN="${pkgs.cmdstan}";
       });
 
       psycopg2 = super.psycopg2.overridePythonAttrs (
