@@ -15767,6 +15767,9 @@
   "statsd": [
     "setuptools"
   ],
+  "statsforecast": [
+    "setuptools"
+  ],
   "statsmodels": [
     "cython",
     "setuptools"
