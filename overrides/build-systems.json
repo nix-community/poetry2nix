@@ -9127,7 +9127,14 @@
   ],
   "notebook-shim": [
     "jupyter-packaging",
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.2.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.2.0"
+    }
   ],
   "notedown": [
     "setuptools"
