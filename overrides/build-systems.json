@@ -16070,6 +16070,9 @@
   "taxi": [
     "setuptools"
   ],
+  "tbats": [
+    "setuptools"
+  ],
   "tblib": [
     "setuptools"
   ],

@@ -317,7 +317,7 @@ lib.composeManyExtensions [
               --replace 'cmd = [make]' \
               'cmd = ["${pkgs.cmdstan}/bin/stan"]'
           '';
-          CMDSTAN="${pkgs.cmdstan}";
+          CMDSTAN = "${pkgs.cmdstan}";
         }
       );
 
@@ -1523,7 +1523,7 @@ lib.composeManyExtensions [
       prophet = super.prophet.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmdstan self.cmdstanpy ];
         PROPHET_REPACKAGE_CMDSTAN = "false";
-        CMDSTAN="${pkgs.cmdstan}";
+        CMDSTAN = "${pkgs.cmdstan}";
       });
 
       psycopg2 = super.psycopg2.overridePythonAttrs (
