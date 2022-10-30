@@ -15000,6 +15000,9 @@
   "shamir-mnemonic": [
     "setuptools"
   ],
+  "shap": [
+    "setuptools"
+  ],
   "shapely": [
     "cython",
     "setuptools"
