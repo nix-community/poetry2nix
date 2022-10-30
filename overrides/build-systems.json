@@ -7256,7 +7256,10 @@
     "setuptools"
   ],
   "jupyter-server": [
-    "setuptools",
+    {
+      "buildSystem": "setuptools",
+      "until": "1.21.0"
+    },
     {
       "buildSystem": "jupyter-packaging",
       "from": "1.21.0"
