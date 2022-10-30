@@ -309,6 +309,12 @@ lib.composeManyExtensions [
           )
         );
 
+      cmdstanpy = super.cmdstanpy.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmdstan ];
+        }
+      );
+
       contourpy = super.contourpy.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pybind11 ];
