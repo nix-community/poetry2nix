@@ -4566,6 +4566,7 @@
   ],
   "exceptiongroup": [
     "flit-core",
+    "flit-scm",
     "flitBuildHook",
     "setuptools"
   ],
