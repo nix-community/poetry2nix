@@ -2778,6 +2778,9 @@
   "cmdline": [
     "setuptools"
   ],
+  "cmdstanpy": [
+    "setuptools"
+  ],
   "cmigemo": [
     "setuptools"
   ],
