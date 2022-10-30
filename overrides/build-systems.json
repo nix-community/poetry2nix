@@ -7256,7 +7256,11 @@
     "setuptools"
   ],
   "jupyter-server": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "jupyter-packaging",
+      "from": "1.21.0"
+    }
   ],
   "jupyter-server-mathjax": [
     "jupyter-packaging",
