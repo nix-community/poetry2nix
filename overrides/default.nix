@@ -432,6 +432,10 @@ lib.composeManyExtensions [
         '';
       });
 
+      darts = super.darts.override {
+        preferWheel = true;
+      };
+
       datadog-lambda = super.datadog-lambda.overridePythonAttrs (old: {
         postPatch = ''
           substituteInPlace setup.py --replace "setuptools==" "setuptools>="
