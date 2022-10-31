@@ -221,6 +221,16 @@ lib.makeScope pkgs.newScope (self: {
         getFunctorFn
         (
           [
+            # Remove Python packages aliases with non-normalized names to avoid issues with infinite recursion (issue #750).
+            (self: super: lib.attrsets.mapAttrs
+              (
+                name: value:
+                  if lib.isDerivation value && self.hasPythonModule value && (normalizePackageName name) != name
+                  then null
+                  else value
+              )
+              super)
+
             (
               self: super:
                 {
