@@ -1303,10 +1303,26 @@ lib.composeManyExtensions [
       );
 
       open3d = super.open3d.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.ipywidgets ];
         buildInputs = (old.buildInputs or [ ]) ++ [
           pkgs.udev
           pkgs.libusb1
-        ];
+        ] ++ (if lib.versionAtLeast super.open3d.version "0.16.0" then [
+          pkgs.mesa
+          (
+            pkgs.symlinkJoin {
+              name = "llvm-with-ubuntu-compatible-symlink";
+              paths = [
+                pkgs.llvm_10.lib
+                (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
+                  ''
+                    mkdir -p "$out/lib/";
+                    ln -s "${pkgs.llvm_10.lib}/lib/libLLVM-10.so" "$out/lib/libLLVM-10.so.1"
+                  ''
+                )
+              ];
+            })
+        ] else [ ]);
         # TODO(Sem Mulder): Add overridable flags for CUDA/PyTorch/Tensorflow support.
         autoPatchelfIgnoreMissingDeps = true;
       });
