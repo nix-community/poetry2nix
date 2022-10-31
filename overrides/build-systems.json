@@ -167,6 +167,9 @@
   "aio-georss-gdacs": [
     "setuptools"
   ],
+  "aio-pika": [
+    "setuptools"
+  ],
   "aioairq": [
     "setuptools"
   ],
@@ -442,6 +445,9 @@
   ],
   "aioridwell": [
     "poetry-core",
+    "setuptools"
+  ],
+  "aiormq": [
     "setuptools"
   ],
   "aiorpcx": [
@@ -3710,6 +3716,9 @@
   "django-colorful": [
     "setuptools"
   ],
+  "django-colorfield": [
+    "setuptools"
+  ],
   "django-compat": [
     "setuptools"
   ],
@@ -3943,6 +3952,9 @@
   "djangorestframework-simplejwt": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "djangorestframework-stubs": [
+    "setuptools"
   ],
   "djmail": [
     "setuptools"
@@ -4571,6 +4583,7 @@
     "flit-core",
     "flit-scm",
     "flitBuildHook",
+    "flit-scm",
     "setuptools"
   ],
   "exchangelib": [
@@ -8303,6 +8316,9 @@
   ],
   "migen": [
     "setuptools"
+  ],
+  "migra": [
+    "poetry-core"
   ],
   "mike": [
     "setuptools"
@@ -14699,6 +14715,9 @@
   "schema": [
     "setuptools"
   ],
+  "schemainspect": [
+    "setuptools"
+  ],
   "schema-salad": [
     "setuptools"
   ],
@@ -15668,6 +15687,9 @@
     "setuptools"
   ],
   "sqlalchemy-utils": [
+    "setuptools"
+  ],
+  "sqlbag": [
     "setuptools"
   ],
   "sqlglot": [
@@ -16695,6 +16717,9 @@
   "tunigo": [
     "setuptools"
   ],
+  "tusker": [
+    "poetry"
+  ],
   "turnt": [
     "flitBuildHook",
     "setuptools"
@@ -16847,6 +16872,9 @@
     "setuptools"
   ],
   "types-jsonschema": [
+    "setuptools"
+  ],
+  "types-markdown": [
     "setuptools"
   ],
   "types-protobuf": [
