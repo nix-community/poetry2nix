@@ -1800,6 +1800,16 @@ lib.composeManyExtensions [
         }
       );
 
+      pytorch-lightning = super.pytorch-lightning.override {
+        unpackPhase = ''
+          # $src remains a gzipped tarball otherwise.
+          mkdir -p tmp
+          tar xvf $src --directory=tmp
+          mv tmp/pytorch-lightning*/* .
+          rm -rf tmp
+        '';
+      };
+
       pyqt5 =
         let
           qt5 = selectQt5 super.pyqt5.version;
