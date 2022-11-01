@@ -900,6 +900,9 @@
   "arpeggio": [
     "setuptools"
   ],
+  "arpy": [
+    "setuptools"
+  ],
   "arrayqueues": [
     "setuptools"
   ],
@@ -11200,6 +11203,9 @@
   ],
   "pydot": [
     "setuptools"
+  ],
+  "pydpkg": [
+    "poetry"
   ],
   "pydrive2": [
     "setuptools"
