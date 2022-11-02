@@ -2231,9 +2231,7 @@ lib.composeManyExtensions [
 
       tensorflow-macos = super.tensorflow-macos.overridePythonAttrs (
         old: {
-          postInstall = ''
-            rm $out/bin/tensorboard
-          '';
+          postInstall = self.tensorflow.postInstall;
         }
       );
 
