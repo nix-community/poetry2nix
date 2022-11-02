@@ -2852,6 +2852,10 @@
     "setuptools"
   ],
   "colorama": [
+    {
+      "buildSystem": "hatchling",
+      "from": "0.4.6"
+    },
     "setuptools"
   ],
   "colorcet": [
