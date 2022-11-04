@@ -2229,6 +2229,12 @@ lib.composeManyExtensions [
         }
       );
 
+      tensorflow-macos = super.tensorflow-macos.overridePythonAttrs (
+        old: {
+          postInstall = self.tensorflow.postInstall;
+        }
+      );
+
       tensorpack = super.tensorpack.overridePythonAttrs (
         old: {
           postPatch = ''

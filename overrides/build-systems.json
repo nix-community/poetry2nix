@@ -7647,6 +7647,9 @@
   "libasyncns": [
     "setuptools"
   ],
+  "libclang": [
+    "setuptools"
+  ],
   "libcloud": [
     "setuptools"
   ],
