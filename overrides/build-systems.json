@@ -3925,6 +3925,9 @@
   "django-treebeard": [
     "setuptools"
   ],
+  "django-types": [
+    "poetry-core"
+  ],
   "django-versatileimagefield": [
     "setuptools"
   ],
@@ -3962,6 +3965,9 @@
   ],
   "djangorestframework-stubs": [
     "setuptools"
+  ],
+  "djangorestframework-types": [
+    "poetry"
   ],
   "djmail": [
     "setuptools"
@@ -15259,6 +15265,9 @@
     "setuptools"
   ],
   "slugid": [
+    "setuptools"
+  ],
+  "slumber": [
     "setuptools"
   ],
   "sly": [
