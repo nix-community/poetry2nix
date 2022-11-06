@@ -8449,6 +8449,10 @@
     "setuptools"
   ],
   "mkdocs-material-extensions": [
+    {
+      "from": "1.1",
+      "buildSystem": "hatchling"
+    },
     "setuptools"
   ],
   "mkdocs-minify": [
