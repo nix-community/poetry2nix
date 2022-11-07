@@ -4471,6 +4471,9 @@
   "env-canada": [
     "setuptools"
   ],
+  "envier": [
+    "setuptools"
+  ],
   "environmental-override": [
     "setuptools"
   ],
