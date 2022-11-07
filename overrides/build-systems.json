@@ -16867,6 +16867,9 @@
   "types-awscrt": [
     "poetry-core"
   ],
+  "types-cachetools": [
+    "setuptools"
+  ],
   "types-colorama": [
     "setuptools"
   ],
