@@ -3417,6 +3417,9 @@
   "dbutils": [
     "setuptools"
   ],
+  "ddsketch": [
+    "setuptools"
+  ],
   "ddt": [
     "setuptools"
   ],
