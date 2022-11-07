@@ -8783,6 +8783,9 @@
   "mypy-boto3-cognito-idp": [
     "setuptools"
   ],
+  "mypy-boto3-dynamodb": [
+    "setuptools"
+  ],
   "mypy-boto3-s3": [
     "setuptools"
   ],
