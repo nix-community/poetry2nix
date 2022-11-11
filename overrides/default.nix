@@ -372,6 +372,12 @@ lib.composeManyExtensions [
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.git ];
       });
 
+      crispy-bootstrap5 = super.crispy-bootstrap5.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+        }
+      );
+
       cryptography =
         let
           getCargoHash = version: {
@@ -512,6 +518,12 @@ lib.composeManyExtensions [
       django-cors-headers = super.django-cors-headers.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
+        }
+      );
+
+      django-crispy-forms = super.django-crispy-forms.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
         }
       );
 
