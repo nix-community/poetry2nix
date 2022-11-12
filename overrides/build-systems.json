@@ -3799,6 +3799,9 @@
   "django-hijack": [
     "setuptools"
   ],
+  "django-htmx": [
+    "setuptools"
+  ],
   "django-ipware": [
     "setuptools"
   ],
