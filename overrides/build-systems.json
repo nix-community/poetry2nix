@@ -8698,6 +8698,9 @@
   "multi-key-dict": [
     "setuptools"
   ],
+  "multiaddr": [
+    "setuptools"
+  ],
   "multidict": [
     "setuptools"
   ],
