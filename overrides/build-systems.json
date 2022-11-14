@@ -3098,6 +3098,9 @@
   "credstash": [
     "setuptools"
   ],
+  "crispy-bootstrap5": [
+    "setuptools"
+  ],
   "criticality-score": [
     "setuptools"
   ],
@@ -3747,6 +3750,9 @@
     "setuptools"
   ],
   "django-cryptography": [
+    "setuptools"
+  ],
+  "django-crispy-forms": [
     "setuptools"
   ],
   "django-csp": [
