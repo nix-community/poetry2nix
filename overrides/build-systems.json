@@ -16735,6 +16735,9 @@
   "trio-websocket": [
     "setuptools"
   ],
+  "troposphere": [
+    "setuptools"
+  ],
   "trueskill": [
     "setuptools"
   ],
@@ -16891,6 +16894,21 @@
   ],
   "types-awscrt": [
     "poetry-core"
+  ],
+  "types-aiobotocore": [
+    "setuptools"
+  ],
+  "types-aiobotocore-cloudformation": [
+    "setuptools"
+  ],
+  "types-aiobotocore-ec2": [
+    "setuptools"
+  ],
+  "types-aiobotocore-elbv2": [
+    "setuptools"
+  ],
+  "types-aiobotocore-ssm": [
+    "setuptools"
   ],
   "types-cachetools": [
     "setuptools"
