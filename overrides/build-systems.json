@@ -12339,6 +12339,9 @@
   "pyramid-multiauth": [
     "setuptools"
   ],
+  "pyramid-openapi3": [
+    "poetry"
+  ],
   "pyreadability": [
     "setuptools"
   ],
