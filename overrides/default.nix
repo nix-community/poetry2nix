@@ -1516,6 +1516,10 @@ lib.composeManyExtensions [
         }
       );
 
+      poethepoet = super.poethepoet.overrideAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.poetry ];
+      });
+
       poetry-core = super.poetry-core.overridePythonAttrs (old:
         let
           initFile =
@@ -2687,6 +2691,10 @@ lib.composeManyExtensions [
                   --replace "/usr/local/lib" "${pkgs.sqlite.out}/lib"
           ${lib.optionalString (!stdenv.isDarwin) ''export LDSHARED="$CC -pthread -shared"''}
         '';
+      });
+
+      pyyaml-include = super.pyyaml-include.overridePythonAttrs (old: {
+        SETUPTOOLS_SCM_PRETEND_VERSION = old.version;
       });
 
       selinux = super.selinux.overridePythonAttrs (old: {

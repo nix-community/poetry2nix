@@ -3061,7 +3061,8 @@
     "setuptools"
   ],
   "copier": [
-    "poetry-core"
+    "poetry-core",
+    "poetry-dynamic-versioning"
   ],
   "coqpit": [
     "setuptools"
@@ -14076,7 +14077,8 @@
     "setuptools"
   ],
   "pyyaml-include": [
-    "setuptools"
+    "setuptools",
+    "setuptools-scm"
   ],
   "pyzbar": [
     "setuptools"
@@ -17097,6 +17099,9 @@
   "types-awscrt": [
     "poetry-core"
   ],
+  "types-backports": [
+    "setuptools"
+  ],
   "types-cachetools": [
     "setuptools"
   ],
@@ -17140,6 +17145,9 @@
     "setuptools"
   ],
   "types-protobuf": [
+    "setuptools"
+  ],
+  "types-psutil": [
     "setuptools"
   ],
   "types-python-dateutil": [
