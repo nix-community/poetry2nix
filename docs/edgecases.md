@@ -157,3 +157,30 @@ poetry2nix.mkPoetryApplication {
 This override will instruct the underlying build logic to include the additional build dependency into the inputs of `django-floppyforms`.
 It might help to know that you don't need to use the full package name like `python39Packages.setupools` but can just use `setuptools` directly.
 However you have to use the name like defined in `Nixpkgs` so something like `flit_scm` becomes `flit-scm`.
+
+It can happen that you need multiple overrides for your project, just work through one after the other and your project should build at the end.
+Your file might then look something like this:
+
+```
+poetry2nix.mkPoetryApplication {
+  projectDir = ./.;
+  overrides = poetry2nix.defaultPoetryOverrides.extend
+    (self: super: {
+      first-dependency = super.first-dependency.overridePythonAttrs
+      (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ super.buildtools ];
+        }
+      );
+      second-dependency = super.second-dependency.overridePythonAttrs
+      (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ super.pdm ];
+        }
+      );
+    });
+}
+```
+
+We recommend that you contribute your changes to `poetry2nix` so that other users can profit from them as well.
+The file with the upstream overrides can be found here: https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json
