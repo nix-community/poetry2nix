@@ -3780,6 +3780,9 @@
   "django-filter": [
     "setuptools"
   ],
+  "django-floppyforms": [
+    "setuptools"
+  ],
   "django-formtools": [
     "setuptools",
     "setuptools-scm"
@@ -3837,6 +3840,9 @@
     "setuptools"
   ],
   "django-multiselectfield": [
+    "setuptools"
+  ],
+  "django-nested-admin": [
     "setuptools"
   ],
   "django-nose": [
@@ -8416,6 +8422,9 @@
     "setuptools"
   ],
   "mitogen": [
+    "setuptools"
+  ],
+  "mixer": [
     "setuptools"
   ],
   "mizani": [
@@ -13373,6 +13382,9 @@
   "python-mimeparse": [
     "setuptools"
   ],
+  "python-monkey-business": [
+    "setuptools"
+  ],
   "python-mnist": [
     "setuptools"
   ],
@@ -13656,6 +13668,9 @@
   ],
   "pytomorrowio": [
     "setuptools"
+  ],
+  "pytoolconfig": [
+    "pdm-pep517"
   ],
   "pytools": [
     "setuptools"
