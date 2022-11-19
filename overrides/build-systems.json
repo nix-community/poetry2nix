@@ -13382,7 +13382,7 @@
   "python-mimeparse": [
     "setuptools"
   ],
-  "python-monkey-busines": [
+  "python-monkey-business": [
     "flit-scm",
     "setuptools"
   ],
