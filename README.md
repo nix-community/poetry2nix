@@ -8,6 +8,7 @@ For more information, see [the announcement post on the Tweag blog](https://www.
 
 ## Table of contents
 - [API](#api)
+- [FAQ](#FAQ)
 - [How-to guides](#how-to-guides)
 - [Using the flake](#using-the-flake)
 - [Contributing](#contributing)
@@ -294,6 +295,21 @@ in pkgs.poetry2nix.mkPoetryApplication {
   projectDir = ./.;
 }
 ```
+
+
+## FAQ
+
+**Q.** I'm experiencing one of the following errors, what do I do?
+
+- ModuleNotFoundError: No module named 'setuptools'
+- ModuleNotFoundError: No module named 'pdm'
+- ModuleNotFoundError: No module named 'setuptools-scm'
+- ModuleNotFoundError: No module named 'poetry-core'
+- ModuleNotFoundError: No module named 'flit'
+- ModuleNotFoundError: No module named 'flit-core'
+- ModuleNotFoundError: No module named 'flit-scm'
+
+**A.** Have a look at the following document [edgecase.md](./docs/edgecases.md)
 
 ## How-to guides
 - [Package and deploy Python apps faster with Poetry and Nix](https://www.youtube.com/watch?v=TbIHRHy7_JM)
