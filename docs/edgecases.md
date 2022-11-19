@@ -32,7 +32,7 @@ But pip requires `PACKAGENAME` to build this package. And that’s when an error
 **Example:** Let's consider the situation when our package has declared `django-floppyforms` as a dependency in `pyproject.toml`, which uses `PACKAGENAME` to be built.
 And we have this declaration in our Nix definition:
 
-```
+``` nix
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
 }
@@ -139,7 +139,7 @@ As you can see on the fourth last line it's missing `setupools` which in this ca
 
 In order to be able to build `django-floppyforms` we should modify our nix definition as follows:
 
-```
+``` nix
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
   overrides = poetry2nix.defaultPoetryOverrides.extend
@@ -161,7 +161,7 @@ However you have to use the name like defined in `Nixpkgs` so something like `fl
 It can happen that you need multiple overrides for your project, just work through one after the other and your project should build at the end.
 Your file might then look something like this:
 
-```
+``` nix
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
   overrides = poetry2nix.defaultPoetryOverrides.extend
