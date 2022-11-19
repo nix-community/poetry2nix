@@ -13383,7 +13383,8 @@
     "setuptools"
   ],
   "python-monkey-busines": [
-        "flit-scm"
+    "flit-scm",
+    "setuptools"
   ],
   "python-mnist": [
     "setuptools"
