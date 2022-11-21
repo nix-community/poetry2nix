@@ -6417,7 +6417,18 @@
     "setuptools"
   ],
   "httpx": [
-    "setuptools"
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "0.23.1"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.23.1"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "0.23.1"
+    }
   ],
   "httpx-auth": [
     "setuptools"
