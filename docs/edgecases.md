@@ -147,7 +147,7 @@ poetry2nix.mkPoetryApplication {
       django-floppyforms = super.django-floppyforms.overridePythonAttrs
       (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ super.buildtools ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
         }
       );
     });
