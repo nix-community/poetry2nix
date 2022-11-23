@@ -133,7 +133,7 @@ error: 1 dependencies of derivation '/nix/store/hz4b87s99s1lwiz2m0vwilhlh6rlfj64
 error: 1 dependencies of derivation '/nix/store/60gaxbdf11lhaj9xg50cf0rr6x5v8v1z-nix-shell-env.drv' failed to build
 ```
 
-As you can see on the fourth last line it's missing `setupools` which in this case is our missing `PACKAGENAME`.
+As you can see on the fourth last line it's missing `setuptools` which in this case is our missing `PACKAGENAME`.
 
 </details>
 
@@ -155,7 +155,7 @@ poetry2nix.mkPoetryApplication {
 ```
 
 This override will instruct the underlying build logic to include the additional build dependency into the inputs of `django-floppyforms`.
-It might help to know that you don't need to use the full package name like `python39Packages.setupools` but can just use `setuptools` directly.
+It might help to know that you don't need to use the full package name like `python39Packages.setuptools` but can just use `setuptools` directly.
 However you have to use the name like defined in `Nixpkgs` so something like `flit_scm` becomes `flit-scm`.
 
 It can happen that you need multiple overrides for your project, just work through one after the other and your project should build at the end.
