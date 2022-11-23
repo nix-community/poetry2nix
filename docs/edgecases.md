@@ -156,7 +156,7 @@ poetry2nix.mkPoetryApplication {
 
 This override will instruct the underlying build logic to include the additional build dependency into the inputs of `django-floppyforms`.
 It might help to know that you don't need to use the full package name like `python39Packages.setuptools` but can just use `setuptools` directly.
-However you have to use the name like defined in `Nixpkgs` so something like `flit_scm` becomes `flit-scm`.
+Be aware that the package names are normalized according to PEP-517, so something like `flit_scm` becomes `flit-scm`.
 
 It can happen that you need multiple overrides for your project, just work through one after the other and your project should build at the end.
 Your file might then look something like this:
