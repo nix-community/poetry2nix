@@ -4846,6 +4846,7 @@
     "setuptools"
   ],
   "fido2": [
+    "poetry",
     "setuptools"
   ],
   "fields": [
@@ -18109,6 +18110,9 @@
   ],
   "yubico-client": [
     "setuptools"
+  ],
+  "yubikey-manager": [
+    "poetry"
   ],
   "yutto": [
     "poetry-core",
