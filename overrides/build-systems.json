@@ -7490,6 +7490,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "keyring-pass": [
+    "poetry"
+  ],
   "keyrings-alt": [
     "setuptools",
     "setuptools-scm"
