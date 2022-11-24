@@ -1795,6 +1795,34 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
       });
 
+      pyscard = super.pyscard.overridePythonAttrs (old:
+        # see https://github.com/NixOS/nixpkgs/blob/93568862a610dc1469dc40b15c1096a9357698ac/pkgs/development/python-modules/pyscard/default.nix
+        let
+          inherit (pkgs) PCSC pcsclite;
+          withApplePCSC = stdenv.isDarwin;
+        in
+        {
+          postPatch =
+            if withApplePCSC then ''
+              substituteInPlace smartcard/scard/winscarddll.c \
+                --replace "/System/Library/Frameworks/PCSC.framework/PCSC" \
+                          "${PCSC}/Library/Frameworks/PCSC.framework/PCSC"
+            '' else ''
+              substituteInPlace smartcard/scard/winscarddll.c \
+                --replace "libpcsclite.so.1" \
+                          "${lib.getLib pcsclite}/lib/libpcsclite${stdenv.hostPlatform.extensions.sharedLibrary}"
+            '';
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ (
+            if withApplePCSC then [ PCSC ] else [ pcsclite ]
+          );
+          NIX_CFLAGS_COMPILE = lib.optionalString (! withApplePCSC)
+            "-I ${lib.getDev pcsclite}/include/PCSC";
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.swig
+          ];
+        }
+      );
+
       pytaglib = super.pytaglib.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.taglib ];
       });
