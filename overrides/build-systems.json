@@ -7495,6 +7495,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "keyring-pass": [
+    "poetry-core"
+  ],
   "keyrings-alt": [
     "setuptools",
     "setuptools-scm"
