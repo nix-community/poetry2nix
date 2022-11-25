@@ -2388,6 +2388,13 @@ lib.composeManyExtensions [
             rev = "v${old.version}";
             inherit sha256;
           };
+          patchPhase = builtins.concatStringsSep "\n" [
+            (old.patchPhase or "")
+            ''
+              substituteInPlace "Cargo.lock" --replace 'version = "0.0.0"' 'version = "${old.version}"'
+              substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
+            ''
+          ];
           cargoDeps = pkgs.rustPlatform.importCargoLock {
             lockFile = "${src.out}/Cargo.lock";
           };

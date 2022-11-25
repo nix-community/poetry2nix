@@ -7396,6 +7396,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "justpy": [
+    "flit-core"
+  ],
   "jwcrypto": [
     "setuptools"
   ],
@@ -9096,6 +9099,9 @@
   ],
   "nibabel": [
     "setuptools"
+  ],
+  "nicegui": [
+    "poetry-core"
   ],
   "niko-home-control": [
     "setuptools"
@@ -15850,7 +15856,8 @@
     "setuptools"
   ],
   "starlette": [
-    "setuptools"
+    "setuptools",
+    "hatchling"
   ],
   "starline": [
     "setuptools"
@@ -15963,7 +15970,10 @@
   ],
   "structlog": [
     "flitBuildHook",
-    "setuptools"
+    "setuptools",
+    "hatchling",
+    "hatch-fancy-pypi-readme",
+    "hatch-vcs"
   ],
   "structlog-sentry": [
     "poetry-core"
