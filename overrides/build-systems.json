@@ -1040,6 +1040,9 @@
   "astunparse": [
     "setuptools"
   ],
+  "async-cache": [
+    "setuptools"
+  ],
   "async-dns": [
     "poetry-core",
     "setuptools"
