@@ -2012,6 +2012,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "blue": [
+    "setuptools"
+  ],
   "bluemaestro-ble": [
     "poetry-core",
     "setuptools"
