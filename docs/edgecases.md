@@ -2,35 +2,20 @@
 
 ## Preamble
 
-The Python ecosystem has a very long history.
-Over the years, an uncountable number of modules have been created, but more importantly, the assembly technology of these modules has changed many times.
-`ez_install`, `setuptools`, `distutils`, eggs, `pip`, wheels, PEP-518, PEP-517, `flit`, `poetry`.
-All this diversity creates great difficulties.
-Poetry, on the one hand, being a build system, can abandon the setuptools and distutils formats, but at the same time, being a dependency installation and management system, it must support all current distribution technologies.
-And it can do this without revealing the internal structure and the machinery behind curtains.
-In other words, when you use Poetry, both `setuptools`, `pip` and other build tools can be used to install some modules, and this happens without formally declaring dependence on these tools.
+The Python ecosystem has a very long history. Over the years, an uncountable number of modules have been created, but more importantly, the assembly technology of these modules has changed many times. `ez_install`, `setuptools`, `distutils`, eggs, `pip`, wheels, PEP-518, PEP-517, `flit`, `poetry`. All this diversity creates great difficulties. Poetry, on the one hand, being a build system, can abandon the setuptools and distutils formats, but at the same time, being a dependency installation and management system, it must support all current distribution technologies. And it can do this without revealing the internal structure and the machinery behind curtains. In other words, when you use Poetry, both `setuptools`, `pip` and other build tools can be used to install some modules, and this happens without formally declaring dependence on these tools.
 
-All these factors can cause the module not to be assembled or installed in a certain environment.
-Nix is a much stricter ecosystem, it has more formal requirements, but at the same time more guarantees.
-And since `poetry2nix` relies on Nix and its strict rules in its work, there are many rough edges and inaccuracies in the metadata on pypi.org leads to errors.
-This is very sad, and we will inevitably face the fact that some modules can not be installed, can not be built, or just cause errors, have unnecessary or missing direct and transitive dependencies.
-However, Nix is a very flexible system that allows you to modify some aspects of the module with pinpoint accuracy, without changing the source code of the module (and sometimes changing it).
-This is what this section is dedicated to.
-We have tried to collect here and describe typical errors and ways to eliminate them.
+All these factors can cause the module not to be assembled or installed in a certain environment. Nix is a much stricter ecosystem, it has more formal requirements, but at the same time more guarantees. And since `poetry2nix` relies on Nix and its strict rules in its work, there are many rough edges and inaccuracies in the metadata on pypi.org leads to errors.
+This is very sad, and we will inevitably face the fact that some modules can not be installed, can not be built, or just cause errors, have unnecessary or missing direct and transitive dependencies. However, Nix is a very flexible system that allows you to modify some aspects of the module with pinpoint accuracy, without changing the source code of the module (and sometimes changing it). This is what this section is dedicated to. We have tried to collect here and describe typical errors and ways to eliminate them.
 
 ## Cases
 
 #### ModuleNotFoundError: No module named 'PACKAGENAME'
 
-**Conditions:** You have declared a dependency in a repository.
-And this package uses `PACKAGENAME` as a build tool. Where `PACKAGENAME` most likely is one of the tools mentioned above (`setuptools`, `pdm`, etc.).
-So since `poetry2nix` cannot obtain this dependency in form of a wheel, it needs to build it from the source by calling pip.
-But pip requires `PACKAGENAME` to build this package. And that’s when an error occurs.
+**Conditions:** You have declared a dependency in a repository. And this package uses `PACKAGENAME` as a build tool. Where `PACKAGENAME` most likely is one of the tools mentioned above (`setuptools`, `pdm`, etc.). So since `poetry2nix` cannot obtain this dependency in form of a wheel, it needs to build it from the source by calling pip. But pip requires `PACKAGENAME` to build this package. And that’s when an error occurs.
 
 **Solution:** In order to make the dependency build, we need to override its build dependencies by adding the `PACKAGENAME` package to it.
 
-**Example:** Let's consider the situation when our package has declared `django-floppyforms` as a dependency in `pyproject.toml`, which uses `PACKAGENAME` to be built.
-And we have this declaration in our Nix definition:
+**Example:** Let's consider the situation when our package has declared `django-floppyforms` as a dependency in `pyproject.toml`, which uses `PACKAGENAME` to be built. And we have this declaration in our Nix definition:
 
 ``` nix
 poetry2nix.mkPoetryApplication {
