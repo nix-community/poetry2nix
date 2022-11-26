@@ -11,7 +11,7 @@ This is very sad, and we will inevitably face the fact that some modules can not
 
 #### ModuleNotFoundError: No module named 'PACKAGENAME'
 
-**Conditions:** You have declared a dependency in a repository. And this package uses `PACKAGENAME` as a build tool. Where `PACKAGENAME` most likely is one of the tools mentioned above (`setuptools`, `pdm`, etc.). So since `poetry2nix` cannot obtain this dependency in form of a wheel, it needs to build it from the source by calling pip. But pip requires `PACKAGENAME` to build this package. And that’s when an error occurs.
+**Conditions:** You have declared a dependency in a repository. And this package uses `PACKAGENAME` as a build tool. Where `PACKAGENAME` most likely is one of the tools mentioned above (`setuptools`, `pdm`, etc.). So since `poetry2nix` prefers to download this dependencies as *sdist*, it needs to build it from the source by calling pip. But pip requires `PACKAGENAME` to build this package. And that’s when the error occurs.
 
 **Solution:** In order to make the dependency build, we need to override its build dependencies by adding the `PACKAGENAME` package to it.
 
