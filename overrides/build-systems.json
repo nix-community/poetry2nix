@@ -7882,6 +7882,9 @@
   "lmdb": [
     "setuptools"
   ],
+  "lmfit": [
+    "setuptools"
+  ],
   "lml": [
     "setuptools"
   ],
