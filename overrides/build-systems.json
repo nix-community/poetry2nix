@@ -15995,6 +15995,9 @@
   "streamlabswater": [
     "setuptools"
   ],
+  "streamlink": [
+    "setuptools"
+  ],
   "streamz": [
     "setuptools"
   ],
