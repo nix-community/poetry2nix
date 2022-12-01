@@ -1220,7 +1220,9 @@ lib.composeManyExtensions [
           buildInputs = (old.buildInputs or [ ]) ++ [
             self.types-typed-ast
             self.types-setuptools
-          ];
+          ]
+            ++ lib.optional (lib.strings.versionAtLeast old.version "0.990") self.types-psutil
+          ;
           # Compile mypy with mypyc, which makes mypy about 4 times faster. The compiled
           # version is also the default in the wheels on Pypi that include binaries.
           # is64bit: unfortunately the build would exhaust all possible memory on i686-linux.
