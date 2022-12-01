@@ -2096,7 +2096,8 @@
     "setuptools"
   ],
   "botocore-stubs": [
-    "poetry-core"
+    "poetry-core",
+    "setuptools"
   ],
   "bottle": [
     "setuptools"
@@ -2945,6 +2946,9 @@
   "configclass": [
     "setuptools"
   ],
+  "config-formatter": [
+    "setuptools"
+  ],
   "confight": [
     "setuptools"
   ],
@@ -2956,6 +2960,9 @@
     "setuptools-scm"
   ],
   "configshell": [
+    "setuptools"
+  ],
+  "configupdater": [
     "setuptools"
   ],
   "confluent-kafka": [
@@ -8749,6 +8756,9 @@
   "multidict": [
     "setuptools"
   ],
+  "multihash": [
+    "setuptools"
+  ],
   "multimethod": [
     "setuptools"
   ],
@@ -8828,6 +8838,9 @@
   "mypy": [
     "setuptools"
   ],
+  "mypy-boto3-batch": [
+    "setuptools"
+  ],
   "mypy-boto3-builder": [
     "poetry-core",
     "setuptools"
@@ -8841,7 +8854,22 @@
   "mypy-boto3-dynamodb": [
     "setuptools"
   ],
+  "mypy-boto3-events": [
+    "setuptools"
+  ],
+  "mypy-boto3-lambda": [
+    "setuptools"
+  ],
   "mypy-boto3-s3": [
+    "setuptools"
+  ],
+  "mypy-boto3-s3control": [
+    "setuptools"
+  ],
+  "mypy-boto3-sns": [
+    "setuptools"
+  ],
+  "mypy-boto3-sqs": [
     "setuptools"
   ],
   "mypy-extensions": [
