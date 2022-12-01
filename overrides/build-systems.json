@@ -2940,13 +2940,13 @@
   "conda": [
     "setuptools"
   ],
+  "config-formatter": [
+    "setuptools"
+  ],
   "configargparse": [
     "setuptools"
   ],
   "configclass": [
-    "setuptools"
-  ],
-  "config-formatter": [
     "setuptools"
   ],
   "confight": [
@@ -2963,7 +2963,8 @@
     "setuptools"
   ],
   "configupdater": [
-    "setuptools"
+    "setuptools",
+    "setuptools-scm"
   ],
   "confluent-kafka": [
     "setuptools"
@@ -3740,10 +3741,10 @@
   "django-cockroachdb": [
     "setuptools"
   ],
-  "django-colorful": [
+  "django-colorfield": [
     "setuptools"
   ],
-  "django-colorfield": [
+  "django-colorful": [
     "setuptools"
   ],
   "django-compat": [
@@ -3762,10 +3763,10 @@
   "django-cors-headers": [
     "setuptools"
   ],
-  "django-cryptography": [
+  "django-crispy-forms": [
     "setuptools"
   ],
-  "django-crispy-forms": [
+  "django-cryptography": [
     "setuptools"
   ],
   "django-csp": [
@@ -5630,6 +5631,12 @@
     "setuptools"
   ],
   "github3-py": [
+    "setuptools"
+  ],
+  "gitlint": [
+    "setuptools"
+  ],
+  "gitlint-core": [
     "setuptools"
   ],
   "gitpython": [
@@ -7599,6 +7606,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "language-formatters-pre-commit-hooks": [
+    "setuptools"
+  ],
   "lark": [
     "setuptools"
   ],
@@ -8095,14 +8105,14 @@
   "malduck": [
     "setuptools"
   ],
+  "manage-fastapi": [
+    "poetry"
+  ],
   "managesieve": [
     "setuptools"
   ],
   "manhole": [
     "setuptools"
-  ],
-  "manage-fastapi": [
-    "poetry"
   ],
   "manimpango": [
     "cython",
@@ -8509,8 +8519,8 @@
   ],
   "mkdocs-material-extensions": [
     {
-      "from": "1.1",
-      "buildSystem": "hatchling"
+      "buildSystem": "hatchling",
+      "from": "1.1"
     },
     "setuptools"
   ],
@@ -11305,10 +11315,10 @@
   "pydenticon": [
     "setuptools"
   ],
-  "pydeps": [
+  "pydeprecate": [
     "setuptools"
   ],
-  "pydeprecate": [
+  "pydeps": [
     "setuptools"
   ],
   "pydes": [
@@ -13440,10 +13450,10 @@
   "python-mimeparse": [
     "setuptools"
   ],
-  "python-monkey-business": [
+  "python-mnist": [
     "setuptools"
   ],
-  "python-mnist": [
+  "python-monkey-business": [
     "setuptools"
   ],
   "python-mpv-jsonipc": [
@@ -14836,10 +14846,10 @@
   "schema": [
     "setuptools"
   ],
-  "schemainspect": [
+  "schema-salad": [
     "setuptools"
   ],
-  "schema-salad": [
+  "schemainspect": [
     "setuptools"
   ],
   "schiene": [
@@ -15157,6 +15167,9 @@
     "setuptools"
   ],
   "sharkiqpy": [
+    "setuptools"
+  ],
+  "shellcheck-py": [
     "setuptools"
   ],
   "shellescape": [
@@ -16848,12 +16861,12 @@
   "tunigo": [
     "setuptools"
   ],
-  "tusker": [
-    "poetry"
-  ],
   "turnt": [
     "flitBuildHook",
     "setuptools"
+  ],
+  "tusker": [
+    "poetry"
   ],
   "tuya-iot-py-sdk": [
     "setuptools"
@@ -16969,9 +16982,6 @@
     "flit-core",
     "setuptools"
   ],
-  "types-awscrt": [
-    "poetry-core"
-  ],
   "types-aiobotocore": [
     "setuptools"
   ],
@@ -16986,6 +16996,9 @@
   ],
   "types-aiobotocore-ssm": [
     "setuptools"
+  ],
+  "types-awscrt": [
+    "poetry-core"
   ],
   "types-cachetools": [
     "setuptools"
