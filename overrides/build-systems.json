@@ -1204,6 +1204,9 @@
   "autobahn": [
     "setuptools"
   ],
+  "autoflake": [
+    "hatchling"
+  ],
   "autograd": [
     "setuptools"
   ],
@@ -9520,6 +9523,9 @@
   ],
   "openapi-core": [
     "setuptools"
+  ],
+  "openapi-python-client": [
+    "poetry-core"
   ],
   "openapi-schema-validator": [
     "poetry-core",
