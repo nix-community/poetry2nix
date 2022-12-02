@@ -16705,6 +16705,9 @@
   "tornado": [
     "setuptools"
   ],
+  "tornado-utils": [
+    "setuptools"
+  ],
   "torpy": [
     "setuptools"
   ],
