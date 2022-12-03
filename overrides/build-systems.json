@@ -3710,6 +3710,9 @@
   "django-4": [
     "setuptools"
   ],
+  "django-admin-sortable2": [
+    "setuptools"
+  ],
   "django-allauth": [
     "setuptools"
   ],
@@ -3764,6 +3767,9 @@
     "setuptools"
   ],
   "django-cors-headers": [
+    "setuptools"
+  ],
+  "django-countries": [
     "setuptools"
   ],
   "django-crispy-forms": [
@@ -3851,6 +3857,9 @@
     "setuptools-scm"
   ],
   "django-modelcluster": [
+    "setuptools"
+  ],
+  "django-modeltranslation": [
     "setuptools"
   ],
   "django-mptt": [
