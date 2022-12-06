@@ -639,6 +639,7 @@ lib.composeManyExtensions [
 
       fiona = super.fiona.overridePythonAttrs (
         old: {
+          format = "setuptools";
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gdal ];
           nativeBuildInputs = [
             pkgs.gdal # for gdal-config
