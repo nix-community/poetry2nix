@@ -17036,6 +17036,9 @@
     "flit-core",
     "setuptools"
   ],
+  "types-aioboto3": [
+    "setuptools"
+  ],
   "types-aiobotocore": [
     "setuptools"
   ],
@@ -17046,6 +17049,9 @@
     "setuptools"
   ],
   "types-aiobotocore-elbv2": [
+    "setuptools"
+  ],
+  "types-aiobotocore-resourcegroupstaggingapi": [
     "setuptools"
   ],
   "types-aiobotocore-ssm": [
