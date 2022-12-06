@@ -1265,6 +1265,27 @@
     "poetry-core",
     "setuptools"
   ],
+  "aws-cdk-asset-awscli-v1": [
+    "setuptools"
+  ],
+  "aws-cdk-asset-kubectl-v20": [
+    "setuptools"
+  ],
+  "aws-cdk-asset-node-proxy-agent": [
+    "setuptools"
+  ],
+  "aws-cdk-asset-node-proxy-agent-v5": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-batch-alpha": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-lambda-python-alpha": [
+    "setuptools"
+  ],
+  "aws-cdk-lib": [
+    "setuptools"
+  ],
   "aws-error-utils": [
     "poetry"
   ],
@@ -2996,6 +3017,9 @@
     "setuptools"
   ],
   "construct": [
+    "setuptools"
+  ],
+  "constructs": [
     "setuptools"
   ],
   "consul": [
@@ -7171,6 +7195,9 @@
     "pbr",
     "setuptools"
   ],
+  "jsii": [
+    "setuptools"
+  ],
   "jsmin": [
     "setuptools"
   ],
@@ -8883,6 +8910,15 @@
     "setuptools"
   ],
   "mypy-boto3-sqs": [
+    "setuptools"
+  ],
+  "mypy-boto3-ssm": [
+    "setuptools"
+  ],
+  "mypy-boto3-stepfunctions": [
+    "setuptools"
+  ],
+  "mypy-boto3-sts": [
     "setuptools"
   ],
   "mypy-extensions": [
@@ -12777,6 +12813,9 @@
   "pyssim": [
     "setuptools"
   ],
+  "pystac": [
+    "setuptools"
+  ],
   "pystache": [
     "setuptools"
   ],
@@ -13644,6 +13683,9 @@
     "setuptools"
   ],
   "python-uinput": [
+    "setuptools"
+  ],
+  "python-ulid": [
     "setuptools"
   ],
   "python-unshare": [
@@ -17051,7 +17093,13 @@
   "types-markdown": [
     "setuptools"
   ],
+  "types-pkg-resources": [
+    "setuptools"
+  ],
   "types-protobuf": [
+    "setuptools"
+  ],
+  "types-python-dateutil": [
     "setuptools"
   ],
   "types-pytz": [
@@ -17070,6 +17118,9 @@
     "poetry-core"
   ],
   "types-setuptools": [
+    "setuptools"
+  ],
+  "types-six": [
     "setuptools"
   ],
   "types-tabulate": [
