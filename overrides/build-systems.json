@@ -9031,7 +9031,11 @@
     "setuptools"
   ],
   "nbclient": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatchling",
+      "from": "0.7.1"
+    }
   ],
   "nbconflux": [
     "setuptools"
@@ -12089,7 +12093,8 @@
     "setuptools"
   ],
   "pymssql": [
-    "cython"
+    "cython",
+    "setuptools"
   ],
   "pymsteams": [
     "setuptools"

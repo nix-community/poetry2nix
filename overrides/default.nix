@@ -639,6 +639,7 @@ lib.composeManyExtensions [
 
       fiona = super.fiona.overridePythonAttrs (
         old: {
+          format = "setuptools";
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gdal ];
           nativeBuildInputs = [
             pkgs.gdal # for gdal-config
@@ -1771,7 +1772,7 @@ lib.composeManyExtensions [
 
       pymssql = super.pymssql.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ])
-          ++ [ pkgs.openssl ];
+          ++ [ pkgs.openssl pkgs.libkrb5 ];
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
           ++ [ pkgs.freetds ];
       });
