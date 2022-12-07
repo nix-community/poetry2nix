@@ -1346,10 +1346,24 @@ lib.composeManyExtensions [
         autoPatchelfIgnoreMissingDeps = true;
       });
 
+      # Overrides for building packages based on OpenCV
+      # These flags are inspired by the opencv 4.x package in nixpkgs
       _opencv-python-override =
         old: {
+          # Disable OpenCL on macOS
+          # Can't use cmakeFlags because cmake is called by setup.py
+          CMAKE_ARGS = lib.optionalString stdenv.isDarwin "-DWITH_OPENCL=OFF";
+
           nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
-          buildInputs = [ self.scikit-build ] ++ (old.buildInputs or [ ]);
+          buildInputs = [
+            self.scikit-build
+          ] ++ lib.optionals stdenv.isDarwin (with pkgs.darwin.apple_sdk.frameworks; [
+            AVFoundation
+            Cocoa
+            CoreMedia
+            MediaToolbox
+            VideoDecodeAcceleration
+          ]) ++ (old.buildInputs or [ ]);
           dontUseCmakeConfigure = true;
         };
 
@@ -1357,13 +1371,7 @@ lib.composeManyExtensions [
 
       opencv-python-headless = super.opencv-python.overridePythonAttrs self._opencv-python-override;
 
-      opencv-contrib-python = super.opencv-contrib-python.overridePythonAttrs (
-        old: {
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
-          buildInputs = [ self.scikit-build ] ++ (old.buildInputs or [ ]);
-          dontUseCmakeConfigure = true;
-        }
-      );
+      opencv-contrib-python = super.opencv-contrib-python.overridePythonAttrs self._opencv-python-override;
 
       openexr = super.openexr.overridePythonAttrs (
         old: {
