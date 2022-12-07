@@ -4745,6 +4745,9 @@
   "fabric": [
     "setuptools"
   ],
+  "fabric2": [
+    "setuptools"
+  ],
   "fabulous": [
     "setuptools"
   ],
