@@ -1304,6 +1304,9 @@
   "awscli-cwlogs": [
     "setuptools"
   ],
+  "awscli-local": [
+    "setuptools"
+  ],
   "awscrt": [
     "setuptools"
   ],
@@ -4740,6 +4743,9 @@
     "setuptools"
   ],
   "fabric": [
+    "setuptools"
+  ],
+  "fabric2": [
     "setuptools"
   ],
   "fabulous": [
@@ -12990,6 +12996,9 @@
   "pytest-django": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "pytest-docker": [
+    "setuptools"
   ],
   "pytest-doctestplus": [
     "setuptools",
