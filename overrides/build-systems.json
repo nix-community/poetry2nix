@@ -12997,6 +12997,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pytest-docker": [
+    "setuptools"
+  ],
   "pytest-doctestplus": [
     "setuptools",
     "setuptools-scm"
