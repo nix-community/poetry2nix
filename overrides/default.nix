@@ -1324,9 +1324,10 @@ lib.composeManyExtensions [
       open3d = super.open3d.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.ipywidgets ];
         buildInputs = (old.buildInputs or [ ]) ++ [
-          pkgs.udev
           pkgs.libusb1
-        ] ++ (if lib.versionAtLeast super.open3d.version "0.16.0" then [
+        ] ++ lib.optionals stdenv.isLinux [
+          pkgs.udev
+        ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0") [
           pkgs.mesa
           (
             pkgs.symlinkJoin {
@@ -1341,7 +1342,7 @@ lib.composeManyExtensions [
                 )
               ];
             })
-        ] else [ ]);
+        ];
         # TODO(Sem Mulder): Add overridable flags for CUDA/PyTorch/Tensorflow support.
         autoPatchelfIgnoreMissingDeps = true;
       });
