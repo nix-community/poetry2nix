@@ -1304,6 +1304,9 @@
   "awscli-cwlogs": [
     "setuptools"
   ],
+  "awscli-local": [
+    "setuptools"
+  ],
   "awscrt": [
     "setuptools"
   ],
