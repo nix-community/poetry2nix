@@ -59,9 +59,6 @@ let
 
 in
 lib.composeManyExtensions [
-  # normalize all the names
-  (self: super: poetryLib.normalizePackageSet super)
-
   # NixOps
   (self: super:
     lib.mapAttrs (_: v: addBuildSystem { inherit self; drv = v; attr = "poetry"; }) (lib.filterAttrs (n: _: lib.strings.hasPrefix "nixops" n) super)
