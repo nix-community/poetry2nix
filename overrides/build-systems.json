@@ -9895,7 +9895,8 @@
     "setuptools"
   ],
   "packaging": [
-    "setuptools"
+    "setuptools",
+    "flit-core"
   ],
   "packbits": [
     "setuptools"
@@ -14257,7 +14258,9 @@
     "setuptools"
   ],
   "rapidfuzz": [
-    "setuptools"
+    "setuptools",
+    "packaging",
+    "scikit-build"
   ],
   "rapidfuzz-capi": [
     "setuptools"
@@ -16911,6 +16914,10 @@
   ],
   "troposphere": [
     "setuptools"
+  ],
+  "trove-classifiers": [
+    "setuptools",
+    "calver"
   ],
   "trueskill": [
     "setuptools"
