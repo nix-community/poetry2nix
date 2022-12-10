@@ -390,7 +390,7 @@ lib.composeManyExtensions [
           scrypto =
             if isWheel then
               (
-                super.cryptography.override { preferWheel = true; }
+                super.cryptography.overridePythonAttrs { preferWheel = true; }
               ) else super.cryptography;
         in
         scrypto.overridePythonAttrs
