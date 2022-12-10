@@ -2938,6 +2938,9 @@
   "cometblue-lite": [
     "setuptools"
   ],
+  "comm": [
+    "hatchling"
+  ],
   "commandparse": [
     "setuptools"
   ],
