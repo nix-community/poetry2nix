@@ -2714,6 +2714,10 @@ lib.composeManyExtensions [
             'if True:'
         '';
       });
+
+      mkdocs = super.mkdocs.overridePythonAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.Babel ];
+      });
     }
   )
 
