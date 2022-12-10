@@ -1790,6 +1790,13 @@ lib.composeManyExtensions [
           ++ [ pkgs.freetds ];
       });
 
+      pyopencl = super.pyopencl.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.numpy ];
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.ocl-icd pkgs.opencl-headers ];
+        }
+      );
+
       pyopenssl = super.pyopenssl.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
