@@ -14949,7 +14949,8 @@
     "setuptools-scm"
   ],
   "scikit-image": [
-    "cython"
+    "cython",
+    "setuptools"
   ],
   "scikit-learn": [
     "cython",
