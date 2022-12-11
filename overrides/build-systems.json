@@ -14906,6 +14906,9 @@
     "pytest-runner",
     "setuptools"
   ],
+  "sat-stac": [
+    "setuptools"
+  ],
   "scales": [
     "setuptools"
   ],
