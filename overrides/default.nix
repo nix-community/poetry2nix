@@ -849,6 +849,8 @@ lib.composeManyExtensions [
         }
       );
 
+      ipython-genutils = super.ipython_genutils;
+
       isort = super.isort.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
