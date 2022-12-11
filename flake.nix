@@ -6,8 +6,6 @@
 
   outputs = { self, nixpkgs, flake-utils }:
     rec {
-      overlay = import ./overlay.nix;
-
       templates = {
         app = {
           path = ./templates/app;
@@ -19,10 +17,7 @@
 
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ self.overlay ];
-        };
+        pkgs = nixpkgs.legacyPackages.${system};
       in
       rec {
         packages = {
