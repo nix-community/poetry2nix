@@ -28,6 +28,7 @@ let
     , includeBuildSystem ? true
     , groups ? [ ]
     , checkGroups ? [ "dev" ]
+    , extras ? [ "*" ]  # * means all extras, otherwise include the dependencies for a given extra
     }:
     let
       getInputs = attr: attrs.${attr} or [ ];
@@ -59,12 +60,23 @@ let
 
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
 
+      rawDeps = pyProject.tool.poetry."dependencies" or { };
+
+      rawRequiredDeps = lib.filterAttrs (_: v: !(v.optional or false)) rawDeps;
+
+      desiredExtrasDeps = lib.unique
+        (lib.concatMap (extra: pyProject.tool.poetry.extras.${extra}) extras);
+
+      allRawDeps =
+        if extras == [ "*" ] then
+          rawDeps
+        else
+          rawRequiredDeps // lib.getAttrs desiredExtrasDeps rawDeps;
     in
     {
       buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
       propagatedBuildInputs = mkInput "propagatedBuildInputs" (
-        (getDeps pyProject.tool.poetry."dependencies" or { })
-        ++ (
+        getDeps allRawDeps ++ (
           # >=poetry-1.2.0 dependency groups
           if pyProject.tool.poetry.group or { } != { }
           then lib.flatten (map (g: getDeps pyProject.tool.poetry.group.${g}.dependencies) groups)
@@ -134,6 +146,7 @@ lib.makeScope pkgs.newScope (self: {
     , pyProject ? readTOML pyproject
     , groups ? [ ]
     , checkGroups ? [ "dev" ]
+    , extras ? [ "*" ]
     }:
     let
       /* The default list of poetry2nix override overlays */
@@ -269,7 +282,7 @@ lib.makeScope pkgs.newScope (self: {
       packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
-      inputAttrs = mkInputAttrs { inherit py pyProject groups checkGroups; attrs = { }; includeBuildSystem = false; };
+      inputAttrs = mkInputAttrs { inherit py pyProject groups checkGroups extras; attrs = { }; includeBuildSystem = false; };
 
       requiredPythonModules = python.pkgs.requiredPythonModules;
       /* Include all the nested dependencies which are required for each package.
@@ -305,6 +318,7 @@ lib.makeScope pkgs.newScope (self: {
     , editablePackageSources ? { }
     , extraPackages ? ps: [ ]
     , groups ? [ "dev" ]
+    , extras ? [ "*" ]
     }:
     let
       inherit (lib) hasAttr;
@@ -337,7 +351,7 @@ lib.makeScope pkgs.newScope (self: {
         excludedEditablePackageNames;
 
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels pyProject groups;
+        inherit pyproject poetrylock overrides python pwd preferWheels pyProject groups extras;
         editablePackageSources = editablePackageSources';
       };
 
@@ -372,11 +386,12 @@ lib.makeScope pkgs.newScope (self: {
     , preferWheels ? false
     , groups ? [ ]
     , checkGroups ? [ "dev" ]
+    , extras ? [ "*" ]
     , ...
     }@attrs:
     let
       poetryPython = self.mkPoetryPackages {
-        inherit pyproject poetrylock overrides python pwd preferWheels groups checkGroups;
+        inherit pyproject poetrylock overrides python pwd preferWheels groups checkGroups extras;
       };
       py = poetryPython.python;
 
@@ -393,7 +408,7 @@ lib.makeScope pkgs.newScope (self: {
       ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
-      inputAttrs = mkInputAttrs { inherit py pyProject attrs groups checkGroups; };
+      inputAttrs = mkInputAttrs { inherit py pyProject attrs groups checkGroups extras; };
 
       app = py.pkgs.buildPythonPackage (
         passedAttrs // inputAttrs // {
