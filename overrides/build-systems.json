@@ -14903,7 +14903,8 @@
     "setuptools"
   ],
   "sat-search": [
-    "pytest-runner"
+    "pytest-runner",
+    "setuptools"
   ],
   "scales": [
     "setuptools"
