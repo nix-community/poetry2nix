@@ -16269,7 +16269,11 @@
     "setuptools-scm"
   ],
   "tabulate": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "0.9.0"
+    }
   ],
   "tabview": [
     "setuptools"
