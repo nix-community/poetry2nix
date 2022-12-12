@@ -2752,6 +2752,30 @@ lib.composeManyExtensions [
       mkdocs = super.mkdocs.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.babel ];
       });
+
+      # hatch-requirements-txt has a huge set of circular dependencies which
+      # are only used at build time, and none of which are required to use
+      # mkdocs-material as a dependency, so we remove the part of
+      # pyproject.toml that requires it
+      mkdocs-material = super.mkdocs-material.overridePythonAttrs (old: {
+        postPatch = pkgs.optionalString (lib.versionAtLeast old.version "8.5.3") ''
+          substituteInPlace pyproject.toml \
+            --replace ', "hatch-requirements-txt"' "" \
+            --replace '"hatch-requirements-txt",' "" \
+            --replace '[tool.hatch.metadata.hooks.requirements_txt]' "" \
+            --replace 'filename = "requirements.txt"' ""
+        '';
+      });
+
+      mkdocstrings = super.mkdocstrings.overridePythonAttrs (old: {
+        patches = old.patches or [ ] ++ lib.optionals (lib.versionOlder old.version "0.18.0") [
+          (pkgs.fetchpatch {
+            name = "fix-jinja2-imports.patch";
+            url = "https://github.com/mkdocstrings/mkdocstrings/commit/b37722716b1e0ed6393ec71308dfb0f85e142f3b.patch";
+            sha256 = "sha256-DD1SjEvs5HBlSRLrqP3jhF/yoeWkF7F3VXCD1gyt5Fc=";
+          })
+        ];
+      });
     }
   )
 
