@@ -1640,6 +1640,7 @@ lib.composeManyExtensions [
 
                 PYARROW_BUILD_TYPE = "release";
                 PYARROW_WITH_FLIGHT = if _arrow-cpp.enableFlight then 1 else 0;
+                PYARROW_WITH_S3 = if _arrow-cpp.enableS3 then 1 else 0;
                 PYARROW_WITH_DATASET = 1;
                 PYARROW_WITH_PARQUET = 1;
                 PYARROW_CMAKE_OPTIONS = [
@@ -1649,6 +1650,8 @@ lib.composeManyExtensions [
                   # ourselves
                   "-DCMAKE_POLICY_DEFAULT_CMP0025=NEW"
                 ];
+
+                buildInputs = attrs.buildInputs or [ ] ++ lib.optionals (self.pythonOlder "3.9") [ pkgs.libxcrypt ];
 
                 dontUseCmakeConfigure = true;
               }
