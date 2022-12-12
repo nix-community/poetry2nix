@@ -562,6 +562,14 @@ lib.composeManyExtensions [
             )
           ) else super.docutils;
 
+      duckdb = super.duckdb.overridePythonAttrs (_: {
+        postPatch = ''
+          substituteInPlace setup.py \
+            --replace 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
+            --replace 'setuptools_scm<7.0.0' 'setuptools_scm'
+        '';
+      });
+
       # Environment markers are not always included (depending on how a dep was defined)
       enum34 = if self.pythonAtLeast "3.4" then null else super.enum34;
 
