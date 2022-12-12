@@ -8564,7 +8564,15 @@
     "setuptools"
   ],
   "mkdocs-material": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatchling",
+      "from": "8.5.3"
+    },
+    {
+      "buildSystem": "hatch-nodejs-version",
+      "from": "8.5.3"
+    }
   ],
   "mkdocs-material-extensions": [
     {
