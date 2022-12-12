@@ -8694,6 +8694,9 @@
   "more-properties": [
     "setuptools"
   ],
+  "morecantile": [
+    "setuptools"
+  ],
   "morphys": [
     "setuptools"
   ],
@@ -14903,7 +14906,11 @@
     "setuptools"
   ],
   "sat-search": [
-    "pytest-runner"
+    "pytest-runner",
+    "setuptools"
+  ],
+  "sat-stac": [
+    "setuptools"
   ],
   "scales": [
     "setuptools"
