@@ -1435,6 +1435,11 @@ lib.composeManyExtensions [
 
 
       pandas = super.pandas.overridePythonAttrs (old: {
+        format = "setuptools";
+
+        setupPyBuildFlags = old.setupPyBuildFlags or [ ] ++ [ "--parallel" "$NIX_BUILD_CORES" ];
+
+        enableParallelBuilding = true;
 
         buildInputs = old.buildInputs or [ ] ++ lib.optional stdenv.isDarwin pkgs.libcxx;
 
@@ -1451,9 +1456,6 @@ lib.composeManyExtensions [
             --replace "['pandas/src/klib', 'pandas/src']" \
                       "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
         '';
-
-
-        enableParallelBuilding = true;
       });
 
       pantalaimon = super.pantalaimon.overridePythonAttrs (old: {
