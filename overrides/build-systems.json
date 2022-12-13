@@ -2885,6 +2885,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "color-operations": [
+    "setuptools"
+  ],
   "colorama": [
     {
       "buildSystem": "hatchling",
