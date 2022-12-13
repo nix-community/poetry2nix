@@ -2885,6 +2885,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "color-operations": [
+    "setuptools"
+  ],
   "colorama": [
     {
       "buildSystem": "hatchling",
@@ -8704,7 +8707,14 @@
     "setuptools"
   ],
   "morecantile": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.2.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "3.2.0"
+    }
   ],
   "morphys": [
     "setuptools"
@@ -14581,7 +14591,14 @@
     "setuptools"
   ],
   "rio-tiler": [
-    "flit-core"
+    {
+      "buildSystem": "flit-core",
+      "until": "4.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.0.0"
+    }
   ],
   "ripe-atlas-cousteau": [
     "setuptools"

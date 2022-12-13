@@ -650,6 +650,7 @@ lib.composeManyExtensions [
 
       gdal = super.gdal.overridePythonAttrs (
         old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
           preBuild = (old.preBuild or "") + ''
             substituteInPlace setup.cfg \
               --replace "../../apps/gdal-config" '${pkgs.gdal}/bin/gdal-config'
@@ -2105,6 +2106,10 @@ lib.composeManyExtensions [
           doCheck = false; # Circular test dependency
         }
       );
+
+      rasterio = super.rasterio.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
+      });
 
       rlp = super.rlp.overridePythonAttrs {
         preConfigure = ''

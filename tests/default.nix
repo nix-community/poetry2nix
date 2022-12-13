@@ -129,6 +129,8 @@ builtins.removeAttrs
   shapely = callTest ./shapely { };
   setuptools = callTest ./setuptools { };
 
+  gdal = callTest ./gdal { };
+  rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
   test-group = callTest ./test-group { };
