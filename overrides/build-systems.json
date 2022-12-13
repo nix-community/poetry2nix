@@ -14591,7 +14591,14 @@
     "setuptools"
   ],
   "rio-tiler": [
-    "flit-core"
+    {
+      "buildSystem": "flit-core",
+      "until": "4.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.0.0"
+    }
   ],
   "ripe-atlas-cousteau": [
     "setuptools"
