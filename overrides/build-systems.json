@@ -8704,7 +8704,14 @@
     "setuptools"
   ],
   "morecantile": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.2.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "3.2.0"
+    }
   ],
   "morphys": [
     "setuptools"
