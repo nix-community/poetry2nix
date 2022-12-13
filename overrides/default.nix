@@ -2107,6 +2107,10 @@ lib.composeManyExtensions [
         }
       );
 
+      rasterio = super.rasterio.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
+      });
+
       rlp = super.rlp.overridePythonAttrs {
         preConfigure = ''
           substituteInPlace setup.py --replace \'setuptools-markdown\' ""
