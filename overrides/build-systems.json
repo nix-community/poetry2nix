@@ -8163,6 +8163,9 @@
   "managesieve": [
     "setuptools"
   ],
+  "mangum": [
+    "setuptools"
+  ],
   "manhole": [
     "setuptools"
   ],
