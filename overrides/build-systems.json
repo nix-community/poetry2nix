@@ -6563,7 +6563,14 @@
     "setuptools"
   ],
   "hvac": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.0.0"
+    },
+    {
+      "buildSystem": "poetry-core",
+      "from": "1.0.0"
+    }
   ],
   "hvplot": [
     "setuptools"
