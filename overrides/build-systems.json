@@ -16334,6 +16334,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "tan": [
+    "setuptools"
+  ],
   "tank-utility": [
     "setuptools"
   ],
