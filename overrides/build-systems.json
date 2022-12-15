@@ -14886,6 +14886,10 @@
   "salmon-mail": [
     "setuptools"
   ],
+  "salt-pepper": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "sampledata": [
     "setuptools"
   ],
