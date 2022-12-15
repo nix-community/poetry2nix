@@ -1292,6 +1292,9 @@
   "aws-lambda-builders": [
     "setuptools"
   ],
+  "aws-lambda-context": [
+    "setuptools"
+  ],
   "aws-sam-translator": [
     "setuptools"
   ],
