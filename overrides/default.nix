@@ -2753,20 +2753,6 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.babel ];
       });
 
-      # hatch-requirements-txt has a huge set of circular dependencies which
-      # are only used at build time, and none of which are required to use
-      # mkdocs-material as a dependency, so we remove the part of
-      # pyproject.toml that requires it
-      mkdocs-material = super.mkdocs-material.overridePythonAttrs (old: {
-        postPatch = pkgs.optionalString (lib.versionAtLeast old.version "8.5.3") ''
-          substituteInPlace pyproject.toml \
-            --replace ', "hatch-requirements-txt"' "" \
-            --replace '"hatch-requirements-txt",' "" \
-            --replace '[tool.hatch.metadata.hooks.requirements_txt]' "" \
-            --replace 'filename = "requirements.txt"' ""
-        '';
-      });
-
       mkdocstrings = super.mkdocstrings.overridePythonAttrs (old: {
         patches = old.patches or [ ] ++ lib.optionals (lib.versionOlder old.version "0.18.0") [
           (pkgs.fetchpatch {
