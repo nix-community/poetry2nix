@@ -134,5 +134,6 @@ builtins.removeAttrs
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
   test-group = callTest ./test-group { };
+  mkdocstrings = callTest ./mkdocstrings { };
 }
   skipTests
