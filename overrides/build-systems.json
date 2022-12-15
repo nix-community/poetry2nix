@@ -713,6 +713,9 @@
   "ansible": [
     "setuptools"
   ],
+  "ansible-base": [
+    "setuptools"
+  ],
   "ansible-compat": [
     "setuptools",
     "setuptools-scm"
