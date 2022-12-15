@@ -17126,10 +17126,25 @@
   "types-aiobotocore-elbv2": [
     "setuptools"
   ],
+  "types-aiobotocore-lambda": [
+    "setuptools"
+  ],
+  "types-aiobotocore-organizations": [
+    "setuptools"
+  ],
   "types-aiobotocore-resourcegroupstaggingapi": [
     "setuptools"
   ],
+  "types-aiobotocore-secretsmanager": [
+    "setuptools"
+  ],
   "types-aiobotocore-ssm": [
+    "setuptools"
+  ],
+  "types-aiobotocore-stepfunctions": [
+    "setuptools"
+  ],
+  "types-aiobotocore-sts": [
     "setuptools"
   ],
   "types-awscrt": [
