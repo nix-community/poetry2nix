@@ -5027,11 +5027,23 @@
   "flake8-length": [
     "setuptools"
   ],
+  "flake8-plugin-utils": [
+    "poetry"
+  ],
+  "flake8-pytest-style": [
+    "poetry-core"
+  ],
   "flake8-polyfill": [
     "setuptools"
   ],
   "flake8-print": [
     "poetry-core"
+  ],
+  "flake8-pyprojecttoml": [
+    "setuptools"
+  ],
+  "flake8-simplify": [
+    "setuptools"
   ],
   "flaky": [
     "setuptools"
