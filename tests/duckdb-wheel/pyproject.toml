@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-duckdb-wheel"
+version = "0.1.0"
+description = "Test of python duckdb-wheel package"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+duckdb = "^0.6.1"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

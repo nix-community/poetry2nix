@@ -562,8 +562,8 @@ lib.composeManyExtensions [
             )
           ) else super.docutils;
 
-      duckdb = super.duckdb.overridePythonAttrs (_: {
-        postPatch = ''
+      duckdb = super.duckdb.overridePythonAttrs (old: {
+        postPatch = lib.optionalString (!old.src.isWheel) ''
           substituteInPlace setup.py \
             --replace 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
             --replace 'setuptools_scm<7.0.0' 'setuptools_scm'
