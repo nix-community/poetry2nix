@@ -62,6 +62,8 @@ pythonPackages.callPackage
               inherit pythonPackages pyProject;
             } else [ ];
 
+      pname = normalizePackageName name;
+      preferWheel' = preferWheel && pname != "wheel";
       fileInfo =
         let
           isBdist = f: lib.strings.hasSuffix "whl" f.file;
@@ -70,7 +72,9 @@ pythonPackages.callPackage
           binaryDist = selectWheel fileCandidates;
           sourceDist = builtins.filter isSdist fileCandidates;
           eggs = builtins.filter isEgg fileCandidates;
-          entries = (if preferWheel then binaryDist ++ sourceDist else sourceDist ++ binaryDist) ++ eggs;
+          # the `wheel` package cannot be built from a wheel, since that requires the wheel package
+          # this causes a circular dependency so we special-case ignore its `preferWheel` attribute value
+          entries = (if preferWheel' then binaryDist ++ sourceDist else sourceDist ++ binaryDist) ++ eggs;
           lockFileEntry = (
             if lib.length entries > 0 then builtins.head entries
             else throw "Missing suitable source/wheel file entry for ${name}"
@@ -95,8 +99,7 @@ pythonPackages.callPackage
       hooks = python.pkgs.callPackage ./hooks { };
     in
     buildPythonPackage {
-      pname = normalizePackageName name;
-      version = version;
+      inherit pname version;
 
       # Circumvent output separation (https://github.com/NixOS/nixpkgs/pull/190487)
       format = if format == "pyproject" then "poetry2nix" else format;
@@ -158,6 +161,7 @@ pythonPackages.callPackage
 
       passthru = {
         inherit args;
+        preferWheel = preferWheel';
       };
 
       # We need to retrieve kind from the interpreter and the filename of the package
