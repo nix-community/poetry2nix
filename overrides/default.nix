@@ -2211,9 +2211,9 @@ lib.composeManyExtensions [
           GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${lib.getLib stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
 
           # Fix library paths
-          postPatch = old.postPatch or "" + ''
+          postPatch = lib.optionalString (!old.src.isWheel) (old.postPatch or "" + ''
             ${pkgs.python3.interpreter} ${./shapely-rewrite.py} shapely/geos.py
-          '';
+          '');
         }
       );
 
