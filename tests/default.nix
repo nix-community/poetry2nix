@@ -136,5 +136,6 @@ builtins.removeAttrs
   test-group = callTest ./test-group { };
   nbconvert-wheel = callTest ./nbconvert-wheel { };
   duckdb-wheel = callTest ./duckdb-wheel { };
+  fiona-wheel = callTest ./fiona-wheel { };
 }
   skipTests

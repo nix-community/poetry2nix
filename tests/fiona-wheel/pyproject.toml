@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "fiona-wheel"
+version = "0.1.0"
+description = "Test of fiona wheel"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fiona = "^1.8.22"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
