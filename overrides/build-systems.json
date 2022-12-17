@@ -10759,8 +10759,22 @@
     "setuptools"
   ],
   "prettytable": [
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.5.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "3.5.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "3.5.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "3.5.0"
+    }
   ],
   "primecountpy": [
     "cython",
