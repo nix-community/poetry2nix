@@ -644,11 +644,12 @@ lib.composeManyExtensions [
 
       fiona = super.fiona.overridePythonAttrs (
         old: {
-          format = "setuptools";
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gdal ];
-          nativeBuildInputs = [
-            pkgs.gdal # for gdal-config
-          ];
+          format = lib.optionalString (!old.src.isWheel) "setuptools";
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.gdal ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ]
+            ++ lib.optionals (old.src.isWheel && (!pkgs.stdenv.isDarwin)) [ pkgs.autoPatchelfHook ]
+            # for gdal-config
+            ++ [ pkgs.gdal ];
         }
       );
 
