@@ -5441,6 +5441,10 @@
   "futures": [
     "setuptools"
   ],
+  "futurist": [
+    "pbr",
+    "setuptools"
+  ],
   "fuzzyfinder": [
     "setuptools"
   ],
