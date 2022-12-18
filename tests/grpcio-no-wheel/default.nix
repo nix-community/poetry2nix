@@ -4,11 +4,11 @@ let
     python = python3;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
-    preferWheels = false;
+    preferWheels = true;
     overrides = poetry2nix.overrides.withDefaults (
       self: super: {
         grpcio = super.grpcio.override {
-          preferWheel = true;
+          preferWheel = false;
         };
       }
     );
@@ -17,6 +17,6 @@ let
   isWheelGrpcIO = env.python.pkgs.grpcio.src.isWheel;
 
 in
-assert isWheelGrpcIO; runCommand "grpcio-wheel" { } ''
+assert (!isWheelGrpcIO); runCommand "grpcio-wheel" { } ''
   ${env}/bin/python -c 'import grpc; print(grpc.__version__)' > $out
 ''
