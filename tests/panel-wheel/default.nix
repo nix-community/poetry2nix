@@ -1,5 +1,11 @@
 { lib, poetry2nix, python3, pkgs, runCommand }:
 let
+  wheelImports = {
+    bokeh = "bokeh";
+    panel = "panel";
+    pillow = "PIL";
+  };
+  wheelPackages = builtins.attrNames wheelImports;
   env = poetry2nix.mkPoetryEnv {
     python = python3;
     pyproject = ./pyproject.toml;
@@ -20,10 +26,10 @@ let
       }
     );
   };
-  areWheels = map
-    (name: env.python.pkgs.${name}.src.isWheel)
-    [ "bokeh" "panel" "pillow" ];
+  areWheels = map (name: env.python.pkgs.${name}.src.isWheel) wheelPackages;
+  mkImportCall = pkg: "${env}/bin/python -c 'import ${pkg}; print(${pkg}.__version__)' > $out/${pkg}";
 in
-assert builtins.all lib.id areWheels; runCommand "panel-wheel" { } ''
-  ${env}/bin/python -c 'import panel; print(panel.__version__)' > $out
+assert builtins.all lib.id areWheels; runCommand "panel-wheels" { } ''
+  mkdir -p "$out"
+  ${lib.concatStringsSep "\n" (map (pkg: mkImportCall wheelImports.${pkg}) wheelPackages)}
 ''

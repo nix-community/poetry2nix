@@ -7,6 +7,8 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 panel = "^0.14.2"
+pillow = "^9.3.0"
+bokeh = "~2.4.3"
 
 [build-system]
 requires = ["poetry-core>=1"]
