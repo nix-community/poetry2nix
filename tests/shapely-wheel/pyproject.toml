@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-shapely-wheel"
+version = "0.1.0"
+description = "Test of python shapely-wheel package"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+shapely = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

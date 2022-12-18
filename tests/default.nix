@@ -137,5 +137,8 @@ builtins.removeAttrs
   nbconvert-wheel = callTest ./nbconvert-wheel { };
   duckdb-wheel = callTest ./duckdb-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
+  shapely-wheel = callTest ./shapely-wheel { };
 }
   skipTests
+
+
