@@ -296,7 +296,7 @@ lib.composeManyExtensions [
             old: {
               nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
               buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
-              prePatch = (old.prePatch or "") + lib.optionalString stdenv.isDarwin ''
+              prePatch = (old.prePatch or "") + lib.optionalString (!old.src.isWheel && stdenv.isDarwin) ''
                 # Remove setup.py impurities
                 substituteInPlace setup.py --replace "'-iwithsysroot/usr/include/ffi'" ""
                 substituteInPlace setup.py --replace "'/usr/include/ffi'," ""
@@ -1454,7 +1454,7 @@ lib.composeManyExtensions [
 
         # For OSX, we need to add a dependency on libcxx, which provides
         # `complex.h` and other libraries that pandas depends on to build.
-        postPatch = lib.optionalString stdenv.isDarwin ''
+        postPatch = lib.optionalString (!old.src.isWheel && stdenv.isDarwin) ''
           cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
           echo "Adding $cpp_sdk to the setup.py common_include variable"
           substituteInPlace setup.py \
