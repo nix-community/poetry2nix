@@ -770,7 +770,14 @@
     "setuptools"
   ],
   "anyascii": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.1.7"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.1.7"
+    }
   ],
   "anybadge": [
     "setuptools"
@@ -3923,6 +3930,9 @@
   "django-paintstore": [
     "setuptools"
   ],
+  "django-permissionedforms": [
+    "setuptools"
+  ],
   "django-pglocks": [
     "setuptools"
   ],
@@ -4223,6 +4233,9 @@
     "setuptools"
   ],
   "dpkt": [
+    "setuptools"
+  ],
+  "draftjs-exporter": [
     "setuptools"
   ],
   "dragonfly": [
@@ -7667,6 +7680,9 @@
     "setuptools"
   ],
   "kubernetes": [
+    "setuptools"
+  ],
+  "l18n": [
     "setuptools"
   ],
   "labgrid": [
@@ -16429,6 +16445,9 @@
   "telegraph": [
     "setuptools"
   ],
+  "telepath": [
+    "setuptools"
+  ],
   "telethon": [
     "setuptools"
   ],
@@ -17787,6 +17806,9 @@
     "setuptools"
   ],
   "wadllib": [
+    "setuptools"
+  ],
+  "wagtail": [
     "setuptools"
   ],
   "waitress": [
