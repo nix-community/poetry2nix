@@ -17,6 +17,6 @@ let
   isWheelGrpcIO = env.python.pkgs.grpcio.src.isWheel;
 
 in
-assert (!isWheelGrpcIO); runCommand "grpcio-wheel" { } ''
+assert (!isWheelGrpcIO); runCommand "grpcio-no-wheel" { } ''
   ${env}/bin/python -c 'import grpc; print(grpc.__version__)' > $out
 ''

@@ -1,5 +1,6 @@
-{ lib, poetry2nix, python3, runCommand }:
+{ lib, poetry2nix, python3, pkgs, runCommand }:
 let
+  inherit (pkgs.stdenv) isLinux;
   env = poetry2nix.mkPoetryEnv {
     python = python3;
     pyproject = ./pyproject.toml;
@@ -8,15 +9,13 @@ let
     overrides = poetry2nix.overrides.withDefaults (
       self: super: {
         grpcio = super.grpcio.override {
-          preferWheel = true;
+          preferWheel = isLinux;
         };
       }
     );
   };
-
   isWheelGrpcIO = env.python.pkgs.grpcio.src.isWheel;
-
 in
-assert isWheelGrpcIO; runCommand "grpcio-wheel" { } ''
+assert isLinux -> isWheelGrpcIO; runCommand "grpcio-wheel" { } ''
   ${env}/bin/python -c 'import grpc; print(grpc.__version__)' > $out
 ''
