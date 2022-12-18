@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "cffi-pandas-wheel"
+version = "0.1.0"
+description = "Test of cffi-pandas wheel"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+cffi = "^1.15.1"
+pandas = "^1.5.2"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

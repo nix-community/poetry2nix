@@ -138,6 +138,7 @@ builtins.removeAttrs
   duckdb-wheel = callTest ./duckdb-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
   shapely-wheel = callTest ./shapely-wheel { };
+  cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };
 }
   skipTests
 
