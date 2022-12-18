@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-panel-wheel"
+version = "0.1.0"
+description = "Test of wheel for panel"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+panel = "^0.14.2"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

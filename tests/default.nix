@@ -156,5 +156,6 @@ builtins.removeAttrs
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };
   grpcio-wheel = callTest ./grpcio-wheel { };
   grpcio-no-wheel = callTest ./grpcio-no-wheel { };
+  panel-wheel = callTest ./panel-wheel { };
 }
   skipTests
