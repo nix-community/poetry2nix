@@ -59,12 +59,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq -rcM '{attr: ., os: ["ubuntu-latest", "macos-latest"]}')"
+          matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq -rcM '{attr: .}')"
           echo "::set-output name=matrix::$matrix"
 
-  builds:
+  builds-linux:
     needs: matrix_generate
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJSON(needs.matrix_generate.outputs.matrix)}}
     steps:
@@ -77,3 +77,16 @@ jobs:
           name: poetry2nix
           signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
       - run: nix-shell --arg packages 'pkgs:[ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
+
+  builds-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v12
+        with:
+          name: poetry2nix
+          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+      - run: nix-shell --arg packages 'pkgs:[ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix'
