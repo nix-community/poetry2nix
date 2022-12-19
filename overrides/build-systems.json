@@ -5040,6 +5040,9 @@
   "flake8-length": [
     "setuptools"
   ],
+  "flake8-noqa": [
+    "setuptools"
+  ],
   "flake8-plugin-utils": [
     "poetry"
   ],
