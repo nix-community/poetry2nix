@@ -1827,6 +1827,12 @@
   "bbox": [
     "setuptools"
   ],
+  "bc-detect-secrets": [
+    "setuptools"
+  ],
+  "bc-jsonpath-ng": [
+    "setuptools"
+  ],
   "bc-python-hcl2": [
     "setuptools"
   ],
