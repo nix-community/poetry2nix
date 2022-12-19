@@ -168,4 +168,4 @@ poetry2nix.mkPoetryApplication {
 ```
 
 We recommend that you contribute your changes to `poetry2nix` so that other users can profit from them as well.
-The file with the upstream overrides can be found under the following link. It is a simple JSON file which contains the overrides in an array and sorted in alphabetical order. https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json
+The specific file with the upstream overrides is [build-systems.json](https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json). It is a simple JSON file which contains the overrides in an array and sorted in alphabetical order.
