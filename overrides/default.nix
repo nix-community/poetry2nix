@@ -1614,7 +1614,7 @@ lib.composeManyExtensions [
       );
 
       pyarrow =
-        if lib.versionAtLeast super.pyarrow.version "0.16.0" then
+        if (!super.pyarrow.src.isWheel) && lib.versionAtLeast super.pyarrow.version "0.16.0" then
           super.pyarrow.overridePythonAttrs
             (
               old:

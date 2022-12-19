@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "pyarrow-wheel"
+version = "0.1.0"
+description = "Test of pyarrow wheel"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyarrow = "^10.0.1"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
