@@ -142,5 +142,3 @@ builtins.removeAttrs
   pyarrow-wheel = callTest ./pyarrow-wheel { };
 }
   skipTests
-
-
