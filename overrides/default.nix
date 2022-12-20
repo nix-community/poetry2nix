@@ -2522,27 +2522,15 @@ lib.composeManyExtensions [
         }
       );
 
-      wheel =
-        let
-          isWheel = super.wheel.src.isWheel or false;
-          # If "wheel" is a pre-built binary wheel
-          wheelPackage = super.buildPythonPackage {
-            inherit (super.wheel) pname name version src;
-            inherit (pkgs.python3.pkgs.wheel) meta;
-            format = "wheel";
-          };
-          # If "wheel" is built from source
-          sourcePackage = ((
-            pkgs.python3.pkgs.override {
-              python = self.python;
-            }
-          ).wheel.override {
-            inherit (self) buildPythonPackage bootstrapped-pip setuptools;
-          }).overrideAttrs (old: {
-            inherit (super.wheel) pname name version src;
-          });
-        in
-        if isWheel then wheelPackage else sourcePackage;
+      wheel = ((
+        pkgs.python3.pkgs.override {
+          python = self.python;
+        }
+      ).wheel.override {
+        inherit (self) buildPythonPackage bootstrapped-pip setuptools;
+      }).overrideAttrs (old: {
+        inherit (super.wheel) pname name version src;
+      });
 
       zipp = if super.zipp == null then null else
       super.zipp.overridePythonAttrs (
