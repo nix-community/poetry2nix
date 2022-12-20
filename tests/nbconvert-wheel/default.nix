@@ -6,7 +6,11 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = true;
   };
+  py = env.python;
+  pkg = py.pkgs.nbconvert;
+  isNbConvertWheel = pkg.src.isWheel;
 in
-runCommand "nbconvert-wheel" { } ''
+assert isNbConvertWheel; runCommand "nbconvert-wheel" { } ''
   ${env}/bin/python -c 'import nbconvert as nbc; print(nbc.__version__)' > $out
+  grep -q '"${pkg}", "share", "jupyter"' "${pkg}/${py.sitePackages}/nbconvert/exporters/templateexporter.py"
 ''
