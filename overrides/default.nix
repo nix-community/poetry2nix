@@ -2763,6 +2763,30 @@ lib.composeManyExtensions [
       mkdocs = super.mkdocs.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.babel ];
       });
+
+      # patch mkdocstrings to fix jinja2 imports
+      mkdocstrings =
+        let
+          patchJinja2Imports = self.pkgs.fetchpatch {
+            name = "fix-jinja2-imports.patch";
+            url = "https://github.com/mkdocstrings/mkdocstrings/commit/b37722716b1e0ed6393ec71308dfb0f85e142f3b.patch";
+            hash = "sha256-DD1SjEvs5HBlSRLrqP3jhF/yoeWkF7F3VXCD1gyt5Fc=";
+          };
+        in
+        super.mkdocstrings.overridePythonAttrs (
+          old: lib.optionalAttrs
+            (lib.versionAtLeast old.version "0.17" && lib.versionOlder old.version "0.18")
+            {
+              patches = old.patches or [ ] ++ lib.optionals (!old.src.isWheel) [ patchJinja2Imports ];
+              # strip the first two levels ("a/src/") when patching since we're in site-packages
+              # just above mkdocstrings
+              postInstall = lib.optionalString old.src.isWheel ''
+                pushd "$out/${self.python.sitePackages}"
+                patch -p2 < "${patchJinja2Imports}"
+                popd
+              '';
+            }
+        );
     }
   )
 ]

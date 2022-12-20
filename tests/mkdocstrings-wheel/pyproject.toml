@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "mkdocstrings-wheel"
+version = "0.1.0"
+description = "Test of mkdocstrings wheel"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+mkdocstrings = ">=0.17,<0.18"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
