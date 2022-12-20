@@ -140,5 +140,6 @@ builtins.removeAttrs
   shapely-wheel = callTest ./shapely-wheel { };
   cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };
   pyarrow-wheel = callTest ./pyarrow-wheel { };
+  mkdocstrings-wheel = callTest ./mkdocstrings-wheel { };
 }
   skipTests
