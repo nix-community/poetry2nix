@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "test-no-extras"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+black = { version = "22.10", optional = true}
+
+[tool.poetry.extras]
+more = ["black"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6"
+
+[build-system]
+requires = ["poetry-core>=1.1"]
+build-backend = "poetry.core.masonry.api"
