@@ -302,6 +302,10 @@ in pkgs.poetry2nix.mkPoetryApplication {
 
 ## FAQ
 
+**Q.** Does poetry2nix install wheels our sdists?
+
+**A.** By default, poetry2nix installs from source. If you want to give precedence to wheels, look at the `preferWheel` and `preferWheels` attributes.
+
 **Q.** I'm experiencing one of the following errors, what do I do?
 
 - ModuleNotFoundError: No module named 'setuptools'
