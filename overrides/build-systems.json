@@ -5155,6 +5155,10 @@
   "flask-migrate": [
     "setuptools"
   ],
+  "flask-minio": [
+    "setuptools",
+    "pytest-runner"
+  ],
   "flask-mongoengine": [
     "setuptools"
   ],
