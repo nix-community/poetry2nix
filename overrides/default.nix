@@ -1526,6 +1526,12 @@ lib.composeManyExtensions [
         }
       );
 
+      pluralizer = super.pluralizer.overridePythonAttrs (old: {
+        preBuild = ''
+	  export PYPI_VERSION="${old.version}"
+	'';
+      });
+
       poethepoet = super.poethepoet.overrideAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.poetry ];
       });
