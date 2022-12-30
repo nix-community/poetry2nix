@@ -3779,6 +3779,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "django-cache-memoize": [
+    "setuptools"
+  ],
   "django-cache-url": [
     "setuptools"
   ],
