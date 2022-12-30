@@ -13553,6 +13553,9 @@
     "pbr",
     "setuptools"
   ],
+  "python-ldap": [
+    "setuptools"
+  ],
   "python-ldap-test": [
     "setuptools"
   ],
