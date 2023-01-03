@@ -7,6 +7,7 @@
 }:
 { name
 , version
+, pos ? __curPos
 , files
 , source
 , dependencies ? { }
@@ -146,6 +147,8 @@ pythonPackages.callPackage
           depAttrs = lib.attrNames deps;
         in
         builtins.map (n: pythonPackages.${normalizePackageName n}) depAttrs;
+
+      inherit pos;
 
       meta = {
         broken = ! isCompatible (poetryLib.getPythonVersion python) python-versions;

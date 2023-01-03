@@ -137,6 +137,7 @@ lib.makeScope pkgs.newScope (self: {
     { projectDir ? null
     , pyproject ? projectDir + "/pyproject.toml"
     , poetrylock ? projectDir + "/poetry.lock"
+    , poetrylockPos ? { file = toString poetrylock; line = 0; column = 0; }
     , overrides ? self.defaultPoetryOverrides
     , python ? pkgs.python3
     , pwd ? projectDir
@@ -207,6 +208,7 @@ lib.makeScope pkgs.newScope (self: {
                   value = self.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd preferWheels;
+                      pos = poetrylockPos;
                       source = pkgMeta.source or null;
                       # Default to files from lock file version 2.0 and fall back to 1.1
                       files = pkgMeta.files or lockFiles.${normalizedName};
