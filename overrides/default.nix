@@ -1386,7 +1386,7 @@ lib.composeManyExtensions [
 
       opencv-python = super.opencv-python.overridePythonAttrs self._opencv-python-override;
 
-      opencv-python-headless = super.opencv-python.overridePythonAttrs self._opencv-python-override;
+      opencv-python-headless = super.opencv-python-headless.overridePythonAttrs self._opencv-python-override;
 
       opencv-contrib-python = super.opencv-contrib-python.overridePythonAttrs self._opencv-python-override;
 
