@@ -26,13 +26,13 @@ Note that while these aren't strict requirements it will heavily increase your c
 -->
 
 `default.nix`/`shell.nix`/`flake.nix`:
-```
+```nix
 ```
 
 `pyproject.toml`:
-```
+```toml
 ```
 
 `poetry.lock`:
-```
+```toml
 ```
