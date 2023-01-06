@@ -2,7 +2,7 @@
 [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/#poetry2nix:blad.is)
 
 # poetry2nix
-_poetry2nix_ turns [Poetry](https://poetry.eustace.io/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
+_poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
 
 For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
@@ -301,6 +301,10 @@ in pkgs.poetry2nix.mkPoetryApplication {
 
 
 ## FAQ
+
+**Q.** Does poetry2nix install wheels our sdists?
+
+**A.** By default, poetry2nix installs from source. If you want to give precedence to wheels, look at the `preferWheel` and `preferWheels` attributes.
 
 **Q.** I'm experiencing one of the following errors, what do I do?
 
