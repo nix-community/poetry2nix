@@ -16462,6 +16462,9 @@
   "tbats": [
     "setuptools"
   ],
+  "tba-api-v3client": [
+    "setuptools"
+  ],
   "tblib": [
     "setuptools"
   ],
