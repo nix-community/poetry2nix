@@ -13098,6 +13098,9 @@
   "pytest-fixture-config": [
     "setuptools"
   ],
+  "pytest-flake8": [
+    "setuptools"
+  ],
   "pytest-flakes": [
     "setuptools"
   ],
