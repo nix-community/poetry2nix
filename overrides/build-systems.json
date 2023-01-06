@@ -16459,10 +16459,10 @@
   "taxi": [
     "setuptools"
   ],
-  "tbats": [
+  "tba-api-v3client": [
     "setuptools"
   ],
-  "tba-api-v3client": [
+  "tbats": [
     "setuptools"
   ],
   "tblib": [
