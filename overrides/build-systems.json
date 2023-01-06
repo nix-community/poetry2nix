@@ -2722,7 +2722,14 @@
     "setuptools"
   ],
   "click-didyoumean": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.2.0"
+    },
+    {
+      "buildSystem": "poetry",
+      "from": "0.2.0"
+    }
   ],
   "click-help-colors": [
     "setuptools"
