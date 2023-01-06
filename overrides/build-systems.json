@@ -3835,6 +3835,9 @@
   "django-countries": [
     "setuptools"
   ],
+  "django-coverage-plugin": [
+    "setuptools"
+  ],
   "django-crispy-forms": [
     "setuptools"
   ],
