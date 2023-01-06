@@ -3845,7 +3845,14 @@
     "setuptools"
   ],
   "django-debug-toolbar": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.8.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "3.8.0"
+    }
   ],
   "django-discover-runner": [
     "setuptools"
