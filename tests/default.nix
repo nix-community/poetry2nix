@@ -143,5 +143,6 @@ builtins.removeAttrs
   mkdocstrings-wheel = callTest ./mkdocstrings-wheel { };
   test-extras = callTest ./test-extras { };
   test-no-extras = callTest ./test-no-extras { };
+  missing-iswheel = callTest ./missing-iswheel { };
 }
   skipTests
