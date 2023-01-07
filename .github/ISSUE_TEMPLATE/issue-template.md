@@ -25,14 +25,14 @@ Community will happily help to find soulution and if needed create issue or pull
 Note that while these aren't strict requirements it will heavily increase your chances to get an issue fixed if you include more context that makes it possible to recreate the issue.
 -->
 
-- `default.nix`/`shell.nix`/`flake.nix`
-```
-```
-
-- `pyproject.toml`
-```
+`default.nix`/`shell.nix`/`flake.nix`:
+```nix
 ```
 
-- `poetry.lock`
+`pyproject.toml`:
+```toml
 ```
+
+`poetry.lock`:
+```toml
 ```
