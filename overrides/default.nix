@@ -296,7 +296,7 @@ lib.composeManyExtensions [
             old: {
               nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
               buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
-              prePatch = (old.prePatch or "") + lib.optionalString (!old.src.isWheel && stdenv.isDarwin) ''
+              prePatch = (old.prePatch or "") + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
                 # Remove setup.py impurities
                 substituteInPlace setup.py --replace "'-iwithsysroot/usr/include/ffi'" ""
                 substituteInPlace setup.py --replace "'/usr/include/ffi'," ""
@@ -563,7 +563,7 @@ lib.composeManyExtensions [
           ) else super.docutils;
 
       duckdb = super.duckdb.overridePythonAttrs (old: {
-        postPatch = lib.optionalString (!old.src.isWheel) ''
+        postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
           substituteInPlace setup.py \
             --replace 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
             --replace 'setuptools_scm<7.0.0' 'setuptools_scm'
@@ -644,10 +644,10 @@ lib.composeManyExtensions [
 
       fiona = super.fiona.overridePythonAttrs (
         old: {
-          format = lib.optionalString (!old.src.isWheel) "setuptools";
+          format = lib.optionalString (!(old.src.isWheel or false)) "setuptools";
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.gdal ];
           nativeBuildInputs = old.nativeBuildInputs or [ ]
-            ++ lib.optionals (old.src.isWheel && (!pkgs.stdenv.isDarwin)) [ pkgs.autoPatchelfHook ]
+            ++ lib.optionals ((old.src.isWheel or false) && (!pkgs.stdenv.isDarwin)) [ pkgs.autoPatchelfHook ]
             # for gdal-config
             ++ [ pkgs.gdal ];
         }
@@ -1454,7 +1454,7 @@ lib.composeManyExtensions [
 
         # For OSX, we need to add a dependency on libcxx, which provides
         # `complex.h` and other libraries that pandas depends on to build.
-        postPatch = lib.optionalString (!old.src.isWheel && stdenv.isDarwin) ''
+        postPatch = lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
           cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
           echo "Adding $cpp_sdk to the setup.py common_include variable"
           substituteInPlace setup.py \
@@ -1620,7 +1620,7 @@ lib.composeManyExtensions [
       );
 
       pyarrow =
-        if (!super.pyarrow.src.isWheel) && lib.versionAtLeast super.pyarrow.version "0.16.0" then
+        if (!super.pyarrow.src.isWheel or false) && lib.versionAtLeast super.pyarrow.version "0.16.0" then
           super.pyarrow.overridePythonAttrs
             (
               old:
@@ -2217,7 +2217,7 @@ lib.composeManyExtensions [
           GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${lib.getLib stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
 
           # Fix library paths
-          postPatch = lib.optionalString (!old.src.isWheel) (old.postPatch or "" + ''
+          postPatch = lib.optionalString (!(old.src.isWheel or false)) (old.postPatch or "" + ''
             ${pkgs.python3.interpreter} ${./shapely-rewrite.py} shapely/geos.py
           '');
         }
@@ -2750,7 +2750,7 @@ lib.composeManyExtensions [
           '';
         in
         super.nbconvert.overridePythonAttrs (old: {
-          postPatch = lib.optionalString (!old.src.isWheel) (
+          postPatch = lib.optionalString (!(old.src.isWheel or false)) (
             patchExporters + lib.optionalString (lib.versionAtLeast self.nbconvert.version "7.0") ''
               substituteInPlace \
                 ./hatch_build.py \
@@ -2759,7 +2759,7 @@ lib.composeManyExtensions [
                 'if True:'
             ''
           );
-          postInstall = lib.optionalString old.src.isWheel ''
+          postInstall = lib.optionalString (old.src.isWheel or false) ''
             pushd $out/${self.python.sitePackages}
             ${patchExporters}
             popd
@@ -2783,10 +2783,10 @@ lib.composeManyExtensions [
           old: lib.optionalAttrs
             (lib.versionAtLeast old.version "0.17" && lib.versionOlder old.version "0.18")
             {
-              patches = old.patches or [ ] ++ lib.optionals (!old.src.isWheel) [ patchJinja2Imports ];
+              patches = old.patches or [ ] ++ lib.optionals (!(old.src.isWheel or false)) [ patchJinja2Imports ];
               # strip the first two levels ("a/src/") when patching since we're in site-packages
               # just above mkdocstrings
-              postInstall = lib.optionalString old.src.isWheel ''
+              postInstall = lib.optionalString (old.src.isWheel or false) ''
                 pushd "$out/${self.python.sitePackages}"
                 patch -p2 < "${patchJinja2Imports}"
                 popd
