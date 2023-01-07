@@ -16459,6 +16459,9 @@
   "taxi": [
     "setuptools"
   ],
+  "tba-api-v3client": [
+    "setuptools"
+  ],
   "tbats": [
     "setuptools"
   ],
