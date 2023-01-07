@@ -10611,6 +10611,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pluralizer": [
+    "setuptools"
+  ],
   "plux": [
     "pytest-runner",
     "setuptools"
