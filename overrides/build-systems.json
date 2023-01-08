@@ -13853,7 +13853,8 @@
     "setuptools"
   ],
   "python-ulid": [
-    "setuptools"
+    "setuptools",
+    "setuptools-scm"
   ],
   "python-unshare": [
     "setuptools"
