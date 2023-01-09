@@ -169,3 +169,26 @@ poetry2nix.mkPoetryApplication {
 
 We recommend that you contribute your changes to `poetry2nix` so that other users can profit from them as well.
 The specific file with the upstream overrides is [build-systems.json](https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json). It is a simple JSON file which contains the overrides in an array and sorted in alphabetical order.
+
+#### ERROR: Could not find a version that satisfies the requirement [package spec] (from [package]) (from versions: none)
+
+[Example error message](https://github.com/nix-community/poetry2nix/issues/921):
+
+> ERROR: Could not find a version that satisfies the requirement python-ulid<2.0.0,>=1.1.0 (from linz-logger) (from versions: none)
+> ERROR: No matching distribution found for python-ulid<2.0.0,>=1.1.0
+
+[Quoting @adisbladis](https://github.com/nix-community/poetry2nix/issues/921#issuecomment-1373764661):
+
+> This is usually because of setuptools-scm. I'd try adding an override for [the package mentioned in the package spec]. It might be sufficient to simply add setuptools-scm.
+
+Resulting override:
+
+```nix
+{
+  python-ulid = super.python-ulid.overridePythonAttrs (
+    old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.setuptools-scm ];
+    }
+  );
+}
+```
