@@ -18,13 +18,13 @@
       defaultTemplate = templates.app;
 
     } // (flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+        poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; };
+        poetry2nix = import ./default.nix { inherit pkgs poetry; };
+      in
       rec {
         packages =
-          let
-            pkgs = nixpkgs.legacyPackages.${system};
-            poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; };
-            poetry2nix = import ./default.nix { inherit pkgs poetry; };
-          in
           {
             inherit poetry;
             poetry2nix = poetry2nix.cli;
@@ -38,5 +38,7 @@
         };
 
         defaultApp = apps.poetry2nix;
+
+        lib = poetry2nix;
       }));
 }
