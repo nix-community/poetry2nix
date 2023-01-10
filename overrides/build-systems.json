@@ -11027,6 +11027,9 @@
   "pulumi-aws": [
     "setuptools"
   ],
+  "pulumi-azure-native": [
+    "setuptools"
+  ],
   "pure-cdb": [
     "setuptools"
   ],
