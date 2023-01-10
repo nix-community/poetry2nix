@@ -18,17 +18,17 @@
       defaultTemplate = templates.app;
 
     } // (flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ self.overlay ];
-        };
-      in
       rec {
-        packages = {
-          inherit (pkgs) poetry;
-          poetry2nix = pkgs.poetry2nix.cli;
-        };
+        packages =
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+            poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; };
+            poetry2nix = import ./default.nix { inherit pkgs poetry; };
+          in
+          {
+            inherit poetry;
+            poetry2nix = poetry2nix.cli;
+          };
 
         defaultPackage = packages.poetry2nix;
 
