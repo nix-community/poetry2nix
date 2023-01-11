@@ -6896,10 +6896,22 @@
     "setuptools"
   ],
   "iniconfig": [
-    "setuptools",
-    "setuptools-scm",
-    "hatch-vcs",
-    "hatchling"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.0.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "2.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.0.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "2.0.0"
+    }
   ],
   "inifile": [
     "setuptools"
