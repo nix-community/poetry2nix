@@ -6897,7 +6897,9 @@
   ],
   "iniconfig": [
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    "hatch-vcs",
+    "hatchling"
   ],
   "inifile": [
     "setuptools"
