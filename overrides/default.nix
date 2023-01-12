@@ -617,7 +617,7 @@ lib.composeManyExtensions [
 
       fancycompleter = super.fancycompleter.overridePythonAttrs (
         old: {
-          postPatch = ''
+          postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
             substituteInPlace setup.py \
               --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
               --replace 'versioning="devcommit"' 'version="${old.version}"'

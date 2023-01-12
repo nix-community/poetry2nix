@@ -12646,6 +12646,9 @@
     "cython",
     "setuptools"
   ],
+  "pyrepl": [
+    "setuptools"
+  ],
   "pyrevolve": [
     "cython",
     "setuptools"
@@ -18140,6 +18143,9 @@
   ],
   "wled": [
     "poetry-core",
+    "setuptools"
+  ],
+  "wmctrl": [
     "setuptools"
   ],
   "woob": [
