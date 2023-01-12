@@ -1891,6 +1891,18 @@ lib.composeManyExtensions [
         }
       );
 
+      python-snap7 = super.python-snap7.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+          pkgs.snap7
+        ];
+
+        postPatch = (old.postPatch or "") + ''
+          echo "Patching find_library call."
+          substituteInPlace snap7/common.py \
+            --replace "find_library('snap7')" "\"${pkgs.snap7}/lib/libsnap7.so\""
+        '';
+      });
+
       pytoml = super.pytoml.overridePythonAttrs (
         old: {
           doCheck = false;
