@@ -10634,8 +10634,22 @@
     "setuptools"
   ],
   "plumbum": [
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.8.1"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "1.8.1"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "1.8.1"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.8.1"
+    }
   ],
   "pluralizer": [
     "setuptools"
