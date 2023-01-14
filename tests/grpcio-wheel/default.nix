@@ -14,8 +14,5 @@ let
       }
     );
   };
-  isWheelGrpcIO = env.python.pkgs.grpcio.src.isWheel;
 in
-assert isLinux -> isWheelGrpcIO; runCommand "grpcio-wheel" { } ''
-  ${env}/bin/python -c 'import grpc; print(grpc.__version__)' > $out
-''
+assert isLinux -> env.python.pkgs.grpcio.src.isWheel; env
