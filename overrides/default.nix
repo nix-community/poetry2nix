@@ -2227,7 +2227,7 @@ lib.composeManyExtensions [
       shapely = super.shapely.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.geos ];
-          inherit (pkgs.python3.pkgs.shapely) GEOS_LIBRARY_PATH;
+          GEOS_LIBRARY_PATH = pkgs.python3.pkgs.shapely.GEOS_LIBRARY_PATH or null;
 
           GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${lib.getLib stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
 
