@@ -29,6 +29,7 @@
           default = poetry2nix.cli;
         };
 
+        legacyPackages = poetry2nix;
 
         apps = {
           poetry = flake-utils.lib.mkApp { drv = packages.poetry; };
