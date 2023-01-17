@@ -185,6 +185,7 @@ pythonPackages.callPackage
           builtins.fetchTarball
             {
               inherit (source) url;
+              sha256 = fileInfo.hash;
             }
         else if isDirectory then
           (poetryLib.cleanPythonSources { src = localDepPath; })
