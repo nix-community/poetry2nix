@@ -9,35 +9,20 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, poetry2nix }:
-    {
-      # Nixpkgs overlay providing the application
-      overlay = nixpkgs.lib.composeManyExtensions [
-        poetry2nix.overlay
-        (final: prev: {
-          # The application
-          myapp = prev.poetry2nix.mkPoetryApplication {
-            projectDir = ./.;
-          };
-        })
-      ];
-    } // (flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ self.overlay ];
-        };
+        # see https://github.com/nix-community/poetry2nix/tree/master#api for more functions and examples.
+        inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
+        pkgs = nixpkgs.legacyPackages.${system};
       in
       {
-        apps = {
-          myapp = pkgs.myapp;
+        packages = {
+          myapp = mkPoetryApplication { projectDir = self; };
+          default = self.packages.${system}.myapp;
         };
 
-        defaultApp = pkgs.myapp;
-
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            (python310.withPackages (ps: with ps; [ poetry ]))
-          ];
+        devShells.default = pkgs.mkShell {
+          packages = [ poetry2nix.packages.${system}.poetry ];
         };
-      }));
+      });
 }
