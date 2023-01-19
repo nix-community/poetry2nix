@@ -2224,6 +2224,19 @@ lib.composeManyExtensions [
         '';
       });
 
+      selenium =
+        let
+          v4orLater = lib.versionAtLeast super.selenium.version "4";
+          selenium = super.selenium.override {
+            # Selenium >=4 is built with Bazel
+            preferWheel = v4orLater;
+          };
+        in
+        selenium.overridePythonAttrs (old: {
+          # Selenium <4 can be installed from sources, with setuptools
+          buildInputs = old.buildInputs ++ (lib.optionals (!v4orLater) [ self.setuptools ]);
+        });
+
       shapely = super.shapely.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.geos ];

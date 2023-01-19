@@ -15296,9 +15296,6 @@
   "selectors2": [
     "setuptools"
   ],
-  "selenium": [
-    "setuptools"
-  ],
   "selinux": [
     "setuptools"
   ],
