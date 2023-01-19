@@ -11579,7 +11579,14 @@
     "setuptools"
   ],
   "pydocstyle": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "6.2.0"
+    },
+    {
+      "buildSystem": "poetry-core",
+      "from": "6.2.0"
+    }
   ],
   "pydocumentdb": [
     "setuptools"
