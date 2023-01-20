@@ -2902,7 +2902,8 @@
     "setuptools"
   ],
   "colander": [
-    "setuptools"
+    "setuptools",
+    "babel"
   ],
   "colanderalchemy": [
     "setuptools"
@@ -3058,6 +3059,9 @@
     "setuptools"
   ],
   "consul": [
+    "setuptools"
+  ],
+  "consulate": [
     "setuptools"
   ],
   "container-inspector": [
@@ -13269,6 +13273,9 @@
   "pytest-order": [
     "setuptools"
   ],
+  "pytest-ordering": [
+    "setuptools"
+  ],
   "pytest-param-files": [
     "flit-core",
     "flitBuildHook",
@@ -17676,6 +17683,9 @@
     "cython",
     "setuptools"
   ],
+  "uwsgidecorators": [
+    "setuptools"
+  ],
   "vaa": [
     "flit-core",
     "setuptools"
@@ -18684,6 +18694,9 @@
     "setuptools"
   ],
   "zulip": [
+    "setuptools"
+  ],
+  "zk": [
     "setuptools"
   ],
   "zwave-js-server-python": [
