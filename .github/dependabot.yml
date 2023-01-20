@@ -1,8 +1,287 @@
 version: 2
 updates:
-  # Auto-update the Poetry package, but not tests
   - package-ecosystem: "pip"
     directory: "/pkgs"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/aiopath"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/ansible-molecule"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/assorted-pkgs"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/awscli"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/bcrypt"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/canonical-module-names"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/cffi-pandas-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/closure-size"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/common-pkgs-1"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/common-pkgs-2"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/composable-defaults"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/dependency-environment"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/dependency-groups"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/duckdb-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/editable"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/editable-egg"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/eggs"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/env"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/extended-cross"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/extras"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/fancycompleter-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/file-src-deps"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/file-src-deps-level2"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/file-wheel-deps"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/file-wheel-deps-level2"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/fiona-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/gdal"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/git-deps"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/git-deps-1_2_0"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/git-deps-pinned"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/in-list"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/jq"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/legacy"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/manylinux"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/markupsafe2"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/missing-iswheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/mkdocstrings-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/mk-poetry-packages"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/nbconvert-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/operators"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/override-default-support"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/override-support"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/path-deps"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/path-deps-develop"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/path-deps-level2"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/pendulum"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/pep600"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/prefer-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/prefer-wheels"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/pyarrow-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/pyqt5"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/pytest-randomly"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/rasterio"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/scientific"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/scipy1_9"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/setuptools"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/shapely"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/shapely-wheel"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/source-filter"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/test-extras"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/test-group"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/test-no-extras"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/trivial"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/trivial-cross"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/trivial-poetry-1_2_0"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/utf8-pyproject"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/uwsgi"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/wandb"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/watchfiles"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/tests/wheel-wheel"
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
