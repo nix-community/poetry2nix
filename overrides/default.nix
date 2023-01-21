@@ -2133,6 +2133,11 @@ lib.composeManyExtensions [
             "-DPYBIND11_TEST=off"
           ];
           doCheck = false; # Circular test dependency
+
+          # Link include and share so it can be used by packages that use pybind11 through cmake
+          postInstall = ''
+            ln -s $out/${self.python.sitePackages}/pybind11/{include,share} $out/
+          '';
         }
       );
 
