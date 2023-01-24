@@ -675,6 +675,33 @@ lib.composeManyExtensions [
         }
       );
 
+      granian =
+        let
+          getRepoHash = version: {
+            "0.2.1" = "sha256-XEhu6M1hFi3/gAKZcei7KJSrIhhlZhlvZvbfyA6VLR4=";
+            "0.2.2" = "sha256-KWwefJ3CfOUGCgAm7AhFlIxRF9qxNEo3npGOxVJ23FY=";
+            "0.2.3" = "sha256-2JnyO0wxkV49R/0wzDb/PnUWWHi3ckwK4nVe7dWeH1k=";
+            "0.2.4" = "sha256-GdQJvVPsWgC1z7La9h11x2pRAP+L998yImhTFrFT5l8=";
+            "0.2.5" = "sha256-vMXMxss77rmXSjoB53eE8XN2jXyIEf03WoQiDfvhDmw=";
+          }.${version};
+          sha256 = getRepoHash super.granian.version;
+        in
+        super.granian.overridePythonAttrs (old: rec {
+          src = pkgs.fetchFromGitHub {
+            owner = "emmett-framework";
+            repo = "granian";
+            rev = "v${old.version}";
+            inherit sha256;
+          };
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = "${src.out}/Cargo.lock";
+          };
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+        });
+
       gitpython = super.gitpython.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.typing-extensions ];
