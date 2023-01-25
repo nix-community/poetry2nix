@@ -36,7 +36,7 @@
     "poetry"
   ],
   "iniconfig": [
-    "hatchling"
+    "hatchling",
     "hatch-vcs"
   ],
   "kraken-common": [
