@@ -1,4 +1,47 @@
 {
+  "types-pygments": [
+    "setuptools"
+  ],
+  "types-beautifulsoup4": [
+    "setuptools"
+  ],
+  "databind": [
+    "poetry"
+  ],
+  "databind-json": [
+    "poetry"
+  ],
+  "databind-core": [
+    "poetry"
+  ],
+  "typeapi": [
+    "poetry"
+  ],
+  "nr-util": [
+    "poetry"
+  ],
+  "nr-python-environment": [
+    "poetry"
+  ],
+  "pygments": [
+    "poetry"
+  ],
+  "nr-io-lexer": [
+    "poetry"
+  ],
+  "types-termcolor": [
+    "setuptools"
+  ],
+  "builddsl": [
+    "poetry"
+  ],
+  "iniconfig": [
+    "hatchling"
+    "hatch-vcs"
+  ],
+  "kraken-common": [
+    "poetry"
+  ],
   "aadict": [
     "setuptools"
   ],
