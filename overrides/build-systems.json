@@ -1,4 +1,7 @@
 {
+  "pathspec": [
+    "flit-core"
+  ],
   "types-pygments": [
     "setuptools"
   ],
@@ -34,10 +37,6 @@
   ],
   "builddsl": [
     "poetry"
-  ],
-  "iniconfig": [
-    "hatchling",
-    "hatch-vcs"
   ],
   "kraken-common": [
     "poetry"
