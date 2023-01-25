@@ -46,6 +46,7 @@ pythonPackages.callPackage
       isSource = source != null;
       isGit = isSource && source.type == "git";
       isUrl = isSource && source.type == "url";
+      isWheelUrl = isSource && source.type == "url" && lib.strings.hasSuffix ".whl" source.url;
       isDirectory = isSource && source.type == "directory";
       isFile = isSource && source.type == "file";
       isLegacy = isSource && source.type == "legacy";
@@ -94,7 +95,7 @@ pythonPackages.callPackage
             else (builtins.elemAt (lib.strings.splitString "-" name) 2);
         };
 
-      format = if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
+      format = if isWheelUrl then "wheel" else if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
 
       hooks = python.pkgs.callPackage ./hooks { };
     in
@@ -181,10 +182,17 @@ pythonPackages.callPackage
               }
             ))
           )
+        else if isWheelUrl then
+          builtins.fetchurl
+            {
+              inherit (source) url;
+              sha256 = fileInfo.hash;
+            }
         else if isUrl then
           builtins.fetchTarball
             {
               inherit (source) url;
+              sha256 = fileInfo.hash;
             }
         else if isDirectory then
           (poetryLib.cleanPythonSources { src = localDepPath; })
