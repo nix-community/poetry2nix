@@ -10235,7 +10235,14 @@
     "setuptools-scm"
   ],
   "pathspec": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.11.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.11.0"
+    }
   ],
   "pathtools": [
     "setuptools"
