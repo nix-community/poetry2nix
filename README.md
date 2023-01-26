@@ -306,6 +306,22 @@ in pkgs.poetry2nix.mkPoetryApplication {
 
 **A.** By default, poetry2nix installs from source. If you want to give precedence to wheels, look at the `preferWheel` and `preferWheels` attributes.
 
+**Q.** How to prefer wheel installation for a single package?
+
+**A.** Override it and set `preferWheel = true` in that single package:
+
+```nix
+poetry2nix.mkPoetryApplication {
+  projectDir = ./.;
+  overrides = poetry2nix.overrides.withDefaults (final: prev: {
+    # Notice that using .overridePythonAttrs or .overrideAttrs wont work!
+    some-dependency = prev.some-dependency.override {
+      preferWheel = true;
+    };
+  });
+}
+```
+
 **Q.** I'm experiencing one of the following errors, what do I do?
 
 - ModuleNotFoundError: No module named 'setuptools'
