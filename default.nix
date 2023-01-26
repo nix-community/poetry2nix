@@ -72,6 +72,9 @@ let
           rawDeps
         else
           rawRequiredDeps // lib.getAttrs desiredExtrasDeps rawDeps;
+      checkInputs' = getDeps (pyProject.tool.poetry."dev-dependencies" or { })  # <poetry-1.2.0
+        # >=poetry-1.2.0 dependency groups
+        ++ lib.flatten (map (g: getDeps (pyProject.tool.poetry.group.${g}.dependencies or { })) checkGroups);
     in
     {
       buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
@@ -84,11 +87,8 @@ let
         )
       );
       nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
-      checkInputs = mkInput "checkInputs" (
-        getDeps (pyProject.tool.poetry."dev-dependencies" or { })  # <poetry-1.2.0
-        # >=poetry-1.2.0 dependency groups
-        ++ lib.flatten (map (g: getDeps (pyProject.tool.poetry.group.${g}.dependencies or { })) checkGroups)
-      );
+      checkInputs = mkInput "checkInputs" checkInputs';
+      nativeCheckInputs = mkInput "nativeCheckInputs" checkInputs';
     };
 
 
