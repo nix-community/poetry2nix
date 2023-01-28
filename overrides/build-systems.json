@@ -10399,6 +10399,9 @@
   "pescea": [
     "setuptools"
   ],
+  "petname": [
+    "setuptools"
+  ],
   "pex": [
     "flit-core",
     "flitBuildHook",
