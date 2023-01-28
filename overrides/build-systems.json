@@ -3759,6 +3759,9 @@
   "dj-email-url": [
     "setuptools"
   ],
+  "dj-inmemorystorage": [
+    "setuptools"
+  ],
   "dj-rest-auth": [
     "setuptools"
   ],
