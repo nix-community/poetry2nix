@@ -126,7 +126,7 @@ builtins.removeAttrs
   # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
   # Once this is available in 19.09 and unstable we can re-enable the manylinux test
   manylinux = callTest ./manylinux { };
-  shapely = callTest ./shapely { };
+  shapely-pre-2 = callTest ./shapely-pre-2 { };
   setuptools = callTest ./setuptools { };
 
   gdal = callTest ./gdal { };
