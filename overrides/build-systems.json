@@ -116,7 +116,14 @@
     "setuptools-scm"
   ],
   "affine": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.4.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "2.4.0"
+    }
   ],
   "afsapi": [
     "setuptools",
