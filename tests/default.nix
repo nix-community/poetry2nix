@@ -129,6 +129,7 @@ builtins.removeAttrs
   shapely = callTest ./shapely { };
   setuptools = callTest ./setuptools { };
 
+  affine-pre-2-4 = callTest ./affine-pre-2-4 { };
   gdal = callTest ./gdal { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
