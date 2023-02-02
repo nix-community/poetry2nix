@@ -5,6 +5,10 @@ pipBuildPhase() {
     echo "Executing pipBuildPhase"
     runHook preBuild
 
+    if [ -z "$SETUPTOOLS_SCM_PRETEND_VERSION" ] && echo "$buildInputs" | grep setuptools-scm; then
+        export SETUPTOOLS_SCM_PRETEND_VERSION="$version"
+    fi
+
     mkdir -p dist
     echo "Creating a wheel..."
     @pythonInterpreter@ -m pip wheel --verbose --no-index --no-deps --no-clean --no-build-isolation --wheel-dir dist .

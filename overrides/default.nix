@@ -2858,10 +2858,6 @@ lib.composeManyExtensions [
         '';
       });
 
-      pyyaml-include = super.pyyaml-include.overridePythonAttrs (old: {
-        SETUPTOOLS_SCM_PRETEND_VERSION = old.version;
-      });
-
       selinux = super.selinux.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
       });
