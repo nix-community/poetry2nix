@@ -5093,9 +5093,6 @@
   "flake8-plugin-utils": [
     "poetry"
   ],
-  "flake8-pytest-style": [
-    "poetry-core"
-  ],
   "flake8-polyfill": [
     "setuptools"
   ],
@@ -5104,6 +5101,9 @@
   ],
   "flake8-pyprojecttoml": [
     "setuptools"
+  ],
+  "flake8-pytest-style": [
+    "poetry-core"
   ],
   "flake8-simplify": [
     "setuptools"
@@ -18635,6 +18635,9 @@
   "zipstream-ng": [
     "setuptools"
   ],
+  "zk": [
+    "setuptools"
+  ],
   "zm-py": [
     "setuptools"
   ],
@@ -18724,9 +18727,6 @@
     "setuptools"
   ],
   "zulip": [
-    "setuptools"
-  ],
-  "zk": [
     "setuptools"
   ],
   "zwave-js-server-python": [
