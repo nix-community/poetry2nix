@@ -2737,6 +2737,12 @@
   "click-log": [
     "setuptools"
   ],
+  "click-odoo": [
+    "setuptools-scm"
+  ],
+  "click-odoo-contrib": [
+    "setuptools"
+  ],
   "click-option-group": [
     "setuptools"
   ],
@@ -4147,6 +4153,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "dnsq": [
+    "setuptools"
+  ],
   "doc8": [
     "pbr",
     "setuptools",
@@ -5115,6 +5124,9 @@
     "setuptools"
   ],
   "flammkuchen": [
+    "setuptools"
+  ],
+  "flanker": [
     "setuptools"
   ],
   "flashtext": [
@@ -8285,6 +8297,24 @@
   "manhole": [
     "setuptools"
   ],
+  "manifestoo": [
+    {
+      "buildSystem": "flit-core",
+      "until": "0.5"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "0.5"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.5"
+    }
+  ],
+  "manifestoo-core": [
+    "hatch-vcs",
+    "hatchling"
+  ],
   "manimpango": [
     "cython",
     "setuptools"
@@ -10416,6 +10446,9 @@
   "pexpect": [
     "setuptools"
   ],
+  "pg-activity": [
+    "setuptools"
+  ],
   "pg8000": [
     "setuptools"
   ],
@@ -11578,6 +11611,9 @@
     "setuptools"
   ],
   "pydevd": [
+    "setuptools"
+  ],
+  "pydevd-odoo": [
     "setuptools"
   ],
   "pydexcom": [
