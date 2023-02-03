@@ -940,6 +940,10 @@ lib.composeManyExtensions [
         }
       );
 
+      jeepney = super.jeepney.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.outcome ];
+      });
+
       jinja2-ansible-filters = super.jinja2-ansible-filters.overridePythonAttrs (
         old: {
           preBuild = (old.preBuild or "") + ''
