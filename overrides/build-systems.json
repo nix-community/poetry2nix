@@ -7939,6 +7939,9 @@
   "jupyter-telemetry": [
     "setuptools"
   ],
+  "jupyter-ydoc": [
+    "hatchling"
+  ],
   "jupyterhub": [
     "setuptools"
   ],
