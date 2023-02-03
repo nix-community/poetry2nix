@@ -7903,6 +7903,9 @@
       "until": "4.11.0"
     }
   ],
+  "jupyter-events": [
+    "hatchling"
+  ],
   "jupyter-lsp": [
     "setuptools"
   ],
