@@ -5,7 +5,7 @@ pipBuildPhase() {
     echo "Executing pipBuildPhase"
     runHook preBuild
 
-    if [ -z "$SETUPTOOLS_SCM_PRETEND_VERSION" ] && echo "$buildInputs" | grep setuptools-scm; then
+    if [ -z "$SETUPTOOLS_SCM_PRETEND_VERSION" ] && echo "$buildInputs" | grep -E 'setuptools-scm|hatch-vcs'; then
         export SETUPTOOLS_SCM_PRETEND_VERSION="$version"
     fi
 
