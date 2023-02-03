@@ -2185,6 +2185,12 @@ lib.composeManyExtensions [
         }
       );
 
+      rich = super.rich.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.commonmark ];
+        }
+      );
+
       rockset = super.rockset.overridePythonAttrs (
         old: {
           postPatch = ''
