@@ -2227,6 +2227,12 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
       });
 
+      rfc3986-validator = super.rfc3986-validator.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          self.pytest-runner
+        ];
+      });
+
       rlp = super.rlp.overridePythonAttrs {
         preConfigure = ''
           substituteInPlace setup.py --replace \'setuptools-markdown\' ""
