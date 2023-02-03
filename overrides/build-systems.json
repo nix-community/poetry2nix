@@ -9158,6 +9158,9 @@
   "nampa": [
     "setuptools"
   ],
+  "nanoid": [
+    "setuptools"
+  ],
   "nanoleaf": [
     "setuptools"
   ],
