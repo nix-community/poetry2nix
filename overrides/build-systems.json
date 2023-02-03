@@ -19263,6 +19263,9 @@
   "yoyo-migrations": [
     "setuptools"
   ],
+  "ypy-websocket": [
+    "hatchling"
+  ],
   "yq": [
     "setuptools",
     "setuptools-scm"
