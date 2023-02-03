@@ -7930,6 +7930,9 @@
     "jupyter-packaging",
     "setuptools"
   ],
+  "jupyter-server-terminals": [
+    "hatchling"
+  ],
   "jupyter-sphinx": [
     "setuptools"
   ],
