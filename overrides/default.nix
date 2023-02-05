@@ -941,7 +941,7 @@ lib.composeManyExtensions [
       );
 
       jeepney = super.jeepney.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.outcome ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.outcome self.trio ];
       });
 
       jinja2-ansible-filters = super.jinja2-ansible-filters.overridePythonAttrs (
