@@ -2189,6 +2189,12 @@ lib.composeManyExtensions [
         }
       );
 
+      recommonmark = super.rich.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.CommonMark ];
+        }
+      );
+
       rich = super.rich.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.CommonMark ];
