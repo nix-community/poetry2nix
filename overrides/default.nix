@@ -1015,6 +1015,14 @@ lib.composeManyExtensions [
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools self.wheel ];
       });
 
+      jupyter-server = super.jupyter-server.overridePythonAttrs (old: {
+        doCheck = false;
+        nativeBuildInputs = (old.nativeBuildInputs or [ ])
+          ++ [ self.hatchling ];
+        buildInputs = (old.buildInputs or [ ])
+          ++ [ self.hatch-jupyter-builder ];
+      });
+
       jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.jupyter-packaging ];
