@@ -237,6 +237,11 @@ lib.makeScope pkgs.newScope (self: {
         (
           [
             # Remove Python packages aliases with non-normalized names to avoid issues with infinite recursion (issue #750).
+            (self: super: {
+              # Upstream nixpkgs uses non canonical names
+              async-generator = super.async-generator or super.async_generator or null;
+            })
+
             (self: super: lib.attrsets.mapAttrs
               (
                 name: value:

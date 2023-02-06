@@ -940,6 +940,11 @@ lib.composeManyExtensions [
         }
       );
 
+      trio = super.trio.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
+          ++ [ self.async-generator self.idna ];
+      });
+
       jeepney = super.jeepney.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ self.outcome self.trio ];
       });
