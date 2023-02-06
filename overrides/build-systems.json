@@ -7926,11 +7926,17 @@
       "from": "1.21.0"
     }
   ],
+  "jupyter-server-fileid": [
+    "hatchling"
+  ],
   "jupyter-server-mathjax": [
     "jupyter-packaging",
     "setuptools"
   ],
   "jupyter-server-terminals": [
+    "hatchling"
+  ],
+  "jupyter-server-ydoc": [
     "hatchling"
   ],
   "jupyter-sphinx": [
