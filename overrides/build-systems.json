@@ -1873,6 +1873,9 @@
   "bellows": [
     "setuptools"
   ],
+  "bencode-py": [
+    "setuptools"
+  ],
   "beniget": [
     "setuptools"
   ],
