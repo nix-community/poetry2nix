@@ -1,46 +1,4 @@
 {
-  "pathspec": [
-    "flit-core"
-  ],
-  "types-pygments": [
-    "setuptools"
-  ],
-  "types-beautifulsoup4": [
-    "setuptools"
-  ],
-  "databind": [
-    "poetry"
-  ],
-  "databind-json": [
-    "poetry"
-  ],
-  "databind-core": [
-    "poetry"
-  ],
-  "typeapi": [
-    "poetry"
-  ],
-  "nr-util": [
-    "poetry"
-  ],
-  "nr-python-environment": [
-    "poetry"
-  ],
-  "pygments": [
-    "poetry"
-  ],
-  "nr-io-lexer": [
-    "poetry"
-  ],
-  "types-termcolor": [
-    "setuptools"
-  ],
-  "builddsl": [
-    "poetry"
-  ],
-  "kraken-common": [
-    "poetry"
-  ],
   "aadict": [
     "setuptools"
   ],
@@ -2350,6 +2308,9 @@
   "buildcatrust": [
     "setuptools"
   ],
+  "builddsl": [
+    "poetry"
+  ],
   "bumps": [
     "setuptools"
   ],
@@ -3442,6 +3403,15 @@
   ],
   "databases": [
     "setuptools"
+  ],
+  "databind": [
+    "poetry"
+  ],
+  "databind-core": [
+    "poetry"
+  ],
+  "databind-json": [
+    "poetry"
   ],
   "databricks-cli": [
     "setuptools"
@@ -5132,9 +5102,6 @@
   "flake8-plugin-utils": [
     "poetry"
   ],
-  "flake8-pytest-style": [
-    "poetry-core"
-  ],
   "flake8-polyfill": [
     "setuptools"
   ],
@@ -5143,6 +5110,9 @@
   ],
   "flake8-pyprojecttoml": [
     "setuptools"
+  ],
+  "flake8-pytest-style": [
+    "poetry-core"
   ],
   "flake8-simplify": [
     "setuptools"
@@ -7783,6 +7753,9 @@
   "korean-lunar-calendar": [
     "setuptools"
   ],
+  "kraken-common": [
+    "poetry"
+  ],
   "krakenex": [
     "setuptools"
   ],
@@ -9553,6 +9526,15 @@
   ],
   "npyscreen": [
     "setuptools"
+  ],
+  "nr-io-lexer": [
+    "poetry"
+  ],
+  "nr-python-environment": [
+    "poetry"
+  ],
+  "nr-util": [
+    "poetry"
   ],
   "nsapi": [
     "setuptools"
@@ -17305,6 +17287,9 @@
   "txzmq": [
     "setuptools"
   ],
+  "typeapi": [
+    "poetry"
+  ],
   "typecode": [
     "setuptools",
     "setuptools-scm"
@@ -17368,6 +17353,9 @@
   "types-backports": [
     "setuptools"
   ],
+  "types-beautifulsoup4": [
+    "setuptools"
+  ],
   "types-cachetools": [
     "setuptools"
   ],
@@ -17416,6 +17404,9 @@
   "types-psutil": [
     "setuptools"
   ],
+  "types-pygments": [
+    "setuptools"
+  ],
   "types-python-dateutil": [
     "setuptools"
   ],
@@ -17441,6 +17432,9 @@
     "setuptools"
   ],
   "types-tabulate": [
+    "setuptools"
+  ],
+  "types-termcolor": [
     "setuptools"
   ],
   "types-toml": [
@@ -18661,6 +18655,9 @@
   "zipstream-ng": [
     "setuptools"
   ],
+  "zk": [
+    "setuptools"
+  ],
   "zm-py": [
     "setuptools"
   ],
@@ -18750,9 +18747,6 @@
     "setuptools"
   ],
   "zulip": [
-    "setuptools"
-  ],
-  "zk": [
     "setuptools"
   ],
   "zwave-js-server-python": [
