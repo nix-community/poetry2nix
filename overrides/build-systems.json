@@ -18120,8 +18120,6 @@
     "setuptools"
   ],
   "virtualenv": [
-    "cython",
-    "setuptools",
     "setuptools-scm"
   ],
   "virtualenv-clone": [

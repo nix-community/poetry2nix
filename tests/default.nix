@@ -151,5 +151,6 @@ builtins.removeAttrs
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
   rfc3986-validator = callTest ./rfc3986-validator { };
+  virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
 }
   skipTests
