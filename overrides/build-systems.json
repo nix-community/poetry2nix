@@ -8911,6 +8911,9 @@
     "cython",
     "setuptools"
   ],
+  "msgpack-python": [
+    "setuptools"
+  ],
   "msgpack-types": [
     "poetry"
   ],
@@ -14692,6 +14695,9 @@
     "cython",
     "setuptools"
   ],
+  "reserved": [
+    "setuptools"
+  ],
   "resolvelib": [
     "setuptools"
   ],
@@ -15575,6 +15581,9 @@
   "simpy": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "singledispatch": [
+    "setuptools"
   ],
   "single-source": [
     "poetry-core"
@@ -18625,6 +18634,9 @@
   "zipp": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "zipseeker": [
+    "setuptools"
   ],
   "zipstream": [
     "setuptools"
