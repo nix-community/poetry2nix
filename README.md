@@ -350,6 +350,12 @@ To list test names:
 nix eval --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.lib.attrNames (import ./tests/default.nix {})'
 ```
 
+To run specific tests, add `--attr NAME` to the `nix-build` command above. For example, to run the `bcrypt` and `jq` tests:
+
+```bash
+nix-build --attr bcrypt --attr jq --keep-going --show-trace tests/default.nix
+```
+
 ## Contact
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
 
