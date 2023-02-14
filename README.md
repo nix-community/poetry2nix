@@ -344,6 +344,12 @@ Contributions to this project are welcome in the form of GitHub PRs. Please cons
 nix-build --keep-going --show-trace tests/default.nix
 ```
 
+To list test names:
+
+```bash
+nix eval --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.lib.attrNames (import ./tests/default.nix {})'
+```
+
 ## Contact
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
 
