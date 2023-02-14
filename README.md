@@ -356,6 +356,12 @@ To run specific tests, add `--attr NAME` to the `nix-build` command above. For e
 nix-build --attr bcrypt --attr jq --keep-going --show-trace tests/default.nix
 ```
 
+To test with a specific channel:
+
+```bash
+nix-build --expr 'with import <unstable> {}; callPackage ./tests/default.nix {}'
+```
+
 ## Contact
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
 
