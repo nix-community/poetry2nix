@@ -1130,6 +1130,8 @@ lib.composeManyExtensions [
             pkgs.ghostscript
           ] ++ lib.optionals stdenv.isDarwin [
             Cocoa
+          ] ++ lib.optionals (lib.versionAtLeast super.matplotlib.version "3.7.0") [
+            self.pybind11
           ];
 
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [

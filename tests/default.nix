@@ -151,6 +151,7 @@ builtins.removeAttrs
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
   matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
+  matplotlib-post-3-7 = callTest ./matplotlib-post-3-7 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
 }
   skipTests
