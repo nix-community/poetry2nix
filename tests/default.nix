@@ -150,6 +150,7 @@ builtins.removeAttrs
   missing-iswheel = callTest ./missing-iswheel { };
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
+  matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
 }
   skipTests
