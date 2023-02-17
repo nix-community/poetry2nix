@@ -1287,13 +1287,163 @@
   "aws-cdk-asset-node-proxy-agent-v5": [
     "setuptools"
   ],
+  "aws-cdk-assets": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-apigateway": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-applicationautoscaling": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-autoscaling": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-autoscaling-common": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-autoscaling-hooktargets": [
+    "setuptools"
+  ],
   "aws-cdk-aws-batch-alpha": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-certificatemanager": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-cloudformation": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-cloudfront": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-cloudwatch": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-codebuild": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-codecommit": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-codeguruprofiler": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-codepipeline": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-codestarnotifications": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-cognito": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-ec2": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-ecr": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-ecr-assets": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-ecs": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-efs": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-elasticloadbalancing": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-elasticloadbalancingv2": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-events": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-events-targets": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-globalaccelerator": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-iam": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-kinesis": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-kinesisfirehose": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-kms": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-lambda": [
     "setuptools"
   ],
   "aws-cdk-aws-lambda-python-alpha": [
     "setuptools"
   ],
+  "aws-cdk-aws-logs": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-route53": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-route53-targets": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-s3": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-s3-assets": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-sam": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-secretsmanager": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-servicediscovery": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-signer": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-sns": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-sns-subscriptions": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-sqs": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-ssm": [
+    "setuptools"
+  ],
+  "aws-cdk-aws-stepfunctions": [
+    "setuptools"
+  ],
+  "aws-cdk-cloud-assembly-schema": [
+    "setuptools"
+  ],
+  "aws-cdk-core": [
+    "setuptools"
+  ],
+  "aws-cdk-custom-resources": [
+    "setuptools"
+  ],
+  "aws-cdk-cx-api": [
+    "setuptools"
+  ],
   "aws-cdk-lib": [
+    "setuptools"
+  ],
+  "aws-cdk-region-info": [
     "setuptools"
   ],
   "aws-error-utils": [
@@ -6310,6 +6460,9 @@
   "halohome": [
     "setuptools"
   ],
+  "hammett": [
+    "setuptools"
+  ],
   "handout": [
     "setuptools"
   ],
@@ -9057,6 +9210,9 @@
     "setuptools"
   ],
   "mypy-boto3-lambda": [
+    "setuptools"
+  ],
+  "mypy-boto3-rds": [
     "setuptools"
   ],
   "mypy-boto3-s3": [
@@ -16116,6 +16272,9 @@
     "setuptools"
   ],
   "sqlalchemy-utils": [
+    "setuptools"
+  ],
+  "sqlalchemy2-stubs": [
     "setuptools"
   ],
   "sqlbag": [
