@@ -136,6 +136,7 @@ builtins.removeAttrs
   test-group = callTest ./test-group { };
   nbconvert-wheel = callTest ./nbconvert-wheel { };
   duckdb-wheel = callTest ./duckdb-wheel { };
+  fiona-source = callTest ./fiona-source { };
   fiona-wheel = callTest ./fiona-wheel { };
   shapely-wheel = callTest ./shapely-wheel { };
   cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };

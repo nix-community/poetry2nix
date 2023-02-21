@@ -5027,7 +5027,14 @@
     "setuptools"
   ],
   "fiona": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.9.0"
+    },
+    {
+      "buildSystem": "cython",
+      "from": "1.9.0"
+    }
   ],
   "fipy": [
     "setuptools"
