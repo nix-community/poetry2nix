@@ -7478,7 +7478,14 @@
     "setuptools"
   ],
   "jupyter-console": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "6.6.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "6.6.0"
+    }
   ],
   "jupyter-core": [
     {
