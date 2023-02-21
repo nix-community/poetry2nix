@@ -27,7 +27,7 @@ let
                 true;
             intendedBuildSystem =
               if attr.buildSystem == "cython" then
-                self.python.pythonForBuild.cython
+                self.python.pythonForBuild.pkgs.cython
               else
                 self.${attr.buildSystem};
           in
