@@ -14741,6 +14741,10 @@
   "rfc3986": [
     "setuptools"
   ],
+  "rfc3986-validator": [
+    "pytest-runner",
+    "setuptools"
+  ],
   "rfc3987": [
     "setuptools"
   ],

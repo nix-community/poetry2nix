@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-rfc3986-validator"
+version = "0.1.0"
+description = "Test of rfc3986-validator"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rfc3986-validator = "*"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
