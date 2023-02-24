@@ -1016,7 +1016,6 @@ lib.composeManyExtensions [
       });
 
       jupyter-server = super.jupyter-server.overridePythonAttrs (old: {
-        doCheck = false;
         nativeBuildInputs = (old.nativeBuildInputs or [ ])
           ++ [ self.hatchling ];
         buildInputs = (old.buildInputs or [ ])
