@@ -1,6 +1,5 @@
 { packages ? pkgs: [
     pkgs.p2nix-tools.env
-    pkgs.p2nix-tools.py2-astparse
     pkgs.p2nix-tools.flamegraph
     pkgs.nixpkgs-fmt
     pkgs.poetry

@@ -40,20 +40,4 @@ in
     projectDir = ./.;
   };
 
-  py2-astparse = pkgs.writeScriptBin "py2-astparse" ''
-    #!${pkgs.python2.interpreter}
-    # Used as a smoke test for Python2 compatibility in Python files
-    import sys
-    import ast
-
-    if __name__ == "__main__":
-        with open(sys.argv[1]) as f:
-            try:
-                ast.parse(f.read())
-            except Exception as e:
-                sys.stderr.write("Error parsing '{}':\n".format(sys.argv[1]))
-                sys.stderr.flush()
-                raise
-  '';
-
 }
