@@ -16,7 +16,7 @@ let
   poetry2nix = import ./.. { inherit pkgs; inherit poetry; };
   poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
   pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
-  pep425Python37 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python37; };
+  pep425Python37 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
   pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; python = pkgs.python3; };
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);

@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python37 }:
+{ lib, poetry2nix, python3 }:
 let
   drv = poetry2nix.mkPoetryApplication {
     pyproject = ./pyproject.toml;

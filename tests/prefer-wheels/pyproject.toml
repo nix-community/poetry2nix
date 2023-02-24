@@ -5,9 +5,8 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-tensorflow = "^2.1.0"
-tensorflow-estimator = "2.1.0rc0"
+python = ">=3.10,<3.11"
+tensorflow = "^2.11.0"
 
 [tool.poetry.dev-dependencies]
 

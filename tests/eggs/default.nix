@@ -1,7 +1,7 @@
-{ lib, poetry2nix, python37, runCommand }:
+{ lib, poetry2nix, python3, runCommand }:
 let
   drv = poetry2nix.mkPoetryApplication {
-    python = python37;
+    python = python3;
     projectDir = ./.;
   };
 in
