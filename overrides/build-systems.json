@@ -2465,6 +2465,9 @@
   "buildcatrust": [
     "setuptools"
   ],
+  "builddsl": [
+    "poetry"
+  ],
   "bumps": [
     "setuptools"
   ],
@@ -3557,6 +3560,15 @@
   ],
   "databases": [
     "setuptools"
+  ],
+  "databind": [
+    "poetry"
+  ],
+  "databind-core": [
+    "poetry"
+  ],
+  "databind-json": [
+    "poetry"
   ],
   "databricks-cli": [
     "setuptools"
@@ -7918,6 +7930,9 @@
   "korean-lunar-calendar": [
     "setuptools"
   ],
+  "kraken-common": [
+    "poetry"
+  ],
   "krakenex": [
     "setuptools"
   ],
@@ -9697,6 +9712,15 @@
   ],
   "npyscreen": [
     "setuptools"
+  ],
+  "nr-io-lexer": [
+    "poetry"
+  ],
+  "nr-python-environment": [
+    "poetry"
+  ],
+  "nr-util": [
+    "poetry"
   ],
   "nsapi": [
     "setuptools"
@@ -17478,6 +17502,9 @@
   "txzmq": [
     "setuptools"
   ],
+  "typeapi": [
+    "poetry"
+  ],
   "typecode": [
     "setuptools",
     "setuptools-scm"
@@ -17541,6 +17568,9 @@
   "types-backports": [
     "setuptools"
   ],
+  "types-beautifulsoup4": [
+    "setuptools"
+  ],
   "types-cachetools": [
     "setuptools"
   ],
@@ -17589,6 +17619,9 @@
   "types-psutil": [
     "setuptools"
   ],
+  "types-pygments": [
+    "setuptools"
+  ],
   "types-python-dateutil": [
     "setuptools"
   ],
@@ -17614,6 +17647,9 @@
     "setuptools"
   ],
   "types-tabulate": [
+    "setuptools"
+  ],
+  "types-termcolor": [
     "setuptools"
   ],
   "types-toml": [
