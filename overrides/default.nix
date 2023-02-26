@@ -99,7 +99,7 @@ lib.composeManyExtensions [
 
     {
       automat = super.automat.overridePythonAttrs (
-        old: {
+        old: lib.optionalAttrs (lib.versionOlder old.version "22.10.0") {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.m2r ];
         }
       );
