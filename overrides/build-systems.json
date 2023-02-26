@@ -12692,6 +12692,9 @@
   "pyperf": [
     "setuptools"
   ],
+  "pypeul": [
+    "poetry-core"
+  ],
   "pyphen": [
     "flit",
     "setuptools"
