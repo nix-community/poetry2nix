@@ -13767,6 +13767,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "python-hcl2": [
+    "setuptools"
+  ],
   "python-heatclient": [
     "pbr",
     "setuptools"
