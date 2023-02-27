@@ -15839,14 +15839,14 @@
     "setuptools",
     "setuptools-scm"
   ],
-  "singledispatch": [
-    "setuptools"
-  ],
   "single-source": [
     "poetry-core"
   ],
   "single-version": [
     "poetry-core",
+    "setuptools"
+  ],
+  "singledispatch": [
     "setuptools"
   ],
   "siobrultech-protocols": [
