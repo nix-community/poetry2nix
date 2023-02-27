@@ -149,6 +149,8 @@ builtins.removeAttrs
   missing-iswheel = callTest ./missing-iswheel { };
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
+  matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
+  matplotlib-post-3-7 = callTest ./matplotlib-post-3-7 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
   virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };

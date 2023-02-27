@@ -1,20 +1,12 @@
 [tool.poetry]
-name = "scientific_test"
+name = "matplotlib-pre-3-7"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-numpy = "*"
-scipy = "*"
-scikit-learn = "*"
-seaborn = "*"
-pandas = "*"
-jupyter = "*"
-
-# FIXME: pin a lower version until we figure out how to build newer ones
-nbconvert = "<7"
+matplotlib = "<3.7"
 
 [build-system]
 requires = ["poetry-core>=1.1"]
