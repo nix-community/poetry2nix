@@ -59,15 +59,6 @@ let
 
 in
 lib.composeManyExtensions [
-  # NixOps
-  (self: super:
-    lib.mapAttrs (_: v: addBuildSystem { inherit self; drv = v; attr = "poetry"; }) (lib.filterAttrs (n: _: lib.strings.hasPrefix "nixops" n) super)
-    // {
-      # NixOps >=2 dependency
-      nixos-modules-contrib = addBuildSystem { inherit self; drv = super.nixos-modules-contrib; attr = "poetry"; };
-    }
-  )
-
   # Add build systems
   (self: super:
     let
