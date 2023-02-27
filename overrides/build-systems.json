@@ -6273,6 +6273,9 @@
   "gql": [
     "setuptools"
   ],
+  "gqt": [
+    "setuptools"
+  ],
   "gradient": [
     "setuptools"
   ],
@@ -6458,9 +6461,6 @@
     "setuptools"
   ],
   "gypsum-dl": [
-    "setuptools"
-  ],
-  "gqt": [
     "setuptools"
   ],
   "h11": [
@@ -11229,10 +11229,10 @@
   "prompt-toolkit": [
     "setuptools"
   ],
-  "propka": [
+  "property-manager": [
     "setuptools"
   ],
-  "property-manager": [
+  "propka": [
     "setuptools"
   ],
   "prospector": [
@@ -17607,10 +17607,10 @@
   "typecode-libmagic": [
     "setuptools"
   ],
-  "typed-ast": [
+  "typed-argument-parser": [
     "setuptools"
   ],
-  "typed-argument-parser": [
+  "typed-ast": [
     "setuptools"
   ],
   "typed-settings": [
