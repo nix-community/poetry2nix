@@ -18120,9 +18120,14 @@
     "setuptools"
   ],
   "virtualenv": [
-    "cython",
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools-scm",
+      "until": " 20.18"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": " 20.18"
+    }
   ],
   "virtualenv-clone": [
     "setuptools"
