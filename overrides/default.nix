@@ -1003,6 +1003,15 @@ lib.composeManyExtensions [
         }
       );
 
+      libarchive = super.libarchive.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+
+        postPatch = ''
+          substituteInPlace libarchive/library.py --replace \
+            "_FILEPATH = find_and_load_library()" "_FILEPATH = '${pkgs.libarchive.lib}/lib/libarchive${stdenv.hostPlatform.extensions.sharedLibrary}'"
+        '';
+      });
+
       libvirt-python = super.libvirt-python.overridePythonAttrs ({ nativeBuildInputs ? [ ], ... }: {
         nativeBuildInputs = nativeBuildInputs ++ [ pkg-config ];
         propagatedBuildInputs = [ pkgs.libvirt ];
