@@ -11,9 +11,18 @@ let
           maturin = super.maturin.override {
             preferWheel = true;
           };
+          funcy = super.funcy.overridePythonAttrs (old: {
+            preferWheel = true;
+          });
         }
       );
   };
-  isWheelAttr = drv.passthru.python.pkgs.maturin.src.isWheel or false;
+  isWheelMaturin = drv.passthru.python.pkgs.maturin.src.isWheel or false;
+  isWheelFuncy = drv.passthru.python.pkgs.funcy.src.isWheel or false;
 in
-assert isWheelAttr; drv
+assert isWheelMaturin;
+
+# HACK https://github.com/nix-community/poetry2nix/pull/948
+# TODO Be able some day to invert this assertion
+assert !isWheelFuncy;
+drv

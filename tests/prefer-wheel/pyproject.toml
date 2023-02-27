@@ -6,7 +6,8 @@ authors = ["adisbladis <adisbladis@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-maturin = "^0.7.7"
+maturin = "0.7.7"
+funcy = "1.17"
 
 [tool.poetry.dev-dependencies]
 
