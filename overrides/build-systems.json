@@ -2569,6 +2569,9 @@
   "case": [
     "setuptools"
   ],
+  "casefy": [
+    "hatchling"
+  ],
   "cassandra-driver": [
     "cython",
     "setuptools"
@@ -3609,6 +3612,9 @@
   ],
   "datapoint": [
     "setuptools"
+  ],
+  "datargs": [
+    "poetry"
   ],
   "dataset": [
     "setuptools"
@@ -6451,6 +6457,12 @@
   "gyp": [
     "setuptools"
   ],
+  "gypsum-dl": [
+    "setuptools"
+  ],
+  "gqt": [
+    "setuptools"
+  ],
   "h11": [
     "setuptools"
   ],
@@ -8186,6 +8198,12 @@
   "lightning": [
     "setuptools"
   ],
+  "lightning-cloud": [
+    "setuptools"
+  ],
+  "lightning-utilities": [
+    "setuptools"
+  ],
   "lightparam": [
     "setuptools"
   ],
@@ -8692,6 +8710,9 @@
   "mediapy": [
     "setuptools"
   ],
+  "meeko": [
+    "setuptools"
+  ],
   "meilisearch": [
     "setuptools"
   ],
@@ -8955,6 +8976,9 @@
     "setuptools"
   ],
   "mlrose": [
+    "setuptools"
+  ],
+  "mmcif-pdbx": [
     "setuptools"
   ],
   "mmh3": [
@@ -10325,6 +10349,9 @@
   "panasonic-viera": [
     "setuptools"
   ],
+  "pandarrallel": [
+    "setuptools"
+  ],
   "pandas": [
     "cython",
     "setuptools"
@@ -10531,6 +10558,15 @@
     "setuptools"
   ],
   "pcpp": [
+    "setuptools"
+  ],
+  "pdb-tools": [
+    "setuptools"
+  ],
+  "pdb2pqr": [
+    "setuptools"
+  ],
+  "pdbtools": [
     "setuptools"
   ],
   "pdf2image": [
@@ -11191,6 +11227,9 @@
     "setuptools"
   ],
   "prompt-toolkit": [
+    "setuptools"
+  ],
+  "propka": [
     "setuptools"
   ],
   "property-manager": [
@@ -13056,6 +13095,10 @@
   "pysensors": [
     "setuptools"
   ],
+  "pyserde": [
+    "poetry",
+    "poetry-dynamic-versioning"
+  ],
   "pyserial": [
     "setuptools"
   ],
@@ -14564,6 +14607,9 @@
   ],
   "qdldl": [
     "setuptools"
+  ],
+  "qdx": [
+    "poetry"
   ],
   "qiling": [
     "setuptools"
@@ -16474,6 +16520,9 @@
   "starline": [
     "setuptools"
   ],
+  "starsessions": [
+    "poetry"
+  ],
   "stashy": [
     "setuptools"
   ],
@@ -17559,6 +17608,9 @@
     "setuptools"
   ],
   "typed-ast": [
+    "setuptools"
+  ],
+  "typed-argument-parser": [
     "setuptools"
   ],
   "typed-settings": [
