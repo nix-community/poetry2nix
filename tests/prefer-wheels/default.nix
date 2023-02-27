@@ -1,7 +1,7 @@
-{ lib, poetry2nix, python37, runCommand }:
+{ lib, poetry2nix, python3, runCommand }:
 let
   py = poetry2nix.mkPoetryPackages {
-    python = python37;
+    python = python3;
     projectDir = ./.;
     preferWheels = true;
   };
