@@ -360,6 +360,24 @@ Contributions to this project are welcome in the form of GitHub PRs. Please cons
 nix-build --keep-going --show-trace tests/default.nix
 ```
 
+To list test names:
+
+```bash
+nix eval --impure --expr 'let pkgs = import <nixpkgs> {}; in pkgs.lib.attrNames (import ./tests/default.nix {})'
+```
+
+To run specific tests, add `--attr NAME` to the `nix-build` command above. For example, to run the `bcrypt` and `jq` tests:
+
+```bash
+nix-build --attr bcrypt --attr jq --keep-going --show-trace tests/default.nix
+```
+
+To test with a specific channel:
+
+```bash
+nix-build --expr 'with import <unstable> {}; callPackage ./tests/default.nix {}'
+```
+
 ## Contact
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
 
