@@ -2569,6 +2569,9 @@
   "case": [
     "setuptools"
   ],
+  "casefy": [
+    "hatchling"
+  ],
   "cassandra-driver": [
     "cython",
     "setuptools"
@@ -3609,6 +3612,9 @@
   ],
   "datapoint": [
     "setuptools"
+  ],
+  "datargs": [
+    "poetry"
   ],
   "dataset": [
     "setuptools"
@@ -6267,6 +6273,9 @@
   "gql": [
     "setuptools"
   ],
+  "gqt": [
+    "setuptools"
+  ],
   "gradient": [
     "setuptools"
   ],
@@ -6449,6 +6458,9 @@
     "setuptools"
   ],
   "gyp": [
+    "setuptools"
+  ],
+  "gypsum-dl": [
     "setuptools"
   ],
   "h11": [
@@ -8186,6 +8198,12 @@
   "lightning": [
     "setuptools"
   ],
+  "lightning-cloud": [
+    "setuptools"
+  ],
+  "lightning-utilities": [
+    "setuptools"
+  ],
   "lightparam": [
     "setuptools"
   ],
@@ -8692,6 +8710,9 @@
   "mediapy": [
     "setuptools"
   ],
+  "meeko": [
+    "setuptools"
+  ],
   "meilisearch": [
     "setuptools"
   ],
@@ -8955,6 +8976,9 @@
     "setuptools"
   ],
   "mlrose": [
+    "setuptools"
+  ],
+  "mmcif-pdbx": [
     "setuptools"
   ],
   "mmh3": [
@@ -10325,6 +10349,9 @@
   "panasonic-viera": [
     "setuptools"
   ],
+  "pandarrallel": [
+    "setuptools"
+  ],
   "pandas": [
     "cython",
     "setuptools"
@@ -10531,6 +10558,15 @@
     "setuptools"
   ],
   "pcpp": [
+    "setuptools"
+  ],
+  "pdb-tools": [
+    "setuptools"
+  ],
+  "pdb2pqr": [
+    "setuptools"
+  ],
+  "pdbtools": [
     "setuptools"
   ],
   "pdf2image": [
@@ -11194,6 +11230,9 @@
     "setuptools"
   ],
   "property-manager": [
+    "setuptools"
+  ],
+  "propka": [
     "setuptools"
   ],
   "prospector": [
@@ -13056,6 +13095,10 @@
   "pysensors": [
     "setuptools"
   ],
+  "pyserde": [
+    "poetry",
+    "poetry-dynamic-versioning"
+  ],
   "pyserial": [
     "setuptools"
   ],
@@ -14564,6 +14607,9 @@
   ],
   "qdldl": [
     "setuptools"
+  ],
+  "qdx": [
+    "poetry"
   ],
   "qiling": [
     "setuptools"
@@ -16474,6 +16520,9 @@
   "starline": [
     "setuptools"
   ],
+  "starsessions": [
+    "poetry"
+  ],
   "stashy": [
     "setuptools"
   ],
@@ -17556,6 +17605,9 @@
     "setuptools-scm"
   ],
   "typecode-libmagic": [
+    "setuptools"
+  ],
+  "typed-argument-parser": [
     "setuptools"
   ],
   "typed-ast": [
