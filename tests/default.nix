@@ -16,7 +16,7 @@ let
   poetry2nix = import ./.. { inherit pkgs; inherit poetry; };
   poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
   pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
-  pep425Python37 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
+  pep425PythonOldest = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python38; };
   pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; python = pkgs.python3; };
   skipTests = builtins.filter (t: builtins.typeOf t != "list") (builtins.split "," (builtins.getEnv "SKIP_TESTS"));
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
@@ -38,7 +38,7 @@ builtins.removeAttrs
   override-default = callTest ./override-default-support { };
   common-pkgs-1 = callTest ./common-pkgs-1 { };
   common-pkgs-2 = callTest ./common-pkgs-2 { };
-  pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425Python37; };
+  pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425PythonOldest; };
   pep600 = skipOSX (callTest ./pep600 { });
   env = callTest ./env { };
   pytest-randomly = callTest ./pytest-randomly { };

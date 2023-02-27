@@ -3,7 +3,7 @@
 
   Note: this test assumes that "certifi" lib is going to be a dep of "requests" in the future.
 */
-{ lib, poetry2nix, python3 }:
+{ lib, poetry2nix, python3, python38 }:
 let
   inherit (builtins) elem map;
   drvPythonCurrent = poetry2nix.mkPoetryPackages {
@@ -12,14 +12,14 @@ let
   };
 
   # Test backward compatibility
-  drvPython37 = poetry2nix.mkPoetryPackages {
+  drvPythonOldest = poetry2nix.mkPoetryPackages {
     projectDir = ./.;
-    python = python3;
+    python = python38;
   };
 
   packageNamesCurrent = map (package: package.pname) drvPythonCurrent.poetryPackages;
-  packageNamesPython37 = map (package: package.pname) drvPython37.poetryPackages;
+  packageNamesPythonOldest = map (package: package.pname) drvPythonOldest.poetryPackages;
 in
 assert builtins.elem "certifi" packageNamesCurrent;
-assert builtins.elem "certifi" packageNamesPython37;
+assert builtins.elem "certifi" packageNamesPythonOldest;
 drvPythonCurrent
