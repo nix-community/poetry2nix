@@ -2550,7 +2550,7 @@ lib.composeManyExtensions [
 
       # Stop infinite recursion by using bootstrapped pkg from nixpkgs
       bootstrapped-pip = super.bootstrapped-pip.override {
-        wheel = (pkgs.python3.pkgs.override {
+        wheel = ((if self.python.isPy2 then pkgs.python2 else pkgs.python3).pkgs.override {
           python = self.python;
         }).wheel;
       };
