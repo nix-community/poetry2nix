@@ -154,5 +154,7 @@ builtins.removeAttrs
   rfc3986-validator = callTest ./rfc3986-validator { };
   virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };
+  grpcio-wheel = callTest ./grpcio-wheel { };
+  panel-wheels = callTest ./panel-wheels { };
 }
   skipTests

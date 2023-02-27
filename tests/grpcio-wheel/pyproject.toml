@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "test-nbconvert-wheel"
+name = "test-grpcio-wheel"
 version = "0.1.0"
-description = "Test of wheel for nbconvert"
+description = "Test of wheel for grpcio"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-nbconvert = "^7.2.6"
+grpcio = "^1.51.1"
 
 [build-system]
 requires = ["poetry-core>=1"]
