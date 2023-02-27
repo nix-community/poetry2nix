@@ -1,4 +1,4 @@
-{ writeText, stdenv, lib, pep425, pep425OSX, pep425Python37 }:
+{ writeText, stdenv, lib, pep425, pep425OSX, pep425PythonOldest }:
 
 lib.debug.runTests {
 
@@ -30,7 +30,7 @@ lib.debug.runTests {
       expected = [{ file = "grpcio-1.25.0-cp27-cp27m-macosx_10_10_x86_64.whl"; }];
     };
 
-  testLinuxPickPython37 =
+  testLinuxPickPythonOldest =
     let
       cs = [
         { file = "grpcio-1.25.0-cp27-cp27m-macosx_10_10_x86_64.whl"; }
@@ -42,7 +42,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425Python37.selectWheel cs);
+      expr = (pep425PythonOldest.selectWheel cs);
       expected = [{ file = "grpcio-1.25.0-cp37-cp37m-manylinux2010_x86_64.whl"; }];
     };
 
@@ -174,7 +174,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = pep425Python37.selectWheel cs;
+      expr = pep425PythonOldest.selectWheel cs;
       expected = [{ file = "msgpack-0.6.2-cp37-cp37m-manylinux1_x86_64.whl"; }];
     };
 
@@ -186,7 +186,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = pep425Python37.selectWheel cs;
+      expr = pep425PythonOldest.selectWheel cs;
       expected = [{ file = "tensorboard-1.14.0-py3-none-any.whl"; }];
     };
 
@@ -197,7 +197,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = pep425Python37.selectWheel cs;
+      expr = pep425PythonOldest.selectWheel cs;
       expected = [{ file = "tensorboard-1.14.0-py2.py3-none-any.whl"; }];
     };
 

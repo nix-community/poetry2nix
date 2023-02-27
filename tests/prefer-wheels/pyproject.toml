@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "tensorflow-pkgs-1"
+name = "prefer-wheels-test"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
-tensorflow = "^2.11.0"
+python = "^3.10"
+maturin = "*"
 
 [tool.poetry.dev-dependencies]
 
