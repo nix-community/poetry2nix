@@ -1358,6 +1358,9 @@ lib.composeManyExtensions [
           preBuild = ''
             ln -s ${cfg} site.cfg
           '';
+          preConfigure = ''
+            export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
+          '';
           passthru = old.passthru // {
             blas = blas;
             inherit blasImplementation cfg;
