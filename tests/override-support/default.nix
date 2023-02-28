@@ -7,7 +7,7 @@ let
     pyproject = ./pyproject.toml;
     overrides = poetry2nix.overrides.withDefaults (
       self: super: {
-        alembic = super.alembic.overrideAttrs (
+        alembic = super.alembic.overridePythonAttrs (
           old: {
             TESTING_FOOBAR = 42;
           }
