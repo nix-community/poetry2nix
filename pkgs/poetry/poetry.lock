@@ -1482,14 +1482,14 @@ testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (
 
 [[package]]
 name = "shellingham"
-version = "1.5.0"
+version = "1.5.0.post1"
 description = "Tool to Detect Surrounding Shell"
 category = "main"
 optional = false
-python-versions = ">=3.4"
+python-versions = ">=3.7"
 files = [
-    {file = "shellingham-1.5.0-py2.py3-none-any.whl", hash = "sha256:a8f02ba61b69baaa13facdba62908ca8690a94b8119b69f5ec5873ea85f7391b"},
-    {file = "shellingham-1.5.0.tar.gz", hash = "sha256:72fb7f5c63103ca2cb91b23dee0c71fe8ad6fbfd46418ef17dbe40db51592dad"},
+    {file = "shellingham-1.5.0.post1-py2.py3-none-any.whl", hash = "sha256:368bf8c00754fd4f55afb7bbb86e272df77e4dc76ac29dbcbb81a59e9fc15744"},
+    {file = "shellingham-1.5.0.post1.tar.gz", hash = "sha256:823bc5fb5c34d60f285b624e7264f4dda254bc803a3774a147bf99c0e3004a28"},
 ]
 
 [[package]]
