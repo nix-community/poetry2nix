@@ -4184,7 +4184,13 @@
   "django-rest-polymorphic": [
     "setuptools"
   ],
+  "django-rest-swagger": [
+    "setuptools"
+  ],
   "django-reversion": [
+    "setuptools"
+  ],
+  "django-rosetta": [
     "setuptools"
   ],
   "django-rq": [
@@ -9982,6 +9988,9 @@
     "setuptools"
   ],
   "openant": [
+    "setuptools"
+  ],
+  "openapi-codec": [
     "setuptools"
   ],
   "openapi-core": [
@@ -17904,6 +17913,9 @@
     "setuptools"
   ],
   "unify": [
+    "setuptools"
+  ],
+  "unipath": [
     "setuptools"
   ],
   "units": [
