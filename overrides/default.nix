@@ -796,10 +796,10 @@ lib.composeManyExtensions [
 
       hikari-lightbulb = super.hikari-lightbulb.overrideAttrs (
         old: {
-          buildInputs = (old.buildInputs or []) ++ [self.setuptools];
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
         }
       );
-      
+
       horovod = super.horovod.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.mpi ];
