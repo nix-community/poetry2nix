@@ -4,9 +4,10 @@
 , wheel
 , pip
 , pkgs
+, lib
 }:
 let
-  callPackage = python.pythonForBuild.pkgs.callPackage;
+  inherit (python.pythonForBuild.pkgs) callPackage;
   pythonInterpreter = python.pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
 
@@ -14,23 +15,27 @@ let
   makeRemoveSpecialDependenciesHook = { fields, kind }:
     nonOverlayedPython.pkgs.callPackage
       (
-        {}:
+        _:
         makeSetupHook
           {
             name = "remove-path-dependencies.sh";
-            deps = [ ];
             substitutions = {
               # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
               # because building of tomlkit and its dependencies also use these hooks.
               pythonPath = nonOverlayedPython.pkgs.makePythonPath [ nonOverlayedPython ];
               pythonInterpreter = nonOverlayedPython.interpreter;
               pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
-              fields = fields;
-              kind = kind;
+              inherit fields;
+              inherit kind;
             };
           } ./remove-special-dependencies.sh
       )
       { };
+  makeSetupHookArgs = deps:
+    if lib.elem "deps" (builtins.attrNames (builtins.functionArgs makeSetupHook)) then
+      { inherit deps; }
+    else
+      { propagatedBuildInputs = deps; };
 in
 {
   removePathDependenciesHook = makeRemoveSpecialDependenciesHook {
@@ -48,23 +53,21 @@ in
     (
       { pip, wheel }:
       makeSetupHook
-        {
+        ({
           name = "pip-build-hook.sh";
-          deps = [ pip wheel ];
           substitutions = {
             inherit pythonInterpreter pythonSitePackages;
           };
-        } ./pip-build-hook.sh
+        } // (makeSetupHookArgs [ pip wheel ])) ./pip-build-hook.sh
     )
     { };
 
   poetry2nixFixupHook = callPackage
     (
-      {}:
+      _:
       makeSetupHook
         {
           name = "fixup-hook.sh";
-          deps = [ ];
           substitutions = {
             inherit pythonSitePackages;
             filenames = builtins.concatStringsSep " " [
@@ -80,11 +83,10 @@ in
   # When the "wheel" package itself is a wheel the nixpkgs hook (which pulls in "wheel") leads to infinite recursion
   # It doesn't _really_ depend on wheel though, it just copies the wheel.
   wheelUnpackHook = callPackage
-    ({}:
+    (_:
       makeSetupHook
         {
           name = "wheel-unpack-hook.sh";
-          deps = [ ];
         } ./wheel-unpack-hook.sh
     )
     { };
