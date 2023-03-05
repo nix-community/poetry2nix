@@ -9,7 +9,7 @@ let
       ((
         poetry2nix.defaultPoetryOverrides.overrideOverlay (
           self: super: {
-            alembic = super.alembic.overrideAttrs (
+            alembic = super.alembic.overridePythonAttrs (
               old: {
                 TESTING_FOOBAR = 42;
               }
