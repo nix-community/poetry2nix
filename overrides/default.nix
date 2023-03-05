@@ -444,6 +444,10 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
       });
 
+      databricks-connect = super.databricks-connect.overridePythonAttrs (old: {
+        sourceRoot = ".";
+      });
+
       dbus-python = super.dbus-python.overridePythonAttrs (old: {
         outputs = [ "out" "dev" ];
 
