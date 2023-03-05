@@ -56,7 +56,7 @@ jobs:
           set -euo pipefail
 
           matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq -rcM '{attr: .}')"
-          echo "::set-output name=matrix::$matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   builds-linux:
     needs: matrix_generate
