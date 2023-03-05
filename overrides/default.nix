@@ -444,6 +444,13 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
       });
 
+      dbt-extractor = super.dbt-extractor.overridePythonAttrs
+      (
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ cargo rustc maturin ];
+        }
+      );
+
       dbus-python = super.dbus-python.overridePythonAttrs (old: {
         outputs = [ "out" "dev" ];
 
@@ -2702,6 +2709,13 @@ lib.composeManyExtensions [
               -e '/setup_requires/,/],/d' \
               -e 's/vcversioner={},/version="${old.version}",/'
           '';
+        }
+      );
+
+      minimal-snowplow-tracker = super.minimal-snowplow-tracker.overridePythonAttrs
+      (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
         }
       );
 
