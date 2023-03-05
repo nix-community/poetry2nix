@@ -2715,7 +2715,7 @@ lib.composeManyExtensions [
       minimal-snowplow-tracker = super.minimal-snowplow-tracker.overridePythonAttrs
       (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ super.setuptools ];
         }
       );
 
