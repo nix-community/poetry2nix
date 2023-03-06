@@ -444,6 +444,13 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
       });
 
+      dbt-extractor = super.dbt-extractor.overridePythonAttrs
+        (
+          old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cargo pkgs.rustc pkgs.maturin ];
+          }
+        );
+
       dbus-python = super.dbus-python.overridePythonAttrs (old: {
         outputs = [ "out" "dev" ];
 
@@ -2704,6 +2711,13 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      minimal-snowplow-tracker = super.minimal-snowplow-tracker.overridePythonAttrs
+        (
+          old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ super.setuptools ];
+          }
+        );
 
       # nixpkgs has setuptools_scm 4.1.2
       # but newrelic has a seemingly unnecessary version constraint for <4
