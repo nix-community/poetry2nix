@@ -454,7 +454,7 @@ lib.composeManyExtensions [
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cargo pkgs.rustc pkgs.maturin ];
           }
         );
-        
+
       dbus-python = super.dbus-python.overridePythonAttrs (old: {
         outputs = [ "out" "dev" ];
 
