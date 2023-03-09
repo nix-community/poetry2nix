@@ -1086,6 +1086,9 @@
   "asynccmd": [
     "setuptools"
   ],
+  "asyncio": [
+    "setuptools"
+  ],
   "asyncio-dgram": [
     "setuptools"
   ],
