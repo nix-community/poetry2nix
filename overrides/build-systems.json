@@ -4716,6 +4716,9 @@
   "emailthreads": [
     "setuptools"
   ],
+  "embit": [
+    "setuptools"
+  ],
   "embrace": [
     "setuptools"
   ],
@@ -12438,6 +12441,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "pyln-bolt7": [
+    "poetry"
+  ],
   "pylnk3": [
     "setuptools"
   ],
@@ -13783,6 +13789,9 @@
   "python-binance": [
     "setuptools"
   ],
+  "python-bitcoinlib": [
+    "setuptools"
+  ],
   "python-box": [
     "setuptools"
   ],
@@ -14927,6 +14936,9 @@
     "setuptools"
   ],
   "repoze-who": [
+    "setuptools"
+  ],
+  "represent": [
     "setuptools"
   ],
   "reproject": [
