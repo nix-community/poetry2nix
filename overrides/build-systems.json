@@ -2265,6 +2265,9 @@
   "boltons": [
     "setuptools"
   ],
+  "boltz-client": [
+    "poetry"
+  ],
   "boltztrap2": [
     "cython",
     "setuptools"
@@ -2571,6 +2574,9 @@
   ],
   "casefy": [
     "hatchling"
+  ],
+  "cashu": [
+    "poetry"
   ],
   "cassandra-driver": [
     "cython",
@@ -8310,6 +8316,9 @@
   "lmtpd": [
     "setuptools"
   ],
+  "lnurl": [
+    "setuptools"
+  ],
   "loca": [
     "flitBuildHook",
     "setuptools"
@@ -12419,6 +12428,9 @@
   "pylibmc": [
     "setuptools"
   ],
+  "pylightning": [
+    "setuptools"
+  ],
   "pylink-square": [
     "setuptools"
   ],
@@ -12442,6 +12454,12 @@
     "setuptools"
   ],
   "pyln-bolt7": [
+    "poetry"
+  ],
+  "pyln-client": [
+    "poetry"
+  ],
+  "pyln-proto": [
     "poetry"
   ],
   "pylnk3": [
@@ -16428,6 +16446,9 @@
     "cython",
     "setuptools"
   ],
+  "sqlalchemy-aio": [
+    "setuptools"
+  ],
   "sqlalchemy-citext": [
     "setuptools"
   ],
@@ -16504,6 +16525,9 @@
     "pbr",
     "setuptools",
     "setuptools-scm"
+  ],
+  "sse-starlette": [
+    "setuptools"
   ],
   "sseclient": [
     "setuptools"
