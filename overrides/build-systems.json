@@ -13847,6 +13847,9 @@
   "python-dotenv": [
     "setuptools"
   ],
+  "python-dxf": [
+    "setuptools"
+  ],
   "python-ecobee-api": [
     "setuptools"
   ],
@@ -18614,6 +18617,9 @@
     "setuptools"
   ],
   "wurlitzer": [
+    "setuptools"
+  ],
+  "www-authenticate": [
     "setuptools"
   ],
   "wxpython-4-0": [
