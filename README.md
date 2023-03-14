@@ -47,6 +47,13 @@ Creates a Python application using the Python interpreter specified based on the
 
 Other attributes are passed through to `buildPythonApplication`.
 
+Make sure to add in your `pyproject.toml` the py-object for your `main()`. Otherwise, the result is empty.
+
+```toml
+[tool.poetry.scripts]
+poetry = "poetry.console.application:main"
+```
+
 #### Example
 ```nix
 poetry2nix.mkPoetryApplication {
@@ -76,6 +83,8 @@ After building this expression, your CLI and app can be called with these comman
 $ result/bin/python -m admin
 $ result/bin/gunicorn web:app
 ```
+
+If you prefer to build a single binary that runs `gunicorn web:app`, use [`pkgs.writeShellApplication`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/trivial-builders.nix#L317) for a simple wrapper.
 
 Note: If you need to perform overrides on the application, use `app.dependencyEnv.override { app = app.override { ... }; }`. See [./tests/dependency-environment/default.nix](./tests/dependency-environment/default.nix) for a full example.
 
