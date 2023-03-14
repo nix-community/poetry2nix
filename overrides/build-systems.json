@@ -1468,6 +1468,9 @@
   "aws-sso-lib": [
     "poetry"
   ],
+  "aws-sso-util": [
+    "poetry"
+  ],
   "aws-xray-sdk": [
     "setuptools"
   ],
