@@ -1465,6 +1465,9 @@
   "aws-sam-translator": [
     "setuptools"
   ],
+  "aws-sso-lib": [
+    "poetry"
+  ],
   "aws-xray-sdk": [
     "setuptools"
   ],
