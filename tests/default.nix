@@ -83,6 +83,7 @@ builtins.removeAttrs
   # uwsgi = callTest ./uwsgi { };  # Commented out because build is flaky (unrelated to poetry2nix)
   jq = callTest ./jq { };
   ubersmith = callTest ./ubersmith { };
+  returns = callTest ./returns { };
   option = callTest ./option { };
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };

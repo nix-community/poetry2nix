@@ -15364,6 +15364,9 @@
   "retrying": [
     "setuptools"
   ],
+  "returns": [
+    "poetry"
+  ],
   "retworkx": [
     "setuptools"
   ],
