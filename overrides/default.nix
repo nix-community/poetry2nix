@@ -1768,7 +1768,7 @@ lib.composeManyExtensions [
           old: {
 
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-              pkgs.meson
+              self.meson
               pkgs.ninja
               pkg-config
             ];
@@ -2329,7 +2329,8 @@ lib.composeManyExtensions [
       shapely = super.shapely.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.geos ];
-          GEOS_LIBRARY_PATH = pkgs.python3.pkgs.shapely.GEOS_LIBRARY_PATH or null;
+
+          GEOS_LIBRARY_PATH = "${pkgs.geos}/lib/libgeos_c${stdenv.hostPlatform.extensions.sharedLibrary}";
 
           GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${lib.getLib stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
 
