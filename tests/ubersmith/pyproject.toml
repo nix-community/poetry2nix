@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-ubersmith"
+version = "0.1.0"
+description = "Test of python-ubersmith package"
+authors = ["Pegasust <pegasucksgg@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+ubersmith = "^0.4.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

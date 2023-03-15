@@ -82,6 +82,7 @@ builtins.removeAttrs
   pendulum = callTest ./pendulum { };
   # uwsgi = callTest ./uwsgi { };  # Commented out because build is flaky (unrelated to poetry2nix)
   jq = callTest ./jq { };
+  ubersmith = callTest ./ubersmith { };
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };
   fetched-projectdir = callTest ./fetched-projectdir { };

@@ -17861,6 +17861,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "ubersmith": [
+    "setuptools"
+  ],
   "uc-micro-py": [
     "setuptools"
   ],
