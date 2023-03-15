@@ -10335,7 +10335,27 @@
       "from": "0.34b0"
     }
   ],
+  "opentelemetry-instrumentation-asgi": [
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
+  ],
   "opentelemetry-instrumentation-asyncpg": [
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
+  ],
+  "opentelemetry-instrumentation-fastapi": [
     {
       "buildSystem": "setuptools",
       "until": "0.34b0"
@@ -10392,7 +10412,7 @@
     },
     {
       "buildSystem": "hatchling",
-      "from": "0.34b0"
+      "from": "0.33b0"
     }
   ],
   "opentimestamps": [
