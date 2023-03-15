@@ -2261,6 +2261,7 @@ lib.composeManyExtensions [
             [ pkgs.gfortran ] ++
             lib.optionals (lib.versionAtLeast super.scipy.version "1.7.0") [ self.pythran ] ++
             lib.optionals (lib.versionAtLeast super.scipy.version "1.9.0") [ self.meson-python pkg-config ];
+          dontUseMesonConfigure = true;
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pybind11 ];
           setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
           enableParallelBuilding = true;
@@ -2876,6 +2877,10 @@ lib.composeManyExtensions [
             popd
           '';
         });
+
+      meson-python = super.meson-python.overridePythonAttrs (old: {
+        dontUseMesonConfigure = true;
+      });
 
       mkdocs = super.mkdocs.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.babel ];
