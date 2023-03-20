@@ -87,7 +87,7 @@ pre-commit = "^2.6"
 [tool.poetry.group.test.dependencies]
 # Cachy frozen to test backwards compatibility for `poetry.utils.cache`.
 cachy = "0.3.0"
-deepdiff = "^5.0"
+deepdiff = ">=5,<7"
 flatdict = "^4.0.1"
 httpretty = "^1.0"
 pytest = "^7.1"
