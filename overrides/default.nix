@@ -670,15 +670,28 @@ lib.composeManyExtensions [
         VERSION = old.version;
       });
 
-      gdal = super.gdal.overridePythonAttrs (
-        old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
-          preBuild = (old.preBuild or "") + ''
-            substituteInPlace setup.cfg \
-              --replace "../../apps/gdal-config" '${pkgs.gdal}/bin/gdal-config'
-          '';
-        }
-      );
+      gdal =
+        let
+          # Build gdal without python bindings to prevent version mixing
+          # We're only interested in the native libraries, not the python ones
+          # as we build that separately.
+          gdal = pkgs.gdal.overrideAttrs (old: {
+            doInstallCheck = false;
+            doCheck = false;
+            cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+              "-DBUILD_PYTHON_BINDINGS=OFF"
+            ];
+          });
+        in
+        super.gdal.overridePythonAttrs (
+          old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ gdal ];
+            preBuild = (old.preBuild or "") + ''
+              substituteInPlace setup.cfg \
+                --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
+            '';
+          }
+        );
 
       grandalf = super.grandalf.overridePythonAttrs (
         old: {
