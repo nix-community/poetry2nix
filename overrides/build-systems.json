@@ -6995,8 +6995,22 @@
     "setuptools"
   ],
   "humanize": [
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "4.6.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "4.6.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.6.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "4.6.0"
+    }
   ],
   "humblewx": [
     "setuptools"
