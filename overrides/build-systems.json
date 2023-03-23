@@ -6140,7 +6140,18 @@
     "setuptools"
   ],
   "gitlint-core": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.19"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.19"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "0.19"
+    }
   ],
   "gitpython": [
     "setuptools"
