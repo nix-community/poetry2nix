@@ -1768,7 +1768,7 @@ lib.composeManyExtensions [
           old: {
 
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-              pkgs.meson
+              self.meson
               pkgs.ninja
               pkg-config
             ];
@@ -2261,6 +2261,7 @@ lib.composeManyExtensions [
             [ pkgs.gfortran ] ++
             lib.optionals (lib.versionAtLeast super.scipy.version "1.7.0") [ self.pythran ] ++
             lib.optionals (lib.versionAtLeast super.scipy.version "1.9.0") [ self.meson-python pkg-config ];
+          dontUseMesonConfigure = true;
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.pybind11 ];
           setupPyBuildFlags = [ "--fcompiler='gnu95'" ];
           enableParallelBuilding = true;
@@ -2328,7 +2329,8 @@ lib.composeManyExtensions [
       shapely = super.shapely.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.geos ];
-          GEOS_LIBRARY_PATH = pkgs.python3.pkgs.shapely.GEOS_LIBRARY_PATH or null;
+
+          GEOS_LIBRARY_PATH = "${pkgs.geos}/lib/libgeos_c${stdenv.hostPlatform.extensions.sharedLibrary}";
 
           GEOS_LIBC = lib.optionalString (!stdenv.isDarwin) "${lib.getLib stdenv.cc.libc}/lib/libc${stdenv.hostPlatform.extensions.sharedLibrary}.6";
 
@@ -2550,7 +2552,7 @@ lib.composeManyExtensions [
 
       # Stop infinite recursion by using bootstrapped pkg from nixpkgs
       bootstrapped-pip = super.bootstrapped-pip.override {
-        wheel = (pkgs.python3.pkgs.override {
+        wheel = ((if self.python.isPy2 then pkgs.python2 else pkgs.python3).pkgs.override {
           python = self.python;
         }).wheel;
       };
@@ -2876,6 +2878,10 @@ lib.composeManyExtensions [
             popd
           '';
         });
+
+      meson-python = super.meson-python.overridePythonAttrs (old: {
+        dontUseMesonConfigure = true;
+      });
 
       mkdocs = super.mkdocs.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.babel ];

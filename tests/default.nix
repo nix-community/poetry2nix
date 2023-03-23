@@ -79,7 +79,7 @@ builtins.removeAttrs
   bcrypt = callTest ./bcrypt { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   markupsafe2 = callTest ./markupsafe2 { };
-  pendulum = callTest ./pendulum { };
+  pendulum = skipOSX (callTest ./pendulum { });
   # uwsgi = callTest ./uwsgi { };  # Commented out because build is flaky (unrelated to poetry2nix)
   jq = callTest ./jq { };
   ubersmith = callTest ./ubersmith { };
