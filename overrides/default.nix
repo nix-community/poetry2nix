@@ -2862,6 +2862,18 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
       });
 
+      setuptools-scm = super.setuptools-scm.overridePythonAttrs (old: {
+        setupHook = pkgs.writeText "setuptools-scm-setup-hook.sh" ''
+          poetry2nix-setuptools-scm-hook() {
+              if [ -z "''${dontPretendSetuptoolsSCMVersion-}" ]; then
+                export SETUPTOOLS_SCM_PRETEND_VERSION="$version"
+              fi
+          }
+
+          preBuildHooks+=(poetry2nix-setuptools-scm-hook)
+        '';
+      });
+
       uwsgi = super.uwsgi.overridePythonAttrs
         (old:
           {
