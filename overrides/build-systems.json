@@ -9968,6 +9968,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "nox": [
+    "setuptools"
+  ],
   "nplusone": [
     "setuptools"
   ],
