@@ -5207,6 +5207,9 @@
   "fastapi-restful": [
     "poetry"
   ],
+  "fastapi-utils": [
+    "poetry"
+  ],
   "fastavro": [
     "cython",
     "setuptools"
