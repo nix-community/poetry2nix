@@ -10422,6 +10422,9 @@
   "optax": [
     "setuptools"
   ],
+  "option": [
+    "poetry-core"
+  ],
   "opuslib": [
     "setuptools"
   ],
@@ -15360,6 +15363,9 @@
   ],
   "retrying": [
     "setuptools"
+  ],
+  "returns": [
+    "poetry"
   ],
   "retworkx": [
     "setuptools"
