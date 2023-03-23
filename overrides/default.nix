@@ -1612,6 +1612,10 @@ lib.composeManyExtensions [
         }
       );
 
+      pip-requirements-parser = super.pip-requirements-parser.overridePythonAttrs (old: {
+        dontConfigure = true;
+      });
+
       pluralizer = super.pluralizer.overridePythonAttrs (old: {
         preBuild = ''
           export PYPI_VERSION="${old.version}"
