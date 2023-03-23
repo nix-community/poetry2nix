@@ -1,4 +1,5 @@
 { python
+, stdenv
 , buildPackages
 , makeSetupHook
 , wheel
@@ -77,6 +78,44 @@ in
             ];
           };
         } ./fixup-hook.sh
+    )
+    { };
+
+  # As of 2023-03 a newer version of packaging introduced a new behaviour where python-requires
+  # cannot contain version wildcards. This behaviour is complaint with PEP440
+  #
+  # The wildcards are a no-op anyway so we can work around this issue by just dropping the precision down to the last known number.
+  poetry2nixPythonRequiresPatchHook = callPackage
+    (
+      _:
+      let
+        # Python pre 3.9 does not contain the ast.unparse method.
+        # We can extract this from Python 3.8 for any
+        unparser = stdenv.mkDerivation {
+          name = "${python.name}-astunparse";
+          inherit (python) src;
+          dontConfigure = true;
+          dontBuild = true;
+
+          installPhase = ''
+            mkdir -p $out/poetry2nix_astunparse
+            cp ./Tools/parser/unparse.py $out/poetry2nix_astunparse/__init__.py
+          '';
+        };
+
+        pythonPath =
+          [ ]
+          ++ lib.optional (lib.versionOlder python.version "3.9") unparser;
+
+      in
+      makeSetupHook
+        {
+          name = "require-python-patch-hook.sh";
+          substitutions = {
+            inherit pythonInterpreter pythonPath;
+            patchScript = ./python-requires-patch-hook.py;
+          };
+        } ./python-requires-patch-hook.sh
     )
     { };
 
