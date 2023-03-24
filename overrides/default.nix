@@ -940,6 +940,15 @@ lib.composeManyExtensions [
         }
       );
 
+      trio = super.trio.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ])
+          ++ [ self.async-generator self.idna ];
+      });
+
+      jeepney = super.jeepney.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.outcome self.trio ];
+      });
+
       jinja2-ansible-filters = super.jinja2-ansible-filters.overridePythonAttrs (
         old: {
           preBuild = (old.preBuild or "") + ''
@@ -1004,6 +1013,13 @@ lib.composeManyExtensions [
 
       jupyter-packaging = super.jupyter-packaging.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools self.wheel ];
+      });
+
+      jupyter-server = super.jupyter-server.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ])
+          ++ [ self.hatchling ];
+        buildInputs = (old.buildInputs or [ ])
+          ++ [ self.hatch-jupyter-builder ];
       });
 
       jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
@@ -1223,11 +1239,6 @@ lib.composeManyExtensions [
 
         }
       );
-
-      # Calls Cargo at build time for source builds and is really tricky to package
-      maturin = super.maturin.override {
-        preferWheel = true;
-      };
 
       mccabe = super.mccabe.overridePythonAttrs (
         old: {
@@ -2190,6 +2201,18 @@ lib.composeManyExtensions [
         }
       );
 
+      recommonmark = super.rich.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.commonmark ];
+        }
+      );
+
+      rich = super.rich.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.commonmark ];
+        }
+      );
+
       rockset = super.rockset.overridePythonAttrs (
         old: {
           postPatch = ''
@@ -2230,6 +2253,12 @@ lib.composeManyExtensions [
 
       rasterio = super.rasterio.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
+      });
+
+      rfc3986-validator = super.rfc3986-validator.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          self.pytest-runner
+        ];
       });
 
       rlp = super.rlp.overridePythonAttrs {
@@ -2914,6 +2943,10 @@ lib.composeManyExtensions [
               '';
             }
         );
+
+      y-py = super.y-py.override {
+        preferWheel = true;
+      };
     }
   )
 ]
