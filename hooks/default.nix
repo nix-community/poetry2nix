@@ -33,10 +33,10 @@ let
       )
       { };
   makeSetupHookArgs = deps:
-    if lib.elem "deps" (builtins.attrNames (builtins.functionArgs makeSetupHook)) then
-      { inherit deps; }
+    if lib.elem "propagatedBuildInputs" (builtins.attrNames (builtins.functionArgs makeSetupHook)) then
+      { propagatedBuildInputs = deps; }
     else
-      { propagatedBuildInputs = deps; };
+      { inherit deps; };
 in
 {
   removePathDependenciesHook = makeRemoveSpecialDependenciesHook {
