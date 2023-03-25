@@ -152,7 +152,7 @@ lib.makeScope pkgs.newScope (self: {
     let
       /* The default list of poetry2nix override overlays */
       mkEvalPep508 = import ./pep508.nix {
-        inherit lib poetryLib;
+        inherit lib poetryLib pkgs;
         inherit (python) stdenv;
       };
       getFunctorFn = fn: if builtins.typeOf fn == "set" then fn.__functor else fn;
@@ -186,7 +186,7 @@ lib.makeScope pkgs.newScope (self: {
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions =
         let
-          supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
+          supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker (normalizePackageName pkgMeta.name) pkgMeta.version) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
         in
         lib.partition supportsPythonVersion poetryLock.package;
       compatible = partitions.right;

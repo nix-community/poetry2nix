@@ -145,7 +145,7 @@ pythonPackages.callPackage
                       constraints = v.python or "";
                       pep508Markers = v.markers or "";
                     in
-                    compat constraints && evalPep508 pep508Markers
+                    compat constraints && evalPep508 pep508Markers (normalizePackageName name) version
                 )
                 dependencies
             );
