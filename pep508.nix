@@ -62,7 +62,7 @@ let
       splitCond = (
         s: builtins.map
           (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
-          (builtins.split " (and|or) " (s + " "))
+          (map (x: if lib.isString x then (builtins.split " (and) " (x + " ")) else x) (builtins.split " (or) " (s + " ")))
       );
       mapfn = expr: (
         if (builtins.match "^ ?$" expr != null) then null  # Filter empty
