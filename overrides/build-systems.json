@@ -1245,6 +1245,9 @@
   "autobahn": [
     "setuptools"
   ],
+  "autodoc": [
+    "setuptools"
+  ],
   "autoflake": [
     "hatchling"
   ],
@@ -16224,6 +16227,9 @@
   "simple-salesforce": [
     "setuptools"
   ],
+  "simple-term-menu": [
+    "setuptools"
+  ],
   "simple-websocket-server": [
     "setuptools"
   ],
@@ -18062,6 +18068,9 @@
   "types-cachetools": [
     "setuptools"
   ],
+  "types-click": [
+    "setuptools"
+  ],
   "types-colorama": [
     "setuptools"
   ],
@@ -18099,6 +18108,9 @@
     "setuptools"
   ],
   "types-orjson": [
+    "setuptools"
+  ],
+  "types-pillow": [
     "setuptools"
   ],
   "types-pkg-resources": [
