@@ -91,6 +91,7 @@ builtins.removeAttrs
   fetched-projectdir = callTest ./fetched-projectdir { };
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
+  sqlalchemy = callTest ./sqlalchemy { };
 
   # Cross tests fail on darwin for some strange reason:
   # ERROR: MarkupSafe-2.0.1-cp39-cp39-linux_aarch64.whl is not a supported wheel on this platform.
