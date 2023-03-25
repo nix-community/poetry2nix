@@ -12213,6 +12213,9 @@
   "pydroid-ipcam": [
     "setuptools"
   ],
+  "pydruid": [
+    "setuptools"
+  ],
   "pydsdl": [
     "setuptools"
   ],
