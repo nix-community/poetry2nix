@@ -1,6 +1,6 @@
 { pkgs, lib, ... }: python:
 e: name: version:
-builtins.fromJSON (
+if e == "" then true else builtins.fromJSON (
   builtins.readFile (
     pkgs.runCommand "${name}-${version}-markers.json"
     {
