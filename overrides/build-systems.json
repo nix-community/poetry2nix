@@ -18083,6 +18083,9 @@
   "types-cryptography": [
     "setuptools"
   ],
+  "types-dataclasses": [
+    "setuptools"
+  ],
   "types-dateutil": [
     "setuptools"
   ],
