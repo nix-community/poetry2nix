@@ -8187,6 +8187,9 @@
   "kubernetes": [
     "setuptools"
   ],
+  "kubernetes-stubs": [
+    "poetry"
+  ],
   "l18n": [
     "setuptools"
   ],
