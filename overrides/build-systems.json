@@ -3645,6 +3645,9 @@
   "databricks-sql-connector": [
     "poetry-core"
   ],
+  "dataclass-wizard": [
+    "setuptools"
+  ],
   "dataclasses-json": [
     "setuptools"
   ],
