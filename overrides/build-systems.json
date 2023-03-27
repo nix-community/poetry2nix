@@ -18119,6 +18119,9 @@
   "types-orjson": [
     "setuptools"
   ],
+  "types-paramiko": [
+    "setuptools"
+  ],
   "types-pillow": [
     "setuptools"
   ],
