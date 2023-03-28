@@ -14387,7 +14387,8 @@
     "setuptools"
   ],
   "python-multipart": [
-    "setuptools"
+    "setuptools",
+    "hatchling"
   ],
   "python-mystrom": [
     "setuptools"
