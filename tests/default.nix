@@ -139,6 +139,7 @@ builtins.removeAttrs
   affine-pre-2-4 = callTest ./affine-pre-2-4 { };
   gdal = callTest ./gdal { };
   gitlint-core = callTest ./gitlint-core { };
+  mutmut = callTest ./mutmut { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
