@@ -3645,6 +3645,9 @@
   "databricks-sql-connector": [
     "poetry-core"
   ],
+  "dataclass-wizard": [
+    "setuptools"
+  ],
   "dataclasses-json": [
     "setuptools"
   ],
@@ -8183,6 +8186,9 @@
   ],
   "kubernetes": [
     "setuptools"
+  ],
+  "kubernetes-stubs": [
+    "poetry"
   ],
   "l18n": [
     "setuptools"
@@ -18078,6 +18084,9 @@
   "types-cryptography": [
     "setuptools"
   ],
+  "types-dataclasses": [
+    "setuptools"
+  ],
   "types-dateutil": [
     "setuptools"
   ],
@@ -18109,6 +18118,9 @@
     "setuptools"
   ],
   "types-orjson": [
+    "setuptools"
+  ],
+  "types-paramiko": [
     "setuptools"
   ],
   "types-pillow": [
