@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-jupyter-ydoc"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+jupyter-ydoc = "*"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

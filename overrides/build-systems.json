@@ -7952,7 +7952,13 @@
     "setuptools"
   ],
   "jupyter-ydoc": [
-    "hatchling"
+    {
+      "buildSystem": "hatchling"
+    },
+    {
+      "buildSystem": "hatch-nodejs-version",
+      "from": "0.2.3"
+    }
   ],
   "jupyterhub": [
     "setuptools"
