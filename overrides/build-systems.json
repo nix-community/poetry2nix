@@ -16986,7 +16986,7 @@
     "setuptools"
   ],
   "strawberry-graphql": [
-    "poetry-core",
+    "poetry",
     "setuptools"
   ],
   "streamdeck": [
