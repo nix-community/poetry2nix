@@ -43,6 +43,21 @@ files = [
 ]
 
 [[package]]
+name = "gitlint"
+version = "0.19.1"
+description = "Git commit message linter written in python, checks your commit messages for style."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "gitlint-0.19.1-py3-none-any.whl", hash = "sha256:26bb085959148d99fbbc178b4e56fda6c3edd7646b7c2a24d8ee1f8e036ed85d"},
+    {file = "gitlint-0.19.1.tar.gz", hash = "sha256:b5b70fb894e80849b69abbb65ee7dbb3520fc3511f202a6e6b6ddf1a71ee8f61"},
+]
+
+[package.dependencies]
+gitlint-core = {version = "0.19.1", extras = ["trusted-deps"]}
+
+[[package]]
 name = "gitlint-core"
 version = "0.19.1"
 description = "Git commit message linter written in python, checks your commit messages for style."
@@ -55,9 +70,18 @@ files = [
 ]
 
 [package.dependencies]
-arrow = ">=1"
-click = ">=8"
-sh = {version = ">=1.13.0", markers = "sys_platform != \"win32\""}
+arrow = [
+    {version = ">=1"},
+    {version = "1.2.3", optional = true, markers = "extra == \"trusted-deps\""},
+]
+click = [
+    {version = ">=8"},
+    {version = "8.1.3", optional = true, markers = "extra == \"trusted-deps\""},
+]
+sh = [
+    {version = ">=1.13.0", markers = "sys_platform != \"win32\""},
+    {version = "1.14.3", optional = true, markers = "sys_platform != \"win32\""},
+]
 
 [package.extras]
 trusted-deps = ["arrow (==1.2.3)", "click (==8.1.3)", "sh (==1.14.3)"]
@@ -103,4 +127,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "adf873e9e558309a0a45d9377b383b7f101407ca573f8bfb9a7734bed7d69762"
+content-hash = "943d2992e7893036993128ae225be75f752dfe9afd349d4313f63f63c7050977"

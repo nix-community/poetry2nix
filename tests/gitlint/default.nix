@@ -4,6 +4,6 @@ let
     projectDir = ./.;
   };
 in
-runCommand "gitlint-core-test" { } ''
+runCommand "gitlint-test" { } ''
   ${env}/bin/gitlint --version > $out
 ''

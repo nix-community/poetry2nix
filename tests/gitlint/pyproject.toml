@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "gitlint-core-test"
+name = "gitlint-test"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-gitlint-core = "*"
+gitlint = "*"
 
 [build-system]
 requires = ["poetry-core"]
