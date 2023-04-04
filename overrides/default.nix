@@ -783,7 +783,7 @@ lib.composeManyExtensions [
               ;
               propagatedBuildInputs =
                 (old.propagatedBuildInputs or [ ])
-                ++ lib.optionals mpiSupport [ self.mpi4py self.openssh ]
+                ++ lib.optionals mpiSupport [ self.mpi4py pkgs.openssh ]
               ;
               preBuild = if mpiSupport then "export CC=${mpi}/bin/mpicc" else "";
               HDF5_DIR = "${pkgs.hdf5}";
