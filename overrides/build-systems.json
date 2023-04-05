@@ -11626,6 +11626,9 @@
   "psycopg": [
     "setuptools"
   ],
+  "psycopg-pool": [
+    "setuptools"
+  ],
   "psycopg2": [
     "setuptools"
   ],
@@ -16864,6 +16867,9 @@
   ],
   "sqlmap": [
     "setuptools"
+  ],
+  "sqlmodel": [
+    "poetry-core"
   ],
   "sqlobject": [
     "setuptools"
