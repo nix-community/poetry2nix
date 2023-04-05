@@ -19,8 +19,8 @@
     } // (flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; };
-        poetry2nix = import ./default.nix { inherit pkgs poetry; };
+        poetry2nix = import ./default.nix { inherit pkgs; };
+        poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
       in
       rec {
         packages = {
