@@ -1,7 +1,5 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
-, stdenv ? pkgs.stdenv
-, poetryLib
 }:
 
 let
