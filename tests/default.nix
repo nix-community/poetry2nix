@@ -13,7 +13,7 @@ in
 }:
 let
   poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
-  poetry2nix = import ./.. { inherit pkgs; inherit poetry; };
+  poetry2nix = import ./.. { inherit pkgs; };
   poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
   pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
   pep425PythonOldest = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python38; };
