@@ -156,7 +156,7 @@ lib.makeScope pkgs.newScope (self: {
       };
       getFunctorFn = fn: if builtins.typeOf fn == "set" then fn.__functor else fn;
 
-      poetryPkg = pkgs.callPackage ./pkgs/poetry { inherit python; };
+      poetryPkg = pkgs.callPackage ./pkgs/poetry { inherit python; poetry2nix = self; };
 
       scripts = pyProject.tool.poetry.scripts or { };
       hasScripts = scripts != { };
