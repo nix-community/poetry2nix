@@ -404,8 +404,11 @@ lib.composeManyExtensions [
                 ++ lib.optionals (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
                 ++ lib.optional (!self.isPyPy) pyBuildPackages.cffi
                 ++ lib.optional (lib.versionAtLeast old.version "3.5" && !isWheel)
-                (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ]);
+                (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ])
+                ++ [ pkg-config ]
+              ;
               buildInputs = (old.buildInputs or [ ])
+                ++ [ pkgs.libxcrypt ]
                 ++ [ (if lib.versionAtLeast old.version "37" then pkgs.openssl_3 else pkgs.openssl_1_1) ]
                 ++ lib.optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
               propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.cffi ];
