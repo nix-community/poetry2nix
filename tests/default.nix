@@ -104,6 +104,8 @@ builtins.removeAttrs
   # Rmfuse fails on darwin because osxfuse only implements fuse api v2
   rmfuse = skipOSX pkgs.rmfuse;
 
+  ml-stack = callTest ./ml-stack { };
+  
   # Test building poetry
   inherit poetry;
 
