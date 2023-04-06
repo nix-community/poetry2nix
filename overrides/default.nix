@@ -1424,11 +1424,7 @@ lib.composeManyExtensions [
       # The following are dependencies of torch >= 2.0.0.
       # torch doesn't officially support system CUDA, unless you build it yourself.
       nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
-        nativeBuildInputs = attrs.nativeBuildInputs or [ ] ++ [ pkgs.autoPatchelfHook ];
-        preFixup = ''
-          addAutoPatchelfSearchPath "${self.nvidia-cublas-cu11}/${self.python.sitePackages}/nvidia/cublas/lib"
-        '';
-
+        autoPatchelfIgnoreMissingDeps = true;
         # (Bytecode collision happens with nvidia-cuda-nvrtc-cu11.)
         postFixup = ''
           rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
@@ -1446,9 +1442,10 @@ lib.composeManyExtensions [
       });
 
       nvidia-cusolver-cu11 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
-        nativeBuildInputs = attrs.nativeBuildInputs or [ ] ++ [ pkgs.autoPatchelfHook ];
-        preFixup = ''
-          addAutoPatchelfSearchPath "${self.nvidia-cublas-cu11}/${self.python.sitePackages}/nvidia/cublas/lib"
+        autoPatchelfIgnoreMissingDeps = true;
+        # (Bytecode collision happens with nvidia-cusolver-cu11.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
         '';
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
           self.nvidia-cublas-cu11
@@ -2526,21 +2523,13 @@ lib.composeManyExtensions [
         preferWheel = true;
       };
 
-      torch = super.torch.overridePythonAttrs (old: 
-        let
-          # usesCuda 
-          usesCuda = builtins.any (p: p == self.nvidia-cublas-cu11) old.propagatedBuildInputs;
-          
-        in {
-          preFixup = if usesCuda then ''
-            addAutoPatchelfSearchPath "${self.nvidia-cublas-cu11}/${self.python.sitePackages}/nvidia/cublas/lib"
-          '' else '''';
-
-          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-            self.numpy
-          ];
-        }
-      );
+      torch = super.torch.overridePythonAttrs (old: {
+        # torch has an auto-magical way to locate the cuda libraries from site-packages.
+        autoPatchelfIgnoreMissingDeps = true;
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+          self.numpy
+        ];
+      });
 
       torchvision = lib.makeOverridable
         ({ enableCuda ? false
