@@ -1421,6 +1421,40 @@ lib.composeManyExtensions [
         }
       );
 
+      # The following are dependencies of torch >= 2.0.0.
+      # torch doesn't officially support system CUDA, unless you build it yourself.
+      nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
+        nativeBuildInputs = attrs.nativeBuildInputs or [ ] ++ [ pkgs.autoPatchelfHook ];
+        preFixup = ''
+          addAutoPatchelfSearchPath "${self.nvidia-cublas-cu11}/${self.python.sitePackages}/nvidia/cublas/lib"
+        '';
+
+        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu11.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+          self.nvidia-cublas-cu11
+        ];
+      });
+
+      nvidia-cuda-nvrtc-cu11 = super.nvidia-cuda-nvrtc-cu11.overridePythonAttrs (_: {
+        # (Bytecode collision happens with nvidia-cudnn-cu11.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+      });
+
+      nvidia-cusolver-cu11 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
+        nativeBuildInputs = attrs.nativeBuildInputs or [ ] ++ [ pkgs.autoPatchelfHook ];
+        preFixup = ''
+          addAutoPatchelfSearchPath "${self.nvidia-cublas-cu11}/${self.python.sitePackages}/nvidia/cublas/lib"
+        '';
+        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+          self.nvidia-cublas-cu11
+        ];
+      });
+
       omegaconf = super.omegaconf.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.jdk ];
@@ -2492,39 +2526,21 @@ lib.composeManyExtensions [
         preferWheel = true;
       };
 
-      torch = lib.makeOverridable
-        ({ enableCuda ? false
-         , cudatoolkit ? pkgs.cudatoolkit_10_1
-         , pkg ? super.torch
-         }: pkg.overrideAttrs (old:
-          {
-            preConfigure =
-              if (!enableCuda) then ''
-                export USE_CUDA=0
-              '' else ''
-                export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${cudatoolkit}/targets/x86_64-linux/lib"
-              '';
-            preFixup = lib.optionalString (!enableCuda) ''
-              # For some reason pytorch retains a reference to libcuda even if it
-              # is explicitly disabled with USE_CUDA=0.
-              find $out -name "*.so" -exec ${pkgs.patchelf}/bin/patchelf --remove-needed libcuda.so.1 {} \;
-            '';
-            buildInputs =
-              (old.buildInputs or [ ])
-              ++ [ self.typing-extensions ]
-              ++ lib.optionals enableCuda [
-                pkgs.linuxPackages.nvidia_x11
-                pkgs.nccl.dev
-                pkgs.nccl.out
-              ];
-            propagatedBuildInputs = [
-              self.numpy
-              self.future
-              self.typing-extensions
-            ];
-          })
-        )
-        { };
+      torch = super.torch.overridePythonAttrs (old: 
+        let
+          # usesCuda 
+          usesCuda = builtins.any (p: p == self.nvidia-cublas-cu11) old.propagatedBuildInputs;
+          
+        in {
+          preFixup = if usesCuda then ''
+            addAutoPatchelfSearchPath "${self.nvidia-cublas-cu11}/${self.python.sitePackages}/nvidia/cublas/lib"
+          '' else '''';
+
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+            self.numpy
+          ];
+        }
+      );
 
       torchvision = lib.makeOverridable
         ({ enableCuda ? false
@@ -2547,6 +2563,13 @@ lib.composeManyExtensions [
             '';
         }))
         { };
+
+      # Circular dependency between triton and torch (see https://github.com/openai/triton/issues/1374)
+      # You can remove this once triton publishes a new stable build and torch takes it.
+      triton = super.triton.overridePythonAttrs (old: {
+        propagatedBuildInputs = builtins.filter (e: e.pname != "torch") old.propagatedBuildInputs;
+        pipInstallFlags = [ "--no-deps" ];
+      });
 
       typed_ast = super.typed-ast.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
