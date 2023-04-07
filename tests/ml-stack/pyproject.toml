@@ -9,7 +9,7 @@ packages = [{include = "ml_stack"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 torch = "^2.0.0"
-
+torchvision = "*"
 
 [build-system]
 requires = ["poetry-core"]
