@@ -167,6 +167,33 @@ poetry2nix.mkPoetryApplication {
 }
 ```
 
+If you need very many of these overrides or you need to use them twice, consider using something like this. It has less repetition:
+
+```nix
+let
+  pypkgs-build-requirements = {
+    tox = [ "hatchling" "hatch-vcs" ];
+    universal-pathlib = [ "flit-core" ];
+    pygithub = [ "setuptools-scm" ];
+    beautifulsoup4 = [ "hatchling" ];
+    xyzservices = [ "setuptools" ];
+    simpervisor = [ "setuptools" ];
+    pandas = [ "versioneer" ];
+  };
+  p2n-overrides = p2n.defaultPoetryOverrides.extend (self: super:
+    builtins.mapAttrs (package: build-requirements:
+      (builtins.getAttr package super).overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ (builtins.map (pkg: if builtins.isString pkg then builtins.getAttr pkg super else pkg) build-requirements);
+      })
+    ) pypkgs-build-requirements
+  );
+in
+  poetry2nix.mkPoetryApplication {
+    projectDir = ./.;
+    overrides = p2n-overrides;
+  }
+```
+
 We recommend that you contribute your changes to `poetry2nix` so that other users can profit from them as well.
 The specific file with the upstream overrides is [build-systems.json](https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json). It is a simple JSON file which contains the overrides in an array and sorted in alphabetical order.
 
