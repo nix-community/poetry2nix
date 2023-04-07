@@ -2537,7 +2537,7 @@ lib.composeManyExtensions [
         preFixup = ''
           addAutoPatchelfSearchPath "${self.torch}/${self.python.sitePackages}/torch/lib"
         '';
-        
+
         buildInputs = (old.buildInputs or [ ]) ++ [
           self.torch
         ];

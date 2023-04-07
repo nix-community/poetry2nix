@@ -105,7 +105,7 @@ builtins.removeAttrs
   rmfuse = skipOSX pkgs.rmfuse;
 
   ml-stack = callTest ./ml-stack { };
-  
+
   # Test building poetry
   inherit poetry;
 
