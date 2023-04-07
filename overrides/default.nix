@@ -2534,7 +2534,8 @@ lib.composeManyExtensions [
       torchvision = super.torchvision.overridePythonAttrs (old: {
         autoPatchelfIgnoreMissingDeps = true;
 
-        preFixup = ''
+        # (no patchelf on darwin, since no elves there.)
+        preFixup = lib.optionals (!stdenv.isDarwin) ''
           addAutoPatchelfSearchPath "${self.torch}/${self.python.sitePackages}/torch/lib"
         '';
 
