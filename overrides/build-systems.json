@@ -3127,6 +3127,9 @@
   "colanderalchemy": [
     "setuptools"
   ],
+  "cloudinary": [
+    "setuptools"
+  ],
   "collections-extended": [
     "poetry-core",
     "setuptools"
@@ -5197,6 +5200,12 @@
   "faraday-plugins": [
     "setuptools"
   ],
+  "expandvars": [
+    "setuptools"
+  ],
+  "fancycompleter": [
+    "setuptools"
+  ],
   "fastapi": [
     "flitBuildHook",
     "hatchling",
@@ -5431,6 +5440,12 @@
   "flake8-bugbear": [
     "setuptools"
   ],
+  "flake8-builtins": [
+    "setuptools"
+  ],
+  "flake8-comprehensions": [
+    "poetry-core"
+  ],
   "flake8-debugger": [
     "poetry-core",
     "setuptools"
@@ -5456,6 +5471,18 @@
   "flake8-polyfill": [
     "setuptools"
   ],
+  "flake8-deprecated": [
+    "setuptools"
+  ],
+  "flake8-ensure-ascii": [
+    "setuptools"
+  ],
+  "flake8-mock": [
+    "setuptools"
+  ],
+  "flake8-plone-hasattr": [
+    "setuptools"
+  ],
   "flake8-print": [
     "poetry-core"
   ],
@@ -5464,6 +5491,12 @@
   ],
   "flake8-pytest-style": [
     "poetry-core"
+  ],
+  "flake8-super-call": [
+    "setuptools"
+  ],
+  "flake8-tuple": [
+    "setuptools"
   ],
   "flake8-simplify": [
     "setuptools"
@@ -7373,6 +7406,9 @@
   ],
   "insegel": [
     "setuptools"
+  ],
+  "iniconfig": [
+    "poetry-core"
   ],
   "installer": [
     "flit-core",
@@ -10253,6 +10289,9 @@
   "openapi-python-client": [
     "poetry-core"
   ],
+  "openapi-core": [
+    "poetry-core"
+  ],
   "openapi-schema-validator": [
     "poetry-core",
     "setuptools"
@@ -10610,6 +10649,9 @@
   ],
   "oyaml": [
     "setuptools"
+  ],
+  "pathspec": [
+    "flit-core"
   ],
   "p1monitor": [
     "poetry-core",
@@ -12254,6 +12296,9 @@
   "pyduke-energy": [
     "setuptools"
   ],
+  "pydocstyle": [
+    "poetry-core"
+  ],
   "pydy": [
     "cython",
     "setuptools"
@@ -13362,6 +13407,9 @@
   "pyrituals": [
     "setuptools"
   ],
+  "pyrepl": [
+    "setuptools"
+  ],
   "pyrmvtransport": [
     "flit",
     "setuptools"
@@ -13816,6 +13864,9 @@
   "pytest-celery": [
     "flitBuildHook",
     "setuptools"
+  ],
+  "pytest-bdd": [
+    "poetry-core"
   ],
   "pytest-check": [
     "flitBuildHook",
@@ -18046,6 +18097,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "typecov": [
+    "setuptools"
+  ],
   "typer": [
     "flit-core",
     "setuptools"
@@ -18989,6 +19043,9 @@
     "setuptools"
   ],
   "woodblock": [
+    "setuptools"
+  ],
+  "wmctrl": [
     "setuptools"
   ],
   "word2vec": [
