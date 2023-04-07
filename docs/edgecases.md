@@ -192,3 +192,24 @@ Resulting override:
   );
 }
 ```
+
+#### Nix evaluation errors
+
+1. Enable `--show-trace`.
+2. Remove packages from the `pyproject.toml`, `rm poetry.lock && nix shell nixpkgs#poetry --command poetry lock`.
+3. Try running poetry2nix again.
+
+By these means, one can bisect the package-set to find the problematic package.
+
+One error you might run into is an "infinite recursion encountered." If this error indicates this happens happens `while evaluating the attribute 'propagatedBuildInputs' of the derivation 'python${version}-${pkg_name}'`, then it is possible `${pkg_name}` has a recursive dependency.
+
+For example, this is the abbreviated error message if I try to install `dask[distributed]`:
+
+```
+error: infinite recursion encountered
+       … while evaluating the attribute 'propagatedBuildInputs' of the derivation 'python3.11-distributed-2023.3.2'
+       … while evaluating the attribute 'propagatedBuildInputs' of the derivation 'python3.11-dask-2023.3.2'
+       … while evaluating the attribute 'propagatedBuildInputs' of the derivation 'python3.11-main-0.1.0'
+```
+
+This is because `dask[distributed]` depends on `distributed` which depends on `dask`. The solution is to install `dask` (no extras) and `distributed` separately.
