@@ -6120,6 +6120,9 @@
   "git-annex-adapter": [
     "setuptools"
   ],
+  "git-autoshare": [
+    "setuptools-scm"
+  ],
   "git-filter-repo": [
     "setuptools",
     "setuptools-scm"
