@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "ml-stack"
+version = "0.1.0"
+description = ""
+authors = ["Star Dorminey <sterling.dorminey@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ml_stack"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^2.0.0"
+torchvision = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -8508,6 +8508,9 @@
   "liquidctl": [
     "setuptools"
   ],
+  "lit": [
+    "setuptools"
+  ],
   "littleutils": [
     "setuptools"
   ],
