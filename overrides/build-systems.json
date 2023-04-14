@@ -18170,6 +18170,9 @@
   "types-pygments": [
     "setuptools"
   ],
+  "types-pyopenssl": [
+    "setuptools"
+  ],
   "types-python-dateutil": [
     "setuptools"
   ],
