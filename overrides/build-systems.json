@@ -3056,6 +3056,10 @@
   "cma": [
     "setuptools"
   ],
+  "cmake": [
+    "scikit-build",
+    "setuptools"
+  ],
   "cmarkgfm": [
     "setuptools"
   ],
