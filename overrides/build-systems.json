@@ -2045,6 +2045,7 @@
     "setuptools"
   ],
   "beautifulsoup4": [
+    "hatchling",
     "setuptools"
   ],
   "beautifultable": [
@@ -18446,7 +18447,7 @@
     "setuptools"
   ],
   "url-normalize": [
-    "poetry-core",
+    "poetry",
     "setuptools"
   ],
   "urlextract": [
