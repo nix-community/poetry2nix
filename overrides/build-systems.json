@@ -16536,6 +16536,9 @@
   "sonarr": [
     "setuptools"
   ],
+  "sonora": [
+    "poetry-core"
+  ],
   "sopel": [
     "setuptools"
   ],
