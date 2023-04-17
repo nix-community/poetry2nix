@@ -10707,6 +10707,9 @@
   "panflute": [
     "setuptools"
   ],
+  "pao": [
+    "setuptools"
+  ],
   "papermill": [
     "setuptools"
   ],

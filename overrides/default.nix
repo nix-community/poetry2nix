@@ -1285,6 +1285,14 @@ lib.composeManyExtensions [
             buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
           });
 
+      munch = super.munch.overridePythonAttrs (
+        old: {
+          # Latest version of pypi imports pkg_resources at runtime, so setuptools is needed at runtime. :(
+          # They fixed this last year but never released a new version.
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+        }
+      );
+
       mpi4py = super.mpi4py.overridePythonAttrs (
         old:
         let
@@ -1605,6 +1613,10 @@ lib.composeManyExtensions [
         postInstall = old.postInstall or "" + ''
           installManPage docs/man/*.[1-9]
         '';
+      });
+
+      pao = super.pao.overridePythonAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.pyutilib ];
       });
 
       paramiko = super.paramiko.overridePythonAttrs (old: {
