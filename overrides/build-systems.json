@@ -1200,6 +1200,14 @@
     {
       "buildSystem" : "hatchling",
       "from": "23.1.0"
+    },
+    {
+      "buildSystem" : "hatch-vcs",
+      "from": "23.1.0"
+    },
+    {
+      "buildSystem" : "hatch-fancy-pypi-readme",
+      "from": "23.1.0"
     }
   ],
   "aubio": [
