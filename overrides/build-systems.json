@@ -9157,10 +9157,16 @@
     "poetry",
     "setuptools"
   ],
+  "mkdocs-awesome-pages-plugin": [
+    "poetry"
+  ],
   "mkdocs-drawio-exporter": [
     "setuptools"
   ],
   "mkdocs-exclude": [
+    "setuptools"
+  ],
+  "mkdocs-exclude-search": [
     "setuptools"
   ],
   "mkdocs-gen-files": [
