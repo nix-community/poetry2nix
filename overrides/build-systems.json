@@ -1193,7 +1193,14 @@
     "setuptools"
   ],
   "attrs": [
-    "setuptools"
+    {
+      "buildSystem" : "setuptools",
+      "until": "23.1.0"
+    },
+    {
+      "buildSystem" : "hatchling",
+      "from": "23.1.0"
+    }
   ],
   "aubio": [
     "setuptools"
