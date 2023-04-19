@@ -1194,19 +1194,19 @@
   ],
   "attrs": [
     {
-      "buildSystem" : "setuptools",
+      "buildSystem": "setuptools",
       "until": "23.1.0"
     },
     {
-      "buildSystem" : "hatchling",
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     },
     {
-      "buildSystem" : "hatch-vcs",
+      "buildSystem": "hatch-vcs",
       "from": "23.1.0"
     },
     {
-      "buildSystem" : "hatch-fancy-pypi-readme",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     }
   ],
