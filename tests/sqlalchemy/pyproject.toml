@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "sqlalchemy-build"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlalchemy = "1.4.47"
+
+[build-system]
+requires = ["poetry-core>=1.5"]
+build-backend = "poetry.core.masonry.api"
