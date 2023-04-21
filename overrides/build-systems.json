@@ -9565,6 +9565,9 @@
   "mypy-boto3-dynamodb": [
     "setuptools"
   ],
+  "mypy-boto3-ec2": [
+    "setuptools"
+  ],
   "mypy-boto3-events": [
     "setuptools"
   ],
@@ -9578,6 +9581,9 @@
     "setuptools"
   ],
   "mypy-boto3-s3control": [
+    "setuptools"
+  ],
+  "mypy-boto3-secretsmanager": [
     "setuptools"
   ],
   "mypy-boto3-sns": [
