@@ -7393,6 +7393,9 @@
   "insegel": [
     "setuptools"
   ],
+  "insights-core": [
+    "setuptools"
+  ],
   "installer": [
     "flit-core",
     "setuptools"
