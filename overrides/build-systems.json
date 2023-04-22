@@ -17686,6 +17686,9 @@
   "tkinter": [
     "setuptools"
   ],
+  "tkcalendar": [
+    "setuptools"
+  ],
   "tld": [
     "setuptools"
   ],
