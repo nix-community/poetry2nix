@@ -8551,6 +8551,9 @@
   "lizard": [
     "setuptools"
   ],
+  "llama-cpp-python": [
+    "setuptools"
+  ],
   "llfuse": [
     "cython",
     "setuptools"
