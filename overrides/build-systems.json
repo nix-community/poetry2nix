@@ -5326,6 +5326,9 @@
   "ffmpeg-python": [
     "setuptools"
   ],
+  "ffmpy": [
+    "setuptools"
+  ],
   "fhconfparser": [
     "poetry-core"
   ],
