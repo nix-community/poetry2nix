@@ -2171,6 +2171,9 @@
   "bitmath": [
     "setuptools"
   ],
+  "bitsandbytes": [
+    "setuptools"
+  ],
   "bitstring": [
     "setuptools"
   ],
