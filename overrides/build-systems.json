@@ -2171,6 +2171,9 @@
   "bitmath": [
     "setuptools"
   ],
+  "bitsandbytes": [
+    "setuptools"
+  ],
   "bitstring": [
     "setuptools"
   ],
@@ -5321,6 +5324,9 @@
     "setuptools"
   ],
   "ffmpeg-python": [
+    "setuptools"
+  ],
+  "ffmpy": [
     "setuptools"
   ],
   "fhconfparser": [
@@ -8543,6 +8549,9 @@
     "setuptools"
   ],
   "lizard": [
+    "setuptools"
+  ],
+  "llama-cpp-python": [
     "setuptools"
   ],
   "llfuse": [
