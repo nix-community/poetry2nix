@@ -17683,10 +17683,10 @@
     "setuptools",
     "setuptools-scm"
   ],
-  "tkinter": [
+  "tkcalendar": [
     "setuptools"
   ],
-  "tkcalendar": [
+  "tkinter": [
     "setuptools"
   ],
   "tld": [
