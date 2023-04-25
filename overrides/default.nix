@@ -1326,22 +1326,30 @@ lib.composeManyExtensions [
       );
 
       mypy = super.mypy.overridePythonAttrs (
-        old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            self.types-typed-ast
-            self.types-setuptools
-          ]
-            ++ lib.optional (lib.strings.versionAtLeast old.version "0.990") self.types-psutil
-          ;
+        old:
+        let
           # Compile mypy with mypyc, which makes mypy about 4 times faster. The compiled
           # version is also the default in the wheels on Pypi that include binaries.
           # is64bit: unfortunately the build would exhaust all possible memory on i686-linux.
           MYPY_USE_MYPYC = stdenv.buildPlatform.is64bit;
 
+          envAttrs =
+            if old ? env
+            then { env = old.env // { inherit MYPY_USE_MYPYC; }; }
+            else { inherit MYPY_USE_MYPYC; };
+        in
+        {
+          buildInputs = (old.buildInputs or [ ]) ++ [
+            self.types-typed-ast
+            self.types-setuptools
+          ]
+          ++ lib.optional (lib.strings.versionAtLeast old.version "0.990") self.types-psutil
+          ;
+
           # when testing reduce optimisation level to drastically reduce build time
           # (default is 3)
           # MYPYC_OPT_LEVEL = 1;
-        } // lib.optionalAttrs (old.format != "wheel") {
+        } // envAttrs // lib.optionalAttrs (old.format != "wheel") {
           # FIXME: Remove patch after upstream has decided the proper solution.
           #        https://github.com/python/mypy/pull/11143
           patches = (old.patches or [ ]) ++ lib.optionals ((lib.strings.versionAtLeast old.version "0.900") && lib.strings.versionOlder old.version "0.940") [
