@@ -1077,6 +1077,9 @@
   "astunparse": [
     "setuptools"
   ],
+  "asv": [
+    "setuptools"
+  ],
   "async-cache": [
     "setuptools"
   ],
