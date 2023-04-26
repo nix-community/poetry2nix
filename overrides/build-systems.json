@@ -3341,6 +3341,9 @@
     "poetry-core",
     "poetry-dynamic-versioning"
   ],
+  "copier-template-tester": [
+    "poetry-core"
+  ],
   "coqpit": [
     "setuptools"
   ],
