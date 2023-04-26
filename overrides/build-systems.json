@@ -10722,7 +10722,11 @@
   ],
   "pandas": [
     "cython",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "versioneer",
+      "from": "2.0.0"
+    }
   ],
   "pandas-datareader": [
     "setuptools"
