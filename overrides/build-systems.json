@@ -3042,6 +3042,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "cloudinary": [
+    "setuptools"
+  ],
   "cloudpickle": [
     "setuptools"
   ],
@@ -5124,6 +5127,9 @@
   "exifread": [
     "setuptools"
   ],
+  "expandvars": [
+    "setuptools"
+  ],
   "expects": [
     "setuptools"
   ],
@@ -5211,6 +5217,9 @@
   ],
   "falcon": [
     "cython",
+    "setuptools"
+  ],
+  "fancycompleter": [
     "setuptools"
   ],
   "faraday-agent-parameters-types": [
@@ -5456,11 +5465,23 @@
   "flake8-bugbear": [
     "setuptools"
   ],
+  "flake8-builtins": [
+    "setuptools"
+  ],
+  "flake8-comprehensions": [
+    "setuptools"
+  ],
   "flake8-debugger": [
     "poetry-core",
     "setuptools"
   ],
+  "flake8-deprecated": [
+    "setuptools"
+  ],
   "flake8-docstrings": [
+    "setuptools"
+  ],
+  "flake8-ensure-ascii": [
     "setuptools"
   ],
   "flake8-future-import": [
@@ -5473,6 +5494,9 @@
     "setuptools"
   ],
   "flake8-noqa": [
+    "setuptools"
+  ],
+  "flake8-plone-hasattr": [
     "setuptools"
   ],
   "flake8-plugin-utils": [
@@ -5491,6 +5515,12 @@
     "poetry-core"
   ],
   "flake8-simplify": [
+    "setuptools"
+  ],
+  "flake8-super-call": [
+    "setuptools"
+  ],
+  "flake8-tuple": [
     "setuptools"
   ],
   "flaky": [
@@ -10945,6 +10975,10 @@
   "pdb2pqr": [
     "setuptools"
   ],
+  "pdbpp": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "pdbtools": [
     "setuptools"
   ],
@@ -13850,7 +13884,8 @@
     "setuptools-scm"
   ],
   "pytest-bdd": [
-    "setuptools"
+    "setuptools",
+    "poetry-core"
   ],
   "pytest-benchmark": [
     "setuptools"
@@ -18100,6 +18135,9 @@
     "setuptools-scm"
   ],
   "typecode-libmagic": [
+    "setuptools"
+  ],
+  "typecov": [
     "setuptools"
   ],
   "typed-argument-parser": [
