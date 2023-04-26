@@ -17699,6 +17699,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "tkcalendar": [
+    "setuptools"
+  ],
   "tkinter": [
     "setuptools"
   ],
