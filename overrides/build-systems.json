@@ -3350,6 +3350,9 @@
   "coqui-trainer": [
     "setuptools"
   ],
+  "corallium": [
+    "poetry-core"
+  ],
   "coreapi": [
     "setuptools"
   ],
