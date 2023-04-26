@@ -76,7 +76,7 @@ lib.composeManyExtensions [
         (drv: attr: addBuildSystem {
           inherit drv self attr;
         })
-        super.${attr}
+        (super.${attr} or null)
         systems)
       buildSystems)
 
