@@ -432,6 +432,11 @@ lib.composeManyExtensions [
         '';
       });
 
+      cysystemd = super.cysystemd.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools pkgs.systemd ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      });
+
       daphne = super.daphne.overridePythonAttrs (old: {
         postPatch = ''
           substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
@@ -1659,6 +1664,11 @@ lib.composeManyExtensions [
         }
       );
 
+
+      pem = super.pem.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+      });
+
       pikepdf = super.pikepdf.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.qpdf self.pybind11 ];
@@ -1681,6 +1691,10 @@ lib.composeManyExtensions [
           preConfigure = lib.optional (old.format != "wheel") preConfigure;
         }
       );
+
+      pip-licenses = super.pip-licenses.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools self.pytestrunner ];
+      });
 
       pip-requirements-parser = super.pip-requirements-parser.overridePythonAttrs (old: {
         dontConfigure = true;
@@ -2060,6 +2074,11 @@ lib.composeManyExtensions [
         '';
       });
 
+
+      pythonping = super.pythonping.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+      });
+
       pytoml = super.pytoml.overridePythonAttrs (
         old: {
           doCheck = false;
@@ -2198,6 +2217,16 @@ lib.composeManyExtensions [
       python-olm = super.python-olm.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.olm ];
+        }
+      );
+
+      python-pam = super.python-pam.overridePythonAttrs (
+        old: {
+          postPatch = ''
+            substituteInPlace src/pam/__internals.py \
+            --replace 'find_library("pam")' '"${pkgs.pam}/lib/libpam.so"' \
+            --replace 'find_library("pam_misc")' '"${pkgs.pam}/lib/libpam_misc.so"'
+          '';
         }
       );
 
@@ -2467,6 +2496,10 @@ lib.composeManyExtensions [
       systemd-python = super.systemd-python.overridePythonAttrs (old: {
         buildInputs = old.buildInputs ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
+      });
+
+      tacacs-plus = super.tacacs-plus.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools self.pytestrunner ];
       });
 
       tables = super.tables.overridePythonAttrs (
