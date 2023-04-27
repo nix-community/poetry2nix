@@ -11913,6 +11913,9 @@
   "py-tes": [
     "setuptools"
   ],
+  "pytest-skip-slow": [
+    "setuptools"
+  ],
   "py-tree-sitter": [
     "setuptools"
   ],
@@ -15566,6 +15569,9 @@
   "rich": [
     "poetry-core",
     "setuptools"
+  ],
+  "rich-argparse-plus": [
+    "flit"
   ],
   "rich-rst": [
     "setuptools"
@@ -19377,6 +19383,9 @@
   ],
   "yapsy": [
     "setuptools"
+  ],
+  "yaralyzer": [
+    "poetry"
   ],
   "yara-python": [
     "setuptools"
