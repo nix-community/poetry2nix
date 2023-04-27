@@ -11913,9 +11913,6 @@
   "py-tes": [
     "setuptools"
   ],
-  "pytest-skip-slow": [
-    "setuptools"
-  ],
   "py-tree-sitter": [
     "setuptools"
   ],
@@ -14141,6 +14138,9 @@
     "setuptools-scm"
   ],
   "pytest-shutil": [
+    "setuptools"
+  ],
+  "pytest-skip-slow": [
     "setuptools"
   ],
   "pytest-snapshot": [
@@ -19384,11 +19384,11 @@
   "yapsy": [
     "setuptools"
   ],
-  "yaralyzer": [
-    "poetry"
-  ],
   "yara-python": [
     "setuptools"
+  ],
+  "yaralyzer": [
+    "poetry"
   ],
   "yarg": [
     "setuptools"
