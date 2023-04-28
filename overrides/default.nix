@@ -1664,11 +1664,6 @@ lib.composeManyExtensions [
         }
       );
 
-
-      pem = super.pem.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
-      });
-
       pikepdf = super.pikepdf.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.qpdf self.pybind11 ];
@@ -1691,10 +1686,6 @@ lib.composeManyExtensions [
           preConfigure = lib.optional (old.format != "wheel") preConfigure;
         }
       );
-
-      pip-licenses = super.pip-licenses.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools self.pytestrunner ];
-      });
 
       pip-requirements-parser = super.pip-requirements-parser.overridePythonAttrs (old: {
         dontConfigure = true;
@@ -2074,10 +2065,6 @@ lib.composeManyExtensions [
         '';
       });
 
-
-      pythonping = super.pythonping.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
-      });
 
       pytoml = super.pytoml.overridePythonAttrs (
         old: {
@@ -2496,10 +2483,6 @@ lib.composeManyExtensions [
       systemd-python = super.systemd-python.overridePythonAttrs (old: {
         buildInputs = old.buildInputs ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
-      });
-
-      tacacs-plus = super.tacacs-plus.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools self.pytestrunner ];
       });
 
       tables = super.tables.overridePythonAttrs (
