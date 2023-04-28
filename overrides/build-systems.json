@@ -14140,6 +14140,9 @@
   "pytest-shutil": [
     "setuptools"
   ],
+  "pytest-skip-slow": [
+    "setuptools"
+  ],
   "pytest-snapshot": [
     "setuptools",
     "setuptools-scm"
@@ -15566,6 +15569,9 @@
   "rich": [
     "poetry-core",
     "setuptools"
+  ],
+  "rich-argparse-plus": [
+    "flit"
   ],
   "rich-rst": [
     "setuptools"
@@ -19380,6 +19386,9 @@
   ],
   "yara-python": [
     "setuptools"
+  ],
+  "yaralyzer": [
+    "poetry"
   ],
   "yarg": [
     "setuptools"
