@@ -1521,6 +1521,7 @@ lib.composeManyExtensions [
           buildInputs = [
             self.scikit-build
           ] ++ lib.optionals stdenv.isDarwin (with pkgs.darwin.apple_sdk.frameworks; [
+            Accelerate
             AVFoundation
             Cocoa
             CoreMedia
