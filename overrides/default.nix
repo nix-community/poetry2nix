@@ -433,7 +433,7 @@ lib.composeManyExtensions [
       });
 
       cysystemd = super.cysystemd.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools pkgs.systemd ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.systemd ];
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
       });
 

@@ -3565,6 +3565,9 @@
   "cysimdjson": [
     "cython"
   ],
+  "cysystemd": [
+    "setuptools"
+  ],
   "cython": [
     "setuptools"
   ],
