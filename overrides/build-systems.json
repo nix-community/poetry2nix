@@ -3574,6 +3574,9 @@
   "cysimdjson": [
     "cython"
   ],
+  "cysystemd": [
+    "setuptools"
+  ],
   "cython": [
     "setuptools"
   ],
@@ -11048,6 +11051,9 @@
   "pelican": [
     "setuptools"
   ],
+  "pem": [
+    "setuptools"
+  ],
   "pencompy": [
     "setuptools"
   ],
@@ -11232,6 +11238,10 @@
   ],
   "pip-api": [
     "setuptools"
+  ],
+  "pip-licenses": [
+    "setuptools",
+    "pytest-runner"
   ],
   "pip-requirements-parser": [
     "setuptools",
@@ -14764,6 +14774,9 @@
   "pythonnet": [
     "setuptools"
   ],
+  "pythonping": [
+    "setuptools"
+  ],
   "pythran": [
     "setuptools"
   ],
@@ -17345,6 +17358,10 @@
   ],
   "tabview": [
     "setuptools"
+  ],
+  "tacacs-plus": [
+    "setuptools",
+    "pytest-runner"
   ],
   "tadasets": [
     "setuptools"

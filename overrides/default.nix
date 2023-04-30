@@ -432,6 +432,11 @@ lib.composeManyExtensions [
         '';
       });
 
+      cysystemd = super.cysystemd.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.systemd ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      });
+
       daphne = super.daphne.overridePythonAttrs (old: {
         postPatch = ''
           substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
@@ -2061,6 +2066,7 @@ lib.composeManyExtensions [
         '';
       });
 
+
       pytoml = super.pytoml.overridePythonAttrs (
         old: {
           doCheck = false;
@@ -2199,6 +2205,16 @@ lib.composeManyExtensions [
       python-olm = super.python-olm.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.olm ];
+        }
+      );
+
+      python-pam = super.python-pam.overridePythonAttrs (
+        old: {
+          postPatch = ''
+            substituteInPlace src/pam/__internals.py \
+            --replace 'find_library("pam")' '"${pkgs.pam}/lib/libpam.so"' \
+            --replace 'find_library("pam_misc")' '"${pkgs.pam}/lib/libpam_misc.so"'
+          '';
         }
       );
 
