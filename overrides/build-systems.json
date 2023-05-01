@@ -17429,7 +17429,26 @@
     "setuptools"
   ],
   "tan": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "22.12.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "22.12.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "22.12.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "22.12.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "22.12.0"
+    }
   ],
   "tank-utility": [
     "setuptools"
