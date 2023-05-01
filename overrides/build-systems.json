@@ -1311,6 +1311,9 @@
   "avro3k": [
     "setuptools"
   ],
+  "awacs": [
+    "setuptools"
+  ],
   "awesome-slugify": [
     "setuptools"
   ],
@@ -2750,6 +2753,9 @@
     "setuptools-scm"
   ],
   "cfgv": [
+    "setuptools"
+  ],
+  "cfnresponse": [
     "setuptools"
   ],
   "cfn-flip": [
@@ -9651,6 +9657,9 @@
     "setuptools"
   ],
   "mypy-boto3-lambda": [
+    "setuptools"
+  ],
+  "mypy-boto3-logs": [
     "setuptools"
   ],
   "mypy-boto3-rds": [
