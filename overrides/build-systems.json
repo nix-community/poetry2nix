@@ -2755,13 +2755,13 @@
   "cfgv": [
     "setuptools"
   ],
-  "cfnresponse": [
-    "setuptools"
-  ],
   "cfn-flip": [
     "setuptools"
   ],
   "cfn-lint": [
+    "setuptools"
+  ],
+  "cfnresponse": [
     "setuptools"
   ],
   "cfscrape": [
