@@ -1267,6 +1267,7 @@
     "setuptools"
   ],
   "autoflake": [
+    "setuptools",
     "hatchling"
   ],
   "autograd": [
@@ -3529,6 +3530,9 @@
   "curve25519-donna": [
     "setuptools"
   ],
+  "customerio": [
+    "setuptools"
+  ],
   "cvxopt": [
     "setuptools"
   ],
@@ -5500,6 +5504,9 @@
     "setuptools"
   ],
   "flake8-length": [
+    "setuptools"
+  ],
+  "flake8-mock": [
     "setuptools"
   ],
   "flake8-noqa": [
@@ -9209,6 +9216,9 @@
     "setuptools"
   ],
   "mixer": [
+    "setuptools"
+  ],
+  "mixpanel": [
     "setuptools"
   ],
   "mizani": [
@@ -13415,16 +13425,31 @@
   "pyramid-chameleon": [
     "setuptools"
   ],
+  "pyramid-deferred-sqla": [
+    "setuptools"
+  ],
   "pyramid-exclog": [
+    "setuptools"
+  ],
+  "pyramid-force-https": [
     "setuptools"
   ],
   "pyramid-hawkauth": [
     "setuptools"
   ],
+  "pyramid-heroku": [
+    "setuptools"
+  ],
   "pyramid-jinja2": [
     "setuptools"
   ],
+  "pyramid-jwt": [
+    "setuptools"
+  ],
   "pyramid-mako": [
+    "setuptools"
+  ],
+  "pyramid-mixpanel": [
     "setuptools"
   ],
   "pyramid-multiauth": [
@@ -13432,6 +13457,18 @@
   ],
   "pyramid-openapi3": [
     "poetry"
+  ],
+  "pyramid-redirect": [
+    "setuptools"
+  ],
+  "pyramid-retry": [
+    "setuptools"
+  ],
+  "pyramid-splinter": [
+    "setuptools"
+  ],
+  "pyramid-tm": [
+    "setuptools"
   ],
   "pyreadability": [
     "setuptools"
@@ -14159,6 +14196,9 @@
   ],
   "pytest-socket": [
     "poetry-core",
+    "setuptools"
+  ],
+  "pytest-splinter": [
     "setuptools"
   ],
   "pytest-subprocess": [
@@ -15294,6 +15334,9 @@
     "setuptools"
   ],
   "rcssmin": [
+    "setuptools"
+  ],
+  "rdbms-subsetter": [
     "setuptools"
   ],
   "rdflib": [
@@ -16476,6 +16519,9 @@
     "setuptools"
   ],
   "skytemple-ssb-debugger": [
+    "setuptools"
+  ],
+  "slack-bolt": [
     "setuptools"
   ],
   "slack-sdk": [
@@ -19660,6 +19706,9 @@
     "setuptools"
   ],
   "zope-size": [
+    "setuptools"
+  ],
+  "zope-sqlalchemy": [
     "setuptools"
   ],
   "zope-testbrowser": [
