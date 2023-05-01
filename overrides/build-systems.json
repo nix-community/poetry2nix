@@ -2050,6 +2050,9 @@
   "bcrypt": [
     "setuptools"
   ],
+  "beaker": [
+    "setuptools"
+  ],
   "beancount": [
     "setuptools"
   ],
@@ -4575,6 +4578,9 @@
   "docrep": [
     "setuptools"
   ],
+  "docstr-coverage": [
+    "setuptools"
+  ],
   "docstring-parser": [
     "poetry-core",
     "setuptools"
@@ -5194,6 +5200,9 @@
   "fabric2": [
     "setuptools"
   ],
+  "fabric3": [
+    "setuptools"
+  ],
   "fabulous": [
     "setuptools"
   ],
@@ -5481,6 +5490,12 @@
   "flake8-builtins": [
     "setuptools"
   ],
+  "flake8-coding": [
+    "setuptools"
+  ],
+  "flake8-commas": [
+    "setuptools"
+  ],
   "flake8-comprehensions": [
     "setuptools"
   ],
@@ -5509,7 +5524,13 @@
   "flake8-mock": [
     "setuptools"
   ],
+  "flake8-mutable": [
+    "setuptools"
+  ],
   "flake8-noqa": [
+    "setuptools"
+  ],
+  "flake8-pep3101": [
     "setuptools"
   ],
   "flake8-plone-hasattr": [
@@ -5530,10 +5551,19 @@
   "flake8-pytest-style": [
     "poetry-core"
   ],
+  "flake8-quotes": [
+    "setuptools"
+  ],
   "flake8-simplify": [
     "setuptools"
   ],
+  "flake8-string-format": [
+    "setuptools"
+  ],
   "flake8-super-call": [
+    "setuptools"
+  ],
+  "flake8-todo": [
     "setuptools"
   ],
   "flake8-tuple": [
@@ -6789,6 +6819,9 @@
   "hammett": [
     "setuptools"
   ],
+  "hammock": [
+    "setuptools"
+  ],
   "handout": [
     "setuptools"
   ],
@@ -7528,6 +7561,9 @@
   ],
   "ipwhl": [
     "flitBuildHook",
+    "setuptools"
+  ],
+  "ipwhois": [
     "setuptools"
   ],
   "ipy": [
@@ -8972,6 +9008,9 @@
   "maxminddb": [
     "setuptools"
   ],
+  "maxminddb-geolite2": [
+    "setuptools"
+  ],
   "maya": [
     "setuptools"
   ],
@@ -9923,6 +9962,9 @@
   "networkx": [
     "setuptools"
   ],
+  "newrelic": [
+    "setuptools"
+  ],
   "newversion": [
     "poetry-core",
     "setuptools"
@@ -10125,6 +10167,9 @@
     "setuptools"
   ],
   "nplusone": [
+    "setuptools"
+  ],
+  "npm": [
     "setuptools"
   ],
   "npyscreen": [
@@ -10583,6 +10628,9 @@
   ],
   "option": [
     "poetry-core"
+  ],
+  "optional-django": [
+    "setuptools"
   ],
   "opuslib": [
     "setuptools"
@@ -13461,6 +13509,9 @@
   "pyramid-redirect": [
     "setuptools"
   ],
+  "pyramid-redis": [
+    "setuptools"
+  ],
   "pyramid-retry": [
     "setuptools"
   ],
@@ -14199,6 +14250,9 @@
     "setuptools"
   ],
   "pytest-splinter": [
+    "setuptools"
+  ],
+  "pytest-splinter4": [
     "setuptools"
   ],
   "pytest-subprocess": [
@@ -15558,6 +15612,9 @@
     "setuptools"
   ],
   "respx": [
+    "setuptools"
+  ],
+  "resteasy": [
     "setuptools"
   ],
   "restfly": [
@@ -17142,6 +17199,9 @@
     "cython",
     "setuptools"
   ],
+  "statuscake": [
+    "setuptools"
+  ],
   "stdiomask": [
     "setuptools"
   ],
@@ -17871,6 +17931,9 @@
     "poetry"
   ],
   "toml-sort": [
+    "poetry"
+  ],
+  "tomlcheck": [
     "poetry"
   ],
   "tomli": [

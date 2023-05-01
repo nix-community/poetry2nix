@@ -3003,6 +3003,11 @@ lib.composeManyExtensions [
             }
         );
 
+      flake8-mutable = super.flake8-mutable.overridePythonAttrs
+        (old: { buildInputs = old.buildInputs or [ ] ++ [ self.pytest-runner ]; });
+      pydantic = super.pydantic.overridePythonAttrs
+        (old: { buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxcrypt ]; });
+
       y-py = super.y-py.override {
         preferWheel = true;
       };
