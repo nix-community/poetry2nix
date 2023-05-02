@@ -1962,6 +1962,10 @@ lib.composeManyExtensions [
         }
       );
 
+      pynetbox = super.pynetbox.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+      });
+
       pynput = super.pynput.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ])
           ++ [ self.sphinx ];
