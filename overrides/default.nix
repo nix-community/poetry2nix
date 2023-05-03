@@ -1093,6 +1093,18 @@ lib.composeManyExtensions [
         }
       );
 
+      llama-cpp-python = super.llama-cpp-python.overridePythonAttrs (
+        old: {
+          buildInputs = with pkgs; lib.optionals stdenv.isDarwin [
+            darwin.apple_sdk.frameworks.Accelerate
+          ];
+          nativeBuildInputs = [ pkgs.cmake ] ++ (old.nativeBuildInputs or [ ]);
+          preBuild = ''
+            cd "$OLDPWD"
+          '';
+        }
+      );
+
       llvmlite = super.llvmlite.overridePythonAttrs (
         old:
         let
@@ -1583,7 +1595,7 @@ lib.composeManyExtensions [
             lib.warn "Unknown orjson version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
         in
-        super.orjson.overridePythonAttrs (old: {
+        super.orjson.overridePythonAttrs (old: if old.src.isWheel or false then { } else {
           cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
@@ -1813,6 +1825,10 @@ lib.composeManyExtensions [
                 nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
                   pkg-config
                   pkgs.cmake
+                ];
+
+                buildInputs = (old.buildInputs or [ ]) ++ [
+                  _arrow-cpp
                 ];
 
                 preBuild = ''
