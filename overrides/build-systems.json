@@ -8646,7 +8646,8 @@
     "setuptools"
   ],
   "llama-cpp-python": [
-    "setuptools"
+    "setuptools",
+    "scikit-build"
   ],
   "llfuse": [
     "cython",
@@ -11117,6 +11118,9 @@
   "pefile": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "peft": [
+    "setuptools"
   ],
   "pelican": [
     "setuptools"
