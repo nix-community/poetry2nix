@@ -18730,6 +18730,14 @@
     "setuptools"
   ],
   "urllib3": [
+    {
+      "buildSystem": "flit-core",
+      "until": "2.0.2"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.0.2"
+    },
     "setuptools"
   ],
   "urlpy": [
