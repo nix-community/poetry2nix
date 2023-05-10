@@ -19264,6 +19264,9 @@
   "wifi": [
     "setuptools"
   ],
+  "wikitextparser": [
+    "setuptools"
+  ],
   "willow": [
     "setuptools"
   ],
