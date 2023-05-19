@@ -1108,26 +1108,23 @@ lib.composeManyExtensions [
       llvmlite = super.llvmlite.overridePythonAttrs (
         old:
         let
-          llvm =
-            if lib.versionAtLeast old.version "0.37.0" then
-              pkgs.llvmPackages_11.llvm
-            else if (lib.versionOlder old.version "0.37.0" && lib.versionAtLeast old.version "0.34.0") then
-              pkgs.llvmPackages_10.llvm
-            else if (lib.versionOlder old.version "0.34.0" && lib.versionAtLeast old.version "0.33.0") then
-              pkgs.llvmPackages_9.llvm
-            else if (lib.versionOlder old.version "0.33.0" && lib.versionAtLeast old.version "0.29.0") then
-              pkgs.llvmPackages_8.llvm
-            else if (lib.versionOlder old.version "0.28.0" && lib.versionAtLeast old.version "0.27.0") then
-              pkgs.llvmPackages_7.llvm
-            else if (lib.versionOlder old.version "0.27.0" && lib.versionAtLeast old.version "0.23.0") then
-              pkgs.llvmPackages_6.llvm or throw "LLVM6 has been removed from nixpkgs; upgrade llvmlite or use older nixpkgs"
-            else if (lib.versionOlder old.version "0.23.0" && lib.versionAtLeast old.version "0.21.0") then
-              pkgs.llvmPackages_5.llvm or throw "LLVM5 has been removed from nixpkgs; upgrade llvmlite or use older nixpkgs"
-            else
-              pkgs.llvm; # Likely to fail.
+          # see https://github.com/numba/llvmlite#compatibility
+          llvm_version = toString (
+            if lib.versionAtLeast old.version "0.40.0" then 14
+            else if lib.versionAtLeast old.version "0.37.0" then 11
+            else if lib.versionAtLeast old.version "0.34.0" && !stdenv.buildPlatform.isAarch64 then 10
+            else if lib.versionAtLeast old.version "0.33.0" then 9
+            else if lib.versionAtLeast old.version "0.29.0" then 8
+            else if lib.versionAtLeast old.version "0.27.0" then 7
+            else if lib.versionAtLeast old.version "0.23.0" then 6
+            else if lib.versionAtLeast old.version "0.21.0" then 5
+            else 4
+          );
+          llvm = pkgs."llvmPackages_${llvm_version}".llvm or (throw "LLVM${llvm_version} has been removed from nixpkgs; upgrade llvmlite or use older nixpkgs");
         in
         {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.llvm ];
+          inherit llvm;
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.llvmlite.llvm ];
 
           # Disable static linking
           # https://github.com/numba/llvmlite/issues/93
