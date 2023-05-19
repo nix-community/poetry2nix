@@ -1166,6 +1166,15 @@ lib.composeManyExtensions [
         }
       );
 
+      markdown-it-py = super.markdown-it-py.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = builtins.filter (i: i.pname != "mdit-py-plugins") old.propagatedBuildInputs;
+          preConfigure = (old.preConfigure or "") + ''
+            substituteInPlace pyproject.toml --replace 'plugins = ["mdit-py-plugins"]' 'plugins = []'
+          '';
+        }
+      );
+
       markupsafe = super.markupsafe.overridePythonAttrs (
         old: {
           src = old.src.override { pname = builtins.replaceStrings [ "markupsafe" ] [ "MarkupSafe" ] old.pname; };
