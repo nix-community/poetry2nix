@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-markdown-it-py-wheel"
+version = "0.1.0"
+description = "Test of wheel for markdown-it-py"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+markdown-it-py = "^2.2.0"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
