@@ -1166,9 +1166,11 @@ lib.composeManyExtensions [
       markdown-it-py = super.markdown-it-py.overridePythonAttrs (
         old: {
           propagatedBuildInputs = builtins.filter (i: i.pname != "mdit-py-plugins") old.propagatedBuildInputs;
-          preConfigure = (old.preConfigure or "") + ''
-            substituteInPlace pyproject.toml --replace 'plugins = ["mdit-py-plugins"]' 'plugins = []'
-          '';
+          preConfigure = lib.optionalString (!(old.src.isWheel or false)) (
+            (old.preConfigure or "") + ''
+              substituteInPlace pyproject.toml --replace 'plugins = ["mdit-py-plugins"]' 'plugins = []'
+            ''
+          );
         }
       );
 
