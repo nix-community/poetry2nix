@@ -171,5 +171,6 @@ builtins.removeAttrs
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };
   grpcio-wheel = callTest ./grpcio-wheel { };
   panel-wheels = callTest ./panel-wheels { };
+  markdown-it-py-wheel = callTest ./markdown-it-py-wheel { };
 }
   skipTests
