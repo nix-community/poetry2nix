@@ -11945,6 +11945,10 @@
   "py-cid": [
     "setuptools"
   ],
+  "py-cord": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "py-cpuinfo": [
     "setuptools"
   ],
