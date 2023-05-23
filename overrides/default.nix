@@ -603,11 +603,13 @@ lib.composeManyExtensions [
         '';
       };
 
-      eth-keyfile = super.eth-keyfile.overridePythonAttrs {
+      eth-keyfile = super.eth-keyfile.overridePythonAttrs (old: {
         preConfigure = ''
           substituteInPlace setup.py --replace \'setuptools-markdown\' ""
         '';
-      };
+
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+      });
 
       eth-keys = super.eth-keys.overridePythonAttrs {
         preConfigure = ''
