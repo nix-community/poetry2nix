@@ -1988,6 +1988,9 @@
   "baron": [
     "setuptools"
   ],
+  "base32-crockford": [
+    "setuptools"
+  ],
   "base36": [
     "setuptools"
   ],
@@ -3499,6 +3502,9 @@
   "css-parser": [
     "setuptools"
   ],
+  "cssbeautifier": [
+    "setuptools"
+  ],
   "csscompressor": [
     "setuptools"
   ],
@@ -4351,6 +4357,10 @@
   "django-pglocks": [
     "setuptools"
   ],
+  "django-phonenumber-field": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "django-picklefield": [
     "setuptools"
   ],
@@ -4483,6 +4493,9 @@
     "setuptools"
   ],
   "djangorestframework-types": [
+    "poetry"
+  ],
+  "djlint": [
     "poetry"
   ],
   "djmail": [
@@ -7032,6 +7045,12 @@
   ],
   "html-sanitizer": [
     "setuptools"
+  ],
+  "html-tag-names": [
+    "poetry"
+  ],
+  "html-void-elements": [
+    "poetry"
   ],
   "html2text": [
     "setuptools"
@@ -12067,6 +12086,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "pyairtable": [
+    "setuptools"
+  ],
   "pyairvisual": [
     "poetry-core",
     "setuptools"
@@ -12958,7 +12980,8 @@
     "setuptools"
   ],
   "pylint-plugin-utils": [
-    "setuptools"
+    "setuptools",
+    "poetry"
   ],
   "pylint-venv": [
     "poetry-core"
@@ -13335,6 +13358,9 @@
   ],
   "pypck": [
     "setuptools"
+  ],
+  "pypdf": [
+    "flit"
   ],
   "pypdf2": [
     "setuptools"
@@ -17375,6 +17401,9 @@
   "subzerod": [
     "setuptools"
   ],
+  "suds-community": [
+    "setuptools"
+  ],
   "sumo": [
     "cython",
     "setuptools"
@@ -18983,6 +19012,9 @@
     "setuptools"
   ],
   "volvooncall": [
+    "setuptools"
+  ],
+  "vonage": [
     "setuptools"
   ],
   "vowpalwabbit": [
