@@ -3286,6 +3286,9 @@
   "confluent-kafka": [
     "setuptools"
   ],
+  "confusable-homoglyphs": [
+    "setuptools"
+  ],
   "confuse": [
     "flit-core",
     "flitBuildHook",
@@ -4181,6 +4184,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "django-bootstrap-form": [
+    "setuptools"
+  ],
   "django-cache-memoize": [
     "setuptools"
   ],
@@ -4384,6 +4390,9 @@
     "setuptools"
   ],
   "django-redis": [
+    "setuptools"
+  ],
+  "django-registration": [
     "setuptools"
   ],
   "django-rest-auth": [
