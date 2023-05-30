@@ -18059,6 +18059,9 @@
   "torchaudio-bin": [
     "setuptools"
   ],
+  "torchfile": [
+    "setuptools"
+  ],
   "torchgpipe": [
     "setuptools"
   ],
