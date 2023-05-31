@@ -132,6 +132,7 @@ builtins.removeAttrs
   # poetry-pypy = poetry.override { python = pkgs.pypy; };
   # poetry-pypy3 = poetry.override { python = pkgs.pypy3; };
 
+  jupyterlab-3 = callTest ./jupyterlab-3 { };
   jupyterlab = callTest ./jupyterlab { };
 
   # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
