@@ -73,7 +73,7 @@ let
         ++ lib.flatten (map (g: getDeps (pyProject.tool.poetry.group.${g}.dependencies or { })) checkGroups);
     in
     {
-      buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
+      buildInputs = mkInput "buildInputs" [ ];
       propagatedBuildInputs = mkInput "propagatedBuildInputs" (
         getDeps allRawDeps ++ (
           # >=poetry-1.2.0 dependency groups
@@ -82,7 +82,7 @@ let
           else [ ]
         )
       );
-      nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
+      nativeBuildInputs = mkInput "nativeBuildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
       checkInputs = mkInput "checkInputs" checkInputs';
       nativeCheckInputs = mkInput "nativeCheckInputs" checkInputs';
     };
