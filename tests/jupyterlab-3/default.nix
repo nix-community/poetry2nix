@@ -4,6 +4,6 @@ let
     projectDir = ./.;
   };
 in
-runCommand "jupyterlab-test" { } ''
+runCommand "jupyterlab-3-test" { } ''
   ${env}/bin/jupyter-lab --version > $out
 ''

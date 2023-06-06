@@ -8141,8 +8141,22 @@
     "setuptools"
   ],
   "jupyterlab": [
-    "jupyter-packaging",
-    "setuptools"
+    {
+      "buildSystem": "jupyter-packaging",
+      "until": "4"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "4"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4"
+    },
+    {
+      "buildSystem": "hatch-jupyter-builder",
+      "from": "4"
+    }
   ],
   "jupyterlab-code-formatter": [
     "jupyter-packaging"
@@ -10791,6 +10805,9 @@
     "setuptools"
   ],
   "overly": [
+    "setuptools"
+  ],
+  "overrides": [
     "setuptools"
   ],
   "ovh": [
