@@ -617,15 +617,8 @@ lib.composeManyExtensions [
         '';
       };
 
-      # remove eth-hash dependency because eth-hash also depends on eth-utils causing a cycle.
-      eth-utils = super.eth-utils.overridePythonAttrs (old: {
-        propagatedBuildInputs =
-          builtins.filter (i: i.pname != "eth-hash") old.propagatedBuildInputs;
-        preConfigure = ''
-          ${old.preConfigure or ""}
-          sed -i '/eth-hash/d' setup.py
-        '';
-      });
+      # FIXME: this is a workaround for https://github.com/nix-community/poetry2nix/issues/1161
+      eth-utils = super.eth-utils.override { preferWheel = true; };
 
       evdev = super.evdev.overridePythonAttrs (old: {
         preConfigure = ''
