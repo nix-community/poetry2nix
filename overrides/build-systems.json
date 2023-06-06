@@ -14611,6 +14611,9 @@
     "pbr",
     "setuptools"
   ],
+  "python-language-server": [
+    "setuptools"
+  ],
   "python-ldap": [
     "setuptools"
   ],
