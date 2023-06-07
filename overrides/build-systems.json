@@ -15482,7 +15482,14 @@
     "setuptools"
   ],
   "rdflib": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "6.3.0"
+    },
+    {
+      "buildSystem": "poetry",
+      "from": "6.3.0"
+    }
   ],
   "rdkit": [
     "setuptools"
