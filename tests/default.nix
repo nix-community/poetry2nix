@@ -174,5 +174,6 @@ builtins.removeAttrs
   grpcio-wheel = callTest ./grpcio-wheel { };
   panel-wheels = callTest ./panel-wheels { };
   markdown-it-py-wheel = callTest ./markdown-it-py-wheel { };
+  pandas = callTest ./pandas { };
 }
   skipTests
