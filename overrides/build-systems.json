@@ -3652,7 +3652,11 @@
     "setuptools"
   ],
   "dask": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "versioneer",
+      "from": "2.0.0"
+    }
   ],
   "dask-gateway": [
     "setuptools"
@@ -4136,7 +4140,11 @@
     "setuptools"
   ],
   "distributed": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "versioneer",
+      "from": "2.0.0"
+    }
   ],
   "distro": [
     "setuptools"
@@ -8362,6 +8370,10 @@
   ],
   "konnected": [
     "setuptools"
+  ],
+  "kopf": [
+    "setuptools",
+    "setuptools-scm"
   ],
   "korean-lunar-calendar": [
     "setuptools"
@@ -12939,6 +12951,9 @@
     "setuptools"
   ],
   "pykwb": [
+    "setuptools"
+  ],
+  "pykube-ng": [
     "setuptools"
   ],
   "pylacrosse": [
