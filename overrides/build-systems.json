@@ -12944,6 +12944,9 @@
   "pykrakenapi": [
     "setuptools"
   ],
+  "pykube-ng": [
+    "setuptools"
+  ],
   "pykulersky": [
     "setuptools"
   ],
@@ -12951,9 +12954,6 @@
     "setuptools"
   ],
   "pykwb": [
-    "setuptools"
-  ],
-  "pykube-ng": [
     "setuptools"
   ],
   "pylacrosse": [
