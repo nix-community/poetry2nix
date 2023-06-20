@@ -6131,6 +6131,9 @@
     "cython",
     "setuptools"
   ],
+  "genson": [
+    "setuptools"
+  ],
   "gentools": [
     "setuptools"
   ],
@@ -7982,6 +7985,11 @@
   "jsonref": [
     {
       "buildSystem": "setuptools",
+      "until": "0.3.0"
+    },
+    {
+      "buildSystem": "poetry",
+      "from": "0.3.0",
       "until": "1.1.0"
     },
     {
