@@ -16963,6 +16963,7 @@
   ],
   "sphinx": [
     "cython",
+    "flit-core",
     "setuptools"
   ],
   "sphinx-argparse": [
