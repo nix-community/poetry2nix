@@ -5794,6 +5794,13 @@
   "fleep": [
     "setuptools"
   ],
+  "flet": [
+    "poetry-core"
+  ],
+  "flet-core": [
+    "poetry-core",
+    "setuptools"
+  ],
   "flexmock": [
     "setuptools"
   ],
@@ -15608,6 +15615,9 @@
     "setuptools"
   ],
   "reparser": [
+    "setuptools"
+  ],
+  "repath": [
     "setuptools"
   ],
   "repeated-test": [
