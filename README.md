@@ -38,7 +38,7 @@ Creates a Python application using the Python interpreter specified based on the
 - **src**: project source (_default_: `cleanPythonSources { src = projectDir; }`).
 - **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
-- **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
+- **overrides**: Python overrides to apply (_default_: `defaultPoetryOverrides`).
 - **meta**: application [meta](https://nixos.org/nixpkgs/manual/#chap-meta) data (_default:_ `{}`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
@@ -94,7 +94,7 @@ Creates an environment that provides a Python interpreter along with all depende
 - **projectDir**: path to the root of the project.
 - **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
-- **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
+- **overrides**: Python overrides to apply (_default_: `defaultPoetryOverrides`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode. Note that path dependencies with `develop = true` will be installed in editable mode unless explicitly passed to `editablePackageSources` as `null`.  (_default:_ `{}`).
 - **extraPackages**: A function taking a Python package set and returning a list of extra packages to include in the environment. This is intended for packages deliberately not added to `pyproject.toml` that you still want to include. An example of such a package may be `pip`. (_default:_ `(ps: [ ])`).
@@ -160,7 +160,7 @@ Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poet
 - **projectDir**: path to the root of the project.
 - **pyproject**: path to `pyproject.toml` (_default_: `projectDir + "/pyproject.toml"`).
 - **poetrylock**: `poetry.lock` file path (_default_: `projectDir + "/poetry.lock"`).
-- **overrides**: Python overrides to apply (_default_: `[defaultPoetryOverrides]`).
+- **overrides**: Python overrides to apply (_default_: `defaultPoetryOverrides`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
