@@ -988,14 +988,21 @@ lib.composeManyExtensions [
         ];
       });
 
-      jsondiff = super.jsondiff.overridePythonAttrs (
-        old: {
-          preBuild = (old.preBuild or "") + ''
-            substituteInPlace setup.py \
-              --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
-          '';
-        }
-      );
+      jsondiff =
+        if lib.versionOlder "2.0.0"
+        then
+          super.jsondiff.overridePythonAttrs
+            (
+              old: {
+                preBuild = lib.optionalString (!(old.src.isWheel or false)) (
+                  (old.preBuild or "") + ''
+                    substituteInPlace setup.py \
+                      --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
+                  ''
+                );
+              }
+            )
+        else super.jsondiff;
 
       jsonslicer = super.jsonslicer.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig ];
