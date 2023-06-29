@@ -211,8 +211,7 @@ lib.composeManyExtensions [
               [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
             nativeBuildInputs = with pkgs;
               (old.nativeBuildInputs or [ ])
-                ++ lib.optionals (lib.versionAtLeast old.version "4")
-                (with pkgs.rustPlatform; [ rust.rustc rust.cargo cargoSetupHook self.setuptools-rust ]);
+                ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo cargoSetupHook self.setuptools-rust ];
           } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
             cargoDeps =
               pkgs.rustPlatform.fetchCargoTarball
@@ -403,8 +402,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ])
                 ++ lib.optionals (lib.versionAtLeast old.version "3.4") [ self.setuptools-rust ]
                 ++ lib.optional (!self.isPyPy) pyBuildPackages.cffi
-                ++ lib.optional (lib.versionAtLeast old.version "3.5" && !isWheel)
-                (with pkgs.rustPlatform; [ cargoSetupHook rust.cargo rust.rustc ])
+                ++ lib.optional (lib.versionAtLeast old.version "3.5" && !isWheel) [ pkgs.rustPlatform.cargoSetupHook pkgs.cargo pkgs.rustc ]
                 ++ [ pkg-config ]
               ;
               buildInputs = (old.buildInputs or [ ])
