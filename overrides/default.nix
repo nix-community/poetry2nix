@@ -211,7 +211,7 @@ lib.composeManyExtensions [
               [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
             nativeBuildInputs = with pkgs;
               (old.nativeBuildInputs or [ ])
-                ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo cargoSetupHook self.setuptools-rust ];
+                ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
           } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
             cargoDeps =
               pkgs.rustPlatform.fetchCargoTarball
