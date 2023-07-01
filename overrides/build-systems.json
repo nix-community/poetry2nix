@@ -17301,6 +17301,9 @@
     "hatchling",
     "setuptools"
   ],
+  "starlette-context": [
+    "poetry-core"
+  ],
   "starline": [
     "setuptools"
   ],
