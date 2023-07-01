@@ -315,6 +315,11 @@ in pkgs.poetry2nix.mkPoetryApplication {
 
 **A.** By default, poetry2nix installs from source. If you want to give precedence to wheels, look at the `preferWheel` and `preferWheels` attributes.
 
+**Q.** Does poetry2nix use package definitions from nixpkgs' Python package set?
+
+**A.** poetry2nix overlays packages taken from the `poetry.lock` file on top of nixpkgs, in such a way that overlaid packages in nixpkgs are completely ignored.
+Any package that is used, but isn't in the `poetry.lock` file (most commonly [build dependencies](https://github.com/nix-community/poetry2nix/blob/master/overrides/build-systems.json)) is taken from nixpkgs.
+
 **Q.** How to prefer wheel installation for a single package?
 
 **A.** Override it and set `preferWheel = true` in that single package:
