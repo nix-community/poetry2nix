@@ -175,5 +175,7 @@ builtins.removeAttrs
   panel-wheels = callTest ./panel-wheels { };
   markdown-it-py-wheel = callTest ./markdown-it-py-wheel { };
   pandas = callTest ./pandas { };
+  cairocffi-wheel = callTest ./cairocffi-wheel { };
+  cairocffi-no-wheel = callTest ./cairocffi-no-wheel { };
 }
   skipTests

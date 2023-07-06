@@ -240,8 +240,17 @@ lib.composeManyExtensions [
 
       cairocffi = super.cairocffi.overridePythonAttrs (
         old: {
-          inherit (pkgs.python3.pkgs.cairocffi) patches;
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
+          # apply necessary patches in postInstall if the source is a wheel
+          postInstall = lib.optionalString (old.src.isWheel or false) ''
+            pushd "$out/${self.python.sitePackages}"
+            for patch in ${lib.concatMapStringsSep " " (p: "${p}") pkgs.python3.pkgs.cairocffi.patches}; do
+              patch -p1 < "$patch"
+            done
+            popd
+          '';
+        } // lib.optionalAttrs (!(old.src.isWheel or false)) {
+          inherit (pkgs.python3.pkgs.cairocffi) patches;
         }
       );
 

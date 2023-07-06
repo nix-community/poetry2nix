@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-cairocffi-no-wheel"
+version = "0.1.0"
+description = "Test of source build for cairocffi"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+cairocffi = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
