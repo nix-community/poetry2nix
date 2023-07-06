@@ -2591,7 +2591,14 @@
     "setuptools"
   ],
   "cairocffi": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.6.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "1.6.0"
+    }
   ],
   "cairosvg": [
     "setuptools"
