@@ -6277,6 +6277,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "git-find-repos": [
+    "setuptools-scm"
+  ],
   "git-revise": [
     "setuptools"
   ],
