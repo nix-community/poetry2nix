@@ -5456,6 +5456,9 @@
     "cython",
     "setuptools"
   ],
+  "find-git-repos": [
+    "setuptools-scm"
+  ],
   "findimports": [
     "setuptools"
   ],
