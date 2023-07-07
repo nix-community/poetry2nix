@@ -2472,7 +2472,7 @@ lib.composeManyExtensions [
         in
         selenium.overridePythonAttrs (old: {
           # Selenium <4 can be installed from sources, with setuptools
-          buildInputs = old.buildInputs ++ (lib.optionals (!v4orLater) [ self.setuptools ]);
+          buildInputs = (old.buildInputs or [ ]) ++ (lib.optionals (!v4orLater) [ self.setuptools ]);
         });
 
       shapely = super.shapely.overridePythonAttrs (
@@ -2522,7 +2522,7 @@ lib.composeManyExtensions [
       });
 
       systemd-python = super.systemd-python.overridePythonAttrs (old: {
-        buildInputs = old.buildInputs ++ [ pkgs.systemd ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs ++ [ pkgs.pkg-config ];
       });
 
@@ -2907,7 +2907,7 @@ lib.composeManyExtensions [
             libGL
             libglvnd
             mesa
-          ] ++ old.buildInputs;
+          ] ++ (old.buildInputs or [ ]);
 
           buildPhase = ''
             ${localPython.interpreter} build.py -v build_wx
