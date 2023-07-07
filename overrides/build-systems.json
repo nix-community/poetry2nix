@@ -3737,6 +3737,9 @@
   "datapoint": [
     "setuptools"
   ],
+  "dataproperty": [
+    "setuptools"
+  ],
   "datargs": [
     "poetry"
   ],
@@ -5528,6 +5531,9 @@
     "setuptools"
   ],
   "flake8": [
+    "setuptools"
+  ],
+  "flake8-assertive": [
     "setuptools"
   ],
   "flake8-blind-except": [
@@ -9059,6 +9065,9 @@
   "marshmallow-sqlalchemy": [
     "setuptools"
   ],
+  "mashumaro": [
+    "setuptools"
+  ],
   "mask-rcnn": [
     "cython"
   ],
@@ -9123,6 +9132,9 @@
     "setuptools"
   ],
   "mbddns": [
+    "setuptools"
+  ],
+  "mbstrdecoder": [
     "setuptools"
   ],
   "mbtest": [
@@ -9521,6 +9533,9 @@
     "setuptools"
   ],
   "monero": [
+    "setuptools"
+  ],
+  "money": [
     "setuptools"
   ],
   "mongodict": [
@@ -15285,6 +15300,9 @@
   "pyxeoma": [
     "setuptools"
   ],
+  "pyxero": [
+    "setuptools"
+  ],
   "pyxiaomigateway": [
     "setuptools"
   ],
@@ -17597,6 +17615,9 @@
   "tableaudocumentapi": [
     "setuptools"
   ],
+  "tabledata": [
+    "setuptools"
+  ],
   "tables": [
     "cython",
     "setuptools"
@@ -17695,6 +17716,9 @@
     "setuptools"
   ],
   "tbm-utils": [
+    "setuptools"
+  ],
+  "tcolorpy": [
     "setuptools"
   ],
   "tcxparser": [
@@ -18466,6 +18490,9 @@
   "typeguard": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "typepy": [
+    "setuptools"
   ],
   "typer": [
     "flit-core",
