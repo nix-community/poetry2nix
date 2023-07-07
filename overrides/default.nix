@@ -1025,6 +1025,12 @@ lib.composeManyExtensions [
             })
         else super.jsonschema;
 
+      jsonschema-specifications = super.jsonschema-specifications.overridePythonAttrs (old: {
+        postPatch = old.postPatch or "" + ''
+          sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+        '';
+      });
+
       jupyter = super.jupyter.overridePythonAttrs (
         old: {
           # jupyter is a meta-package. Everything relevant comes from the
