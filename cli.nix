@@ -1,13 +1,12 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
-, version
 }:
 let
   inherit (pkgs) python3;
 in
 pkgs.stdenv.mkDerivation {
-  pname = "poetry2nix";
-  inherit version;
+  pname = "poetry2nix-cli";
+  version = "0";
 
   buildInputs = [
     (python3.withPackages (ps: [ ps.toml ]))

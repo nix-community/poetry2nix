@@ -3,9 +3,6 @@
 , poetryLib ? import ./lib.nix { inherit lib pkgs; stdenv = pkgs.stdenv; }
 }:
 let
-  # Poetry2nix version
-  version = "1.42.1";
-
   inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
 
   # Map SPDX identifiers to license names
@@ -93,9 +90,6 @@ let
 
 in
 lib.makeScope pkgs.newScope (self: {
-
-  inherit version;
-
   /* Returns a package of editable sources whose changes will be available without needing to restart the
     nix-shell.
     In editablePackageSources you can pass a mapping from package name to source directory to have
