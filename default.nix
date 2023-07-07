@@ -463,7 +463,6 @@ lib.makeScope pkgs.newScope (self: {
   /* Poetry2nix CLI used to supplement SHA-256 hashes for git dependencies  */
   cli = import ./cli.nix {
     inherit pkgs lib;
-    inherit (self) version;
   };
 
   # inherit mkPoetryEnv mkPoetryApplication mkPoetryPackages;
