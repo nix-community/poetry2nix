@@ -2372,6 +2372,12 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
       });
 
+      referencing = super.referencing.overridePythonAttrs (old: {
+        postPatch = old.postPatch or "" + ''
+          sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+        '';
+      });
+
       rfc3986-validator = super.rfc3986-validator.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
           self.pytest-runner

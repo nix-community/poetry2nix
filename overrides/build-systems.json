@@ -15613,6 +15613,10 @@
     "cython",
     "setuptools"
   ],
+  "referencing": [
+    "hatch-vcs",
+    "hatchling"
+  ],
   "reflink": [
     "setuptools"
   ],
