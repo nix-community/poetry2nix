@@ -8069,6 +8069,10 @@
   "jsonschema-spec": [
     "poetry-core"
   ],
+  "jsonschema-specifications": [
+    "hatch-vcs",
+    "hatchling"
+  ],
   "jsonstreams": [
     "setuptools"
   ],
@@ -15612,6 +15616,10 @@
   "reedsolo": [
     "cython",
     "setuptools"
+  ],
+  "referencing": [
+    "hatch-vcs",
+    "hatchling"
   ],
   "reflink": [
     "setuptools"

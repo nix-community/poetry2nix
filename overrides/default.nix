@@ -1022,8 +1022,17 @@ lib.composeManyExtensions [
           super.jsonschema.overridePythonAttrs
             (old: {
               propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.importlib-resources ];
+              postPatch = old.postPatch or "" + lib.optionalString (lib.versionAtLeast super.jsonschema.version "4.18.0") ''
+                sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+              '';
             })
         else super.jsonschema;
+
+      jsonschema-specifications = super.jsonschema-specifications.overridePythonAttrs (old: {
+        postPatch = old.postPatch or "" + ''
+          sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+        '';
+      });
 
       jupyter = super.jupyter.overridePythonAttrs (
         old: {
@@ -2372,6 +2381,12 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
       });
 
+      referencing = super.referencing.overridePythonAttrs (old: {
+        postPatch = old.postPatch or "" + ''
+          sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+        '';
+      });
+
       rfc3986-validator = super.rfc3986-validator.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
           self.pytest-runner
@@ -2387,6 +2402,29 @@ lib.composeManyExtensions [
       rmfuse = super.rmfuse.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
       });
+
+      rpds-py =
+        let
+          getCargoHash = version: {
+            "0.8.8" = "sha256-jg9oos4wqewIHe31c3DixIp6fssk742kqt4taWyOq4U=";
+          }.${version} or (
+            lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
+          );
+        in
+        super.rpds-py.overridePythonAttrs (old: {
+          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            inherit (old) src;
+            name = "${old.pname}-${old.version}";
+            hash = getCargoHash old.version;
+          };
+          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+            pkgs.libiconv
+          ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+        });
 
       rtree = super.rtree.overridePythonAttrs (old: {
         propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [ ]) ++ [ pkgs.libspatialindex ];
