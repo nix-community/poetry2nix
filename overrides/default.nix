@@ -2388,6 +2388,29 @@ lib.composeManyExtensions [
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
       });
 
+      rpds-py =
+        let
+          getCargoHash = version: {
+            "0.8.8" = "sha256-jg9oos4wqewIHe31c3DixIp6fssk742kqt4taWyOq4U=";
+          }.${version} or (
+            lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
+          );
+        in
+        super.rpds-py.overridePythonAttrs (old: {
+          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            inherit (old) src;
+            name = "${old.pname}-${old.version}";
+            hash = getCargoHash old.version;
+          };
+          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+            pkgs.libiconv
+          ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+        });
+
       rtree = super.rtree.overridePythonAttrs (old: {
         propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [ ]) ++ [ pkgs.libspatialindex ];
         postPatch = ''
