@@ -4036,6 +4036,9 @@
   "discogs-client": [
     "setuptools"
   ],
+  "discord-py": [
+    "setuptools"
+  ],
   "discordpy": [
     "setuptools"
   ],
