@@ -1518,8 +1518,9 @@ lib.composeManyExtensions [
           pkgs.libusb1
         ] ++ lib.optionals stdenv.isLinux [
           pkgs.udev
-        ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0") [
+        ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0" && !pkgs.mesa.meta.broken) [
           pkgs.mesa
+        ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0") [
           (
             pkgs.symlinkJoin {
               name = "llvm-with-ubuntu-compatible-symlink";
