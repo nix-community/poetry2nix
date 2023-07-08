@@ -11,7 +11,9 @@ let
       tags = [ "cp" "py" ];
     in
     { inherit major minor tags; };
-  abiTag = "cp${pythonVer.major}${pythonVer.minor}m";
+  # Builds with and without pymalloc (m) are ABI compatible since python 3.8 (bpo-36707)
+  abiTag = "cp${pythonVer.major}${pythonVer.minor}"
+    + lib.optionalString (builtins.compareVersions python.version "3.8" < 0) "m";
 
   #
   # Parses wheel file returning an attribute set
