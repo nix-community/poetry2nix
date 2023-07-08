@@ -97,7 +97,7 @@ let
           then
           # See PEP 600 for details.
             (p:
-              builtins.match "any|manylinux(1|2010|2014)_${escapeRegex targetMachine}|manylinux_[0-9]+_[0-9]+_${escapeRegex targetMachine}" p != null
+              builtins.match "any|(linux|manylinux(1|2010|2014))_${escapeRegex targetMachine}|manylinux_[0-9]+_[0-9]+_${escapeRegex targetMachine}" p != null
             )
           else
             (p: p == "any")
@@ -118,7 +118,7 @@ let
       choose = files:
         let
           osxMatches = [ "12_0" "11_0" "10_15" "10_14" "10_12" "10_11" "10_10" "10_9" "10_8" "10_7" "any" ];
-          linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" "manylinux_" "any" ];
+          linuxMatches = [ "manylinux1_" "manylinux2010_" "manylinux2014_" "manylinux_" "linux_" "any" ];
           chooseLinux = x: lib.take 1 (findBestMatches linuxMatches x);
           chooseOSX = x: lib.take 1 (findBestMatches osxMatches x);
         in
