@@ -25,6 +25,7 @@ let
     , groups ? [ ]
     , checkGroups ? [ "dev" ]
     , extras ? [ "*" ]  # * means all extras, otherwise include the dependencies for a given extra
+    , buildPy ? py
     }:
     let
       getInputs = attr: attrs.${attr} or [ ];
@@ -51,7 +52,7 @@ let
 
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;
-        pythonPackages = py.pkgs;
+        pythonPackages = buildPy.pkgs;
       };
 
       mkInput = attr: extraInputs: getInputs attr ++ extraInputs;
@@ -383,6 +384,7 @@ lib.makeScope pkgs.newScope (self: {
     , overrides ? self.defaultPoetryOverrides
     , meta ? { }
     , python ? pkgs.python3
+    , buildPython ? python
     , pwd ? projectDir
     , preferWheels ? false
     , groups ? [ ]
@@ -394,7 +396,12 @@ lib.makeScope pkgs.newScope (self: {
       poetryPython = self.mkPoetryPackages {
         inherit pyproject poetrylock overrides python pwd preferWheels groups checkGroups extras;
       };
+      poetryBuildPython = self.mkPoetryPackages {
+        inherit pyproject poetrylock overrides pwd preferWheels groups checkGroups extras;
+        python = buildPython;
+      };
       py = poetryPython.python;
+      buildPy = poetryBuildPython.python;
 
       hooks = py.pkgs.callPackage ./hooks { };
 
@@ -409,7 +416,7 @@ lib.makeScope pkgs.newScope (self: {
       ];
       passedAttrs = builtins.removeAttrs attrs specialAttrs;
 
-      inputAttrs = mkInputAttrs { inherit py pyProject attrs groups checkGroups extras; };
+      inputAttrs = mkInputAttrs { inherit py pyProject attrs groups checkGroups extras buildPy; };
 
       app = py.pkgs.buildPythonPackage (
         passedAttrs // inputAttrs // {
