@@ -240,3 +240,27 @@ error: infinite recursion encountered
 ```
 
 This is because `dask[distributed]` depends on `distributed` which depends on `dask`. The solution is to install `dask` (no extras) and `distributed` separately.
+
+#### Building Python 2 applications
+
+Poetry has [dropped support for using Python
+2](https://python-poetry.org/blog/announcing-poetry-1.2.0/#dropping-support-for-managing-python-27-projects)
+as the runtime version. This means you can't run Poetry with Python 2, but you
+can run it with a newer version of Python to build a legacy application which
+still uses Python 2.
+
+To do this in poetry2nix, use the `buildPython` argument to use specify the
+build and runtime Python versions separately:
+
+```nix
+{ poetry2nix, python2, python3, ...}:
+
+poetry2nix.mkPoetryApplication {
+  projectDir = ./.;
+  python = python2;
+  buildPython = python3;
+  # ...
+}
+```
+
+Note that the default poetry2nix overrides and generally not tested for Python 2. As a result more manual overrides may be necessary when packaging a Python 2 application with poetry2nix.

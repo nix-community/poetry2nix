@@ -41,6 +41,7 @@ Creates a Python application using the Python interpreter specified based on the
 - **overrides**: Python overrides to apply (_default_: `defaultPoetryOverrides`).
 - **meta**: application [meta](https://nixos.org/nixpkgs/manual/#chap-meta) data (_default:_ `{}`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
+- **buildPython**: The Python interpreter to use for building (_default:_ `python`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
 - **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ ]`).
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
