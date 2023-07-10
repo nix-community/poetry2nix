@@ -177,5 +177,6 @@ builtins.removeAttrs
   pandas = callTest ./pandas { };
   cairocffi-wheel = callTest ./cairocffi-wheel { };
   cairocffi-no-wheel = callTest ./cairocffi-no-wheel { };
+  rpds-py = callTest ./rpds-py { };
 }
   skipTests
