@@ -14952,7 +14952,8 @@
     "setuptools"
   ],
   "python-ubersmithclient": [
-    "setuptools"
+    "setuptools",
+    "pbr"
   ],
   "python-uinput": [
     "setuptools"
