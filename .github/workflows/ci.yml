@@ -73,7 +73,7 @@ jobs:
         with:
           name: poetry2nix
           signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
-      - run: nix-shell --arg packages 'pkgs:[ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix -A ${{ matrix.attr }}'
+      - run: nix-build --keep-going --show-trace tests/default.nix -A '${{ matrix.attr }}'
 
   builds-macos:
     runs-on: macos-latest
@@ -86,7 +86,7 @@ jobs:
         with:
           name: poetry2nix
           signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
-      - run: nix-shell --arg packages 'pkgs:[ pkgs.nix-build-uncached ]' --run 'nix-build-uncached -build-flags "-L" --keep-going --show-trace tests/default.nix'
+      - run: nix-build --keep-going --show-trace tests/default.nix -A '${{ matrix.attr }}'
 
   collect:
     runs-on: ubuntu-latest
