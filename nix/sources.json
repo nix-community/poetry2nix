@@ -1,4 +1,16 @@
 {
+    "nix-github-actions": {
+        "branch": "master",
+        "description": "A library to turn Nix Flake attribute sets into Github Actions matrices [maintainer=@adisbladis]",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
+        "rev": "165b1650b753316aa7f1787f3005a8d2da0f5301",
+        "sha256": "0rkh2dcnl4rna4snqd7cdnvddjyqrgj3rais0dkhs4ygz64j8ip1",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/nix-github-actions/archive/165b1650b753316aa7f1787f3005a8d2da0f5301.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "nixpkgs": {
         "branch": "master",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
