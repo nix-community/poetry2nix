@@ -43,58 +43,39 @@ jobs:
     - name: Check format
       run: nix-shell --arg packages 'pkgs:[ pkgs.p2nix-tools.env ]' --run 'black --check .'
 
-  matrix_generate:
+  nix-matrix:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v22
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
       - id: set-matrix
+        name: Generate Nix Matrix
         run: |
-          set -euo pipefail
+          set -Eeu
+          echo "matrix=$(nix eval --json -f ./.github/ci.nix matrix)" >> "$GITHUB_OUTPUT"
 
-          matrix="$(nix-instantiate --eval --json --expr 'builtins.attrNames (import ./tests {})' | jq -rcM '{attr: .}')"
-          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-
-  builds-linux:
-    needs: matrix_generate
-    runs-on: ubuntu-latest
+  nix-build:
+    needs: nix-matrix
+    runs-on: ${{ matrix.os }}
     strategy:
-      matrix: ${{fromJSON(needs.matrix_generate.outputs.matrix)}}
+      matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v22
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
       - uses: cachix/cachix-action@v12
         with:
           name: poetry2nix
           signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
-      - run: nix-build --keep-going --show-trace tests/default.nix -A '${{ matrix.attr }}'
-
-  builds-macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v22
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-      - uses: cachix/cachix-action@v12
-        with:
-          name: poetry2nix
-          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
-      - run: nix-build --keep-going --show-trace tests/default.nix -A '${{ matrix.attr }}'
+      - run: nix-build --keep-going --show-trace .github/ci.nix -A '${{ matrix.attr }}'
 
   collect:
     runs-on: ubuntu-latest
     needs:
       - nixpkgs-fmt
       - black-fmt
-      - builds-linux
-      - builds-macos
+      - nix-build
       - sort-build-systems
     steps:
-      - run: exit 0
+      - run: true
