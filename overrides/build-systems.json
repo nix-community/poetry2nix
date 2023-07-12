@@ -10207,6 +10207,9 @@
   "nomadnet": [
     "setuptools"
   ],
+  "nordigen": [
+    "poetry"
+  ],
   "normality": [
     "setuptools"
   ],
