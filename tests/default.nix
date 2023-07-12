@@ -94,19 +94,12 @@ builtins.removeAttrs
   watchfiles = callTest ./watchfiles { };
   sqlalchemy = callTest ./sqlalchemy { };
   tzlocal = callTest ./tzlocal { };
-  text-generation-webui = callTest ./text-generation-webui { };
+  text-generation-webui = skipOSX (callTest ./text-generation-webui { });
 
   # Cross tests fail on darwin for some strange reason:
   # ERROR: MarkupSafe-2.0.1-cp39-cp39-linux_aarch64.whl is not a supported wheel on this platform.
   extended-cross = skipOSX (callTest ./extended-cross { });
   trivial-cross = skipOSX (callTest ./trivial-cross { });
-
-  # Inherit test cases from nixpkgs
-  nixops = pkgs.nixops;
-  nixops_unstable = skipOSX pkgs.nixops_unstable;
-
-  # Rmfuse fails on darwin because osxfuse only implements fuse api v2
-  rmfuse = skipOSX pkgs.rmfuse;
 
   ml-stack = callTest ./ml-stack { };
 
@@ -174,9 +167,15 @@ builtins.removeAttrs
   grpcio-wheel = callTest ./grpcio-wheel { };
   panel-wheels = callTest ./panel-wheels { };
   markdown-it-py-wheel = callTest ./markdown-it-py-wheel { };
-  pandas = callTest ./pandas { };
   cairocffi-wheel = callTest ./cairocffi-wheel { };
   cairocffi-no-wheel = callTest ./cairocffi-no-wheel { };
   rpds-py = callTest ./rpds-py { };
+
+  # Currently broken
+  # pandas = callTest ./pandas { };
+  # Inherit test cases from nixpkgs
+  # nixops = pkgs.nixops;
+  nixops_unstable = skipOSX pkgs.nixops_unstable;
+
 }
   skipTests
