@@ -8426,7 +8426,7 @@
     "setuptools"
   ],
   "krfzf": [
-    "poetry"
+    "poetry-core"
   ],
   "kubernetes": [
     "setuptools"
