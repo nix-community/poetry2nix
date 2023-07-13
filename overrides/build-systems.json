@@ -8425,8 +8425,8 @@
   "krakenex": [
     "setuptools"
   ],
-  "krfzf": [
-    "poetry-core"
+  "krfzf-py": [
+    "poetry"
   ],
   "kubernetes": [
     "setuptools"
