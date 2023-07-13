@@ -5179,6 +5179,8 @@
     "setuptools"
   ],
   "execnet": [
+    "hatchling",
+    "hatch-vcs",
     "setuptools",
     "setuptools-scm"
   ],
