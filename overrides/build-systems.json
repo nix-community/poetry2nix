@@ -17626,6 +17626,9 @@
   "systemd": [
     "setuptools"
   ],
+  "systemd-python": [
+    "setuptools"
+  ],
   "sysv-ipc": [
     "setuptools"
   ],
