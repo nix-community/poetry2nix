@@ -12,10 +12,11 @@
 }:
 
 let
-  sources = import ./nix/sources.nix;
-  pkgs = import sources.nixpkgs {
+  flake = builtins.getFlake "${toString ./.}";
+
+  pkgs = import flake.inputs.nixpkgs {
     overlays = [
-      (import ./overlay.nix)
+      flake.overlay
       (self: super: {
         p2nix-tools = self.callPackage ./tools { };
       })
@@ -24,6 +25,6 @@ let
 
 in
 pkgs.mkShell {
-  NIX_PATH = "nixpkgs=${sources.nixpkgs}";
+  NIX_PATH = "nixpkgs=${flake.inputs.nixpkgs}";
   packages = packages pkgs;
 }

@@ -16,13 +16,8 @@ let
   };
 
 in
-lib.debug.runTests {
-  testDepFound = {
-    expected = "0\n";
-    expr = builtins.readFile (runCommand "path-deps-develop-import" { } ''
-      echo using ${env}
-      ${env}/bin/python -c 'import dep1'
-      echo $? > $out
-    '');
-  };
-}
+runCommand "path-deps-develop-import" { } ''
+  echo using ${env}
+  ${env}/bin/python -c 'import dep1'
+  echo $? > $out
+''
