@@ -724,6 +724,9 @@
   "annexremote": [
     "setuptools"
   ],
+  "annotated-types": [
+    "hatchling"
+  ],
   "annoy": [
     "setuptools"
   ],
