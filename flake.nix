@@ -2,7 +2,7 @@
   description = "Poetry2nix flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/45dc78cb0a93fc84eaa1fea85bda28865eab1a44";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   inputs.nix-github-actions.url = "github:nix-community/nix-github-actions";
   inputs.nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
