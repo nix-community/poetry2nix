@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python3, runCommand }:
+{ poetry2nix, python3, runCommand }:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -6,8 +6,7 @@ let
     poetrylock = ./poetry.lock;
   };
 in
-runCommand "watchfiles-test"
-{ } ''
+runCommand "watchfiles-test" { } ''
   ${env}/bin/python -c 'from watchfiles import watch'
   touch $out
 ''
