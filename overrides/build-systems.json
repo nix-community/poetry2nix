@@ -12519,8 +12519,22 @@
     "setuptools"
   ],
   "pydantic": [
-    "cython",
-    "setuptools"
+    {
+      "buildSystem": "cython",
+      "until": "2.0.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "2.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.0.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "2.0.0"
+    }
   ],
   "pydantic-dydb": [
     "poetry-core"
