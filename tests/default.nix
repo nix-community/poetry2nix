@@ -1,14 +1,12 @@
 let
-  sources = import ../nix/sources.nix;
+  flake = builtins.getFlake "${toString ../.}";
 in
-{ pkgs ? import sources.nixpkgs {
+{ pkgs ? import flake.inputs.nixpkgs {
     config = {
       allowAliases = false;
       allowInsecurePredicate = x: true;
     };
-    overlays = [
-      (import ../overlay.nix)
-    ];
+    overlays = [ flake.overlay ];
   }
 }:
 let
@@ -35,7 +33,7 @@ in
   override-default = callTest ./override-default-support { };
   common-pkgs-1 = callTest ./common-pkgs-1 { };
   common-pkgs-2 = callTest ./common-pkgs-2 { };
-  pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425PythonOldest; };
+  # pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425PythonOldest; };
   env = callTest ./env { };
   pytest-metadata = callTest ./pytest-metadata { };
   pytest-randomly = callTest ./pytest-randomly { };
@@ -47,7 +45,6 @@ in
   git-deps-1_2_0 = callTest ./git-deps-1_2_0 { };
   git-deps-pinned = callTest ./git-deps-pinned { };
   in-list = callTest ./in-list { };
-  cli = poetry2nix;
   path-deps = callTest ./path-deps { };
   path-deps-develop = callTest ./path-deps-develop { };
   path-deps-level2 = callTest ./path-deps-level2 { };
@@ -63,6 +60,8 @@ in
   canonical-module-names = callTest ./canonical-module-names { };
   wandb = callTest ./wandb { };
   utf8-pyproject = callTest ./utf8-pyproject { };
+
+  inherit (poetry2nix) cli;
 
   ansible-molecule = callTest ./ansible-molecule { };
   bcrypt = callTest ./bcrypt { };

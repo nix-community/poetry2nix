@@ -54,7 +54,7 @@ jobs:
         name: Generate Nix Matrix
         run: |
           set -Eeu
-          echo "matrix=$(nix eval --json -f ./.github/ci.nix matrix)" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(nix eval --json '.#githubActions.matrix')" >> "$GITHUB_OUTPUT"
 
   nix-build:
     needs: nix-matrix
@@ -68,7 +68,7 @@ jobs:
         with:
           name: poetry2nix
           signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
-      - run: nix-build --keep-going --show-trace .github/ci.nix -A '${{ matrix.attr }}'
+      - run: nix build -L ".#${{ matrix.attr }}"
 
   collect:
     runs-on: ubuntu-latest

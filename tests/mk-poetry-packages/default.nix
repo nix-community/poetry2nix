@@ -22,4 +22,4 @@ let
 in
 assert builtins.elem "certifi" packageNamesCurrent;
 assert builtins.elem "certifi" packageNamesPythonOldest;
-drvPythonCurrent
+drvPythonCurrent.python

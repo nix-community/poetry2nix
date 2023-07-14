@@ -2,11 +2,49 @@
   description = "Poetry2nix flake";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/45dc78cb0a93fc84eaa1fea85bda28865eab1a44";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  inputs.nix-github-actions.url = "github:nix-community/nix-github-actions";
+  inputs.nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+
+  outputs = { self, nixpkgs, flake-utils, nix-github-actions }:
     {
       overlay = import ./overlay.nix;
+
+      githubActions =
+        let
+          mkPkgs = system: import nixpkgs {
+            config = {
+              allowAliases = false;
+              allowInsecurePredicate = x: true;
+            };
+            overlays = [ self.overlay ];
+            inherit system;
+          };
+        in
+        nix-github-actions.lib.mkGithubMatrix {
+          checks = {
+            x86_64-linux =
+              let
+                pkgs = mkPkgs "x86_64-linux";
+              in
+              import ./tests { inherit pkgs; };
+
+            x86_64-darwin =
+              let
+                pkgs = mkPkgs "x86_64-darwin";
+                inherit (pkgs) lib;
+                tests = import ./tests { inherit pkgs; };
+              in
+              {
+                # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
+                aggregate = pkgs.runCommand "darwin-aggregate"
+                  {
+                    env.TEST_INPUTS = (lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (n: v: lib.isDerivation v) tests)));
+                  } "touch $out";
+              };
+          };
+        };
 
       templates = {
         app = {
