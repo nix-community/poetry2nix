@@ -6,6 +6,9 @@
   "nix": {
     "enabled": true
   },
+  "python": {
+    "enabled": false
+  },
   "lockFileMaintenance": {
     "enabled": true,
     "extends": ["schedule:weekly"]
