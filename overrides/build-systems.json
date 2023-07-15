@@ -10614,6 +10614,16 @@
       "from": "1.13.0"
     }
   ],
+  "opentelemetry-distro": [
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
+  ],
   "opentelemetry-exporter-jaeger-proto-grpc": [
     {
       "buildSystem": "setuptools",
@@ -10625,6 +10635,36 @@
     }
   ],
   "opentelemetry-exporter-jaeger-thrift": [
+    {
+      "buildSystem": "setuptools",
+      "until": "1.13.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.13.0"
+    }
+  ],
+  "opentelemetry-exporter-otlp": [
+    {
+      "buildSystem": "setuptools",
+      "until": "1.13.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.13.0"
+    }
+  ],
+  "opentelemetry-exporter-otlp-proto-common": [
+    {
+      "buildSystem": "setuptools",
+      "until": "1.13.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.13.0"
+    }
+  ],
+  "opentelemetry-exporter-otlp-proto-grpc": [
     {
       "buildSystem": "setuptools",
       "until": "1.13.0"
@@ -10685,6 +10725,16 @@
     }
   ],
   "opentelemetry-instrumentation-httpx": [
+    {
+      "buildSystem": "setuptools",
+      "until": "0.34b0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.34b0"
+    }
+  ],
+  "opentelemetry-instrumentation-logging": [
     {
       "buildSystem": "setuptools",
       "until": "0.34b0"
