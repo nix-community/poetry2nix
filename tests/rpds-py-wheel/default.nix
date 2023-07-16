@@ -14,8 +14,14 @@ let
         referencing = super.referencing.override {
           preferWheel = isLinux;
         };
+        jsonschema-specifications = super.jsonschema-specifications.override {
+          preferWheel = isLinux;
+        };
       }
     );
   };
 in
-assert isLinux -> env.python.pkgs.rpds-py.src.isWheel && env.python.pkgs.referencing.src.isWheel; env
+assert isLinux ->
+env.python.pkgs.rpds-py.src.isWheel
+  && env.python.pkgs.referencing.src.isWheel
+  && env.python.pkgs.jsonschema-specifications.src.isWheel; env

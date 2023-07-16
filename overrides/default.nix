@@ -1029,7 +1029,7 @@ lib.composeManyExtensions [
             })
         else super.jsonschema;
 
-      jsonschema-specifications = super.jsonschema-specifications.overridePythonAttrs (old: {
+      jsonschema-specifications = super.jsonschema-specifications.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = old.postPatch or "" + ''
           sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
         '';

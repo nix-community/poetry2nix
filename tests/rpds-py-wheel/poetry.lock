@@ -20,6 +20,21 @@ tests = ["attrs[tests-no-zope]", "zope-interface"]
 tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-xdist[psutil]"]
 
 [[package]]
+name = "jsonschema-specifications"
+version = "2023.6.1"
+description = "The JSON Schema meta-schemas and vocabularies, exposed as a Registry"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "jsonschema_specifications-2023.6.1-py3-none-any.whl", hash = "sha256:3d2b82663aff01815f744bb5c7887e2121a63399b49b104a3c96145474d091d7"},
+    {file = "jsonschema_specifications-2023.6.1.tar.gz", hash = "sha256:ca1c4dd059a9e7b34101cf5b3ab7ff1d18b139f35950d598d629837ef66e8f28"},
+]
+
+[package.dependencies]
+referencing = ">=0.28.0"
+
+[[package]]
 name = "referencing"
 version = "0.29.1"
 description = "JSON Referencing + Python"
@@ -145,4 +160,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "aba43f7e6971de47fcfa0b5c0559e234c56bfd659951df57da81c6f5fd8c80b6"
+content-hash = "cf7063dc12735b5bac43b4368027e57adbac10c14adcd5c0d31ed80372af23eb"
