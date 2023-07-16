@@ -11,8 +11,11 @@ let
         rpds-py = super.rpds-py.override {
           preferWheel = isLinux;
         };
+        referencing = super.referencing.override {
+          preferWheel = isLinux;
+        };
       }
     );
   };
 in
-assert isLinux -> env.python.pkgs.rpds-py.src.isWheel; env
+assert isLinux -> env.python.pkgs.rpds-py.src.isWheel && env.python.pkgs.referencing.src.isWheel; env

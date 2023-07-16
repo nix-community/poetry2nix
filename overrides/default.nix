@@ -2383,7 +2383,7 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
       });
 
-      referencing = super.referencing.overridePythonAttrs (old: {
+      referencing = super.referencing.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = old.postPatch or "" + ''
           sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
         '';

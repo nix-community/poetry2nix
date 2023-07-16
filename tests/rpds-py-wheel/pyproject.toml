@@ -7,6 +7,7 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 rpds-py = "^0.8"
+referencing = "^0.29.1"
 
 [build-system]
 requires = ["poetry-core>=1.5"]
