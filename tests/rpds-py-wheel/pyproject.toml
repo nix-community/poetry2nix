@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "rpds-py-build-wheel"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+rpds-py = "^0.8"
+referencing = "^0.29.1"
+jsonschema-specifications = "^2023.6.1"
+jsonschema = "^4.18.3"
+
+[build-system]
+requires = ["poetry-core>=1.5"]
+build-backend = "poetry.core.masonry.api"

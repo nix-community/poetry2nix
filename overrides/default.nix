@@ -1023,13 +1023,13 @@ lib.composeManyExtensions [
           super.jsonschema.overridePythonAttrs
             (old: {
               propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.importlib-resources ];
-              postPatch = old.postPatch or "" + lib.optionalString (lib.versionAtLeast super.jsonschema.version "4.18.0") ''
+              postPatch = old.postPatch or "" + lib.optionalString (!(old.src.isWheel or false) && (lib.versionAtLeast super.jsonschema.version "4.18.0")) ''
                 sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
               '';
             })
         else super.jsonschema;
 
-      jsonschema-specifications = super.jsonschema-specifications.overridePythonAttrs (old: {
+      jsonschema-specifications = super.jsonschema-specifications.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = old.postPatch or "" + ''
           sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
         '';
@@ -2383,7 +2383,7 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
       });
 
-      referencing = super.referencing.overridePythonAttrs (old: {
+      referencing = super.referencing.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = old.postPatch or "" + ''
           sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
         '';
@@ -2414,7 +2414,7 @@ lib.composeManyExtensions [
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
         in
-        super.rpds-py.overridePythonAttrs (old: {
+        super.rpds-py.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
             inherit (old) src;
             name = "${old.pname}-${old.version}";

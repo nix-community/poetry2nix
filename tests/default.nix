@@ -149,7 +149,8 @@ in
   markdown-it-py-wheel = callTest ./markdown-it-py-wheel { };
   cairocffi-wheel = callTest ./cairocffi-wheel { };
   cairocffi-no-wheel = callTest ./cairocffi-no-wheel { };
-  rpds-py = callTest ./rpds-py { };
+  rpds-py-wheel = callTest ./rpds-py-wheel { };
+  rpds-py-no-wheel = callTest ./rpds-py-no-wheel { };
 
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
