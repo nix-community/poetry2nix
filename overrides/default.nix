@@ -1023,7 +1023,7 @@ lib.composeManyExtensions [
           super.jsonschema.overridePythonAttrs
             (old: {
               propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.importlib-resources ];
-              postPatch = old.postPatch or "" + lib.optionalString (lib.versionAtLeast super.jsonschema.version "4.18.0") ''
+              postPatch = old.postPatch or "" + lib.optionalString (!(old.src.isWheel or false) && (lib.versionAtLeast super.jsonschema.version "4.18.0")) ''
                 sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
               '';
             })

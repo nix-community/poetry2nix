@@ -9,6 +9,7 @@ python = "^3.9"
 rpds-py = "^0.8"
 referencing = "^0.29.1"
 jsonschema-specifications = "^2023.6.1"
+jsonschema = "^4.18.3"
 
 [build-system]
 requires = ["poetry-core>=1.5"]
