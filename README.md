@@ -20,15 +20,15 @@ For more information, see [the announcement post on the Tweag blog](https://www.
 
 The _poetry2nix_ public API consists of the following attributes:
 
-- [mkPoetryApplication](#mkPoetryApplication): Creates a Python application.
-- [mkPoetryEnv](#mkPoetryEnv): Creates a Python environment with an interpreter and all packages from `poetry.lock`.
-- [mkPoetryPackages](#mkPoetryPackages): Creates an attribute set providing access to the generated packages and other artifacts.
-- [mkPoetryScriptsPackage](#mkPoetryScriptsPackage): Creates a package containing the scripts from `tool.poetry.scripts` of the `pyproject.toml`.
-- [mkPoetryEditablePackage](#mkPoetryEditablePackage): Creates a package containing editable sources. Changes in the specified paths will be reflected in an interactive nix-shell session without the need to restart it.
-- [defaultPoetryOverrides](#defaultPoetryOverrides): A set of bundled overrides fixing problems with Python packages.
-- [overrides.withDefaults](#overrideswithDefaults): A convenience function for specifying overrides on top of the defaults.
-- [overrides.withoutDefaults](#overrideswithoutDefaults): A convenience function for specifying overrides without defaults.
-- [cleanPythonSources](#cleanPythonSources): A function to create a source filter for python projects.
+- [mkPoetryApplication](#mkpoetryapplication): Creates a Python application.
+- [mkPoetryEnv](#mkpoetryenv): Creates a Python environment with an interpreter and all packages from `poetry.lock`.
+- [mkPoetryPackages](#mkpoetrypackages): Creates an attribute set providing access to the generated packages and other artifacts.
+- [mkPoetryScriptsPackage](#mkpoetryscriptspackage): Creates a package containing the scripts from `tool.poetry.scripts` of the `pyproject.toml`.
+- [mkPoetryEditablePackage](#mkpoetryeditablepackage): Creates a package containing editable sources. Changes in the specified paths will be reflected in an interactive nix-shell session without the need to restart it.
+- [defaultPoetryOverrides](#defaultpoetryoverrides): A set of bundled overrides fixing problems with Python packages.
+- [overrides.withDefaults](#overrideswithdefaults): A convenience function for specifying overrides on top of the defaults.
+- [overrides.withoutDefaults](#overrideswithoutdefaults): A convenience function for specifying overrides without defaults.
+- [cleanPythonSources](#cleanpythonsources): A function to create a source filter for python projects.
 
 ### mkPoetryApplication
 
