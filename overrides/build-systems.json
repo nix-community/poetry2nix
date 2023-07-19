@@ -19212,6 +19212,9 @@
   "vonage": [
     "setuptools"
   ],
+  "vonage-jwt": [
+    "setuptools"
+  ],
   "vowpalwabbit": [
     "setuptools"
   ],
