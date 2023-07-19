@@ -18825,6 +18825,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "ulid-py": [
+    "setuptools"
+  ],
   "ultraheat-api": [
     "setuptools"
   ],
