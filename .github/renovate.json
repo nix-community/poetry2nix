@@ -1,16 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:base",
+    "group:all",
+    "schedule:weekly"
   ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "dependencyDashboard": true,
   "nix": {
     "enabled": true
   },
   "python": {
     "enabled": false
-  },
-  "lockFileMaintenance": {
-    "enabled": true,
-    "extends": ["schedule:weekly"]
   }
 }
