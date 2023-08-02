@@ -2796,15 +2796,14 @@ lib.composeManyExtensions [
         }
       );
 
-      wheel = ((
-        pkgs.python3.pkgs.override {
-          python = self.python;
-        }
-      ).wheel.override {
-        inherit (self) buildPythonPackage bootstrapped-pip setuptools;
-      }).overrideAttrs (old: {
-        inherit (super.wheel) pname name version src;
-      });
+      wheel =
+        if self.python.isPy2 then
+          super.wheel.override
+            {
+              inherit (self) bootstrapped-pip;
+            }
+        else
+          super.wheel;
 
       zipp = if super.zipp == null then null else
       super.zipp.overridePythonAttrs (
