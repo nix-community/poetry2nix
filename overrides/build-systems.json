@@ -17138,6 +17138,9 @@
     "pbr",
     "setuptools"
   ],
+  "sphinx-js": [
+    "setuptools"
+  ],
   "sphinx-jupyterbook-latex": [
     "setuptools"
   ],
