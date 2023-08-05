@@ -17138,6 +17138,9 @@
     "pbr",
     "setuptools"
   ],
+  "sphinx-js": [
+    "setuptools"
+  ],
   "sphinx-jupyterbook-latex": [
     "setuptools"
   ],
@@ -17215,6 +17218,16 @@
   ],
   "sphinxcontrib-httpdomain": [
     "setuptools"
+  ],
+  "sphinxcontrib-jquery": [
+    {
+      "buildSystem": "setuptools",
+      "until": "3.0.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "3.0.0"
+    }
   ],
   "sphinxcontrib-jsmath": [
     "setuptools"
