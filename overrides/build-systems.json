@@ -16342,8 +16342,26 @@
   ],
   "scikit-build": [
     "cython",
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.17.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "0.17.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.17.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "0.17.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "0.17.0"
+    }
   ],
   "scikit-fmm": [
     "setuptools"
