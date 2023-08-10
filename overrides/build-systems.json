@@ -5690,6 +5690,9 @@
   "flask-cors": [
     "setuptools"
   ],
+  "flask-discord-interactions": [
+    "setuptools"
+  ],
   "flask-elastic": [
     "setuptools"
   ],
