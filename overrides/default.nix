@@ -771,7 +771,8 @@ lib.composeManyExtensions [
 
       gunicorn = super.gunicorn.overridePythonAttrs (old: {
         # actually needs setuptools as a runtime dependency
-        propagatedBuildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+        # 21.0.0 starts transition away from runtime dependency, starting with packaging
+        propagatedBuildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.packaging ];
       });
 
       h3 = super.h3.overridePythonAttrs (
