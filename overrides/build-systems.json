@@ -949,6 +949,9 @@
   "arpy": [
     "setuptools"
   ],
+  "arq": [
+    "hatchling"
+  ],
   "arrayqueues": [
     "setuptools"
   ],
