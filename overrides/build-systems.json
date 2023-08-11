@@ -6818,7 +6818,8 @@
     "setuptools"
   ],
   "gunicorn": [
-    "setuptools"
+    "setuptools",
+    "packaging"
   ],
   "guppy3": [
     "setuptools"
