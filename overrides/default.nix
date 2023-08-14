@@ -93,6 +93,25 @@ lib.composeManyExtensions [
         in
           pkgs."qt${selector}" or pkgs.qt5;
 
+      pyQt5Modules = qt5: with qt5; [
+        qt3d
+        qtbase
+        qtcharts
+        qtconnectivity
+        qtdatavis3d
+        qtdeclarative
+        qtgamepad
+        qtlocation
+        qtmultimedia
+        qtsensors
+        qtserialport
+        qtsvg
+        qtwebchannel
+        qtwebengine
+        qtwebsockets
+        qtx11extras
+        qtxmlpatterns
+      ];
     in
 
     {
@@ -2154,10 +2173,9 @@ lib.composeManyExtensions [
 
             dontConfigure = true;
             dontWrapQtApps = true;
-            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ pyQt5Modules qt5 ++ [
               self.pyqt-builder
               self.sip
-              qt5.full
             ];
           }
         );
@@ -2169,9 +2187,7 @@ lib.composeManyExtensions [
         super.pyqt5-qt5.overridePythonAttrs (
           old: {
             dontWrapQtApps = true;
-            propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
-              qt5.full
-              qt5.qtgamepad # As of 2022-05-13 not a port of qt5.full
+            propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ pyQt5Modules qt5 ++ [
               pkgs.gtk3
               pkgs.speechd
               pkgs.postgresql
