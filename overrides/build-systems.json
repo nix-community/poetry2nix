@@ -650,6 +650,7 @@
     "setuptools"
   ],
   "altair": [
+    "hatchling",
     "setuptools"
   ],
   "amaranth": [
