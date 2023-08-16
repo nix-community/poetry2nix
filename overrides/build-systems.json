@@ -12162,6 +12162,9 @@
     "pytest-runner",
     "setuptools"
   ],
+  "py-natpmp": [
+    "setuptools"
+  ],
   "py-nextbusnext": [
     "setuptools"
   ],
