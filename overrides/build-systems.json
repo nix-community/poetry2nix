@@ -9688,6 +9688,9 @@
     "flit-core",
     "setuptools"
   ],
+  "msgspec": [
+    "setuptools"
+  ],
   "msldap": [
     "setuptools"
   ],
