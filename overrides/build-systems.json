@@ -3723,6 +3723,7 @@
     "setuptools"
   ],
   "dataclasses-json": [
+    "poetry-core",
     "setuptools"
   ],
   "dataclasses-serialization": [
@@ -4911,6 +4912,7 @@
     "setuptools"
   ],
   "einops": [
+    "hatchling",
     "setuptools"
   ],
   "eiswarnung": [
@@ -10542,6 +10544,9 @@
   "openapi-python-client": [
     "poetry-core"
   ],
+  "openapi-schema-pydantic": [
+    "setuptools"
+  ],
   "openapi-schema-validator": [
     "poetry-core",
     "setuptools"
@@ -13397,6 +13402,9 @@
   "pynetgear": [
     "setuptools"
   ],
+  "pyngrok": [
+    "setuptools"
+  ],
   "pynina": [
     "setuptools"
   ],
@@ -16243,6 +16251,9 @@
     "setuptools"
   ],
   "safeio": [
+    "setuptools"
+  ],
+  "safetensors": [
     "setuptools"
   ],
   "safety": [

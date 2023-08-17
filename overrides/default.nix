@@ -2470,6 +2470,28 @@ lib.composeManyExtensions [
         }
       );
 
+      safetensors = let
+        getGitHash = version: {
+          "0.3.1" = "sha256-RoIBD+zBKVzXE8OpI8GR371YPxceR4P8B9T1/AHc9vA=";
+        }.${version};
+      in super.safetensors.overridePythonAttrs (old: rec {
+        # Hardcode version; dependents ask for unpublished versions without
+        # Cargo.lock otherwise, leading to sadness.
+        version = "0.3.1";
+        src = pkgs.fetchFromGitHub {
+          owner = "huggingface";
+          repo = old.pname;
+          rev = "v${version}";
+          sha256 = getGitHash version;
+        };
+        sourceRoot = "source/bindings/python";
+        nativeBuildInputs = (old.nativeBuildInputs or [ ])
+          ++ [ pkgs.rustc pkgs.cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
+        cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = "${src.out}/bindings/python/Cargo.lock";
+        };
+      });
+
       scipy = super.scipy.overridePythonAttrs (
         old:
         if old.format != "wheel" then {
