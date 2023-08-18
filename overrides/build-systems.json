@@ -17607,6 +17607,9 @@
     "hatchling",
     "setuptools"
   ],
+  "structlog-overtime": [
+    "setuptools"
+  ],
   "structlog-sentry": [
     "poetry-core"
   ],
