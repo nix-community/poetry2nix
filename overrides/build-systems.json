@@ -3032,6 +3032,9 @@
   "clickhouse-cli": [
     "setuptools"
   ],
+  "clickhouse-connect": [
+    "setuptools"
+  ],
   "clickhouse-driver": [
     "setuptools"
   ],
@@ -3723,6 +3726,7 @@
     "setuptools"
   ],
   "dataclasses-json": [
+    "poetry-core",
     "setuptools"
   ],
   "dataclasses-serialization": [
@@ -4911,6 +4915,7 @@
     "setuptools"
   ],
   "einops": [
+    "hatchling",
     "setuptools"
   ],
   "eiswarnung": [
@@ -7051,6 +7056,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "hnswlib": [
+    "setuptools"
+  ],
   "hocr-tools": [
     "setuptools"
   ],
@@ -8456,6 +8464,12 @@
   ],
   "labmath": [
     "setuptools"
+  ],
+  "langchain": [
+    "poetry-core"
+  ],
+  "langchainplus-sdk": [
+    "poetry-core"
   ],
   "langcodes": [
     "poetry-core",
@@ -10542,6 +10556,9 @@
   "openapi-python-client": [
     "poetry-core"
   ],
+  "openapi-schema-pydantic": [
+    "setuptools"
+  ],
   "openapi-schema-validator": [
     "poetry-core",
     "setuptools"
@@ -11754,6 +11771,9 @@
   "posix-ipc": [
     "setuptools"
   ],
+  "posthog": [
+    "setuptools"
+  ],
   "pot": [
     "cython",
     "setuptools"
@@ -12705,6 +12725,9 @@
   "pyepsg": [
     "setuptools"
   ],
+  "pyepsilla": [
+    "setuptools"
+  ],
   "pyerfa": [
     "setuptools",
     "setuptools-scm"
@@ -13395,6 +13418,9 @@
     "setuptools"
   ],
   "pynetgear": [
+    "setuptools"
+  ],
+  "pyngrok": [
     "setuptools"
   ],
   "pynina": [
@@ -16245,6 +16271,9 @@
   "safeio": [
     "setuptools"
   ],
+  "safetensors": [
+    "setuptools"
+  ],
   "safety": [
     "setuptools"
   ],
@@ -18155,6 +18184,9 @@
     "setuptools"
   ],
   "tika": [
+    "setuptools"
+  ],
+  "tiktoken": [
     "setuptools"
   ],
   "tikzplotlib": [
