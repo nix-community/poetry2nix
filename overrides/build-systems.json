@@ -7219,6 +7219,10 @@
   "huisbaasje-client": [
     "setuptools"
   ],
+  "human-readable": [
+    "hatchling",
+    "hatch-vcs"
+  ],
   "humanfriendly": [
     "setuptools"
   ],
