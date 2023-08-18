@@ -3029,10 +3029,10 @@
   "clickhouse-cityhash": [
     "setuptools"
   ],
-  "clickhouse-connect": [
+  "clickhouse-cli": [
     "setuptools"
   ],
-  "clickhouse-cli": [
+  "clickhouse-connect": [
     "setuptools"
   ],
   "clickhouse-driver": [

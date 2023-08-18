@@ -1676,7 +1676,8 @@ lib.composeManyExtensions [
       pandas = super.pandas.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [
           # versioneer[toml]
-          self.tomli self.versioneer
+          self.tomli
+          self.versioneer
         ] ++ lib.optional stdenv.isDarwin pkgs.libcxx;
 
         # Doesn't work with -Werror,-Wunused-command-line-argument
@@ -2477,27 +2478,29 @@ lib.composeManyExtensions [
         }
       );
 
-      safetensors = let
-        getGitHash = version: {
-          "0.3.1" = "sha256-RoIBD+zBKVzXE8OpI8GR371YPxceR4P8B9T1/AHc9vA=";
-        }.${version};
-      in super.safetensors.overridePythonAttrs (old: rec {
-        # Hardcode version; dependents ask for unpublished versions without
-        # Cargo.lock otherwise, leading to sadness.
-        version = "0.3.1";
-        src = pkgs.fetchFromGitHub {
-          owner = "huggingface";
-          repo = old.pname;
-          rev = "v${version}";
-          sha256 = getGitHash version;
-        };
-        sourceRoot = "source/bindings/python";
-        nativeBuildInputs = (old.nativeBuildInputs or [ ])
-          ++ [ pkgs.rustc pkgs.cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
-        cargoDeps = pkgs.rustPlatform.importCargoLock {
+      safetensors =
+        let
+          getGitHash = version: {
+            "0.3.1" = "sha256-RoIBD+zBKVzXE8OpI8GR371YPxceR4P8B9T1/AHc9vA=";
+          }.${version};
+        in
+        super.safetensors.overridePythonAttrs (old: rec {
+          # Hardcode version; dependents ask for unpublished versions without
+          # Cargo.lock otherwise, leading to sadness.
+          version = "0.3.1";
+          src = pkgs.fetchFromGitHub {
+            owner = "huggingface";
+            repo = old.pname;
+            rev = "v${version}";
+            sha256 = getGitHash version;
+          };
+          sourceRoot = "source/bindings/python";
+          nativeBuildInputs = (old.nativeBuildInputs or [ ])
+            ++ [ pkgs.rustc pkgs.cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
             lockFile = "${src.out}/bindings/python/Cargo.lock";
-        };
-      });
+          };
+        });
 
       scipy = super.scipy.overridePythonAttrs (
         old:
@@ -2702,32 +2705,37 @@ lib.composeManyExtensions [
       );
 
       # The tokenizers build requires a complex rust setup (cf. nixpkgs override)
-      tokenizers = let
-        getGitHash = version: {
-          "0.13.3" = "sha256-QZG5jmr3vbyQs4mVBjwVDR31O66dUM+p39R0htJ1umk=";
-        }.${version};
-      in super.tokenizers.overridePythonAttrs (old: rec {
-        # Hardcode version so that we can reuse the Cargo.lock from nixpkgs.
-        version = "0.13.3";
-        src = pkgs.fetchFromGitHub {
-          owner = "huggingface";
-          repo = old.pname;
-          rev = "v${version}";
-          sha256 = getGitHash version;
-        };
-        sourceRoot = "source/bindings/python";
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-          pkgs.rustc pkgs.cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust
-          pkgs.pkg-config
-        ];
-        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
-        cargoDeps = pkgs.rustPlatform.importCargoLock {
-          lockFile = ./tokenizers/Cargo.lock;
-        };
-        postPatch = ''
-          cp ${./tokenizers/Cargo.lock} ./Cargo.lock
-        '';
-      });
+      tokenizers =
+        let
+          getGitHash = version: {
+            "0.13.3" = "sha256-QZG5jmr3vbyQs4mVBjwVDR31O66dUM+p39R0htJ1umk=";
+          }.${version};
+        in
+        super.tokenizers.overridePythonAttrs (old: rec {
+          # Hardcode version so that we can reuse the Cargo.lock from nixpkgs.
+          version = "0.13.3";
+          src = pkgs.fetchFromGitHub {
+            owner = "huggingface";
+            repo = old.pname;
+            rev = "v${version}";
+            sha256 = getGitHash version;
+          };
+          sourceRoot = "source/bindings/python";
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.rustc
+            pkgs.cargo
+            pkgs.rustPlatform.cargoSetupHook
+            self.setuptools-rust
+            pkgs.pkg-config
+          ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = ./tokenizers/Cargo.lock;
+          };
+          postPatch = ''
+            cp ${./tokenizers/Cargo.lock} ./Cargo.lock
+          '';
+        });
 
       torch = super.torch.overridePythonAttrs (old: {
         # torch has an auto-magical way to locate the cuda libraries from site-packages.
