@@ -2966,6 +2966,9 @@
   "cdk-nag": [
     "setuptools"
   ],
+  "cdsapi": [
+    "setuptools"
+  ],
   "celery": [
     "setuptools"
   ],
@@ -3043,6 +3046,9 @@
   "cffsubr": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "cfgrib": [
+    "setuptools"
   ],
   "cfgv": [
     "setuptools"
@@ -3909,6 +3915,9 @@
   "curio": [
     "setuptools"
   ],
+  "curlify": [
+    "setuptools"
+  ],
   "curtsies": [
     "setuptools"
   ],
@@ -4112,6 +4121,9 @@
     "setuptools"
   ],
   "datamodeldict": [
+    "setuptools"
+  ],
+  "datapackage": [
     "setuptools"
   ],
   "datapoint": [
@@ -5376,6 +5388,9 @@
   "ec2instanceconnectcli": [
     "setuptools"
   ],
+  "eccodes": [
+    "setuptools"
+  ],
   "ecdsa": [
     "setuptools"
   ],
@@ -5559,6 +5574,9 @@
   "entrypoints": [
     "flit",
     "flit-core",
+    "setuptools"
+  ],
+  "entsoe-py": [
     "setuptools"
   ],
   "enturclient": [
@@ -6053,6 +6071,9 @@
     "setuptools-scm"
   ],
   "findimports": [
+    "setuptools"
+  ],
+  "findlibs": [
     "setuptools"
   ],
   "findpython": [
@@ -6813,6 +6834,9 @@
     "setuptools"
   ],
   "geojson-client": [
+    "setuptools"
+  ],
+  "geojson-rewind": [
     "setuptools"
   ],
   "geomet": [
@@ -8031,6 +8055,9 @@
   ],
   "hypothesis-graphql": [
     "poetry"
+  ],
+  "hypothesis-jsonschema": [
+    "setuptools"
   ],
   "hypothesmith": [
     "setuptools"
@@ -9580,6 +9607,9 @@
   "linear-operator": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "linear-tsv": [
+    "setuptools"
   ],
   "linecache2": [
     "pbr",
@@ -11426,6 +11456,9 @@
     "cython",
     "setuptools"
   ],
+  "numpy-financial": [
+    "setuptools"
+  ],
   "numpy-stl": [
     "cython",
     "setuptools"
@@ -11612,6 +11645,15 @@
     "setuptools"
   ],
   "openbabel-bindings": [
+    "setuptools"
+  ],
+  "opencensus": [
+    "setuptools"
+  ],
+  "opencensus-context": [
+    "setuptools"
+  ],
+  "opencensus-ext-azure": [
     "setuptools"
   ],
   "opencv-python": [
@@ -12165,6 +12207,9 @@
   ],
   "pandas-stubs": [
     "poetry-core",
+    "setuptools"
+  ],
+  "pandera": [
     "setuptools"
   ],
   "pandoc-attributes": [
@@ -13328,6 +13373,9 @@
   "pushover-complete": [
     "setuptools"
   ],
+  "pvfactors": [
+    "setuptools"
+  ],
   "pvlib": [
     "setuptools",
     "setuptools-scm"
@@ -13363,7 +13411,10 @@
     "setuptools-scm"
   ],
   "py-cpuinfo": [
-    "setuptools"
+    "cython",
+    "py-cpuinfo",
+    "setuptools",
+    "setuptools-scm"
   ],
   "py-deprecate": [
     "setuptools"
@@ -15616,6 +15667,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pytest-aioresponses": [
+    "poetry"
+  ],
   "pytest-annotate": [
     "setuptools"
   ],
@@ -16100,6 +16154,9 @@
   "python-dbusmock": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "python-decouple": [
+    "setuptools"
   ],
   "python-didl-lite": [
     "setuptools"
@@ -17460,6 +17517,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "reretry": [
+    "setuptools"
+  ],
   "resampy": [
     "cython",
     "setuptools"
@@ -17970,6 +18030,9 @@
   "schemainspect": [
     "poetry-core",
     "setuptools"
+  ],
+  "schemathesis": [
+    "hatchling"
   ],
   "schiene": [
     "setuptools"
@@ -19239,6 +19302,9 @@
   "starlette-context": [
     "poetry-core"
   ],
+  "starlette-testclient": [
+    "hatchling"
+  ],
   "starline": [
     "setuptools"
   ],
@@ -19573,6 +19639,9 @@
     "cython",
     "setuptools"
   ],
+  "tableschema": [
+    "setuptools"
+  ],
   "tablib": [
     "setuptools",
     "setuptools-scm"
@@ -19587,6 +19656,9 @@
       "buildSystem": "setuptools-scm",
       "from": "0.9.0"
     }
+  ],
+  "tabulator": [
+    "setuptools"
   ],
   "tabview": [
     "setuptools"
