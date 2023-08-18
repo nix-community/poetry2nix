@@ -1018,7 +1018,7 @@ lib.composeManyExtensions [
       });
 
       jsondiff =
-        if lib.versionOlder "2.0.0"
+        if lib.versionOlder super.jsondiff.version "2.0.0"
         then
           super.jsondiff.overridePythonAttrs
             (
