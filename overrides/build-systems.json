@@ -8465,6 +8465,9 @@
   "labmath": [
     "setuptools"
   ],
+  "langchain": [
+    "poetry-core"
+  ],
   "langchainplus-sdk": [
     "poetry-core"
   ],
