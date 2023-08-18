@@ -3029,6 +3029,9 @@
   "clickhouse-cityhash": [
     "setuptools"
   ],
+  "clickhouse-connect": [
+    "setuptools"
+  ],
   "clickhouse-cli": [
     "setuptools"
   ],
@@ -7053,6 +7056,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "hnswlib": [
+    "setuptools"
+  ],
   "hocr-tools": [
     "setuptools"
   ],
@@ -8458,6 +8464,9 @@
   ],
   "labmath": [
     "setuptools"
+  ],
+  "langchainplus-sdk": [
+    "poetry-core"
   ],
   "langcodes": [
     "poetry-core",
@@ -11759,6 +11768,9 @@
   "posix-ipc": [
     "setuptools"
   ],
+  "posthog": [
+    "setuptools"
+  ],
   "pot": [
     "cython",
     "setuptools"
@@ -12708,6 +12720,9 @@
     "setuptools"
   ],
   "pyepsg": [
+    "setuptools"
+  ],
+  "pyepsilla": [
     "setuptools"
   ],
   "pyerfa": [
@@ -18166,6 +18181,9 @@
     "setuptools"
   ],
   "tika": [
+    "setuptools"
+  ],
+  "tiktoken": [
     "setuptools"
   ],
   "tikzplotlib": [

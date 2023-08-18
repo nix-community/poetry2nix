@@ -863,6 +863,12 @@ lib.composeManyExtensions [
         }
       );
 
+      hnswlib = super.hnswlib.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.pybind11 ];
+        }
+      );
+
       horovod = super.horovod.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.mpi ];
@@ -1668,8 +1674,10 @@ lib.composeManyExtensions [
 
 
       pandas = super.pandas.overridePythonAttrs (old: {
-
-        buildInputs = old.buildInputs or [ ] ++ lib.optional stdenv.isDarwin pkgs.libcxx;
+        buildInputs = (old.buildInputs or [ ]) ++ [
+          # versioneer[toml]
+          self.tomli self.versioneer
+        ] ++ lib.optional stdenv.isDarwin pkgs.libcxx;
 
         # Doesn't work with -Werror,-Wunused-command-line-argument
         # https://github.com/NixOS/nixpkgs/issues/39687
@@ -1684,7 +1692,6 @@ lib.composeManyExtensions [
             --replace "['pandas/src/klib', 'pandas/src']" \
                       "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
         '';
-
 
         enableParallelBuilding = true;
       });
@@ -2677,6 +2684,17 @@ lib.composeManyExtensions [
         }
       );
 
+      tiktoken = super.tiktoken.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ])
+          ++ [ pkgs.rustc pkgs.cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
+        cargoDeps = pkgs.rustPlatform.importCargoLock {
+          lockFile = ./tiktoken/Cargo.lock;
+        };
+        postPatch = ''
+          cp ${./tiktoken/Cargo.lock} ./Cargo.lock
+        '';
+      });
+
       tinycss2 = super.tinycss2.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
@@ -2684,12 +2702,32 @@ lib.composeManyExtensions [
       );
 
       # The tokenizers build requires a complex rust setup (cf. nixpkgs override)
-      #
-      # Instead of providing a full source build, we use a wheel to keep
-      # the complexity manageable for now.
-      tokenizers = super.tokenizers.override {
-        preferWheel = true;
-      };
+      tokenizers = let
+        getGitHash = version: {
+          "0.13.3" = "sha256-QZG5jmr3vbyQs4mVBjwVDR31O66dUM+p39R0htJ1umk=";
+        }.${version};
+      in super.tokenizers.overridePythonAttrs (old: rec {
+        # Hardcode version so that we can reuse the Cargo.lock from nixpkgs.
+        version = "0.13.3";
+        src = pkgs.fetchFromGitHub {
+          owner = "huggingface";
+          repo = old.pname;
+          rev = "v${version}";
+          sha256 = getGitHash version;
+        };
+        sourceRoot = "source/bindings/python";
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          pkgs.rustc pkgs.cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust
+          pkgs.pkg-config
+        ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+        cargoDeps = pkgs.rustPlatform.importCargoLock {
+          lockFile = ./tokenizers/Cargo.lock;
+        };
+        postPatch = ''
+          cp ${./tokenizers/Cargo.lock} ./Cargo.lock
+        '';
+      });
 
       torch = super.torch.overridePythonAttrs (old: {
         # torch has an auto-magical way to locate the cuda libraries from site-packages.
