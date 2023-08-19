@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "subdirectory-test"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+psycopg = {git = "https://github.com/psycopg/psycopg.git", rev = "3.1.10", subdirectory = "psycopg"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

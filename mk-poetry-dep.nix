@@ -178,54 +178,61 @@ pythonPackages.callPackage
       # Interpreters should declare what wheel types they're compatible with (python type + ABI)
       # Here we can then choose a file based on that info.
       src =
-        if isGit then
-          (
-            builtins.fetchGit ({
-              inherit (source) url;
-              rev = source.resolved_reference or source.reference;
-              ref = sourceSpec.branch or (if sourceSpec ? tag then "refs/tags/${sourceSpec.tag}" else "HEAD");
-            } // (
-              lib.optionalAttrs
-                (((sourceSpec ? rev) || (sourceSpec ? branch) || (source ? resolved_reference) || (source ? reference))
-                  && (lib.versionAtLeast builtins.nixVersion "2.4"))
+        let
+          srcRoot =
+            if isGit then
+              (
+                builtins.fetchGit ({
+                  inherit (source) url;
+                  rev = source.resolved_reference or source.reference;
+                  ref = sourceSpec.branch or (if sourceSpec ? tag then "refs/tags/${sourceSpec.tag}" else "HEAD");
+                } // (
+                  lib.optionalAttrs
+                    (((sourceSpec ? rev) || (sourceSpec ? branch) || (source ? resolved_reference) || (source ? reference))
+                      && (lib.versionAtLeast builtins.nixVersion "2.4"))
+                    {
+                      allRefs = true;
+                    }) // (
+                  lib.optionalAttrs (lib.versionAtLeast builtins.nixVersion "2.4") {
+                    submodules = true;
+                  })
+                )
+              )
+            else if isWheelUrl then
+              builtins.fetchurl
                 {
-                  allRefs = true;
-                }) // (
-              lib.optionalAttrs (lib.versionAtLeast builtins.nixVersion "2.4") {
-                submodules = true;
-              })
-            )
-          )
-        else if isWheelUrl then
-          builtins.fetchurl
-            {
-              inherit (source) url;
-              sha256 = fileInfo.hash;
-            }
-        else if isUrl then
-          builtins.fetchTarball
-            {
-              inherit (source) url;
-              sha256 = fileInfo.hash;
-            }
-        else if isDirectory then
-          (poetryLib.cleanPythonSources { src = localDepPath; })
-        else if isFile then
-          localDepPath
-        else if isLegacy then
-          fetchFromLegacy
-            {
-              pname = name;
-              inherit python;
-              inherit (fileInfo) file hash;
-              inherit (source) url;
-            }
+                  inherit (source) url;
+                  sha256 = fileInfo.hash;
+                }
+            else if isUrl then
+              builtins.fetchTarball
+                {
+                  inherit (source) url;
+                  sha256 = fileInfo.hash;
+                }
+            else if isDirectory then
+              (poetryLib.cleanPythonSources { src = localDepPath; })
+            else if isFile then
+              localDepPath
+            else if isLegacy then
+              fetchFromLegacy
+                {
+                  pname = name;
+                  inherit python;
+                  inherit (fileInfo) file hash;
+                  inherit (source) url;
+                }
+            else
+              fetchFromPypi {
+                pname = name;
+                inherit (fileInfo) file hash kind;
+                inherit version;
+              };
+        in
+        if source ? subdirectory then
+          srcRoot + "/${source.subdirectory}"
         else
-          fetchFromPypi {
-            pname = name;
-            inherit (fileInfo) file hash kind;
-            inherit version;
-          };
+          srcRoot;
     }
   )
 { }
