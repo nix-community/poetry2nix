@@ -3912,6 +3912,9 @@
   "deform": [
     "setuptools"
   ],
+  "defusedcsv": [
+    "setuptools"
+  ],
   "defusedxml": [
     "setuptools"
   ],
@@ -4215,6 +4218,9 @@
   "django-bootstrap-form": [
     "setuptools"
   ],
+  "django-bootstrap4": [
+    "setuptools"
+  ],
   "django-cache-memoize": [
     "setuptools"
   ],
@@ -4254,6 +4260,9 @@
   "django-configurations": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "django-context-decorator": [
+    "setuptools"
   ],
   "django-contrib-comments": [
     "setuptools"
@@ -4330,10 +4339,16 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "django-hierarkey": [
+    "setuptools"
+  ],
   "django-hijack": [
     "setuptools"
   ],
   "django-htmx": [
+    "setuptools"
+  ],
+  "django-i18nfield": [
     "setuptools"
   ],
   "django-ipware": [
@@ -4342,7 +4357,13 @@
   "django-jinja": [
     "setuptools"
   ],
+  "django-jquery-js": [
+    "setuptools"
+  ],
   "django-js-asset": [
+    "setuptools"
+  ],
+  "django-libsass": [
     "setuptools"
   ],
   "django-logentry-admin": [
@@ -4439,6 +4460,9 @@
     "setuptools"
   ],
   "django-rq": [
+    "setuptools"
+  ],
+  "django-scopes": [
     "setuptools"
   ],
   "django-sesame": [
@@ -7557,6 +7581,9 @@
     "setuptools"
   ],
   "inkex": [
+    "setuptools"
+  ],
+  "inlinestyler": [
     "setuptools"
   ],
   "inotify": [
@@ -12037,6 +12064,9 @@
   "publicsuffix2": [
     "setuptools"
   ],
+  "publicsuffixlist": [
+    "setuptools"
+  ],
   "pubnub": [
     "setuptools"
   ],
@@ -16193,6 +16223,9 @@
   "ruffus": [
     "setuptools"
   ],
+  "rules": [
+    "setuptools"
+  ],
   "runway-python": [
     "setuptools"
   ],
@@ -19066,6 +19099,9 @@
       "buildSystem": "hatchling",
       "from": "2.0.2"
     },
+    "setuptools"
+  ],
+  "urlman": [
     "setuptools"
   ],
   "urlpy": [
