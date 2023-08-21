@@ -1640,6 +1640,7 @@ lib.composeManyExtensions [
             "3.8.6" = "sha256-8T//q6nQoZhh8oJWDCeQf3gYRew58dXAaxkYELY4CJM=";
             "3.8.7" = "sha256-JBO8nl0sC+XIn17vI7hC8+nA1HYI9jfvZrl9nCE3k1s=";
             "3.8.8" = "sha256-AK4HtqPKg2O2FeLHCbY9o+N1BV4QFMNaHVE1NaFYHa4=";
+            "3.8.9" = "sha256-ogkTRRykLF2dTOxilsfwsRH+Au/O0e1kL1e9sFOFLeY=";
             "3.8.10" = "sha256-AcrTEHv7GYtGe4fXYsM24ElrzfhnOxLYlaon1ZrlD4A=";
             "3.8.11" = "sha256-/x+0/I3WFxPwVu2LliTgr42SuJX7VjOLe/SGai5OgAw=";
           }.${version} or (
