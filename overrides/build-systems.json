@@ -11480,6 +11480,9 @@
   "pillow": [
     "setuptools"
   ],
+  "pillow-heif": [
+    "setuptools"
+  ],
   "pillow-simd": [
     "setuptools"
   ],
