@@ -1753,6 +1753,14 @@ lib.composeManyExtensions [
         }
       );
 
+      pillow-heif = super.pillow-heif.overridePythonAttrs (
+        old: {
+          buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [
+            libheif
+          ];
+        }
+      );
+
       pip-requirements-parser = super.pip-requirements-parser.overridePythonAttrs (old: {
         dontConfigure = true;
       });
