@@ -1509,6 +1509,21 @@ lib.composeManyExtensions [
         }
       );
 
+      notebook =
+        if (lib.versionAtLeast super.notebook.version "7.0.0") then
+          super.notebook.overridePythonAttrs
+            (old: ({
+              buildInputs = (old.buildInputs or [ ]) ++ [
+                super.hatchling
+                super.hatch-jupyter-builder
+              ];
+              # notebook requires jlpm which is in jupyterlab
+              # https://github.com/jupyterlab/jupyterlab/blob/main/jupyterlab/jlpmapp.py
+              nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+                super.jupyterlab
+              ];
+            })) else super.notebook;
+
       # The following are dependencies of torch >= 2.0.0.
       # torch doesn't officially support system CUDA, unless you build it yourself.
       nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
