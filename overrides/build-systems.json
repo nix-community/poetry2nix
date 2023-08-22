@@ -924,8 +924,26 @@
     "setuptools"
   ],
   "argon2-cffi": [
-    "flitBuildHook",
-    "setuptools"
+    {
+      "buildSystem": "flitBuildHook",
+      "until": "23.1.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "23.1.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "23.1.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "23.1.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "23.1.0"
+    }
   ],
   "argon2-cffi-bindings": [
     "setuptools",
