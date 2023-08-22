@@ -2582,7 +2582,7 @@ lib.composeManyExtensions [
         '';
       });
 
-      sqlmodel = super.sqlmodel.overridePythonAttrs (old : {
+      sqlmodel = super.sqlmodel.overridePythonAttrs (old: {
         patchPhase = builtins.concatStringsSep "\n" [
           (old.patchPhase or "")
           # sqlmodel's pyproject.toml lists version = "0" that it changes during a build phase
