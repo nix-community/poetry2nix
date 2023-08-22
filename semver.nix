@@ -53,7 +53,7 @@ let
     };
   re = {
     operators = "([=><!~^]+)";
-    version = "([0-9.*x]+)";
+    version = "([0-9.*x]+[^ ]*)";
   };
   parseConstraint = constraint:
     let
