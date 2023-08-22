@@ -11770,6 +11770,9 @@
   "policyuniverse": [
     "setuptools"
   ],
+  "polyfactory": [
+    "poetry-core"
+  ],
   "polyline": [
     "setuptools"
   ],
