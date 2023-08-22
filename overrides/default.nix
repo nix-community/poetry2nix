@@ -2582,6 +2582,17 @@ lib.composeManyExtensions [
         '';
       });
 
+      sqlmodel = super.sqlmodel.overridePythonAttrs (old : {
+        patchPhase = builtins.concatStringsSep "\n" [
+          (old.patchPhase or "")
+          # sqlmodel's pyproject.toml lists version = "0" that it changes during a build phase
+          # If this isn't fixed, it gets a vague "ERROR: No matching distribution for sqlmodel..." error
+          ''
+            substituteInPlace "pyproject.toml" --replace 'version = "0"' 'version = "${old.version}"'
+          ''
+        ];
+      });
+
       suds = super.suds.overridePythonAttrs (old: {
         # Fix naming convention shenanigans.
         # https://github.com/suds-community/suds/blob/a616d96b070ca119a532ff395d4a2a2ba42b257c/setup.py#L648
