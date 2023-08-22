@@ -4817,6 +4817,10 @@
     "poetry-core",
     "setuptools"
   ],
+  "duckduckgo-search": [
+    "poetry-core",
+    "setuptools"
+  ],
   "duecredit": [
     "setuptools"
   ],
