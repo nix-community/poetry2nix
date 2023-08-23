@@ -2019,7 +2019,7 @@ lib.composeManyExtensions [
       pycurl = super.pycurl.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.curl ];
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.curl ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.curl ];
         }
       );
 
