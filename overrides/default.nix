@@ -2016,6 +2016,12 @@ lib.composeManyExtensions [
         }
       );
 
+      pycurl = super.pycurl.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.curl ];
+        }
+      );
+
       pydantic-core = super.pydantic-core.override {
         preferWheel = true;
       };
