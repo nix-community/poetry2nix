@@ -18763,6 +18763,9 @@
   "types-aiobotocore-cloudformation": [
     "setuptools"
   ],
+  "types-aiobotocore-dynamodb": [
+    "setuptools"
+  ],
   "types-aiobotocore-ec2": [
     "setuptools"
   ],
