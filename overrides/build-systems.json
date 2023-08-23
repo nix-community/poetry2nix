@@ -11061,6 +11061,9 @@
   "pagelabels": [
     "setuptools"
   ],
+  "paginate": [
+    "setuptools"
+  ],
   "paho-mqtt": [
     "setuptools"
   ],
@@ -15771,6 +15774,9 @@
     "cython"
   ],
   "readthedocs-sphinx-ext": [
+    "setuptools"
+  ],
+  "readtime": [
     "setuptools"
   ],
   "rebulk": [
