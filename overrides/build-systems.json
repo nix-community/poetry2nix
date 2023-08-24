@@ -19630,7 +19630,14 @@
     "setuptools"
   ],
   "werkzeug": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.3.7"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "2.3.7"
+    }
   ],
   "west": [
     "setuptools"
