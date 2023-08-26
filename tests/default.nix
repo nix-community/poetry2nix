@@ -151,6 +151,8 @@ in
   cairocffi-no-wheel = callTest ./cairocffi-no-wheel { };
   rpds-py-wheel = callTest ./rpds-py-wheel { };
   rpds-py-no-wheel = callTest ./rpds-py-no-wheel { };
+  contourpy-wheel = callTest ./contourpy-wheel { };
+  contourpy-no-wheel = callTest ./contourpy-no-wheel { };
 
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
