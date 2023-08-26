@@ -345,7 +345,7 @@ lib.composeManyExtensions [
       );
 
       contourpy = super.contourpy.overridePythonAttrs (
-        old: {
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pybind11 ];
           nativeBuildInputs = (old.nativeBuildInputs or [ ])
             ++ lib.optionals (lib.versionAtLeast old.version "1.1.0") [ self.meson-python pkg-config ];
