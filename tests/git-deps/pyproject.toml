@@ -9,5 +9,5 @@ python = "^3.6"
 alembic = { git = "https://github.com/sqlalchemy/alembic.git", tag = "rel_1_3_1" }
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

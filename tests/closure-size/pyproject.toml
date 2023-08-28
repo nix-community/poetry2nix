@@ -13,5 +13,5 @@ trivial = { path = "../trivial" }
 main = "closure_size:main"
 
 [build-system]
-requires = ["poetry>=1.0.0"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
