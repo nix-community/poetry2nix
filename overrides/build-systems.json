@@ -2542,10 +2542,6 @@
   "buienradar": [
     "setuptools"
   ],
-  "build": [
-    "flit-core",
-    "setuptools"
-  ],
   "buildbot": [
     "setuptools"
   ],
@@ -5923,13 +5919,6 @@
     "poetry-core",
     "setuptools"
   ],
-  "flit": [
-    "flit-core",
-    "setuptools"
-  ],
-  "flit-core": [
-    "setuptools"
-  ],
   "flit-scm": [
     "flit-core",
     "setuptools-scm"
@@ -7674,10 +7663,6 @@
     "setuptools"
   ],
   "insights-core": [
-    "setuptools"
-  ],
-  "installer": [
-    "flit-core",
     "setuptools"
   ],
   "insteon-frontend-home-assistant": [
@@ -11083,8 +11068,7 @@
     "setuptools"
   ],
   "packaging": [
-    "flit-core",
-    "setuptools"
+    "flit-core"
   ],
   "packbits": [
     "setuptools"
@@ -18462,8 +18446,7 @@
     "poetry"
   ],
   "tomli": [
-    "flit-core",
-    "setuptools"
+    "flit-core"
   ],
   "tomli-w": [
     "flit-core",
@@ -19727,9 +19710,6 @@
     "setuptools"
   ],
   "whatthepatch": [
-    "setuptools"
-  ],
-  "wheel": [
     "setuptools"
   ],
   "wheel-filename": [
