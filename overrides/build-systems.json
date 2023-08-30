@@ -5700,7 +5700,14 @@
     "setuptools"
   ],
   "flask": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.3.3"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "2.3.3"
+    }
   ],
   "flask-admin": [
     "setuptools"
