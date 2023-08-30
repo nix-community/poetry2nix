@@ -17,7 +17,11 @@ let
   makeRemoveSpecialDependenciesHook =
     { fields
     , kind
-    ,
+    /*
+     * A script that takes in --fields-to-remove <fields, nargs="*">, transforms
+     * stdin pyproject.toml onto stdout pyproject.toml
+     */
+    , pyprojectPatchScript ? "${./pyproject-without-special-deps.py}"
     }:
     nonOverlayedPython.pkgs.callPackage
       (
@@ -30,7 +34,7 @@ let
               # because building of tomlkit and its dependencies also use these hooks.
               pythonPath = nonOverlayedPython.pkgs.makePythonPath [ nonOverlayedPython ];
               pythonInterpreter = nonOverlayedPython.interpreter;
-              pyprojectPatchScript = "${./pyproject-without-special-deps.py}";
+              inherit pyprojectPatchScript;
               inherit fields;
               inherit kind;
             };
@@ -52,6 +56,12 @@ in
   removeGitDependenciesHook = makeRemoveSpecialDependenciesHook {
     fields = [ "git" "branch" "rev" "tag" ];
     kind = "git";
+  };
+
+  removeWheelUrlDependenciesHook = makeRemoveSpecialDependenciesHook {
+    fields = [ "url" ];
+    kind = "wheel-url";
+    pyprojectPatchScript = "${./pyproject-without-url-whl.py}";
   };
 
   pipBuildHook =

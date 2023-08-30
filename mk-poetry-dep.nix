@@ -123,6 +123,7 @@ pythonPackages.callPackage
       ++ lib.optionals (format == "pyproject") [
         hooks.removePathDependenciesHook
         hooks.removeGitDependenciesHook
+        hooks.removeWheelUrlDependenciesHook
         hooks.pipBuildHook
       ];
 

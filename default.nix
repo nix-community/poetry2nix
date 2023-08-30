@@ -416,6 +416,7 @@ lib.makeScope pkgs.newScope (self: {
           nativeBuildInputs = inputAttrs.nativeBuildInputs ++ [
             hooks.removePathDependenciesHook
             hooks.removeGitDependenciesHook
+            hooks.removeWheelUrlDependenciesHook
           ];
         } // {
           pname = normalizePackageName pyProject.tool.poetry.name;
