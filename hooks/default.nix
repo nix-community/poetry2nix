@@ -9,10 +9,10 @@ let
   makeRemoveSpecialDependenciesHook =
     { fields
     , kind
-    /*
-     * A script that takes in --fields-to-remove <fields, nargs="*">, transforms
-     * stdin pyproject.toml onto stdout pyproject.toml
-     */
+      /*
+       * A script that takes in --fields-to-remove <fields, nargs="*">, transforms
+       * stdin pyproject.toml onto stdout pyproject.toml
+       */
     , pyprojectPatchScript ? "${./pyproject-without-special-deps.py}"
     }:
     nonOverlayedPython.pkgs.callPackage

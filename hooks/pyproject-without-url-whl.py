@@ -53,6 +53,7 @@ if __name__ == "__main__":
     args = p.parse_args()
     if args.fields_to_remove != ["url"]:
         print(
-            f"WARN: url-whl ignoring fields_to_remove ({args.fields_to_remove})",
-            file=sys.stderr)
+            f"WARN: url-whl ignoring fields_to_remove {args.fields_to_remove}",
+            file=sys.stderr,
+        )
     main(args.input, args.output)
