@@ -9720,6 +9720,11 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "mpremote": [
+    "hatchling",
+    "hatch-requirements-txt",
+    "hatch-vcs"
+  ],
   "mpv": [
     "setuptools"
   ],
