@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "use-url-wheel"
+version = "0.1.0"
+description = "asserts that .whl via .url works"
+authors = [
+    "pegasust <pegasucksgg@gmail.com>",
+    "joopitz <jonas.opitz@live.de>"
+]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+de-dep-news-trf = {url = "https://github.com/explosion/spacy-models/releases/download/de_dep_news_trf-3.6.1/de_dep_news_trf-3.6.1-py3-none-any.whl"}
+torch = "1.13.1"
+
+[tool.poetry.scripts]
+test = "whl_test.main:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.packages]]
+include = "whl_test"
+

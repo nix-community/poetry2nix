@@ -66,6 +66,7 @@ in
   mysqlclient = callTest ./mysqlclient { };
   jq = callTest ./jq { };
   ubersmith = callTest ./ubersmith { };
+  use-url-wheel = callTest ./use-url-wheel { };
   returns = callTest ./returns { };
   option = callTest ./option { };
   fastapi-utils = callTest ./fastapi-utils { };
