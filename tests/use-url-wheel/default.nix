@@ -12,7 +12,7 @@ let
   };
   py = poetry2nix.mkPoetryPackages args;
   app = poetry2nix.mkPoetryApplication args;
-  url_nix_store = py.python.pkgs.de-dep-news-trf.src;
+  url_nix_store = py.python.pkgs.de-core-news-sm.src;
   url_is_wheel = url_nix_store.isWheel or false;
   output =
     runCommand "app_eval"
