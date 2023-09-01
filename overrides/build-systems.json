@@ -9425,9 +9425,6 @@
   "minikerberos": [
     "setuptools"
   ],
-  "minimal-dydb": [
-    "poetry-core"
-  ],
   "minimock": [
     "setuptools"
   ],
@@ -12635,8 +12632,8 @@
       "from": "2.0.0"
     }
   ],
-  "pydantic-dydb": [
-    "poetry-core"
+  "pydantic-settings": [
+    "hatchling"
   ],
   "pydash": [
     "setuptools"
