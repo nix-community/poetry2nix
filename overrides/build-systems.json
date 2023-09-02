@@ -2592,7 +2592,14 @@
     "setuptools"
   ],
   "cachecontrol": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.13.1"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.13.1"
+    }
   ],
   "cached-property": [
     "setuptools"
