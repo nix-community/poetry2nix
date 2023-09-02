@@ -220,6 +220,75 @@ Resulting override:
 }
 ```
 
+#### Errors that are related to Rust and Cargo
+
+**Please update `getCargoHash` and there is a stanza that gives out the hash**
+
+This has known solution https://github.com/nix-community/poetry2nix/pull/1116
+
+Though, the solution still needs human-in-a-loop as there are many cases where 
+there is no expected hash provided.
+
+There are then 2 ways you can solve this while waiting for the PR to merge:
+
+1. Pin the package to a previous working version
+
+This works for transitive package as well, say you have `foo` that depends on
+`bar 1.0.1`, but we have `getCargoHash` for `bar 1.0.0`. You can pin `bar`
+on your `pyproject.toml` directly
+
+```toml
+# pyproject.toml
+[tool.poetry.dependencies]
+#...
+# NB: this must be = and without any `^` prefix
+bar = "1.0.0"
+```
+
+(Remember to `poetry lock`)
+
+2. Pin `poetry2nix` to your branch
+
+If you have created a PR, you probably have a fork of `poetry2nix` under your branch.
+In this case, assuming you use `flake`, here's an insight on what this would look
+like
+
+```nix
+# flake.nix
+{
+  inputs.poetry2nix.url = "github:your-username/poetry2nix/add-bar-1_0_1";
+  inputs.nixpkgs.url = "your-pinned-nixpkgs";
+  outputs = {nixpkgs, poetry2nix, ...}: let
+    # NOTE: your mileage may vary, if you use other flake frameworks like flake-utils
+    # or flake-parts, you should have `pkgs` or `pkgs'`
+    pkgs = import nixpkgs {system = "your-system";};
+    pkgs_overriden = pkgs.appendOverlays [poetry2nix.overlay];
+  in {
+    packages = pkgs_overriden.poetry2nix.mkPoetryApplication {
+      projectDir = ./.;
+    };
+  };
+}
+```
+
+**Use `preferWheels` and call it a day**
+
+We have many issues come in thanks to the recent boom of maturin and setuptools-rust.
+
+While the ecosystem is growing, we have an escape hatch to use `preferWheels`
+if you trust pip wheel dists. `preferWheels` is basically Python's version of
+compiled binary, so it is vulnerable to supply chain attacks.
+
+
+```nix
+poetry2nix.mkPoetryApplication {
+  projectDir = ./.;
+  preferWheels = true;
+}
+```
+
+Though, we would really appreciate a GitHub issue for your use-case.
+
 #### Nix evaluation errors
 
 1. Enable `--show-trace`.
