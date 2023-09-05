@@ -59,6 +59,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
         poetry2nix = import ./default.nix { inherit pkgs; };
         poetry = pkgs.callPackage ./pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
+        update-poetry = pkgs.callPackage ./pkgs/poetry/update.nix { };
       in
       rec {
         packages = {
@@ -73,6 +74,7 @@
           poetry = flake-utils.lib.mkApp { drv = packages.poetry; };
           poetry2nix = flake-utils.lib.mkApp { drv = packages.poetry2nix; };
           default = apps.poetry2nix;
+          update-poetry = flake-utils.lib.mkApp { drv = update-poetry; };
         };
       }));
 }

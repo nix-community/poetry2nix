@@ -1,20 +1,15 @@
+{ pkgs }:
 let
-  sources = import ../../nix/sources.nix;
-  pkgs = import sources.nixpkgs {
-    overlays = [
-      (import ../../overlay.nix)
-    ];
-  };
-
-  pythonEnv = pkgs.python3.withPackages (ps: [
-    ps.requests
-  ]);
-
+  pythonEnv = pkgs.python3.withPackages (ps: [ ps.requests ]);
 in
-pkgs.mkShell {
-  packages = [
+pkgs.writeShellApplication {
+  name = "update-poetry";
+  runtimeInputs = [
     pythonEnv
     pkgs.poetry
     pkgs.nix
   ];
+  text = ''
+    ${pythonEnv}/bin/python ${./update.py}
+  '';
 }

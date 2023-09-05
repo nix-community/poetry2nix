@@ -1,5 +1,3 @@
-#!/usr/bin/env nix-shell
-#! nix-shell ./update.nix -i python3
 import subprocess
 import requests
 import shutil
