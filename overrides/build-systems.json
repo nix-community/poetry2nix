@@ -11580,6 +11580,9 @@
   "pinboard": [
     "setuptools"
   ],
+  "pins": [
+    "setuptools"
+  ],
   "pint": [
     "setuptools",
     "setuptools-scm"
