@@ -79,6 +79,7 @@ in
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
   sqlalchemy = callTest ./sqlalchemy { };
+  sqlalchemy2 = callTest ./sqlalchemy2 { };
   tzlocal = callTest ./tzlocal { };
 
   ml-stack = callTest ./ml-stack { };
@@ -153,7 +154,6 @@ in
   rpds-py-no-wheel = callTest ./rpds-py-no-wheel { };
   contourpy-wheel = callTest ./contourpy-wheel { };
   contourpy-no-wheel = callTest ./contourpy-no-wheel { };
-
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
 
