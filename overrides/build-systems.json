@@ -1368,6 +1368,9 @@
   "aws-cdk-asset-node-proxy-agent-v5": [
     "setuptools"
   ],
+  "aws-cdk-asset-node-proxy-agent-v6": [
+    "setuptools"
+  ],
   "aws-cdk-assets": [
     "setuptools"
   ],
