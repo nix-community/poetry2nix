@@ -7228,7 +7228,18 @@
     "setuptools"
   ],
   "httpcore": [
-    "setuptools"
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "0.18.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.18.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "0.18.0"
+    }
   ],
   "httpie": [
     "setuptools"
