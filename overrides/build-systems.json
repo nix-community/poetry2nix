@@ -17508,7 +17508,11 @@
     "setuptools"
   ],
   "sqlglot": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "13.0.2"
+    }
   ],
   "sqlite-fts4": [
     "setuptools"
