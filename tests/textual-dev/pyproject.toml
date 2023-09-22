@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "textual-dev-test"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+textual-dev = "^1.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -131,6 +131,9 @@ in
   test-group = callTest ./test-group { };
   nbconvert-wheel = callTest ./nbconvert-wheel { };
   duckdb-wheel = callTest ./duckdb-wheel { };
+  shandy-sqlfmt = callTest ./shandy-sqlfmt { };
+  textual-dev = callTest ./textual-dev { };
+  textual-textarea = callTest ./textual-textarea { };
   fiona-source = callTest ./fiona-source { };
   fiona-wheel = callTest ./fiona-wheel { };
   shapely-wheel = callTest ./shapely-wheel { };

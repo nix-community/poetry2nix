@@ -16815,6 +16815,10 @@
   "shamir-mnemonic": [
     "setuptools"
   ],
+  "shandy-sqlfmt": [
+    "poetry-core",
+    "setuptools"
+  ],
   "shap": [
     "setuptools"
   ],
@@ -18231,6 +18235,14 @@
     "poetry-core",
     "setuptools"
   ],
+  "textual-dev": [
+    "poetry-core",
+    "setuptools"
+  ],
+  "textual-textarea": [
+    "poetry-core",
+    "setuptools"
+  ],
   "textwrap3": [
     "setuptools"
   ],
@@ -18584,6 +18596,9 @@
     "setuptools"
   ],
   "trectools": [
+    "setuptools"
+  ],
+  "tree-sitter": [
     "setuptools"
   ],
   "treelog": [

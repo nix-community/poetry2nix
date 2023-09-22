@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "textual-textarea-test"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+textual-textarea = "^0.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
