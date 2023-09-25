@@ -7271,16 +7271,16 @@
   ],
   "httpx": [
     {
+      "buildSystem": "setuptools",
+      "until": "0.23.1"
+    },
+    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "0.23.1"
     },
     {
       "buildSystem": "hatchling",
       "from": "0.23.1"
-    },
-    {
-      "buildSystem": "setuptools",
-      "until": "0.23.1"
     }
   ],
   "httpx-auth": [
@@ -8148,6 +8148,14 @@
   ],
   "jsonschema": [
     {
+      "buildSystem": "setuptools",
+      "until": "4.6.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "4.6.0"
+    },
+    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "4.11.0"
     },
@@ -8158,14 +8166,6 @@
     {
       "buildSystem": "hatchling",
       "from": "4.6.0"
-    },
-    {
-      "buildSystem": "setuptools",
-      "until": "4.6.0"
-    },
-    {
-      "buildSystem": "setuptools-scm",
-      "until": "4.6.0"
     }
   ],
   "jsonschema-3": [
@@ -8223,12 +8223,12 @@
   ],
   "jupyter-core": [
     {
-      "buildSystem": "hatchling",
-      "from": "4.11.0"
-    },
-    {
       "buildSystem": "setuptools",
       "until": "4.11.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.11.0"
     }
   ],
   "jupyter-events": [
