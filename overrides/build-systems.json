@@ -1292,8 +1292,8 @@
     "setuptools"
   ],
   "autoflake": [
-    "setuptools",
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "autograd": [
     "setuptools"
@@ -3700,11 +3700,11 @@
     "setuptools"
   ],
   "dask": [
-    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    }
+    },
+    "setuptools"
   ],
   "dask-gateway": [
     "setuptools"
@@ -4198,11 +4198,11 @@
     "setuptools"
   ],
   "distributed": [
-    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    }
+    },
+    "setuptools"
   ],
   "distro": [
     "setuptools"
@@ -5250,8 +5250,8 @@
     "setuptools"
   ],
   "execnet": [
-    "hatchling",
     "hatch-vcs",
+    "hatchling",
     "setuptools",
     "setuptools-scm"
   ],
@@ -6893,8 +6893,8 @@
     "setuptools"
   ],
   "gunicorn": [
-    "setuptools",
-    "packaging"
+    "packaging",
+    "setuptools"
   ],
   "guppy3": [
     "setuptools"
@@ -7305,8 +7305,8 @@
     "setuptools"
   ],
   "human-readable": [
-    "hatchling",
-    "hatch-vcs"
+    "hatch-vcs",
+    "hatchling"
   ],
   "humanfriendly": [
     "setuptools"
@@ -8865,8 +8865,8 @@
     "setuptools"
   ],
   "llama-cpp-python": [
-    "setuptools",
-    "scikit-build"
+    "scikit-build",
+    "setuptools"
   ],
   "llfuse": [
     "cython",
@@ -9749,9 +9749,9 @@
     "setuptools-scm"
   ],
   "mpremote": [
-    "hatchling",
     "hatch-requirements-txt",
-    "hatch-vcs"
+    "hatch-vcs",
+    "hatchling"
   ],
   "mpv": [
     "setuptools"
@@ -11129,12 +11129,12 @@
     "setuptools"
   ],
   "pandas": [
-    "cython",
-    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    }
+    },
+    "cython",
+    "setuptools"
   ],
   "pandas-datareader": [
     "setuptools"
@@ -11615,8 +11615,8 @@
     "setuptools"
   ],
   "pip-licenses": [
-    "setuptools",
-    "pytest-runner"
+    "pytest-runner",
+    "setuptools"
   ],
   "pip-requirements-parser": [
     "setuptools",
@@ -13290,8 +13290,8 @@
     "setuptools"
   ],
   "pylint-plugin-utils": [
-    "setuptools",
-    "poetry"
+    "poetry",
+    "setuptools"
   ],
   "pylint-venv": [
     "poetry-core"
@@ -14360,8 +14360,8 @@
     "setuptools-scm"
   ],
   "pytest-bdd": [
-    "setuptools",
-    "poetry-core"
+    "poetry-core",
+    "setuptools"
   ],
   "pytest-benchmark": [
     "setuptools"
@@ -14992,8 +14992,8 @@
     "setuptools"
   ],
   "python-multipart": [
-    "setuptools",
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "python-mystrom": [
     "setuptools"
@@ -15171,8 +15171,8 @@
     "setuptools"
   ],
   "python-ubersmithclient": [
-    "setuptools",
-    "pbr"
+    "pbr",
+    "setuptools"
   ],
   "python-uinput": [
     "setuptools"
@@ -16494,7 +16494,6 @@
     "setuptools"
   ],
   "scikit-build": [
-    "cython",
     {
       "buildSystem": "setuptools",
       "until": "0.17.0"
@@ -16514,7 +16513,8 @@
     {
       "buildSystem": "hatch-vcs",
       "from": "0.17.0"
-    }
+    },
+    "cython"
   ],
   "scikit-fmm": [
     "setuptools"
@@ -17532,11 +17532,11 @@
     "setuptools"
   ],
   "sqlglot": [
-    "setuptools",
     {
       "buildSystem": "setuptools-scm",
       "from": "13.0.2"
-    }
+    },
+    "setuptools"
   ],
   "sqlite-fts4": [
     "setuptools"
@@ -17941,8 +17941,8 @@
     "setuptools"
   ],
   "tacacs-plus": [
-    "setuptools",
-    "pytest-runner"
+    "pytest-runner",
+    "setuptools"
   ],
   "tadasets": [
     "setuptools"
