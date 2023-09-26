@@ -933,15 +933,15 @@
       "until": "23.1.0"
     },
     {
-      "buildSystem": "hatchling",
-      "from": "23.1.0"
-    },
-    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
     {
       "buildSystem": "hatch-vcs",
+      "from": "23.1.0"
+    },
+    {
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     }
   ],
@@ -1226,7 +1226,7 @@
       "until": "23.1.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
     {
@@ -1234,7 +1234,7 @@
       "from": "23.1.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     }
   ],
@@ -2243,7 +2243,7 @@
       "until": "22.10.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "22.10.0"
     },
     {
@@ -2251,7 +2251,7 @@
       "from": "22.10.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "22.10.0"
     }
   ],
@@ -5521,11 +5521,11 @@
       "until": "3.9.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "3.9.0"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "3.9.0"
     }
   ],
@@ -6403,11 +6403,11 @@
       "until": "0.19"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "0.19"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "0.19"
     }
   ],
@@ -6417,11 +6417,11 @@
       "until": "0.19"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "0.19"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "0.19"
     }
   ],
@@ -7321,11 +7321,11 @@
       "until": "4.6.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "4.6.0"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "4.6.0"
     }
   ],
@@ -7620,11 +7620,11 @@
       "until": "2.0.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "2.0.0"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "2.0.0"
     }
   ],
@@ -8304,11 +8304,11 @@
       "until": "4"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-jupyter-builder",
       "from": "4"
     },
     {
-      "buildSystem": "hatch-jupyter-builder",
+      "buildSystem": "hatchling",
       "from": "4"
     }
   ],
@@ -9543,11 +9543,11 @@
   ],
   "mkdocs-material": [
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-nodejs-version",
       "from": "8.5.3"
     },
     {
-      "buildSystem": "hatch-nodejs-version",
+      "buildSystem": "hatchling",
       "from": "8.5.3"
     },
     "setuptools"
@@ -10103,11 +10103,11 @@
       "until": "5.6.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-nodejs-version",
       "from": "5.6.0"
     },
     {
-      "buildSystem": "hatch-nodejs-version",
+      "buildSystem": "hatchling",
       "from": "5.6.0"
     }
   ],
@@ -12666,11 +12666,11 @@
       "until": "2.0.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "2.0.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "2.0.0"
     }
   ],
@@ -16503,15 +16503,15 @@
       "until": "0.17.0"
     },
     {
-      "buildSystem": "hatchling",
-      "from": "0.17.0"
-    },
-    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "0.17.0"
     },
     {
       "buildSystem": "hatch-vcs",
+      "from": "0.17.0"
+    },
+    {
+      "buildSystem": "hatchling",
       "from": "0.17.0"
     },
     "cython"
@@ -16743,7 +16743,7 @@
       "until": "23.1.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
     {
@@ -16751,7 +16751,7 @@
       "from": "23.1.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     }
   ],
@@ -17973,7 +17973,7 @@
       "until": "22.12.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "22.12.0"
     },
     {
@@ -17981,7 +17981,7 @@
       "from": "22.12.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "22.12.0"
     }
   ],

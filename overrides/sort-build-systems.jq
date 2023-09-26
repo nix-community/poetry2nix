@@ -7,6 +7,8 @@
     else
         # Sort entries with an `until` field above entries with a `from` field
         .from,
-        .until
+        .until,
+        # Sort build systems with the same `from` and `until` values
+        .buildSystem
     end
 )
