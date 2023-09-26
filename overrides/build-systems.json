@@ -3221,11 +3221,11 @@
     "setuptools"
   ],
   "colorama": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "0.4.6"
-    },
-    "setuptools"
+    }
   ],
   "colorcet": [
     "setuptools"
@@ -3700,11 +3700,11 @@
     "setuptools"
   ],
   "dask": [
+    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    },
-    "setuptools"
+    }
   ],
   "dask-gateway": [
     "setuptools"
@@ -4198,11 +4198,11 @@
     "setuptools"
   ],
   "distributed": [
+    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    },
-    "setuptools"
+    }
   ],
   "distro": [
     "setuptools"
@@ -4653,11 +4653,11 @@
     "setuptools-scm"
   ],
   "docformatter": [
+    "setuptools",
     {
       "buildSystem": "poetry-core",
       "from": "1.5.0"
-    },
-    "setuptools"
+    }
   ],
   "docker": [
     "setuptools",
@@ -9496,11 +9496,11 @@
     "setuptools"
   ],
   "mkdocs": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "1.4.1"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-autorefs": [
     "pdm-pep517",
@@ -9542,6 +9542,7 @@
     "setuptools"
   ],
   "mkdocs-material": [
+    "setuptools",
     {
       "buildSystem": "hatch-nodejs-version",
       "from": "8.5.3"
@@ -9549,15 +9550,14 @@
     {
       "buildSystem": "hatchling",
       "from": "8.5.3"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-material-extensions": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "1.1"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-minify": [
     "setuptools"
@@ -10069,11 +10069,11 @@
     "setuptools"
   ],
   "nbclient": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "0.7.1"
-    },
-    "setuptools"
+    }
   ],
   "nbconflux": [
     "setuptools"
@@ -10369,6 +10369,7 @@
     "setuptools"
   ],
   "notebook-shim": [
+    "jupyter-packaging",
     {
       "buildSystem": "setuptools",
       "until": "0.2.0"
@@ -10376,8 +10377,7 @@
     {
       "buildSystem": "hatchling",
       "from": "0.2.0"
-    },
-    "jupyter-packaging"
+    }
   ],
   "notedown": [
     "setuptools"
@@ -11129,12 +11129,12 @@
     "setuptools"
   ],
   "pandas": [
+    "cython",
+    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    },
-    "cython",
-    "setuptools"
+    }
   ],
   "pandas-datareader": [
     "setuptools"
@@ -16494,6 +16494,7 @@
     "setuptools"
   ],
   "scikit-build": [
+    "cython",
     {
       "buildSystem": "setuptools",
       "until": "0.17.0"
@@ -16513,8 +16514,7 @@
     {
       "buildSystem": "hatchling",
       "from": "0.17.0"
-    },
-    "cython"
+    }
   ],
   "scikit-fmm": [
     "setuptools"
@@ -17532,11 +17532,11 @@
     "setuptools"
   ],
   "sqlglot": [
+    "setuptools",
     {
       "buildSystem": "setuptools-scm",
       "from": "13.0.2"
-    },
-    "setuptools"
+    }
   ],
   "sqlite-fts4": [
     "setuptools"
@@ -17931,11 +17931,11 @@
     "setuptools-scm"
   ],
   "tabulate": [
+    "setuptools",
     {
       "buildSystem": "setuptools-scm",
       "from": "0.9.0"
-    },
-    "setuptools"
+    }
   ],
   "tabview": [
     "setuptools"
@@ -18548,6 +18548,7 @@
     "setuptools"
   ],
   "traitlets": [
+    "setuptools",
     {
       "buildSystem": "flit-core",
       "until": "5.2.1"
@@ -18555,8 +18556,7 @@
     {
       "buildSystem": "hatchling",
       "from": "5.2.1"
-    },
-    "setuptools"
+    }
   ],
   "traits": [
     "setuptools"
@@ -19218,6 +19218,7 @@
     "setuptools"
   ],
   "urllib3": [
+    "setuptools",
     {
       "buildSystem": "flit-core",
       "until": "2.0.2"
@@ -19225,8 +19226,7 @@
     {
       "buildSystem": "hatchling",
       "from": "2.0.2"
-    },
-    "setuptools"
+    }
   ],
   "urlman": [
     "setuptools"
@@ -19407,6 +19407,7 @@
     "setuptools"
   ],
   "virtualenv": [
+    "cython",
     {
       "buildSystem": "setuptools-scm",
       "until": " 20.18"
@@ -19414,8 +19415,7 @@
     {
       "buildSystem": "hatch-vcs",
       "from": " 20.18"
-    },
-    "cython"
+    }
   ],
   "virtualenv-clone": [
     "setuptools"

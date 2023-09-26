@@ -1,5 +1,7 @@
 # Sort each entry in the top-level dictionary
 .[] |= sort_by(
+    # Put all strings before objects
+    type == "object",
     if type == "string"
     then
         # Sort string overrides alphabetically
