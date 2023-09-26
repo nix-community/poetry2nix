@@ -6,6 +6,7 @@
         .
     else
         # Sort entries with an `until` field above entries with a `from` field
-        .from
+        .from,
+        .until
     end
 )
