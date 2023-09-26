@@ -17,7 +17,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v3
     - name: Check format
-      run: nix-shell --packages jq --pure --run 'diff --unified overrides/build-systems.json <(jq --raw-output --sort-keys ".[] |= sort_by(if type==\"string\" then . else .from end)" < overrides/build-systems.json)'
+      run: nix-shell --packages jq --pure --run 'diff --unified overrides/build-systems.json <(jq --from-file overrides/sort-build-systems.jq --raw-output --sort-keys < overrides/build-systems.json)'
 
   nixpkgs-fmt:
     runs-on: ubuntu-latest
