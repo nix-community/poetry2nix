@@ -33,7 +33,7 @@ SKIP_ATTRS = {
     "argon2-cffi",
     "packaging",
     "poetry",
-    "flitBuildHook",
+    "flit-core",
     "jsonschema",
     "platformdirs",
     "traitlets",
