@@ -12,30 +12,30 @@ jobs:
   sort-build-systems:
     runs-on: ubuntu-22.04
     steps:
-    - uses: cachix/install-nix-action@v22
+    - uses: cachix/install-nix-action@v23
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Check format
       run: nix-shell --packages jq --pure --run 'diff overrides/build-systems.json <(jq --raw-output --sort-keys < overrides/build-systems.json)'
 
   nixpkgs-fmt:
     runs-on: ubuntu-latest
     steps:
-    - uses: cachix/install-nix-action@v22
+    - uses: cachix/install-nix-action@v23
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Check format
       run: nix-shell --arg packages 'pkgs:[ pkgs.nixpkgs-fmt ]' --run 'nixpkgs-fmt --check .'
 
   black-fmt:
     runs-on: ubuntu-latest
     steps:
-    - uses: cachix/install-nix-action@v22
+    - uses: cachix/install-nix-action@v23
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: cachix/cachix-action@v12
       with:
         name: poetry2nix
@@ -48,8 +48,8 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v22
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
       - id: set-matrix
         name: Generate Nix Matrix
         run: |
@@ -62,8 +62,8 @@ jobs:
     strategy:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
-      - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v22
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
       - uses: cachix/cachix-action@v12
         with:
           name: poetry2nix
