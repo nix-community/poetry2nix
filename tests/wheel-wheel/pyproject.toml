@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-wheel = "^0.38.4"
+wheel = "^0.41.2"
 
 [build-system]
 requires = ["poetry-core>=1"]

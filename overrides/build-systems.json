@@ -19701,6 +19701,16 @@
   "whatthepatch": [
     "setuptools"
   ],
+  "wheel": [
+    {
+      "buildSystem": "setuptools",
+      "until": "0.40.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.40.0"
+    }
+  ],
   "wheel-filename": [
     "setuptools"
   ],
