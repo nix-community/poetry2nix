@@ -1445,7 +1445,7 @@ lib.composeManyExtensions [
 
       mysqlclient = super.mysqlclient.overridePythonAttrs (
         old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libmysqlclient ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config pkgs.libmysqlclient ];
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libmysqlclient ];
         }
       );
