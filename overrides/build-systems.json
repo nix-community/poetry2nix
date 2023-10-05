@@ -933,15 +933,15 @@
       "until": "23.1.0"
     },
     {
-      "buildSystem": "hatchling",
-      "from": "23.1.0"
-    },
-    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
     {
       "buildSystem": "hatch-vcs",
+      "from": "23.1.0"
+    },
+    {
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     }
   ],
@@ -1226,7 +1226,7 @@
       "until": "23.1.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
     {
@@ -1234,7 +1234,7 @@
       "from": "23.1.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     }
   ],
@@ -1292,8 +1292,8 @@
     "setuptools"
   ],
   "autoflake": [
-    "setuptools",
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "autograd": [
     "setuptools"
@@ -2243,7 +2243,7 @@
       "until": "22.10.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "22.10.0"
     },
     {
@@ -2251,7 +2251,7 @@
       "from": "22.10.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "22.10.0"
     }
   ],
@@ -3221,11 +3221,11 @@
     "setuptools"
   ],
   "colorama": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "0.4.6"
-    },
-    "setuptools"
+    }
   ],
   "colorcet": [
     "setuptools"
@@ -4653,11 +4653,11 @@
     "setuptools-scm"
   ],
   "docformatter": [
+    "setuptools",
     {
       "buildSystem": "poetry-core",
       "from": "1.5.0"
-    },
-    "setuptools"
+    }
   ],
   "docker": [
     "setuptools",
@@ -5250,8 +5250,8 @@
     "setuptools"
   ],
   "execnet": [
-    "hatchling",
     "hatch-vcs",
+    "hatchling",
     "setuptools",
     "setuptools-scm"
   ],
@@ -5521,11 +5521,11 @@
       "until": "3.9.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "3.9.0"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "3.9.0"
     }
   ],
@@ -6403,11 +6403,11 @@
       "until": "0.19"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "0.19"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "0.19"
     }
   ],
@@ -6417,11 +6417,11 @@
       "until": "0.19"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "0.19"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "0.19"
     }
   ],
@@ -6893,8 +6893,8 @@
     "setuptools"
   ],
   "gunicorn": [
-    "setuptools",
-    "packaging"
+    "packaging",
+    "setuptools"
   ],
   "guppy3": [
     "setuptools"
@@ -7271,16 +7271,16 @@
   ],
   "httpx": [
     {
+      "buildSystem": "setuptools",
+      "until": "0.23.1"
+    },
+    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "0.23.1"
     },
     {
       "buildSystem": "hatchling",
       "from": "0.23.1"
-    },
-    {
-      "buildSystem": "setuptools",
-      "until": "0.23.1"
     }
   ],
   "httpx-auth": [
@@ -7305,8 +7305,8 @@
     "setuptools"
   ],
   "human-readable": [
-    "hatchling",
-    "hatch-vcs"
+    "hatch-vcs",
+    "hatchling"
   ],
   "humanfriendly": [
     "setuptools"
@@ -7321,11 +7321,11 @@
       "until": "4.6.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "4.6.0"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "4.6.0"
     }
   ],
@@ -7620,11 +7620,11 @@
       "until": "2.0.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-vcs",
       "from": "2.0.0"
     },
     {
-      "buildSystem": "hatch-vcs",
+      "buildSystem": "hatchling",
       "from": "2.0.0"
     }
   ],
@@ -8148,6 +8148,14 @@
   ],
   "jsonschema": [
     {
+      "buildSystem": "setuptools",
+      "until": "4.6.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "4.6.0"
+    },
+    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "4.11.0"
     },
@@ -8158,14 +8166,6 @@
     {
       "buildSystem": "hatchling",
       "from": "4.6.0"
-    },
-    {
-      "buildSystem": "setuptools",
-      "until": "4.6.0"
-    },
-    {
-      "buildSystem": "setuptools-scm",
-      "until": "4.6.0"
     }
   ],
   "jsonschema-3": [
@@ -8223,12 +8223,12 @@
   ],
   "jupyter-core": [
     {
-      "buildSystem": "hatchling",
-      "from": "4.11.0"
-    },
-    {
       "buildSystem": "setuptools",
       "until": "4.11.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.11.0"
     }
   ],
   "jupyter-events": [
@@ -8304,11 +8304,11 @@
       "until": "4"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-jupyter-builder",
       "from": "4"
     },
     {
-      "buildSystem": "hatch-jupyter-builder",
+      "buildSystem": "hatchling",
       "from": "4"
     }
   ],
@@ -8865,8 +8865,8 @@
     "setuptools"
   ],
   "llama-cpp-python": [
-    "setuptools",
-    "scikit-build"
+    "scikit-build",
+    "setuptools"
   ],
   "llfuse": [
     "cython",
@@ -9496,11 +9496,11 @@
     "setuptools"
   ],
   "mkdocs": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "1.4.1"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-autorefs": [
     "pdm-pep517",
@@ -9542,22 +9542,22 @@
     "setuptools"
   ],
   "mkdocs-material": [
-    {
-      "buildSystem": "hatchling",
-      "from": "8.5.3"
-    },
+    "setuptools",
     {
       "buildSystem": "hatch-nodejs-version",
       "from": "8.5.3"
     },
-    "setuptools"
+    {
+      "buildSystem": "hatchling",
+      "from": "8.5.3"
+    }
   ],
   "mkdocs-material-extensions": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "1.1"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-minify": [
     "setuptools"
@@ -9749,9 +9749,9 @@
     "setuptools-scm"
   ],
   "mpremote": [
-    "hatchling",
     "hatch-requirements-txt",
-    "hatch-vcs"
+    "hatch-vcs",
+    "hatchling"
   ],
   "mpv": [
     "setuptools"
@@ -10069,11 +10069,11 @@
     "setuptools"
   ],
   "nbclient": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "0.7.1"
-    },
-    "setuptools"
+    }
   ],
   "nbconflux": [
     "setuptools"
@@ -10103,11 +10103,11 @@
       "until": "5.6.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-nodejs-version",
       "from": "5.6.0"
     },
     {
-      "buildSystem": "hatch-nodejs-version",
+      "buildSystem": "hatchling",
       "from": "5.6.0"
     }
   ],
@@ -10369,6 +10369,7 @@
     "setuptools"
   ],
   "notebook-shim": [
+    "jupyter-packaging",
     {
       "buildSystem": "setuptools",
       "until": "0.2.0"
@@ -10376,8 +10377,7 @@
     {
       "buildSystem": "hatchling",
       "from": "0.2.0"
-    },
-    "jupyter-packaging"
+    }
   ],
   "notedown": [
     "setuptools"
@@ -11615,8 +11615,8 @@
     "setuptools"
   ],
   "pip-licenses": [
-    "setuptools",
-    "pytest-runner"
+    "pytest-runner",
+    "setuptools"
   ],
   "pip-requirements-parser": [
     "setuptools",
@@ -12666,11 +12666,11 @@
       "until": "2.0.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "2.0.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "2.0.0"
     }
   ],
@@ -13290,8 +13290,8 @@
     "setuptools"
   ],
   "pylint-plugin-utils": [
-    "setuptools",
-    "poetry"
+    "poetry",
+    "setuptools"
   ],
   "pylint-venv": [
     "poetry-core"
@@ -14360,8 +14360,8 @@
     "setuptools-scm"
   ],
   "pytest-bdd": [
-    "setuptools",
-    "poetry-core"
+    "poetry-core",
+    "setuptools"
   ],
   "pytest-benchmark": [
     "setuptools"
@@ -14992,8 +14992,8 @@
     "setuptools"
   ],
   "python-multipart": [
-    "setuptools",
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "python-mystrom": [
     "setuptools"
@@ -15171,8 +15171,8 @@
     "setuptools"
   ],
   "python-ubersmithclient": [
-    "setuptools",
-    "pbr"
+    "pbr",
+    "setuptools"
   ],
   "python-uinput": [
     "setuptools"
@@ -16504,15 +16504,15 @@
       "until": "0.17.0"
     },
     {
-      "buildSystem": "hatchling",
-      "from": "0.17.0"
-    },
-    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "0.17.0"
     },
     {
       "buildSystem": "hatch-vcs",
+      "from": "0.17.0"
+    },
+    {
+      "buildSystem": "hatchling",
       "from": "0.17.0"
     }
   ],
@@ -16743,7 +16743,7 @@
       "until": "23.1.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
     {
@@ -16751,7 +16751,7 @@
       "from": "23.1.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "23.1.0"
     }
   ],
@@ -17931,18 +17931,18 @@
     "setuptools-scm"
   ],
   "tabulate": [
+    "setuptools",
     {
       "buildSystem": "setuptools-scm",
       "from": "0.9.0"
-    },
-    "setuptools"
+    }
   ],
   "tabview": [
     "setuptools"
   ],
   "tacacs-plus": [
-    "setuptools",
-    "pytest-runner"
+    "pytest-runner",
+    "setuptools"
   ],
   "tadasets": [
     "setuptools"
@@ -17973,7 +17973,7 @@
       "until": "22.12.0"
     },
     {
-      "buildSystem": "hatchling",
+      "buildSystem": "hatch-fancy-pypi-readme",
       "from": "22.12.0"
     },
     {
@@ -17981,7 +17981,7 @@
       "from": "22.12.0"
     },
     {
-      "buildSystem": "hatch-fancy-pypi-readme",
+      "buildSystem": "hatchling",
       "from": "22.12.0"
     }
   ],
@@ -18548,6 +18548,7 @@
     "setuptools"
   ],
   "traitlets": [
+    "setuptools",
     {
       "buildSystem": "flit-core",
       "until": "5.2.1"
@@ -18555,8 +18556,7 @@
     {
       "buildSystem": "hatchling",
       "from": "5.2.1"
-    },
-    "setuptools"
+    }
   ],
   "traits": [
     "setuptools"
@@ -19218,6 +19218,7 @@
     "setuptools"
   ],
   "urllib3": [
+    "setuptools",
     {
       "buildSystem": "flit-core",
       "until": "2.0.2"
@@ -19225,8 +19226,7 @@
     {
       "buildSystem": "hatchling",
       "from": "2.0.2"
-    },
-    "setuptools"
+    }
   ],
   "urlman": [
     "setuptools"
@@ -19407,6 +19407,7 @@
     "setuptools"
   ],
   "virtualenv": [
+    "cython",
     {
       "buildSystem": "setuptools-scm",
       "until": " 20.18"
@@ -19414,8 +19415,7 @@
     {
       "buildSystem": "hatch-vcs",
       "from": " 20.18"
-    },
-    "cython"
+    }
   ],
   "virtualenv-clone": [
     "setuptools"
