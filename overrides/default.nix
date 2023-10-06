@@ -855,6 +855,19 @@ lib.composeManyExtensions [
         }
       );
 
+      hidapi = super.hidapi.overridePythonAttrs (
+        old: {
+          buildInputs = old.nativeBuildInputs or [ ] ++ [
+            pkgs.libusb1
+          ];
+          postPatch = lib.optionalString stdenv.isLinux ''
+            libusb=${pkgs.libusb1.dev}/include/libusb-1.0
+            test -d $libusb || { echo "ERROR: $libusb doesn't exist, please update/fix this build expression."; exit 1; }
+            sed -i -e "s|/usr/include/libusb-1.0|$libusb|" setup.py
+          '';
+        }
+      );
+
       hikari = super.hikari.overrideAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
