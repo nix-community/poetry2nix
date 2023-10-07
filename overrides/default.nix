@@ -857,7 +857,7 @@ lib.composeManyExtensions [
 
       hidapi = super.hidapi.overridePythonAttrs (
         old: {
-          buildInputs = old.nativeBuildInputs or [ ] ++ [
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
             pkgs.libusb1
           ];
           postPatch = lib.optionalString stdenv.isLinux ''
