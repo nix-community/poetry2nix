@@ -18239,6 +18239,10 @@
     "poetry-core",
     "setuptools"
   ],
+  "textual-fastdatatable": [
+    "poetry-core",
+    "setuptools"
+  ],
   "textual-textarea": [
     "poetry-core",
     "setuptools"
