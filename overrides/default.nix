@@ -2141,6 +2141,34 @@ lib.composeManyExtensions [
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.taglib ];
       });
 
+      pytesseract =
+        let
+          pytesseract-cmd-patch = pkgs.writeText "pytesseract-cmd.patch" ''
+            --- a/pytesseract/pytesseract.py
+            +++ b/pytesseract/pytesseract.py
+            @@ -27,7 +27,7 @@
+             from PIL import Image
+
+
+            -tesseract_cmd = 'tesseract'
+            +tesseract_cmd = '${pkgs.tesseract4}/bin/tesseract'
+
+             numpy_installed = find_loader('numpy') is not None
+             if numpy_installed:
+          '';
+        in
+        super.pytesseract.overridePythonAttrs (old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.tesseract4 ];
+          patches = (old.patches or [ ]) ++ lib.optionals (!(old.src.isWheel or false)) [ pytesseract-cmd-patch ];
+
+          # apply patch in postInstall if the source is a wheel
+          postInstall = lib.optionalString (old.src.isWheel or false) ''
+            pushd "$out/${self.python.sitePackages}"
+            patch -p1 < "${pytesseract-cmd-patch}"
+            popd
+          '';
+        });
+
       pytezos = super.pytezos.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.libsodium ];
       });

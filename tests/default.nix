@@ -160,6 +160,7 @@ in
   rpds-py-no-wheel = callTest ./rpds-py-no-wheel { };
   contourpy-wheel = callTest ./contourpy-wheel { };
   contourpy-no-wheel = callTest ./contourpy-no-wheel { };
+  pytesseract = callTest ./pytesseract { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
 
