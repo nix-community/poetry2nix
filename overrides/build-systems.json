@@ -1569,6 +1569,9 @@
   "awslambdaric": [
     "setuptools"
   ],
+  "awsume": [
+    "setuptools"
+  ],
   "axis": [
     "setuptools"
   ],
