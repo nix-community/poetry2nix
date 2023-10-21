@@ -14474,6 +14474,9 @@
   "pytest-freezegun": [
     "setuptools"
   ],
+  "pytest-gitconfig": [
+    "pdm-backend"
+  ],
   "pytest-golden": [
     "poetry-core"
   ],
