@@ -2288,7 +2288,14 @@
     "setuptools"
   ],
   "blinker": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.6.3"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "1.6.3"
+    }
   ],
   "blinkpy": [
     "setuptools"
