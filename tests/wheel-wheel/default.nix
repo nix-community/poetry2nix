@@ -6,7 +6,7 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = true;
   };
-  isWheelWheel = env.python.pkgs.wheel.src.isWheel;
+  isWheelWheel = env.python.pkgs.wheel.src.isWheel or false;
 in
 assert (!isWheelWheel); runCommand "wheel-wheel-test" { } ''
   ${env}/bin/python -c 'import wheel; print(wheel.__version__)' > $out

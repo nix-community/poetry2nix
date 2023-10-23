@@ -13,9 +13,6 @@ let
   poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
   poetry2nix = import ./.. { inherit pkgs; };
   poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
-  pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
-  pep425PythonOldest = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python38; };
-  pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; python = pkgs.python3; };
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
 
   inherit (pkgs) lib stdenv;
@@ -33,7 +30,7 @@ in
   override-default = callTest ./override-default-support { };
   common-pkgs-1 = callTest ./common-pkgs-1 { };
   common-pkgs-2 = callTest ./common-pkgs-2 { };
-  # pep425 = pkgs.callPackage ./pep425 { inherit pep425; inherit pep425OSX; inherit pep425PythonOldest; };
+
   env = callTest ./env { };
   pytest-metadata = callTest ./pytest-metadata { };
   pytest-randomly = callTest ./pytest-randomly { };
@@ -70,7 +67,6 @@ in
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   markupsafe2 = callTest ./markupsafe2 { };
   mysqlclient = callTest ./mysqlclient { };
-  # uwsgi = callTest ./uwsgi { };  # Commented out because build is flaky (unrelated to poetry2nix)
   jq = callTest ./jq { };
   ubersmith = callTest ./ubersmith { };
   returns = callTest ./returns { };
@@ -164,8 +160,6 @@ in
   contourpy-no-wheel = callTest ./contourpy-no-wheel { };
   pytesseract = callTest ./pytesseract { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
-  # pyqt5 = (callTest ./pyqt5 { });
-
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = (callTest ./dependency-environment { });
 

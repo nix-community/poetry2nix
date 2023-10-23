@@ -58,34 +58,6 @@ in
       )
       { };
 
-  pypaBuildHook = callPackage
-    ({ makePythonHook, build, wheel }:
-      makePythonHook
-        {
-          name = "pypa-build-hook.sh";
-          propagatedBuildInputs = [ wheel ];
-          substitutions = {
-            inherit build;
-          };
-        } ./pypa-build-hook.sh)
-    {
-      inherit (pythonForBuild.pkgs) build;
-    };
-
-  pypaInstallHook = callPackage
-    ({ makePythonHook, installer }:
-      makePythonHook
-        {
-          name = "pypa-install-hook";
-          propagatedBuildInputs = [ installer ];
-          substitutions = {
-            inherit pythonInterpreter pythonSitePackages;
-          };
-        } ./pypa-install-hook.sh)
-    {
-      inherit (pythonForBuild.pkgs) installer;
-    };
-
   pipInstallHook = callPackage
     ({ makePythonHook, pip }:
       makePythonHook
@@ -143,9 +115,7 @@ in
             '';
           };
 
-          pythonPath =
-            [ ]
-            ++ lib.optional (lib.versionOlder python.version "3.9") unparser;
+          pythonPath = lib.optional (lib.versionOlder python.version "3.9") unparser;
         in
         makeSetupHook
           {
@@ -158,13 +128,4 @@ in
           ./python-requires-patch-hook.sh
       )
       { };
-
-  wheelUnpackHook = callPackage
-    ({ makePythonHook, wheel }:
-      makePythonHook
-        {
-          name = "wheel-unpack-hook.sh";
-          propagatedBuildInputs = [ wheel ];
-        } ./wheel-unpack-hook.sh)
-    { };
 }

@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-opencv-python = "4.1.2.30"
+opencv-python = "4.4.0.46"
 
 [build-system]
 requires = ["poetry-core"]
