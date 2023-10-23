@@ -122,7 +122,7 @@ pythonPackages.callPackage
       ++ lib.optionals (format == "pyproject") [
         hooks.removePathDependenciesHook
         hooks.removeGitDependenciesHook
-        hooks.pipBuildHook
+        pythonPackages.pypaBuildHook
       ];
 
       buildInputs = lib.optional (isLocked) (getManyLinuxDeps fileInfo.name).pkg
