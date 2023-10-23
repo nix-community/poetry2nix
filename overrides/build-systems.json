@@ -15088,6 +15088,9 @@
   "pyqtdatavisualization": [
     "setuptools"
   ],
+  "pyqt6-sip": [
+    "setuptools"
+  ],
   "pyqtgraph": [
     "setuptools"
   ],
