@@ -1,24 +1,12 @@
-{ python
-, stdenv
-, buildPackages
-, makeSetupHook
-, wheel
-, pip
-, pkgs
-, lib
-,
-}:
+{ python, stdenv, makeSetupHook, pkgs, lib }:
 let
-  inherit (python.pythonForBuild.pkgs) callPackage;
-  pythonInterpreter = python.pythonForBuild.interpreter;
+  inherit (python) pythonForBuild;
+  inherit (pythonForBuild.pkgs) callPackage;
+  pythonInterpreter = pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
 
   nonOverlayedPython = pkgs.python3.pythonForBuild.withPackages (ps: [ ps.tomlkit ]);
-  makeRemoveSpecialDependenciesHook =
-    { fields
-    , kind
-    ,
-    }:
+  makeRemoveSpecialDependenciesHook = { fields, kind }:
     nonOverlayedPython.pkgs.callPackage
       (
         _:
@@ -57,10 +45,7 @@ in
   pipBuildHook =
     callPackage
       (
-        { pip
-        , wheel
-        ,
-        }:
+        { pip, wheel }:
         makeSetupHook
           ({
             name = "pip-build-hook.sh";
@@ -72,6 +57,46 @@ in
           ./pip-build-hook.sh
       )
       { };
+
+  pypaBuildHook = callPackage
+    ({ makePythonHook, build, wheel }:
+      makePythonHook
+        {
+          name = "pypa-build-hook.sh";
+          propagatedBuildInputs = [ wheel ];
+          substitutions = {
+            inherit build;
+          };
+        } ./pypa-build-hook.sh)
+    {
+      inherit (pythonForBuild.pkgs) build;
+    };
+
+  pypaInstallHook = callPackage
+    ({ makePythonHook, installer }:
+      makePythonHook
+        {
+          name = "pypa-install-hook";
+          propagatedBuildInputs = [ installer ];
+          substitutions = {
+            inherit pythonInterpreter pythonSitePackages;
+          };
+        } ./pypa-install-hook.sh)
+    {
+      inherit (pythonForBuild.pkgs) installer;
+    };
+
+  pipInstallHook = callPackage
+    ({ makePythonHook, pip }:
+      makePythonHook
+        {
+          name = "pip-install-hook";
+          propagatedBuildInputs = [ pip ];
+          substitutions = {
+            inherit pythonInterpreter pythonSitePackages;
+          };
+        } ./pip-install-hook.sh)
+    { };
 
   poetry2nixFixupHook =
     callPackage
@@ -134,17 +159,12 @@ in
       )
       { };
 
-  # When the "wheel" package itself is a wheel the nixpkgs hook (which pulls in "wheel") leads to infinite recursion
-  # It doesn't _really_ depend on wheel though, it just copies the wheel.
-  wheelUnpackHook =
-    callPackage
-      (
-        _:
-        makeSetupHook
-          {
-            name = "wheel-unpack-hook.sh";
-          }
-          ./wheel-unpack-hook.sh
-      )
-      { };
+  wheelUnpackHook = callPackage
+    ({ makePythonHook, wheel }:
+      makePythonHook
+        {
+          name = "wheel-unpack-hook.sh";
+          propagatedBuildInputs = [ wheel ];
+        } ./wheel-unpack-hook.sh)
+    { };
 }
