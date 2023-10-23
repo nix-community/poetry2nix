@@ -624,8 +624,12 @@ lib.composeManyExtensions [
           '' else "")
         ];
 
-        preBuild = old.preBuild or "" + ''
+        preBuild = (old.preBuild or "") + ''
           make distclean
+        '';
+
+        preInstall = (old.preInstall or "") + ''
+          mkdir -p $out/${self.python.sitePackages}
         '';
 
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
@@ -2443,6 +2447,92 @@ lib.composeManyExtensions [
             ];
           }
         );
+
+      pyqt6 = super.pyqt6.overridePythonAttrs (old:
+        let
+          confirm-license = pkgs.writeText "confirm-license.patch" ''
+            diff --git a/project.py b/project.py
+            --- a/project.py
+            +++ b/project.py
+            @@ -163,8 +163,7 @@
+
+                     # Automatically confirm the license if there might not be a command
+                     # line option to do so.
+            -        if tool == 'pep517':
+            -            self.confirm_license = True
+            +        self.confirm_license = True
+
+                     self._check_license()
+
+
+          '';
+        in
+
+        {
+          buildInputs = old.buildInputs ++ [
+            pkgs.dbus
+            pkgs.libxkbcommon
+            pkgs.gtk3
+            pkgs.speechd
+            pkgs.gst
+            pkgs.gst_all_1.gst-plugins-base
+            pkgs.gst_all_1.gstreamer
+            pkgs.postgresql.lib
+            pkgs.unixODBC
+            pkgs.pcsclite
+          ];
+          propagatedBuildInputs = old.propagatedBuildInputs ++ [
+            self.dbus-python
+          ];
+          nativeBuildInputs = old.nativeBuildInputs ++ [
+            pkgs.pkg-config
+            self.pyqt6-sip
+            self.sip
+            self.pyqt-builder
+            pkgs.xorg.lndir
+            pkgs.qt6.qmake
+            pkgs.qt6.full
+          ];
+          patches = [
+            confirm-license
+          ];
+          env.NIX_CFLAGS_COMPILE = "-fpermissive";
+          # be more verbose
+          postPatch = ''
+            cat >> pyproject.toml <<EOF
+            [tool.sip.project]
+            verbose = true
+            EOF
+          '';
+          dontWrapQtApps = true;
+          dontConfigure = true;
+          enableParallelBuilding = true;
+          # HACK: paralellize compilation of make calls within pyqt's setup.py
+          # pkgs/stdenv/generic/setup.sh doesn't set this for us because
+          # make gets called by python code and not its build phase
+          # format=pyproject means the pip-build-hook hook gets used to build this project
+          # pkgs/development/interpreters/python/hooks/pip-build-hook.sh
+          # does not use the enableParallelBuilding flag
+          postUnpack = ''
+            export MAKEFLAGS+="''${enableParallelBuilding:+-j$NIX_BUILD_CORES}"
+          '';
+        });
+
+      pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" ];
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.libxkbcommon
+          pkgs.qt6.full
+          pkgs.gtk3
+          pkgs.speechd
+          pkgs.gst
+          pkgs.gst_all_1.gst-plugins-base
+          pkgs.gst_all_1.gstreamer
+          pkgs.postgresql.lib
+          pkgs.unixODBC
+          pkgs.pcsclite
+        ];
+      });
 
       pytest-datadir = super.pytest-datadir.overridePythonAttrs (
         _old: {

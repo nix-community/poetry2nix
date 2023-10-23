@@ -144,6 +144,9 @@ in
   sphinx5 = callTest ./sphinx5 { };
   subdirectory = callTest ./subdirectory { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
+  # pyqt5 = (callTest ./pyqt5 { });
+  pyqt6 = callTest ./pyqt6 { };
+
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
 
