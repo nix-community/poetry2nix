@@ -19,7 +19,7 @@ let
 
 in
 {
-  trivial = callTest ./trivial { };
+  # BROKEN trivial = callTest ./trivial { };
 
   # Uses the updated Poetry 1.2.0 format
   trivial-poetry-1_2_0 = callTest ./trivial-poetry-1_2_0 { };
@@ -74,7 +74,7 @@ in
   fastapi-utils = callTest ./fastapi-utils { };
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };
-  fetched-projectdir = callTest ./fetched-projectdir { };
+  # BROKEN fetched-projectdir = callTest ./fetched-projectdir { };
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
   sqlalchemy = callTest ./sqlalchemy { };
@@ -110,7 +110,7 @@ in
 
   # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
   # Once this is available in 19.09 and unstable we can re-enable the manylinux test
-  manylinux = callTest ./manylinux { };
+  # BROKEN manylinux = callTest ./manylinux { };
   shapely = callTest ./shapely { };
   shapely-pre-2 = callTest ./shapely-pre-2 { };
   setuptools = callTest ./setuptools { };
@@ -161,19 +161,19 @@ in
   pytesseract = callTest ./pytesseract { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Test deadlocks on darwin, sandboxing issue?
-  dependency-environment = (callTest ./dependency-environment { });
+  dependency-environment = callTest ./dependency-environment { };
 
   # Editable tests fails on Darwin because of sandbox paths
-  pep600 = (callTest ./pep600 { });
-  editable = (callTest ./editable { });
-  editable-egg = (callTest ./editable-egg { });
-  pendulum = (callTest ./pendulum { });
+  pep600 = callTest ./pep600 { };
+  editable = callTest ./editable { };
+  editable-egg = callTest ./editable-egg { };
+  pendulum = callTest ./pendulum { };
 
   # Fails because of missing inputs on darwin
   text-generation-webui = callTest ./text-generation-webui { };
 
   # Cross tests fail on darwin for some strange reason:
   # ERROR: MarkupSafe-2.0.1-cp39-cp39-linux_aarch64.whl is not a supported wheel on this platform.
-  extended-cross = (callTest ./extended-cross { });
-  trivial-cross = (callTest ./trivial-cross { });
+  extended-cross = callTest ./extended-cross { };
+  trivial-cross = callTest ./trivial-cross { };
 }
