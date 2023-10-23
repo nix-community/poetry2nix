@@ -10,7 +10,6 @@ poetry2nix.mkPoetryApplication {
   overrides =
     let
       pypkgs-build-requirements = {
-        pytest-metadata = [ "poetry" ];
         pytest-select = [ "poetry" ];
       };
     in
