@@ -1933,7 +1933,9 @@ lib.composeManyExtensions [
 
       installer = self.callPackage ./installer.nix { };
       build = self.callPackage ./build.nix { };
-      flit-core = self.callPackage ./flit-core.nix { };
+      flit-core = pkgs.python3.pkgs.flit-core.override {
+        inherit (self) buildPythonPackage flit;
+      };
       packaging = self.callPackage ./packaging.nix { };
 
       tomli = self.callPackage ./tomli.nix { };
