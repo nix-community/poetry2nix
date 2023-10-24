@@ -1941,7 +1941,9 @@ lib.composeManyExtensions [
         inherit (self) buildPythonPackage flit;
       };
 
-      packaging = self.callPackage ./packaging.nix { };
+      packaging = pkgs.python3.pkgs.packaging.override {
+        inherit (self) buildPythonPackage flit-core pretend;
+      };
 
       tomli = self.callPackage ./tomli.nix { };
       pyproject-hooks = self.callPackage ./pyproject-hooks.nix { };
