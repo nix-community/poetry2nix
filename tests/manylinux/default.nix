@@ -1,11 +1,10 @@
-{ runCommand, lib, poetry2nix, python39 }:
+{ runCommand, lib, poetry2nix, python38 }:
 let
   pkg = poetry2nix.mkPoetryApplication {
-    python = python39;
+    python = python38;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
-    preferWheels = true;
   };
   p = pkg.python.withPackages (ps: [ ps.numpy ps.opencv-python ]);
 in
