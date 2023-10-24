@@ -1932,7 +1932,7 @@ lib.composeManyExtensions [
         });
 
       installer = pkgs.python3.pkgs.installer.override {
-        inherit (self) buildPythonPackage flit-core mock;
+        inherit (self) buildPythonPackage flit-core;
       };
 
       build = self.callPackage ./build.nix { };
@@ -1942,7 +1942,7 @@ lib.composeManyExtensions [
       };
 
       packaging = pkgs.python3.pkgs.packaging.override {
-        inherit (self) buildPythonPackage flit-core pretend;
+        inherit (self) buildPythonPackage flit-core;
       };
 
       tomli = self.callPackage ./tomli.nix { };
