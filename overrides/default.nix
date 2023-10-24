@@ -3,7 +3,7 @@
 }:
 
 let
-  addBuildSystem =
+  addBuildSystem' =
     { self
     , drv
     , attr
@@ -44,6 +44,20 @@ let
           # We do not need the build system for wheels.
           if old ? format && old.format == "wheel" then
             { }
+          else if attr == "poetry" then
+            {
+              # replace poetry
+              postPatch = (old.postPatch or "") + ''
+                if [ -f pyproject.toml ]; then
+                  toml="$(mktemp)"
+                  yj -tj < pyproject.toml | jq --from-file ${./poetry-to-poetry-core.jq} | yj -jt > "$toml"
+                  mv "$toml" pyproject.toml
+                fi
+              '';
+              nativeBuildInputs = old.nativeBuildInputs or [ ]
+                ++ [ self.poetry-core self.pkgs.yj self.pkgs.jq ]
+                ++ map (a: self.${a}) extraAttrs;
+            }
           else
             {
               nativeBuildInputs =
@@ -59,10 +73,10 @@ in
 lib.composeManyExtensions [
   # NixOps
   (self: super:
-    lib.mapAttrs (_: v: addBuildSystem { inherit self; drv = v; attr = "poetry"; }) (lib.filterAttrs (n: _: lib.strings.hasPrefix "nixops" n) super)
+    lib.mapAttrs (_: v: addBuildSystem' { inherit self; drv = v; attr = "poetry"; }) (lib.filterAttrs (n: _: lib.strings.hasPrefix "nixops" n) super)
     // {
       # NixOps >=2 dependency
-      nixos-modules-contrib = addBuildSystem { inherit self; drv = super.nixos-modules-contrib; attr = "poetry"; };
+      nixos-modules-contrib = addBuildSystem' { inherit self; drv = super.nixos-modules-contrib; attr = "poetry"; };
     }
   )
 
@@ -73,7 +87,7 @@ lib.composeManyExtensions [
     in
     lib.mapAttrs
       (attr: systems: builtins.foldl'
-        (drv: attr: addBuildSystem {
+        (drv: attr: addBuildSystem' {
           inherit drv self attr;
         })
         (super.${attr} or null)
@@ -117,6 +131,8 @@ lib.composeManyExtensions [
     in
 
     {
+      addBuildSystem = attr: drv: addBuildSystem' { inherit self drv attr; };
+
       #### BEGIN bootstrapping pkgs
       installer = bootstrappingBase.installer.override {
         inherit (self) buildPythonPackage flit-core;
@@ -146,6 +162,8 @@ lib.composeManyExtensions [
         inherit (self) buildPythonPackage flit-core;
       };
       #### END bootstrapping pkgs
+
+      poetry = self.poetry-core;
 
       automat = super.automat.overridePythonAttrs (
         old: lib.optionalAttrs (lib.versionOlder old.version "22.10.0") {
@@ -232,7 +250,7 @@ lib.composeManyExtensions [
 
       argon2-cffi =
         if (lib.versionAtLeast super.argon2-cffi.version "21.2.0") then
-          addBuildSystem
+          addBuildSystem'
             {
               inherit self;
               drv = super.argon2-cffi;
@@ -1832,9 +1850,11 @@ lib.composeManyExtensions [
       );
 
 
-      pandas = super.pandas.overridePythonAttrs (old: {
-
+      pandas = super.pandas.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
         buildInputs = old.buildInputs or [ ] ++ lib.optional stdenv.isDarwin pkgs.libcxx;
+
+        dontUseMesonConfigure = true;
 
         # Doesn't work with -Werror,-Wunused-command-line-argument
         # https://github.com/NixOS/nixpkgs/issues/39687
@@ -1850,7 +1870,6 @@ lib.composeManyExtensions [
                       "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
         '';
 
-
         enableParallelBuilding = true;
       });
 
@@ -1865,7 +1884,7 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.pyutilib ];
       });
 
-      paramiko = super.paramiko.overridePythonAttrs (old: {
+      paramiko = super.paramiko.overridePythonAttrs (_: {
         doCheck = false; # requires networking
       });
 
@@ -1939,29 +1958,6 @@ lib.composeManyExtensions [
       poethepoet = super.poethepoet.overrideAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs ++ [ self.poetry ];
       });
-
-      poetry-core = super.poetry-core.overridePythonAttrs (old:
-        let
-          initFile =
-            if lib.versionOlder super.poetry-core.version "1.1"
-            then "poetry/__init__.py"
-            else "./src/poetry/core/__init__.py";
-        in
-        {
-          # "Vendor" dependencies (for build-system support)
-          postPatch = ''
-            echo "import sys" >> ${initFile}
-            for path in $propagatedBuildInputs; do
-              echo "sys.path.insert(0, \"$path\")" >> ${initFile}
-            done
-          '';
-
-          # Propagating dependencies leads to issues downstream
-          # We've already patched poetry to prefer "vendored" dependencies
-          postFixup = ''
-            rm $out/nix-support/propagated-build-inputs
-          '';
-        });
 
       pkgutil-resolve-name = super.pkgutil-resolve-name.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {

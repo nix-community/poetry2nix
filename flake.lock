@@ -40,16 +40,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1696303624,
-        "narHash": "sha256-mL5k0klTRO3/59HCI8U1QujzGsnyL0GtQI+5XABXDNA=",
-        "owner": "NixOS",
+        "lastModified": 1698179980,
+        "narHash": "sha256-3eYVRLDDBxG+49nb30pxTmEl3imzB7faSwQmG/dY1ew=",
+        "owner": "cpcloud",
         "repo": "nixpkgs",
-        "rev": "4d29250d5b55fe14280906afad7afacd910850b8",
+        "rev": "b41af5b5c9aa421820296bc9d50ae9dd1bf056c1",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable-small",
+        "owner": "cpcloud",
+        "ref": "test-poetry-fixes",
         "repo": "nixpkgs",
         "type": "github"
       }

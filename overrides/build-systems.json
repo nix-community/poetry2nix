@@ -1065,6 +1065,7 @@
     "setuptools"
   ],
   "arrow": [
+    "flit-core",
     "setuptools"
   ],
   "arsenic": [
@@ -8491,6 +8492,7 @@
     "setuptools"
   ],
   "isoduration": [
+    "flit-core",
     "setuptools"
   ],
   "isort": [
@@ -12144,6 +12146,7 @@
   ],
   "pandas": [
     "cython",
+    "meson-python",
     "oldest-supported-numpy",
     "setuptools",
     {
@@ -12192,6 +12195,8 @@
     "setuptools"
   ],
   "param": [
+    "hatch-vcs",
+    "hatchling",
     "setuptools"
   ],
   "parameter-expansion-patched": [
@@ -16795,6 +16800,9 @@
     "setuptools-scm"
   ],
   "pyviz-comms": [
+    "hatch-jupyter-builder",
+    "hatch-nodejs-version",
+    "hatchling",
     "setuptools"
   ],
   "pyvizio": [

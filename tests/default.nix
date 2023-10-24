@@ -10,7 +10,6 @@ in
   }
 }:
 let
-  poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
   poetry2nix = import ./.. { inherit pkgs; };
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
 
@@ -20,7 +19,7 @@ in
 {
   trivial = callTest ./trivial { };
 
-  # Uses the updated Poetry 1.2.0 format
+  # Uses the updated 1.2.0 lockfile format
   trivial-poetry-1_2_0 = callTest ./trivial-poetry-1_2_0 { };
 
   legacy = callTest ./legacy { };
@@ -48,7 +47,6 @@ in
   preferWheel = callTest ./prefer-wheel { };
   prefer-wheels = callTest ./prefer-wheels { };
   closure-size = callTest ./closure-size {
-    inherit poetry;
     inherit (pkgs) postgresql;
   };
   extras = callTest ./extras { };
@@ -81,22 +79,6 @@ in
   tzlocal = callTest ./tzlocal { };
 
   ml-stack = callTest ./ml-stack { };
-
-  # Test building poetry
-  inherit poetry;
-
-  poetry-env =
-    let
-      env = poetry2nix.mkPoetryEnv {
-        projectDir = ../pkgs/poetry;
-        groups = [ "typing" ];
-      };
-    in
-    pkgs.runCommand "poetry-env-test" { } ''
-      ${env}/bin/python -c 'import requests'
-      ${env}/bin/python -c 'import mypy'
-      touch $out
-    '';
 
   dependency-groups = callTest ./dependency-groups { };
 
