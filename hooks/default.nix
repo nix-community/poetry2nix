@@ -58,18 +58,6 @@ in
       )
       { };
 
-  pipInstallHook = callPackage
-    ({ makePythonHook, pip }:
-      makePythonHook
-        {
-          name = "pip-install-hook";
-          propagatedBuildInputs = [ pip ];
-          substitutions = {
-            inherit pythonInterpreter pythonSitePackages;
-          };
-        } ./pip-install-hook.sh)
-    { };
-
   poetry2nixFixupHook =
     callPackage
       (
