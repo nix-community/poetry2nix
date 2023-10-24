@@ -112,9 +112,41 @@ lib.composeManyExtensions [
         qtx11extras
         qtxmlpatterns
       ];
+
+      bootstrappingBase = pkgs.python3.pythonForBuild.pkgs;
     in
 
     {
+      #### BEGIN bootstrapping pkgs
+      installer = bootstrappingBase.installer.override {
+        inherit (self) buildPythonPackage flit-core;
+      };
+
+      build = bootstrappingBase.build.override {
+        inherit (self) buildPythonPackage flit-core packaging pyproject-hooks tomli;
+      };
+
+      flit-core = bootstrappingBase.flit-core.override {
+        inherit (self) buildPythonPackage flit;
+      };
+
+      packaging = bootstrappingBase.packaging.override {
+        inherit (self) buildPythonPackage flit-core;
+      };
+
+      tomli = bootstrappingBase.tomli.override {
+        inherit (self) buildPythonPackage flit-core;
+      };
+
+      pyproject-hooks = bootstrappingBase.pyproject-hooks.override {
+        inherit (self) buildPythonPackage flit-core tomli;
+      };
+
+      wheel = bootstrappingBase.wheel.override {
+        inherit (self) buildPythonPackage flit-core;
+      };
+      #### END bootstrapping pkgs
+
       automat = super.automat.overridePythonAttrs (
         old: lib.optionalAttrs (lib.versionOlder old.version "22.10.0") {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.m2r ];
@@ -1930,32 +1962,6 @@ lib.composeManyExtensions [
             rm $out/nix-support/propagated-build-inputs
           '';
         });
-
-      installer = pkgs.python3.pkgs.installer.override {
-        inherit (self) buildPythonPackage flit-core;
-      };
-
-      build = pkgs.python3.pkgs.build.override {
-        inherit (self) buildPythonPackage flit-core packaging pyproject-hooks tomli;
-      };
-
-      flit-core = pkgs.python3.pkgs.flit-core.override {
-        inherit (self) buildPythonPackage flit;
-      };
-
-      packaging = pkgs.python3.pkgs.packaging.override {
-        inherit (self) buildPythonPackage flit-core;
-      };
-
-      tomli = self.callPackage ./tomli.nix { };
-
-      pyproject-hooks = pkgs.python3.pkgs.pyproject-hooks.override {
-        inherit (self) buildPythonPackage flit-core tomli;
-      };
-
-      wheel = pkgs.python3.pkgs.wheel.override {
-        inherit (self) buildPythonPackage flit-core;
-      };
 
       pkgutil-resolve-name = super.pkgutil-resolve-name.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
