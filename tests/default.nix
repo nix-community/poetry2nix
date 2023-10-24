@@ -18,7 +18,7 @@ let
 
 in
 {
-  # BROKEN trivial = callTest ./trivial { };
+  trivial = callTest ./trivial { };
 
   # Uses the updated Poetry 1.2.0 format
   trivial-poetry-1_2_0 = callTest ./trivial-poetry-1_2_0 { };
