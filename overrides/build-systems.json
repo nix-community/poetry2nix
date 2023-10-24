@@ -3492,11 +3492,11 @@
     "setuptools"
   ],
   "colorama": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "0.4.6"
-    },
-    "setuptools"
+    }
   ],
   "colorcet": [
     "setuptools"
@@ -3672,11 +3672,11 @@
       "until": "1.1.0"
     },
     {
-      "buildSystem": "meson-python",
+      "buildSystem": "meson",
       "from": "1.1.0"
     },
     {
-      "buildSystem": "meson",
+      "buildSystem": "meson-python",
       "from": "1.1.0"
     }
   ],
@@ -4023,11 +4023,11 @@
     "setuptools"
   ],
   "dask": [
+    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    },
-    "setuptools"
+    }
   ],
   "dask-awkward": [
     "hatch-vcs",
@@ -4564,12 +4564,12 @@
     "setuptools"
   ],
   "distributed": [
+    "setuptools",
+    "setuptools-scm",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    },
-    "setuptools",
-    "setuptools-scm"
+    }
   ],
   "distro": [
     "setuptools"
@@ -5067,11 +5067,11 @@
     "setuptools-scm"
   ],
   "docformatter": [
+    "setuptools",
     {
       "buildSystem": "poetry-core",
       "from": "1.5.0"
-    },
-    "setuptools"
+    }
   ],
   "docker": [
     "setuptools",
@@ -5532,9 +5532,9 @@
     "setuptools"
   ],
   "enrich": [
+    "pip",
     "setuptools",
     "setuptools-scm",
-    "pip",
     "setuptools-scm-git-archive"
   ],
   "entrance": [
@@ -8944,6 +8944,7 @@
     "setuptools"
   ],
   "jupyter-server": [
+    "hatchling",
     {
       "buildSystem": "setuptools",
       "until": "1.21.0"
@@ -8951,8 +8952,7 @@
     {
       "buildSystem": "jupyter-packaging",
       "from": "1.21.0"
-    },
-    "hatchling"
+    }
   ],
   "jupyter-server-fileid": [
     "hatchling"
@@ -9625,10 +9625,10 @@
     "setuptools"
   ],
   "llama-cpp-python": [
-    "scikit-build",
-    "setuptools",
     "cmake",
-    "ninja"
+    "ninja",
+    "scikit-build",
+    "setuptools"
   ],
   "llfuse": [
     "cython",
@@ -9995,9 +9995,9 @@
     "setuptools"
   ],
   "matplotlib": [
+    "oldest-supported-numpy",
     "setuptools",
-    "setuptools-scm",
-    "oldest-supported-numpy"
+    "setuptools-scm"
   ],
   "matplotlib-inline": [
     "setuptools"
@@ -10340,11 +10340,11 @@
     "setuptools-scm"
   ],
   "mkdocs": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "1.4.1"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-autorefs": [
     "pdm-pep517",
@@ -10387,6 +10387,7 @@
     "setuptools"
   ],
   "mkdocs-material": [
+    "setuptools",
     {
       "buildSystem": "hatch-nodejs-version",
       "from": "8.5.3"
@@ -10394,15 +10395,14 @@
     {
       "buildSystem": "hatchling",
       "from": "8.5.3"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-material-extensions": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "1.1"
-    },
-    "setuptools"
+    }
   ],
   "mkdocs-minify": [
     "setuptools"
@@ -10503,9 +10503,9 @@
     "setuptools"
   ],
   "molecule": [
+    "pip",
     "setuptools",
-    "setuptools-scm",
-    "pip"
+    "setuptools-scm"
   ],
   "molecule-plugins": [
     "setuptools-scm"
@@ -10654,8 +10654,8 @@
     "setuptools"
   ],
   "msgpack": [
-    "setuptools",
-    "cython"
+    "cython",
+    "setuptools"
   ],
   "msgpack-numpy": [
     "cython",
@@ -10715,8 +10715,8 @@
     "setuptools"
   ],
   "multidict": [
-    "setuptools",
-    "pip"
+    "pip",
+    "setuptools"
   ],
   "multihash": [
     "setuptools"
@@ -10961,11 +10961,11 @@
     "setuptools"
   ],
   "nbclient": [
+    "setuptools",
     {
       "buildSystem": "hatchling",
       "from": "0.7.1"
-    },
-    "setuptools"
+    }
   ],
   "nbconflux": [
     "setuptools"
@@ -11297,10 +11297,11 @@
   ],
   "notebook": [
     "hatchling",
-    "setuptools",
-    "jupyter-packaging"
+    "jupyter-packaging",
+    "setuptools"
   ],
   "notebook-shim": [
+    "jupyter-packaging",
     {
       "buildSystem": "setuptools",
       "until": "0.2.0"
@@ -11308,8 +11309,7 @@
     {
       "buildSystem": "hatchling",
       "from": "0.2.0"
-    },
-    "jupyter-packaging"
+    }
   ],
   "notedown": [
     "setuptools"
@@ -11606,14 +11606,14 @@
   "openbabel-bindings": [
     "setuptools"
   ],
-  "opencv4": [
+  "opencv-python": [
+    "cmake",
+    "pip",
+    "scikit-build",
     "setuptools"
   ],
-  "opencv-python": [
-    "setuptools",
-    "scikit-build",
-    "cmake",
-    "pip"
+  "opencv4": [
+    "setuptools"
   ],
   "openerz-api": [
     "setuptools"
@@ -12143,13 +12143,13 @@
     "setuptools"
   ],
   "pandas": [
+    "cython",
+    "oldest-supported-numpy",
+    "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
-    },
-    "cython",
-    "setuptools",
-    "oldest-supported-numpy"
+    }
   ],
   "pandas-datareader": [
     "setuptools"
@@ -15802,9 +15802,9 @@
   "pytest-metadata": [
     "hatch-vcs",
     "hatchling",
+    "poetry-core",
     "setuptools",
-    "setuptools-scm",
-    "poetry-core"
+    "setuptools-scm"
   ],
   "pytest-mock": [
     "setuptools",
@@ -16933,10 +16933,10 @@
     "setuptools"
   ],
   "pyzmq": [
+    "cython",
     "packaging",
     "setuptools",
-    "setuptools-scm",
-    "cython"
+    "setuptools-scm"
   ],
   "pyzufall": [
     "setuptools"
@@ -17164,10 +17164,10 @@
     "setuptools"
   ],
   "rapidfuzz": [
-    "scikit-build",
-    "setuptools",
+    "cmake",
     "cython",
-    "cmake"
+    "scikit-build",
+    "setuptools"
   ],
   "rapidfuzz-capi": [
     "setuptools"
@@ -17180,8 +17180,8 @@
   ],
   "rasterio": [
     "cython",
-    "setuptools",
-    "oldest-supported-numpy"
+    "oldest-supported-numpy",
+    "setuptools"
   ],
   "ratelim": [
     "setuptools"
@@ -17969,6 +17969,7 @@
     "setuptools"
   ],
   "scikit-build": [
+    "cython",
     {
       "buildSystem": "setuptools",
       "until": "0.17.0"
@@ -17988,8 +17989,7 @@
     {
       "buildSystem": "hatchling",
       "from": "0.17.0"
-    },
-    "cython"
+    }
   ],
   "scikit-build-core": [
     "hatch-vcs",
@@ -18012,8 +18012,8 @@
   ],
   "scikit-learn": [
     "cython",
-    "setuptools",
-    "oldest-supported-numpy"
+    "oldest-supported-numpy",
+    "setuptools"
   ],
   "scikit-learn-extra": [
     "cython",
@@ -18060,11 +18060,11 @@
     "poetry-core"
   ],
   "scipy": [
-    "pybind11",
     "cython",
+    "pybind11",
+    "pythran",
     "setuptools",
-    "wheel",
-    "pythran"
+    "wheel"
   ],
   "scmrepo": [
     "setuptools",
@@ -18172,8 +18172,8 @@
     "setuptools"
   ],
   "selinux": [
-    "setuptools",
     "pip",
+    "setuptools",
     "setuptools-scm"
   ],
   "semantic-version": [
@@ -18350,8 +18350,8 @@
   ],
   "shapely": [
     "cython",
-    "setuptools",
-    "oldest-supported-numpy"
+    "oldest-supported-numpy",
+    "setuptools"
   ],
   "sharedmem": [
     "setuptools"
@@ -19106,11 +19106,11 @@
     "setuptools"
   ],
   "sqlglot": [
+    "setuptools",
     {
       "buildSystem": "setuptools-scm",
       "from": "13.0.2"
-    },
-    "setuptools"
+    }
   ],
   "sqlite-fts4": [
     "setuptools"
@@ -19402,9 +19402,9 @@
     "setuptools"
   ],
   "subprocess-tee": [
+    "pip",
     "setuptools",
     "setuptools-scm",
-    "pip",
     "setuptools-scm-git-archive"
   ],
   "subprocess32": [
@@ -19563,11 +19563,11 @@
     "setuptools-scm"
   ],
   "tabulate": [
+    "setuptools",
     {
       "buildSystem": "setuptools-scm",
       "from": "0.9.0"
-    },
-    "setuptools"
+    }
   ],
   "tabview": [
     "setuptools"
@@ -20244,6 +20244,7 @@
     "flit-core"
   ],
   "traitlets": [
+    "setuptools",
     {
       "buildSystem": "flit-core",
       "until": "5.2.1"
@@ -20251,8 +20252,7 @@
     {
       "buildSystem": "hatchling",
       "from": "5.2.1"
-    },
-    "setuptools"
+    }
   ],
   "traits": [
     "setuptools"
@@ -20957,6 +20957,7 @@
     "setuptools"
   ],
   "urllib3": [
+    "setuptools",
     {
       "buildSystem": "flit-core",
       "until": "2.0.2"
@@ -20964,8 +20965,7 @@
     {
       "buildSystem": "hatchling",
       "from": "2.0.2"
-    },
-    "setuptools"
+    }
   ],
   "urlman": [
     "setuptools"
@@ -21159,6 +21159,8 @@
     "setuptools"
   ],
   "virtualenv": [
+    "cython",
+    "hatchling",
     {
       "buildSystem": "setuptools-scm",
       "until": " 20.18"
@@ -21166,9 +21168,7 @@
     {
       "buildSystem": "hatch-vcs",
       "from": " 20.18"
-    },
-    "cython",
-    "hatchling"
+    }
   ],
   "virtualenv-clone": [
     "setuptools"
