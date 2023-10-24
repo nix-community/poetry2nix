@@ -1946,7 +1946,10 @@ lib.composeManyExtensions [
       };
 
       tomli = self.callPackage ./tomli.nix { };
-      pyproject-hooks = self.callPackage ./pyproject-hooks.nix { };
+
+      pyproject-hooks = pkgs.python3.pkgs.pyproject-hooks.override {
+        inherit (self) buildPythonPackage flit-core tomli;
+      };
 
       wheel = pkgs.python3.pkgs.wheel.override {
         inherit (self) buildPythonPackage flit-core;
