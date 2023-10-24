@@ -73,7 +73,7 @@ in
   fastapi-utils = callTest ./fastapi-utils { };
   awscli = callTest ./awscli { };
   aiopath = callTest ./aiopath { };
-  # BROKEN fetched-projectdir = callTest ./fetched-projectdir { };
+  fetched-projectdir = callTest ./fetched-projectdir { };
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
   sqlalchemy = callTest ./sqlalchemy { };
