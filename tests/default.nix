@@ -4,7 +4,7 @@ in
 { pkgs ? import flake.inputs.nixpkgs {
     config = {
       allowAliases = false;
-      allowInsecurePredicate = x: true;
+      allowInsecurePredicate = _: true;
     };
     overlays = [ flake.overlay ];
   }
