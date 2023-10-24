@@ -1123,7 +1123,7 @@ lib.composeManyExtensions [
       jq = super.jq.overridePythonAttrs (attrs: {
         buildInputs = [ pkgs.jq ];
         propagatedBuildInputs = [ self.certifi self.requests ];
-        patches = [
+        patches = lib.optionals (lib.versionOlder attrs.version "1.2.3") [
           (pkgs.fetchpatch {
             url = "https://raw.githubusercontent.com/NixOS/nixpkgs/088da8735f6620b60d724aa7db742607ea216087/pkgs/development/python-modules/jq/jq-py-setup.patch";
             sha256 = "sha256-MYvX3S1YGe0QsUtExtOtULvp++AdVrv+Fid4Jh1xewQ=";
