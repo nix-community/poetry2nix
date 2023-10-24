@@ -5,6 +5,7 @@ let
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
+    preferWheels = true;
   };
   p = pkg.python.withPackages (ps: [ ps.numpy ps.opencv-python ]);
 in

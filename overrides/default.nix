@@ -1710,7 +1710,7 @@ lib.composeManyExtensions [
       # Overrides for building packages based on OpenCV
       # These flags are inspired by the opencv 4.x package in nixpkgs
       _opencv-python-override =
-        old: {
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           # Disable OpenCL on macOS
           # Can't use cmakeFlags because cmake is called by setup.py
           CMAKE_ARGS = lib.optionalString stdenv.isDarwin "-DWITH_OPENCL=OFF";
