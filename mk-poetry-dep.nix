@@ -125,7 +125,7 @@ pythonPackages.callPackage
         pythonPackages.pypaBuildHook
       ];
 
-      buildInputs = lib.optional (isLocked) (getManyLinuxDeps fileInfo.name).pkg
+      buildInputs = lib.optional isLocked (getManyLinuxDeps fileInfo.name).pkg
         ++ lib.optional isDirectory buildSystemPkgs;
 
       propagatedBuildInputs =
