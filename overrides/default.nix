@@ -113,7 +113,7 @@ lib.composeManyExtensions [
         qtxmlpatterns
       ];
 
-      bootstrappingBase = pkgs.python3.pythonForBuild.pkgs;
+      bootstrappingBase = pkgs.${self.python.pythonAttr}.pythonForBuild.pkgs;
     in
 
     {
