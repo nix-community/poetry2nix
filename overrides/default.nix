@@ -1931,11 +1931,16 @@ lib.composeManyExtensions [
           '';
         });
 
-      installer = self.callPackage ./installer.nix { };
+      installer = pkgs.python3.pkgs.installer.override {
+        inherit (self) buildPythonPackage flit-core mock;
+      };
+
       build = self.callPackage ./build.nix { };
+
       flit-core = pkgs.python3.pkgs.flit-core.override {
         inherit (self) buildPythonPackage flit;
       };
+
       packaging = self.callPackage ./packaging.nix { };
 
       tomli = self.callPackage ./tomli.nix { };
