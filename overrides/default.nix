@@ -1935,7 +1935,9 @@ lib.composeManyExtensions [
         inherit (self) buildPythonPackage flit-core;
       };
 
-      build = self.callPackage ./build.nix { };
+      build = pkgs.python3.pkgs.build.override {
+        inherit (self) buildPythonPackage flit-core packaging pyproject-hooks tomli;
+      };
 
       flit-core = pkgs.python3.pkgs.flit-core.override {
         inherit (self) buildPythonPackage flit;
