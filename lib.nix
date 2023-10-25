@@ -8,17 +8,6 @@ let
     genList (i: if i == idx then value else (builtins.elemAt list i)) (length list)
   );
 
-  # Normalize package names as per PEP 503
-  normalizePackageName = name:
-    let
-      parts = builtins.split "[-_.]+" name;
-      partsWithoutSeparator = builtins.filter (x: builtins.typeOf x == "string") parts;
-    in
-    lib.strings.toLower (lib.strings.concatStringsSep "-" partsWithoutSeparator);
-
-  # Normalize an entire attrset of packages
-  normalizePackageSet = lib.attrsets.mapAttrs' (name: value: lib.attrsets.nameValuePair (normalizePackageName name) value);
-
   # Get a full semver pythonVersion from a python derivation
   getPythonVersion = python:
     let
@@ -242,8 +231,6 @@ in
     getBuildSystemPkgs
     satisfiesSemver
     cleanPythonSources
-    normalizePackageName
-    normalizePackageSet
     getPythonVersion
     getTargetMachine
     ;
