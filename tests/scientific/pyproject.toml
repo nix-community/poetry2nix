@@ -12,11 +12,7 @@ scikit-learn = "*"
 seaborn = "*"
 pandas = "*"
 jupyter = "*"
-psutil = [
-    { version = "5.9.5", platform = "darwin" },
-    { version = "*", platform = "linux" },
-    { version = "*", platform = "win32" },
-]
+psutil = "5.9.5"
 
 # FIXME: pin a lower version until we figure out how to build newer ones
 nbconvert = "<7"
