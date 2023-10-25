@@ -68,6 +68,11 @@ let
         )
     );
 
+  removePackagesByName = packages: packagesToRemove:
+    let
+      namesToRemove = map lib.getName packagesToRemove;
+    in
+    lib.filter (x: !(builtins.elem (lib.getName x) namesToRemove)) packages;
 
 in
 lib.composeManyExtensions [
@@ -2212,6 +2217,30 @@ lib.composeManyExtensions [
 
       pynetbox = super.pynetbox.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
+      });
+
+      sphinxcontrib-applehelp = super.sphinxcontrib-applehelp.overridePythonAttrs (old: {
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
+      });
+
+      sphinxcontrib-devhelp = super.sphinxcontrib-devhelp.overridePythonAttrs (old: {
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
+      });
+
+      sphinxcontrib-htmlhelp = super.sphinxcontrib-htmlhelp.overridePythonAttrs (old: {
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
+      });
+
+      sphinxcontrib-jsmath = super.sphinxcontrib-jsmath.overridePythonAttrs (old: {
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
+      });
+
+      sphinxcontrib-qthelp = super.sphinxcontrib-qthelp.overridePythonAttrs (old: {
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
+      });
+
+      sphinxcontrib-serializinghtml = super.sphinxcontrib-serializinghtml.overridePythonAttrs (old: {
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
       });
 
       pynput = super.pynput.overridePythonAttrs (old: {
