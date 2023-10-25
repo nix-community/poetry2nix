@@ -1868,11 +1868,13 @@ lib.composeManyExtensions [
         # For OSX, we need to add a dependency on libcxx, which provides
         # `complex.h` and other libraries that pandas depends on to build.
         postPatch = lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
-          cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
-          echo "Adding $cpp_sdk to the setup.py common_include variable"
-          substituteInPlace setup.py \
-            --replace "['pandas/src/klib', 'pandas/src']" \
-                      "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
+          if [ -f setup.py ]; then
+            cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
+            echo "Adding $cpp_sdk to the setup.py common_include variable"
+            substituteInPlace setup.py \
+              --replace "['pandas/src/klib', 'pandas/src']" \
+                        "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
+          fi
         '';
 
         enableParallelBuilding = true;
