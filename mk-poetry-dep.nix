@@ -3,11 +3,13 @@
 , python
 , buildPythonPackage
 , poetryLib
-, evalPep508
+, pep508Env
+, pyproject-nix
 }:
 { name
 , version
 , pos ? __curPos
+, extras ? [ ]
 , files
 , source
 , dependencies ? { }
@@ -141,7 +143,16 @@ pythonPackages.callPackage
                       constraints = v.python or "";
                       pep508Markers = v.markers or "";
                     in
-                    compat constraints && evalPep508 pep508Markers
+                    compat constraints && (if pep508Markers == "" then true else
+                    (pyproject-nix.pep508.evalMarkers
+                      (pep508Env // {
+                        extra = {
+                          # All extras are always enabled
+                          type = "extra";
+                          value = lib.attrNames extras;
+                        };
+                      })
+                      (pyproject-nix.pep508.parseMarkers pep508Markers)))
                 )
                 dependencies
             );

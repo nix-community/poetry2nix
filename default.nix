@@ -5,6 +5,8 @@
 let
   inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
 
+  pyproject-nix = import ./vendor/pyproject.nix { inherit lib; };
+
   # Map SPDX identifiers to license names
   spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
   # Get license by id falling back to input string
@@ -104,7 +106,8 @@ lib.makeScope pkgs.newScope (self: {
     }:
       assert editablePackageSources != { };
       import ./editable.nix {
-        inherit pyProject python pkgs lib poetryLib editablePackageSources;
+        inherit pyProject python pkgs lib editablePackageSources;
+        inherit pyproject-nix;
       };
 
   /* Returns a package containing scripts defined in tool.poetry.scripts.
@@ -141,11 +144,6 @@ lib.makeScope pkgs.newScope (self: {
     , extras ? [ "*" ]
     }:
     let
-      /* The default list of poetry2nix override overlays */
-      mkEvalPep508 = import ./pep508.nix {
-        inherit lib poetryLib;
-        inherit (python) stdenv;
-      };
       getFunctorFn = fn: if builtins.typeOf fn == "set" then fn.__functor else fn;
 
       scripts = pyProject.tool.poetry.scripts or { };
@@ -170,12 +168,19 @@ lib.makeScope pkgs.newScope (self: {
         in
         lib.listToAttrs (lib.mapAttrsToList (n: v: { name = normalizePackageName n; value = v; }) lockfiles);
 
-      evalPep508 = mkEvalPep508 python;
+      pep508Env = pyproject-nix.pep508.mkEnviron python;
 
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions =
         let
-          supportsPythonVersion = pkgMeta: if pkgMeta ? marker then (evalPep508 pkgMeta.marker) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
+          supportsPythonVersion = pkgMeta:
+            if pkgMeta ? marker then
+              (
+                let
+                  marker = pyproject-nix.pep508.parseMarkers pkgMeta.marker;
+                in
+                pyproject-nix.pep508.evalMarkers pep508Env marker
+              ) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
         in
         lib.partition supportsPythonVersion poetryLock.package;
       compatible = partitions.right;
@@ -242,7 +247,8 @@ lib.makeScope pkgs.newScope (self: {
               self: super:
                 {
                   mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
-                    inherit lib python poetryLib evalPep508;
+                    inherit lib python poetryLib pep508Env;
+                    inherit pyproject-nix;
                   };
 
                   __toPluginAble = toPluginAble self;
