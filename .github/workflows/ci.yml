@@ -78,4 +78,4 @@ jobs:
       - nix-build
       - sort-build-systems
     steps:
-      - run: true
+      - run: exit 0
