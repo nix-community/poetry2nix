@@ -44,7 +44,7 @@
                 # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
                 aggregate = pkgs.runCommand "darwin-aggregate"
                   {
-                    env.TEST_INPUTS = lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (n: v: lib.isDerivation v) tests));
+                    env.TEST_INPUTS = lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (_: v: lib.isDerivation v) tests));
                   } "touch $out";
               };
           };

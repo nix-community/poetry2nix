@@ -147,10 +147,7 @@ let
   fetchFromLegacy = lib.makeOverridable (
     { python, pname, url, file, hash }:
     let
-      pathParts =
-        builtins.filter
-          ({ prefix, path }: "NETRC" == prefix)
-          builtins.nixPath;
+      pathParts = builtins.filter ({ prefix, ... }: "NETRC" == prefix) builtins.nixPath;
       netrc_file = if (pathParts != [ ]) then (builtins.head pathParts).path else "";
     in
     pkgs.runCommand file

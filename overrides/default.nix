@@ -2719,7 +2719,7 @@ lib.composeManyExtensions [
       );
 
       tensorflow-macos = super.tensorflow-macos.overridePythonAttrs (
-        old: {
+        _: {
           inherit (self.tensorflow) postInstall;
         }
       );

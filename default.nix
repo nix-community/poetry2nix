@@ -259,8 +259,8 @@ lib.makeScope pkgs.newScope (self: {
             )
 
             # Fix infinite recursion in a lot of packages because of checkInputs
-            (self: super: lib.mapAttrs
-              (name: value: (
+            (_: super: lib.mapAttrs
+              (_: value: (
                 if lib.isDerivation value && lib.hasAttr "overridePythonAttrs" value
                 then value.overridePythonAttrs (_: { doCheck = false; })
                 else value
