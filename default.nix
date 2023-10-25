@@ -249,9 +249,6 @@ lib.makeScope pkgs.newScope (self: {
                     inherit lib python poetryLib evalPep508;
                   };
 
-                  # # Use poetry-core from the poetry build (pep517/518 build-system)
-                  # inherit (self.pkgs.poetry.passthru.python.pkgs) poetry-core;
-
                   __toPluginAble = toPluginAble self;
                 } // lib.optionalAttrs (! super ? setuptools-scm) {
                   # The canonical name is setuptools-scm
