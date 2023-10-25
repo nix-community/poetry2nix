@@ -8,6 +8,12 @@
       options = [
         "-eucx"
         ''
+          ${pkgs.lib.getExe pkgs.deadnix} --edit "$@"
+
+          for i in "$@"; do
+            ${pkgs.lib.getExe pkgs.statix} fix "$i"
+          done
+
           ${pkgs.lib.getExe pkgs.nixpkgs-fmt} "$@"
         ''
         "--"
