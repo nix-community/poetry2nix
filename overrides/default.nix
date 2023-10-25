@@ -3122,8 +3122,9 @@ lib.composeManyExtensions [
 
       psutil = super.psutil.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++
-            lib.optional stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.IOKit;
+          buildInputs = old.buildInputs or [ ]
+            ++ lib.optionals (stdenv.isDarwin && stdenv.isx86_64) [ pkgs.darwin.apple_sdk.frameworks.CoreFoundation ]
+            ++ lib.optionals stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.IOKit ];
         }
       );
 
