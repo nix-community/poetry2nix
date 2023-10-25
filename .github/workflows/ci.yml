@@ -17,7 +17,7 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v4
     - name: Check format
-      run: nix-shell --packages jq --pure --run 'diff --unified overrides/build-systems.json <(jq --from-file overrides/sort-build-systems.jq --raw-output --sort-keys < overrides/build-systems.json)'
+      run: nix-shell --pure --run 'diff --unified overrides/build-systems.json <(jq --from-file overrides/sort-build-systems.jq --raw-output --sort-keys < overrides/build-systems.json)'
 
   nixpkgs-fmt:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
         name: poetry2nix
         signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
     - name: Check format
-      run: nix-shell --arg packages 'pkgs:[ pkgs.p2nix-tools.env ]' --run 'black --check .'
+      run: nix-shell --pure --run 'black --check .'
 
   nix-matrix:
     runs-on: ubuntu-latest
