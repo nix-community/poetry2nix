@@ -15082,13 +15082,13 @@
   "pyqt6": [
     "setuptools"
   ],
+  "pyqt6-sip": [
+    "setuptools"
+  ],
   "pyqtchart": [
     "setuptools"
   ],
   "pyqtdatavisualization": [
-    "setuptools"
-  ],
-  "pyqt6-sip": [
     "setuptools"
   ],
   "pyqtgraph": [
@@ -17014,11 +17014,11 @@
   "pyzufall": [
     "setuptools"
   ],
-  "qbittorrent-api": [
-    "setuptools"
-  ],
   "qasync": [
     "poetry-core"
+  ],
+  "qbittorrent-api": [
+    "setuptools"
   ],
   "qcelemental": [
     "poetry-core",
