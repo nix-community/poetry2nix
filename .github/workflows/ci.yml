@@ -60,7 +60,8 @@ jobs:
     needs: nix-matrix
     runs-on: ${{ matrix.os }}
     strategy:
-      matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.nix-matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v23
