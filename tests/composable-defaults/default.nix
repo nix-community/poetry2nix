@@ -2,9 +2,9 @@
 let
   p2nix = poetry2nix.overrideScope' (_: super: {
 
-    defaultPoetryOverrides = (super.defaultPoetryOverrides.extend (pyself: pysuper: {
+    defaultPoetryOverrides = super.defaultPoetryOverrides.extend (pyself: pysuper: {
       my-custom-pkg = super.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
-    }));
+    });
 
   });
 
@@ -13,6 +13,6 @@ p2nix.mkPoetryApplication {
   python = python3;
   projectDir = ./.;
   overrides = p2nix.overrides.withDefaults (self: super: {
-    customjox = super.customjox;
+    inherit (super) customjox;
   });
 }

@@ -36,16 +36,16 @@ let
           depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames depSet);
         in
         builtins.map
-            (
-              dep:
-              let
-                pkg = py.pkgs."${normalizePackageName dep}";
-                constraints = depSet.${dep}.python or "";
-                isCompat = compat constraints;
-              in
-              if isCompat then pkg else null
-            )
-            depAttrs;
+          (
+            dep:
+            let
+              pkg = py.pkgs."${normalizePackageName dep}";
+              constraints = depSet.${dep}.python or "";
+              isCompat = compat constraints;
+            in
+            if isCompat then pkg else null
+          )
+          depAttrs;
 
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;
@@ -206,9 +206,9 @@ lib.makeScope pkgs.newScope (self: {
                       pythonPackages = self;
 
                       sourceSpec = (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
-                          or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
-                          or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies or { }).${normalizedName} # Poetry 1.2.0+
-                          or { };
+                        or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
+                        or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies or { }).${normalizedName} # Poetry 1.2.0+
+                        or { };
                     }
                   );
                 }
@@ -334,11 +334,11 @@ lib.makeScope pkgs.newScope (self: {
       allEditablePackageSources = (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
         // (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
         // (
-          # Poetry>=1.2.0
-          if pyProject.tool.poetry.group or { } != { } then
-            builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
-          else { }
-        )
+        # Poetry>=1.2.0
+        if pyProject.tool.poetry.group or { } != { } then
+          builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
+        else { }
+      )
         // editablePackageSources;
 
       editablePackageSources' = builtins.removeAttrs

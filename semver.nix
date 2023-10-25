@@ -64,18 +64,18 @@ let
       mIn = match "${re.version} *(-) *${re.version}" constraintStr;
     in
     if mPre != null then {
-        op = elemAt mPre 0;
-        v = elemAt mPre 1;
-      }
-      # Infix operators are range matches
-      else if mIn != null then {
-        op = elemAt mIn 1;
-        v = {
-          vl = elemAt mIn 0;
-          vu = elemAt mIn 2;
-        };
-      }
-      else throw "Constraint \"${constraintStr}\" could not be parsed";
+      op = elemAt mPre 0;
+      v = elemAt mPre 1;
+    }
+    # Infix operators are range matches
+    else if mIn != null then {
+      op = elemAt mIn 1;
+      v = {
+        vl = elemAt mIn 0;
+        vu = elemAt mIn 2;
+      };
+    }
+    else throw "Constraint \"${constraintStr}\" could not be parsed";
   satisfiesSemver = version: constraint:
     let
       inherit (parseConstraint constraint) op v;

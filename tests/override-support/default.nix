@@ -18,7 +18,7 @@ let
 in
 runCommand "test"
 { } ''
-  x=${builtins.toString (p.python.pkgs.alembic.TESTING_FOOBAR)}
+  x=${builtins.toString p.python.pkgs.alembic.TESTING_FOOBAR}
   [ "$x" = "42" ] || exit 1
   mkdir $out
 ''

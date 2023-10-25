@@ -163,19 +163,19 @@ in
   # pyqt5 = (callTest ./pyqt5 { });
 
   # Test deadlocks on darwin, sandboxing issue?
-  dependency-environment = (callTest ./dependency-environment { });
+  dependency-environment = callTest ./dependency-environment { };
 
   # Editable tests fails on Darwin because of sandbox paths
-  pep600 = (callTest ./pep600 { });
-  editable = (callTest ./editable { });
-  editable-egg = (callTest ./editable-egg { });
-  pendulum = (callTest ./pendulum { });
+  pep600 = callTest ./pep600 { };
+  editable = callTest ./editable { };
+  editable-egg = callTest ./editable-egg { };
+  pendulum = callTest ./pendulum { };
 
   # Fails because of missing inputs on darwin
   text-generation-webui = callTest ./text-generation-webui { };
 
   # Cross tests fail on darwin for some strange reason:
   # ERROR: MarkupSafe-2.0.1-cp39-cp39-linux_aarch64.whl is not a supported wheel on this platform.
-  extended-cross = (callTest ./extended-cross { });
-  trivial-cross = (callTest ./trivial-cross { });
+  extended-cross = callTest ./extended-cross { };
+  trivial-cross = callTest ./trivial-cross { };
 }
