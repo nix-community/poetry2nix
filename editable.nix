@@ -3,9 +3,10 @@
 , pyProject
 , python
 , editablePackageSources
+, pyproject-nix
 }:
 let
-  name = poetryLib.normalizePackageName pyProject.tool.poetry.name;
+  name = pyproject-nix.pypa.normalizePackageName pyProject.tool.poetry.name;
 
   # Just enough standard PKG-INFO fields for an editable installation
   pkgInfoFields = {

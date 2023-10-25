@@ -29,7 +29,8 @@ pythonPackages.callPackage
     }@args:
     let
       inherit (python) stdenv;
-      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi normalizePackageName;
+      inherit (pyproject-nix.pypa) normalizePackageName;
+      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi;
 
       inherit (import ./pep425.nix {
         inherit lib poetryLib python stdenv;

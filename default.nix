@@ -3,9 +3,13 @@
 , poetryLib ? import ./lib.nix { inherit lib pkgs; inherit (pkgs) stdenv; }
 }:
 let
-  inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
+  inherit (poetryLib) isCompatible readTOML;
 
   pyproject-nix = import ./vendor/pyproject.nix { inherit lib; };
+
+  # Name normalization
+  inherit (pyproject-nix.pypa) normalizePackageName;
+  normalizePackageSet = lib.attrsets.mapAttrs' (name: value: lib.attrsets.nameValuePair (normalizePackageName name) value);
 
   # Map SPDX identifiers to license names
   spdxLicenses = lib.listToAttrs (lib.filter (pair: pair.name != null) (builtins.map (v: { name = if lib.hasAttr "spdxId" v then v.spdxId else null; value = v; }) (lib.attrValues lib.licenses)));
