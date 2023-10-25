@@ -116,7 +116,7 @@ let
     let
       predictedURL = predictURLFromPypi { inherit pname file kind; };
     in
-    (pkgs.stdenvNoCC.mkDerivation {
+    pkgs.stdenvNoCC.mkDerivation {
       name = file;
       nativeBuildInputs = [
         pkgs.buildPackages.curl
@@ -141,16 +141,16 @@ let
       passthru = {
         urls = [ predictedURL ]; # retain compatibility with nixpkgs' fetchurl
       };
-    })
+    }
   );
 
   fetchFromLegacy = lib.makeOverridable (
     { python, pname, url, file, hash }:
     let
       pathParts =
-        (builtins.filter
+        builtins.filter
           ({ prefix, path }: "NETRC" == prefix)
-          builtins.nixPath);
+          builtins.nixPath;
       netrc_file = if (pathParts != [ ]) then (builtins.head pathParts).path else "";
     in
     pkgs.runCommand file

@@ -1,4 +1,4 @@
-{ lib, poetry2nix, runCommand, python38 }:
+{ lib, poetry2nix, python38 }:
 poetry2nix.mkPoetryApplication {
   pyproject = ./pyproject.toml;
   poetrylock = ./poetry.lock;

@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python3, runCommand }:
+{ poetry2nix, python3, runCommand }:
 let
   py = poetry2nix.mkPoetryPackages {
     python = python3;

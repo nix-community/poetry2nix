@@ -3,7 +3,7 @@
 
   Note: this test assumes that "certifi" lib is going to be a dep of "requests" in the future.
 */
-{ lib, poetry2nix, python3, python38 }:
+{ poetry2nix, python3, python38 }:
 let
   inherit (builtins) elem map;
   drvPythonCurrent = poetry2nix.mkPoetryPackages {

@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python3, runCommand }:
+{ poetry2nix, runCommand }:
 
 let
 

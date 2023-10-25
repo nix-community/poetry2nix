@@ -7,11 +7,11 @@ let
     overrides = poetry2nix.overrides.withDefaults
       # This is also in overrides.nix but repeated for completeness
       (
-        self: super: {
+        _self: super: {
           maturin = super.maturin.override {
             preferWheel = true;
           };
-          funcy = super.funcy.overridePythonAttrs (old: {
+          funcy = super.funcy.overridePythonAttrs (_old: {
             preferWheel = true;
           });
         }

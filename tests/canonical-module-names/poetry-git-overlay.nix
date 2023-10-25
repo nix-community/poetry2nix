@@ -1,5 +1,5 @@
 { pkgs }:
-self: super: {
+_self: super: {
 
   pyramid-deferred-sqla = super.pyramid-deferred-sqla.overridePythonAttrs (
     _: {

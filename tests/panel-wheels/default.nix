@@ -11,7 +11,7 @@ let
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     overrides = poetry2nix.overrides.withDefaults (
-      self: super: {
+      _self: super: {
         bokeh = super.bokeh.override {
           preferWheel = true;
         };
