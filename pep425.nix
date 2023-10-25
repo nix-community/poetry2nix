@@ -1,6 +1,6 @@
 { lib, stdenv, poetryLib, python, isLinux ? stdenv.isLinux }:
 let
-  inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removePrefix removeSuffix;
+  inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removeSuffix;
   targetMachine = poetryLib.getTargetMachine stdenv;
 
   pythonVer =
@@ -59,7 +59,7 @@ let
     else (builtins.filter (x: hasInfix v x.file) candidates) ++ (findBestMatches vs candidates);
 
   # x = "cpXX" | "py2" | "py3" | "py2.py3"
-  isPyVersionCompatible = pyver@{ major, minor, tags }: x:
+  isPyVersionCompatible = { major, minor, tags }: x:
     let
       isCompat = m:
         builtins.elem m.tag tags
@@ -82,7 +82,7 @@ let
   #
   selectWheel = files:
     let
-      filesWithoutSources = (builtins.filter (x: hasSuffix ".whl" x.file) files);
+      filesWithoutSources = builtins.filter (x: hasSuffix ".whl" x.file) files;
       isPyAbiCompatible = pyabi: x: x == "none" || hasPrefix pyabi x || hasPrefix x pyabi || (
         # The CPython stable ABI is abi3 as in the shared library suffix.
         python.passthru.implementation == "cpython" &&
@@ -128,7 +128,7 @@ let
     in
     if (builtins.length filtered == 0)
     then [ ]
-    else choose (filtered);
+    else choose filtered;
 in
 {
   inherit selectWheel toWheelAttrs isPyVersionCompatible;

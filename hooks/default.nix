@@ -1,24 +1,12 @@
-{ python
-, stdenv
-, buildPackages
-, makeSetupHook
-, wheel
-, pip
-, pkgs
-, lib
-,
-}:
+{ python, stdenv, makeSetupHook, pkgs, lib }:
 let
-  inherit (python.pythonForBuild.pkgs) callPackage;
-  pythonInterpreter = python.pythonForBuild.interpreter;
+  inherit (python) pythonForBuild;
+  inherit (pythonForBuild.pkgs) callPackage;
+  pythonInterpreter = pythonForBuild.interpreter;
   pythonSitePackages = python.sitePackages;
 
   nonOverlayedPython = pkgs.python3.pythonForBuild.withPackages (ps: [ ps.tomlkit ]);
-  makeRemoveSpecialDependenciesHook =
-    { fields
-    , kind
-    ,
-    }:
+  makeRemoveSpecialDependenciesHook = { fields, kind }:
     nonOverlayedPython.pkgs.callPackage
       (
         _:
@@ -57,10 +45,7 @@ in
   pipBuildHook =
     callPackage
       (
-        { pip
-        , wheel
-        ,
-        }:
+        { pip, wheel }:
         makeSetupHook
           ({
             name = "pip-build-hook.sh";
@@ -118,9 +103,7 @@ in
             '';
           };
 
-          pythonPath =
-            [ ]
-            ++ lib.optional (lib.versionOlder python.version "3.9") unparser;
+          pythonPath = lib.optional (lib.versionOlder python.version "3.9") unparser;
         in
         makeSetupHook
           {
@@ -131,20 +114,6 @@ in
             };
           }
           ./python-requires-patch-hook.sh
-      )
-      { };
-
-  # When the "wheel" package itself is a wheel the nixpkgs hook (which pulls in "wheel") leads to infinite recursion
-  # It doesn't _really_ depend on wheel though, it just copies the wheel.
-  wheelUnpackHook =
-    callPackage
-      (
-        _:
-        makeSetupHook
-          {
-            name = "wheel-unpack-hook.sh";
-          }
-          ./wheel-unpack-hook.sh
       )
       { };
 }

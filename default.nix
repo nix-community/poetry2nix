@@ -150,8 +150,6 @@ lib.makeScope pkgs.newScope (self: {
       };
       getFunctorFn = fn: if builtins.typeOf fn == "set" then fn.__functor else fn;
 
-      poetryPkg = pkgs.callPackage ./pkgs/poetry { inherit python; poetry2nix = self; };
-
       scripts = pyProject.tool.poetry.scripts or { };
       hasScripts = scripts != { };
       scriptsPackage = self.mkPoetryScriptsPackage {
@@ -250,10 +248,6 @@ lib.makeScope pkgs.newScope (self: {
                   mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
                     inherit lib python poetryLib evalPep508;
                   };
-
-                  # # Use poetry-core from the poetry build (pep517/518 build-system)
-                  poetry-core = poetryPkg.passthru.python.pkgs.poetry-core;
-                  poetry = poetryPkg;
 
                   __toPluginAble = toPluginAble self;
                 } // lib.optionalAttrs (! super ? setuptools-scm) {

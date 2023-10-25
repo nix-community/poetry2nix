@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "trivial"
+name = "test-sphinx5"
 version = "0.1.0"
-description = "poetry2nix pytest-randomly test"
+description = "Test of sphinx 5+"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pytest-randomly = "^3.10.1"
+python = "^3.9"
+sphinx = "^5"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1"]
 build-backend = "poetry.core.masonry.api"

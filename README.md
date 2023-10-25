@@ -61,8 +61,6 @@ poetry2nix.mkPoetryApplication {
 }
 ```
 
-See [./pkgs/poetry/default.nix](./pkgs/poetry/default.nix) for a working example.
-
 #### Dependency environment
 
 The resulting derivation also has the passthru attribute `dependencyEnv`, which is an environment with a python interpreter, all non-development dependencies and your application.

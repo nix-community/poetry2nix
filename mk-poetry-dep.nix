@@ -35,7 +35,7 @@ pythonPackages.callPackage
         ;
       fileCandidates =
         let
-          supportedRegex = ("^.*(" + builtins.concatStringsSep "|" supportedExtensions + ")");
+          supportedRegex = "^.*(" + builtins.concatStringsSep "|" supportedExtensions + ")";
           matchesVersion = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." "+" ] [ "\\." "\\+" ] version + ".*$") fname != null;
           hasSupportedExtension = fname: builtins.match supportedRegex fname != null;
           isCompatibleEgg = fname: ! lib.strings.hasSuffix ".egg" fname || lib.strings.hasSuffix "py${python.pythonVersion}.egg" fname;
@@ -76,10 +76,10 @@ pythonPackages.callPackage
           # the `wheel` package cannot be built from a wheel, since that requires the wheel package
           # this causes a circular dependency so we special-case ignore its `preferWheel` attribute value
           entries = (if preferWheel' then binaryDist ++ sourceDist else sourceDist ++ binaryDist) ++ eggs;
-          lockFileEntry = (
+          lockFileEntry =
             if lib.length entries > 0 then builtins.head entries
             else throw "Missing suitable source/wheel file entry for ${name}"
-          );
+          ;
           _isEgg = isEgg lockFileEntry;
         in
         rec {
@@ -116,9 +116,8 @@ pythonPackages.callPackage
       ++ lib.optional (!pythonPackages.isPy27) hooks.poetry2nixPythonRequiresPatchHook
       ++ lib.optional (isLocked && (getManyLinuxDeps fileInfo.name).str != null) autoPatchelfHook
       ++ lib.optionals (format == "wheel") [
-        hooks.wheelUnpackHook
-        pythonPackages.pipInstallHook
-        pythonPackages.setuptools
+        pythonPackages.wheelUnpackHook
+        pythonPackages.pypaInstallHook
       ]
       ++ lib.optionals (format == "pyproject") [
         hooks.removePathDependenciesHook
@@ -126,21 +125,18 @@ pythonPackages.callPackage
         hooks.pipBuildHook
       ];
 
-      buildInputs = (
-        lib.optional (isLocked) (getManyLinuxDeps fileInfo.name).pkg
-        ++ lib.optional isDirectory buildSystemPkgs
-        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools
-      );
+      buildInputs = lib.optional isLocked (getManyLinuxDeps fileInfo.name).pkg
+        ++ lib.optional isDirectory buildSystemPkgs;
 
       propagatedBuildInputs =
         let
           compat = isCompatible (poetryLib.getPythonVersion python);
           deps = lib.filterAttrs
-            (n: v: v)
+            (_: v: v)
             (
               lib.mapAttrs
                 (
-                  n: v:
+                  _: v:
                     let
                       constraints = v.python or "";
                       pep508Markers = v.markers or "";

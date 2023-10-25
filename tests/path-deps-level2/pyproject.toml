@@ -9,5 +9,5 @@ python = "^3.6"
 path-deps = { path = "../path-deps" }
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
