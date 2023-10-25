@@ -1,4 +1,4 @@
-{ lib, python3, poetry2nix, runCommand }:
+{ python3, poetry2nix, runCommand }:
 let
   p = poetry2nix.mkPoetryApplication {
     python = python3;
@@ -8,21 +8,21 @@ let
     overrides = [
       ((
         poetry2nix.defaultPoetryOverrides.overrideOverlay (
-          self: super: {
+          _self: super: {
             alembic = super.alembic.overridePythonAttrs (
-              old: {
+              _old: {
                 TESTING_FOOBAR = 42;
               }
             );
           }
         )
-      ).extend (pyself: pysuper: { })) # Test .extend for good measure
+      ).extend (_pyself: _pysuper: { })) # Test .extend for good measure
     ];
   };
 in
 runCommand "test"
 { } ''
-  x=${builtins.toString (p.python.pkgs.alembic.TESTING_FOOBAR)}
+  x=${builtins.toString p.python.pkgs.alembic.TESTING_FOOBAR}
   [ "$x" = "42" ] || exit 1
   mkdir $out
 ''

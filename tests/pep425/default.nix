@@ -1,4 +1,4 @@
-{ writeText, stdenv, lib, pep425, pep425OSX, pep425PythonOldest }:
+{ lib, pep425, pep425OSX, pep425PythonOldest }:
 
 lib.debug.runTests {
 
@@ -14,7 +14,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425.selectWheel cs);
+      expr = pep425.selectWheel cs;
       expected = [{ file = "grpcio-1.25.0-cp27-cp27m-manylinux2010_x86_64.whl"; }];
     };
 
@@ -26,7 +26,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425OSX.selectWheel cs);
+      expr = pep425OSX.selectWheel cs;
       expected = [{ file = "grpcio-1.25.0-cp27-cp27m-macosx_10_10_x86_64.whl"; }];
     };
 
@@ -42,7 +42,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425PythonOldest.selectWheel cs);
+      expr = pep425PythonOldest.selectWheel cs;
       expected = [{ file = "grpcio-1.25.0-cp37-cp37m-manylinux2010_x86_64.whl"; }];
     };
 
@@ -54,7 +54,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425OSX.selectWheel cs);
+      expr = pep425OSX.selectWheel cs;
       expected = [{ file = "grpcio-1.25.0-cp27-cp27m-macosx_10_12_x86_64.whl"; }];
     };
 
@@ -66,7 +66,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425OSX.selectWheel cs);
+      expr = pep425OSX.selectWheel cs;
       expected = [ ];
     };
 
@@ -78,7 +78,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425.selectWheel cs);
+      expr = pep425.selectWheel cs;
       expected = [{ file = "grpcio-1.25.0-cp27-cp27m-manylinux1_x86_64.whl"; }];
     };
 
@@ -90,7 +90,7 @@ lib.debug.runTests {
       ];
     in
     {
-      expr = (pep425.selectWheel cs);
+      expr = pep425.selectWheel cs;
       expected = [ ];
     };
 

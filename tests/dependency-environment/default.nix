@@ -8,11 +8,9 @@ let
   };
 
   # Test support for overriding the app passed to the environment
-  overridden = (
-    app.overrideAttrs (old: {
-      name = "${old.pname}-overridden-${old.version}";
-    })
-  );
+  overridden = app.overrideAttrs (old: {
+    name = "${old.pname}-overridden-${old.version}";
+  });
   depEnv = app.dependencyEnv.override {
     app = overridden;
   };

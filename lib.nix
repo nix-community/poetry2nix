@@ -97,7 +97,7 @@ let
   #   hash: SRI hash
   #   kind: Language implementation and version tag
   predictURLFromPypi = lib.makeOverridable (
-    { pname, file, hash, kind }:
+    { pname, file, kind }:
     "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}"
   );
 
@@ -114,9 +114,9 @@ let
   fetchFromPypi = lib.makeOverridable (
     { pname, file, version, hash, kind, curlOpts ? "" }:
     let
-      predictedURL = predictURLFromPypi { inherit pname file hash kind; };
+      predictedURL = predictURLFromPypi { inherit pname file kind; };
     in
-    (pkgs.stdenvNoCC.mkDerivation {
+    pkgs.stdenvNoCC.mkDerivation {
       name = file;
       nativeBuildInputs = [
         pkgs.buildPackages.curl
@@ -141,16 +141,16 @@ let
       passthru = {
         urls = [ predictedURL ]; # retain compatibility with nixpkgs' fetchurl
       };
-    })
+    }
   );
 
   fetchFromLegacy = lib.makeOverridable (
     { python, pname, url, file, hash }:
     let
       pathParts =
-        (builtins.filter
+        builtins.filter
           ({ prefix, path }: "NETRC" == prefix)
-          builtins.nixPath);
+          builtins.nixPath;
       netrc_file = if (pathParts != [ ]) then (builtins.head pathParts).path else "";
     in
     pkgs.runCommand file

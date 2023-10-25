@@ -5,13 +5,21 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/master";
 
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-github-actions = {
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, nix-github-actions }:
+  outputs = { self, nixpkgs, flake-utils, nix-github-actions, treefmt-nix, systems }:
+    let
+      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
+      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
+    in
+
     {
       overlay = import ./overlay.nix;
 
@@ -32,7 +40,9 @@
               let
                 pkgs = mkPkgs "x86_64-linux";
               in
-              import ./tests { inherit pkgs; };
+              import ./tests { inherit pkgs; } // {
+                formatting = treefmtEval.x86_64-linux.config.build.check self;
+              };
 
             x86_64-darwin =
               let
@@ -84,6 +94,8 @@
         poetry2nix = import ./default.nix { inherit pkgs; };
       in
       rec {
+        formatter = treefmtEval.${system}.config.build.wrapper;
+
         packages = {
           poetry2nix = poetry2nix.cli;
           default = poetry2nix.cli;

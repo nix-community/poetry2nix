@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
-, poetryLib ? import ./lib.nix { inherit lib pkgs; stdenv = pkgs.stdenv; }
+, poetryLib ? import ./lib.nix { inherit lib pkgs; inherit (pkgs) stdenv; }
 }:
 let
   inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
@@ -11,7 +11,7 @@ let
   getLicenseBySpdxId = spdxId: spdxLicenses.${spdxId} or spdxId;
 
   # Experimental withPlugins functionality
-  toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
+  inherit ((import ./plugins.nix { inherit pkgs lib; })) toPluginAble;
 
   # List of known build systems that are passed through from nixpkgs unmodified
   knownBuildSystems = lib.importJSON ./known-build-systems.json;
@@ -35,19 +35,17 @@ let
           compat = isCompatible (poetryLib.getPythonVersion py);
           depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames depSet);
         in
-        (
-          builtins.map
-            (
-              dep:
-              let
-                pkg = py.pkgs."${normalizePackageName dep}";
-                constraints = depSet.${dep}.python or "";
-                isCompat = compat constraints;
-              in
-              if isCompat then pkg else null
-            )
-            depAttrs
-        );
+        builtins.map
+          (
+            dep:
+            let
+              pkg = py.pkgs."${normalizePackageName dep}";
+              constraints = depSet.${dep}.python or "";
+              isCompat = compat constraints;
+            in
+            if isCompat then pkg else null
+          )
+          depAttrs;
 
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;
@@ -156,7 +154,7 @@ lib.makeScope pkgs.newScope (self: {
         inherit python scripts;
       };
 
-      editablePackageSources' = lib.filterAttrs (name: path: path != null) editablePackageSources;
+      editablePackageSources' = lib.filterAttrs (_name: path: path != null) editablePackageSources;
       hasEditable = editablePackageSources' != { };
       editablePackage = self.mkPoetryEditablePackage {
         inherit pyProject python;
@@ -205,12 +203,10 @@ lib.makeScope pkgs.newScope (self: {
                       files = pkgMeta.files or lockFiles.${normalizedName};
                       pythonPackages = self;
 
-                      sourceSpec = (
-                        (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
-                          or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
-                          or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies or { }).${normalizedName} # Poetry 1.2.0+
-                          or { }
-                      );
+                      sourceSpec = (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
+                        or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
+                        or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies or { }).${normalizedName} # Poetry 1.2.0+
+                        or { };
                     }
                   );
                 }
@@ -228,7 +224,7 @@ lib.makeScope pkgs.newScope (self: {
         (
           [
             # Remove Python packages aliases with non-normalized names to avoid issues with infinite recursion (issue #750).
-            (self: super: {
+            (_self: super: {
               # Upstream nixpkgs uses non canonical names
               async-generator = super.async-generator or super.async_generator or null;
             })
@@ -257,8 +253,8 @@ lib.makeScope pkgs.newScope (self: {
             )
 
             # Fix infinite recursion in a lot of packages because of checkInputs
-            (self: super: lib.mapAttrs
-              (name: value: (
+            (_self: super: lib.mapAttrs
+              (_name: value: (
                 if lib.isDerivation value && lib.hasAttr "overridePythonAttrs" value
                 then value.overridePythonAttrs (_: { doCheck = false; })
                 else value
@@ -266,19 +262,19 @@ lib.makeScope pkgs.newScope (self: {
               super)
 
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (self: super: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
+            (_self: _super: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
 
           ] ++ # User provided overrides
           (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
-      packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
+      packageOverrides = lib.foldr lib.composeExtensions (_self: _super: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
       inputAttrs = mkInputAttrs { inherit py pyProject groups checkGroups extras; attrs = { }; includeBuildSystem = false; };
 
-      requiredPythonModules = python.pkgs.requiredPythonModules;
+      inherit (python.pkgs) requiredPythonModules;
       /* Include all the nested dependencies which are required for each package.
         This guarantees that using the "poetryPackages" attribute will return
         complete list of dependencies for the poetry project to be portable.
@@ -290,7 +286,7 @@ lib.makeScope pkgs.newScope (self: {
       poetryPackages = storePackages
         ++ lib.optional hasScripts scriptsPackage
         ++ lib.optional hasEditable editablePackage;
-      poetryLock = poetryLock;
+      inherit poetryLock;
       inherit pyProject;
     };
 
@@ -310,7 +306,7 @@ lib.makeScope pkgs.newScope (self: {
     , python ? pkgs.python3
     , preferWheels ? false
     , editablePackageSources ? { }
-    , extraPackages ? ps: [ ]
+    , extraPackages ? _ps: [ ]
     , groups ? [ "dev" ]
     , checkGroups ? [ "dev" ]
     , extras ? [ "*" ]
@@ -322,24 +318,22 @@ lib.makeScope pkgs.newScope (self: {
 
       # Automatically add dependencies with develop = true as editable packages, but only if path dependencies
       getEditableDeps = set: lib.mapAttrs
-        (name: value: projectDir + "/${value.path}")
-        (lib.filterAttrs (name: dep: dep.develop or false && hasAttr "path" dep) set);
+        (_name: value: projectDir + "/${value.path}")
+        (lib.filterAttrs (_name: dep: dep.develop or false && hasAttr "path" dep) set);
 
       excludedEditablePackageNames = builtins.filter
         (pkg: editablePackageSources."${pkg}" == null)
         (builtins.attrNames editablePackageSources);
 
-      allEditablePackageSources = (
-        (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
+      allEditablePackageSources = (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
         // (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
         // (
-          # Poetry>=1.2.0
-          if pyProject.tool.poetry.group or { } != { } then
-            builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
-          else { }
-        )
-        // editablePackageSources
-      );
+        # Poetry>=1.2.0
+        if pyProject.tool.poetry.group or { } != { } then
+          builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
+        else { }
+      )
+        // editablePackageSources;
 
       editablePackageSources' = builtins.removeAttrs
         allEditablePackageSources
@@ -413,7 +407,7 @@ lib.makeScope pkgs.newScope (self: {
           ];
         } // {
           pname = normalizePackageName pyProject.tool.poetry.name;
-          version = pyProject.tool.poetry.version;
+          inherit (pyProject.tool.poetry) version;
 
           inherit src;
 
