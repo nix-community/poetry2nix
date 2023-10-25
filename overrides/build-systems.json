@@ -20577,6 +20577,9 @@
   "types-aiobotocore-sts": [
     "setuptools"
   ],
+  "types-aiofiles": [
+    "setuptools"
+  ],
   "types-awscrt": [
     "poetry-core"
   ],
@@ -20652,6 +20655,9 @@
   "types-psycopg2": [
     "setuptools"
   ],
+  "types-pycocotools": [
+    "setuptools"
+  ],
   "types-pygments": [
     "setuptools"
   ],
@@ -20689,6 +20695,9 @@
     "setuptools"
   ],
   "types-toml": [
+    "setuptools"
+  ],
+  "types-tqdm": [
     "setuptools"
   ],
   "types-typed-ast": [
