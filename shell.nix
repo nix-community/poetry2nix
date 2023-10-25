@@ -8,6 +8,8 @@
     pkgs.nix-prefetch-git
     pkgs.nix-eval-jobs
     pkgs.nix-build-uncached
+    pkgs.statix
+    pkgs.deadnix
   ]
 }:
 

@@ -27,7 +27,27 @@ jobs:
         nix_path: nixpkgs=channel:nixos-unstable
     - uses: actions/checkout@v4
     - name: Check format
-      run: nix-shell --arg packages 'pkgs:[ pkgs.nixpkgs-fmt ]' --run 'nixpkgs-fmt --check .'
+      run: nix run 'nixpkgs#nixpkgs-fmt' -- --check .
+
+  statix:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: cachix/install-nix-action@v23
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - uses: actions/checkout@v4
+    - name: Check format with statix
+      run: nix run 'nixpkgs#statix' -- check
+
+  deadnix:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: cachix/install-nix-action@v23
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+    - uses: actions/checkout@v4
+    - name: Check format with deadnix
+      run: nix run 'nixpkgs#deadnix'
 
   black-fmt:
     runs-on: ubuntu-latest
