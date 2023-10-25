@@ -40,16 +40,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1698179980,
-        "narHash": "sha256-3eYVRLDDBxG+49nb30pxTmEl3imzB7faSwQmG/dY1ew=",
-        "owner": "cpcloud",
+        "lastModified": 1698245295,
+        "narHash": "sha256-yU2VfpoPJ2SkcYXlOlzVK7dgxg4UgHtcovhvvyjB5Zw=",
+        "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "b41af5b5c9aa421820296bc9d50ae9dd1bf056c1",
+        "rev": "586212ee7774416c35e2f6fa37c81f72caacc467",
         "type": "github"
       },
       "original": {
-        "owner": "cpcloud",
-        "ref": "test-poetry-fixes",
+        "owner": "NixOS",
+        "ref": "master",
         "repo": "nixpkgs",
         "type": "github"
       }
