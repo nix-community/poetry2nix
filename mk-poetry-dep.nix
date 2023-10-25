@@ -35,13 +35,12 @@ pythonPackages.callPackage
         ;
       fileCandidates =
         let
-          supportedRegex = ("^.*(" + builtins.concatStringsSep "|" supportedExtensions + ")");
+          supportedRegex = "^.*(" + builtins.concatStringsSep "|" supportedExtensions + ")";
           matchesVersion = fname: builtins.match ("^.*" + builtins.replaceStrings [ "." "+" ] [ "\\." "\\+" ] version + ".*$") fname != null;
           hasSupportedExtension = fname: builtins.match supportedRegex fname != null;
           isCompatibleEgg = fname: ! lib.strings.hasSuffix ".egg" fname || lib.strings.hasSuffix "py${python.pythonVersion}.egg" fname;
         in
         builtins.filter (f: matchesVersion f.file && hasSupportedExtension f.file && isCompatibleEgg f.file) files;
-      toPath = s: pwd + "/${s}";
       isLocked = lib.length fileCandidates > 0;
       isSource = source != null;
       isGit = isSource && source.type == "git";
@@ -50,7 +49,7 @@ pythonPackages.callPackage
       isDirectory = isSource && source.type == "directory";
       isFile = isSource && source.type == "file";
       isLegacy = isSource && source.type == "legacy";
-      localDepPath = toPath source.url;
+      localDepPath = pwd + "/${source.url}";
 
       buildSystemPkgs =
         let
@@ -76,10 +75,8 @@ pythonPackages.callPackage
           # the `wheel` package cannot be built from a wheel, since that requires the wheel package
           # this causes a circular dependency so we special-case ignore its `preferWheel` attribute value
           entries = (if preferWheel' then binaryDist ++ sourceDist else sourceDist ++ binaryDist) ++ eggs;
-          lockFileEntry = (
-            if lib.length entries > 0 then builtins.head entries
-            else throw "Missing suitable source/wheel file entry for ${name}"
-          );
+          lockFileEntry = if lib.length entries > 0 then builtins.head entries
+            else throw "Missing suitable source/wheel file entry for ${name}";
           _isEgg = isEgg lockFileEntry;
         in
         rec {
@@ -126,11 +123,9 @@ pythonPackages.callPackage
         hooks.pipBuildHook
       ];
 
-      buildInputs = (
-        lib.optional (isLocked) (getManyLinuxDeps fileInfo.name).pkg
+      buildInputs = lib.optional isLocked (getManyLinuxDeps fileInfo.name).pkg
         ++ lib.optional isDirectory buildSystemPkgs
-        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools
-      );
+        ++ lib.optional (stdenv.buildPlatform != stdenv.hostPlatform) pythonPackages.setuptools;
 
       propagatedBuildInputs =
         let

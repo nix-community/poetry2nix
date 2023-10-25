@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
-, poetryLib ? import ./lib.nix { inherit lib pkgs; stdenv = pkgs.stdenv; }
+, poetryLib ? import ./lib.nix { inherit lib pkgs; inherit (pkgs) stdenv; }
 }:
 let
   inherit (poetryLib) isCompatible readTOML normalizePackageName normalizePackageSet;
@@ -11,7 +11,7 @@ let
   getLicenseBySpdxId = spdxId: spdxLicenses.${spdxId} or spdxId;
 
   # Experimental withPlugins functionality
-  toPluginAble = (import ./plugins.nix { inherit pkgs lib; }).toPluginAble;
+  inherit (import ./plugins.nix { inherit pkgs lib; }) toPluginAble;
 
   # List of known build systems that are passed through from nixpkgs unmodified
   knownBuildSystems = lib.importJSON ./known-build-systems.json;
@@ -35,8 +35,7 @@ let
           compat = isCompatible (poetryLib.getPythonVersion py);
           depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames depSet);
         in
-        (
-          builtins.map
+        builtins.map
             (
               dep:
               let
@@ -46,8 +45,7 @@ let
               in
               if isCompat then pkg else null
             )
-            depAttrs
-        );
+            depAttrs;
 
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;
@@ -207,12 +205,10 @@ lib.makeScope pkgs.newScope (self: {
                       files = pkgMeta.files or lockFiles.${normalizedName};
                       pythonPackages = self;
 
-                      sourceSpec = (
-                        (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
+                      sourceSpec = (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
                           or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
                           or (normalizePackageSet pyProject.tool.poetry.group.dev.dependencies or { }).${normalizedName} # Poetry 1.2.0+
-                          or { }
-                      );
+                          or { };
                     }
                   );
                 }
@@ -252,7 +248,7 @@ lib.makeScope pkgs.newScope (self: {
                   };
 
                   # # Use poetry-core from the poetry build (pep517/518 build-system)
-                  poetry-core = poetryPkg.passthru.python.pkgs.poetry-core;
+                  inherit (poetryPkg.passthru.python.pkgs) poetry-core;
                   poetry = poetryPkg;
 
                   __toPluginAble = toPluginAble self;
@@ -284,7 +280,7 @@ lib.makeScope pkgs.newScope (self: {
 
       inputAttrs = mkInputAttrs { inherit py pyProject groups checkGroups extras; attrs = { }; includeBuildSystem = false; };
 
-      requiredPythonModules = python.pkgs.requiredPythonModules;
+      inherit (python.pkgs) requiredPythonModules;
       /* Include all the nested dependencies which are required for each package.
         This guarantees that using the "poetryPackages" attribute will return
         complete list of dependencies for the poetry project to be portable.
@@ -296,7 +292,7 @@ lib.makeScope pkgs.newScope (self: {
       poetryPackages = storePackages
         ++ lib.optional hasScripts scriptsPackage
         ++ lib.optional hasEditable editablePackage;
-      poetryLock = poetryLock;
+      inherit poetryLock;
       inherit pyProject;
     };
 
@@ -335,8 +331,7 @@ lib.makeScope pkgs.newScope (self: {
         (pkg: editablePackageSources."${pkg}" == null)
         (builtins.attrNames editablePackageSources);
 
-      allEditablePackageSources = (
-        (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
+      allEditablePackageSources = (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
         // (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
         // (
           # Poetry>=1.2.0
@@ -344,8 +339,7 @@ lib.makeScope pkgs.newScope (self: {
             builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
           else { }
         )
-        // editablePackageSources
-      );
+        // editablePackageSources;
 
       editablePackageSources' = builtins.removeAttrs
         allEditablePackageSources
@@ -419,7 +413,7 @@ lib.makeScope pkgs.newScope (self: {
           ];
         } // {
           pname = normalizePackageName pyProject.tool.poetry.name;
-          version = pyProject.tool.poetry.version;
+          inherit (pyProject.tool.poetry) version;
 
           inherit src;
 

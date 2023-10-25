@@ -82,7 +82,7 @@ let
   #
   selectWheel = files:
     let
-      filesWithoutSources = (builtins.filter (x: hasSuffix ".whl" x.file) files);
+      filesWithoutSources = builtins.filter (x: hasSuffix ".whl" x.file) files;
       isPyAbiCompatible = pyabi: x: x == "none" || hasPrefix pyabi x || hasPrefix x pyabi || (
         # The CPython stable ABI is abi3 as in the shared library suffix.
         python.passthru.implementation == "cpython" &&
@@ -128,7 +128,7 @@ let
     in
     if (builtins.length filtered == 0)
     then [ ]
-    else choose (filtered);
+    else choose filtered;
 in
 {
   inherit selectWheel toWheelAttrs isPyVersionCompatible;

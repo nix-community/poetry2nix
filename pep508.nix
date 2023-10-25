@@ -46,24 +46,22 @@ let
         findSubExpressionsFun
         {
           exprs = [ ];
-          expr = expr;
+          inherit expr;
           pos = 0;
           openP = 0;
           exprPos = 0;
           startPos = 0;
         }
         (lib.stringToCharacters expr);
-      tailExpr = (substr acc.exprPos acc.pos expr);
+      tailExpr = substr acc.exprPos acc.pos expr;
       tailExprs = if tailExpr != "" then [ tailExpr ] else [ ];
     in
     acc.exprs ++ tailExprs;
   parseExpressions = exprs:
     let
-      splitCond = (
-        s: builtins.map
+      splitCond = s: builtins.map
           (x: stripStr (if builtins.typeOf x == "list" then (builtins.elemAt x 0) else x))
-          (builtins.split " (and|or) " (s + " "))
-      );
+          (builtins.split " (and|or) " (s + " "));
       mapfn = expr: (
         if (builtins.match "^ ?$" expr != null) then null  # Filter empty
         else if (builtins.elem expr [ "and" "or" ]) then {
@@ -88,31 +86,23 @@ let
   transformExpressions = exprs:
     let
       variables = {
-        os_name = (
-          if python.pname == "jython" then "java"
-          else "posix"
-        );
-        sys_platform = (
-          if stdenv.isLinux then "linux"
+        os_name = if python.pname == "jython" then "java"
+          else "posix";
+        sys_platform = if stdenv.isLinux then "linux"
           else if stdenv.isDarwin then "darwin"
-          else throw "Unsupported platform"
-        );
+          else throw "Unsupported platform";
         platform_machine = targetMachine;
         platform_python_implementation =
           let
             impl = python.passthru.implementation;
           in
-          (
-            if impl == "cpython" then "CPython"
+          if impl == "cpython" then "CPython"
             else if impl == "pypy" then "PyPy"
-            else throw "Unsupported implementation ${impl}"
-          );
+            else throw "Unsupported implementation ${impl}";
         platform_release = ""; # Field not reproducible
-        platform_system = (
-          if stdenv.isLinux then "Linux"
+        platform_system = if stdenv.isLinux then "Linux"
           else if stdenv.isDarwin then "Darwin"
-          else throw "Unsupported platform"
-        );
+          else throw "Unsupported platform";
         platform_version = ""; # Field not reproducible
         python_version = python.passthru.pythonVersion;
         python_full_version = python.version;
@@ -191,7 +181,7 @@ let
           (
             let
               expr = exprs;
-              result = (op."${expr.value.op}") (builtins.elemAt expr.value.values 0) (builtins.elemAt expr.value.values 1);
+              result = op."${expr.value.op}" (builtins.elemAt expr.value.values 0) (builtins.elemAt expr.value.values 1);
             in
             {
               type = "value";

@@ -114,9 +114,7 @@ in
             '';
           };
 
-          pythonPath =
-            [ ]
-            ++ lib.optional (lib.versionOlder python.version "3.9") unparser;
+          pythonPath = lib.optionals (lib.versionOlder python.version "3.9") [ unparser ];
         in
         makeSetupHook
           {

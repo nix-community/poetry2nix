@@ -1,11 +1,15 @@
 {
   description = "Poetry2nix flake";
 
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  inputs.nix-github-actions.url = "github:nix-community/nix-github-actions";
-  inputs.nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+    nix-github-actions = {
+      url = "github:nix-community/nix-github-actions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
 
   outputs = { self, nixpkgs, flake-utils, nix-github-actions }:
     {
@@ -40,7 +44,7 @@
                 # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
                 aggregate = pkgs.runCommand "darwin-aggregate"
                   {
-                    env.TEST_INPUTS = (lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (n: v: lib.isDerivation v) tests)));
+                    env.TEST_INPUTS = lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (n: v: lib.isDerivation v) tests));
                   } "touch $out";
               };
           };
