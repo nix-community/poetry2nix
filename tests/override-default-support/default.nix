@@ -1,4 +1,4 @@
-{ lib, python3, poetry2nix, runCommand }:
+{ python3, poetry2nix, runCommand }:
 let
   p = poetry2nix.mkPoetryApplication {
     python = python3;
@@ -8,15 +8,15 @@ let
     overrides = [
       ((
         poetry2nix.defaultPoetryOverrides.overrideOverlay (
-          self: super: {
+          _: super: {
             alembic = super.alembic.overridePythonAttrs (
-              old: {
+              _: {
                 TESTING_FOOBAR = 42;
               }
             );
           }
         )
-      ).extend (pyself: pysuper: { })) # Test .extend for good measure
+      ).extend (_: _: { })) # Test .extend for good measure
     ];
   };
 in

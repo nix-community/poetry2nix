@@ -1,4 +1,4 @@
-{ lib, pkgs, stdenv }:
+{ lib, pkgs, ... }:
 let
   inherit (import ./semver.nix { inherit lib ireplace; }) satisfiesSemver;
   inherit (builtins) genList length;
@@ -97,7 +97,7 @@ let
   #   hash: SRI hash
   #   kind: Language implementation and version tag
   predictURLFromPypi = lib.makeOverridable (
-    { pname, file, hash, kind }:
+    { pname, file, kind, ... }:
     "https://files.pythonhosted.org/packages/${kind}/${lib.toLower (builtins.substring 0 1 file)}/${pname}/${file}"
   );
 

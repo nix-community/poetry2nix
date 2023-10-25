@@ -19,7 +19,7 @@ let
   pkgs = import flake.inputs.nixpkgs {
     overlays = [
       flake.overlay
-      (self: super: {
+      (self: _: {
         p2nix-tools = self.callPackage ./tools { };
       })
     ];

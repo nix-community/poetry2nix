@@ -16,7 +16,7 @@
           mkPkgs = system: import nixpkgs {
             config = {
               allowAliases = false;
-              allowInsecurePredicate = x: true;
+              allowInsecurePredicate = _: true;
             };
             overlays = [ self.overlay ];
             inherit system;

@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python3, runCommand }:
+{ poetry2nix, python3, runCommand }:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -6,7 +6,6 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = true;
   };
-  py = env.python;
 in
 # Note: torch.cuda() will print False, even if you have a GPU, when this runs *during test.*
   # But if you run the script below in your shell (rather than during build), it will print True.

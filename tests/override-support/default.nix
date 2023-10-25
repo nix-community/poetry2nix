@@ -1,4 +1,4 @@
-{ lib, python3, poetry2nix, runCommand }:
+{ python3, poetry2nix, runCommand }:
 let
   p = poetry2nix.mkPoetryApplication {
     python = python3;
@@ -6,9 +6,9 @@ let
     poetrylock = ./poetry.lock;
     pyproject = ./pyproject.toml;
     overrides = poetry2nix.overrides.withDefaults (
-      self: super: {
+      _: super: {
         alembic = super.alembic.overridePythonAttrs (
-          old: {
+          _: {
             TESTING_FOOBAR = 42;
           }
         );

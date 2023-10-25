@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python3, pkgs, runCommand }:
+{ poetry2nix, python3, pkgs }:
 let
   inherit (pkgs.stdenv) isLinux;
   env = poetry2nix.mkPoetryEnv {
@@ -7,7 +7,7 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      self: super: {
+      _: super: {
         markdown-it-py = super.markdown-it-py.override {
           preferWheel = isLinux;
         };

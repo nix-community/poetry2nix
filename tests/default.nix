@@ -4,7 +4,7 @@ in
 { pkgs ? import flake.inputs.nixpkgs {
     config = {
       allowAliases = false;
-      allowInsecurePredicate = x: true;
+      allowInsecurePredicate = _: true;
     };
     overlays = [ flake.overlay ];
   }
@@ -12,10 +12,6 @@ in
 let
   poetry = pkgs.callPackage ../pkgs/poetry { python = pkgs.python3; inherit poetry2nix; };
   poetry2nix = import ./.. { inherit pkgs; };
-  poetryLib = import ../lib.nix { inherit pkgs; lib = pkgs.lib; stdenv = pkgs.stdenv; };
-  pep425 = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python3; };
-  pep425PythonOldest = pkgs.callPackage ../pep425.nix { inherit poetryLib; python = pkgs.python38; };
-  pep425OSX = pkgs.callPackage ../pep425.nix { inherit poetryLib; isLinux = false; python = pkgs.python3; };
   callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
 
   inherit (pkgs) lib stdenv;

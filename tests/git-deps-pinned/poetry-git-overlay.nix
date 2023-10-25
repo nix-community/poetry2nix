@@ -1,6 +1,5 @@
 { pkgs }:
-self: super: {
-
+_: super: {
   alembic = super.alembic.overridePythonAttrs (
     _: {
       src = pkgs.fetchgit {
@@ -30,5 +29,4 @@ self: super: {
       };
     }
   );
-
 }

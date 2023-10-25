@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python39, fetchFromGitHub }:
+{ poetry2nix, python39, fetchFromGitHub }:
 
 poetry2nix.mkPoetryApplication {
   projectDir = fetchFromGitHub {

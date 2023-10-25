@@ -159,9 +159,8 @@ let
         else if v == "False" then false
         else builtins.fromJSON v
       );
-      hasElem = needle: haystack: builtins.elem needle (builtins.filter (x: builtins.typeOf x == "string") (builtins.split " " haystack));
       op = {
-        "true" = x: y: true;
+        "true" = _: _: true;
         "<=" = x: y: op.">=" y x;
         "<" = x: y: lib.versionOlder (unmarshal x) (unmarshal y);
         "!=" = x: y: x != y;

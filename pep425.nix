@@ -1,6 +1,6 @@
 { lib, stdenv, poetryLib, python, isLinux ? stdenv.isLinux }:
 let
-  inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removePrefix removeSuffix;
+  inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removeSuffix;
   targetMachine = poetryLib.getTargetMachine stdenv;
 
   pythonVer =
@@ -59,7 +59,7 @@ let
     else (builtins.filter (x: hasInfix v x.file) candidates) ++ (findBestMatches vs candidates);
 
   # x = "cpXX" | "py2" | "py3" | "py2.py3"
-  isPyVersionCompatible = pyver@{ major, minor, tags }: x:
+  isPyVersionCompatible = { major, minor, tags }: x:
     let
       isCompat = m:
         builtins.elem m.tag tags

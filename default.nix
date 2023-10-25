@@ -158,7 +158,7 @@ lib.makeScope pkgs.newScope (self: {
         inherit python scripts;
       };
 
-      editablePackageSources' = lib.filterAttrs (name: path: path != null) editablePackageSources;
+      editablePackageSources' = lib.filterAttrs (_: path: path != null) editablePackageSources;
       hasEditable = editablePackageSources' != { };
       editablePackage = self.mkPoetryEditablePackage {
         inherit pyProject python;
@@ -230,7 +230,7 @@ lib.makeScope pkgs.newScope (self: {
         (
           [
             # Remove Python packages aliases with non-normalized names to avoid issues with infinite recursion (issue #750).
-            (self: super: {
+            (_: super: {
               # Upstream nixpkgs uses non canonical names
               async-generator = super.async-generator or super.async_generator or null;
             })
@@ -272,14 +272,14 @@ lib.makeScope pkgs.newScope (self: {
               super)
 
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (self: super: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
+            (_: _: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
 
           ] ++ # User provided overrides
           (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
-      packageOverrides = lib.foldr lib.composeExtensions (self: super: { }) overlays;
+      packageOverrides = lib.foldr lib.composeExtensions (_: _: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
       inputAttrs = mkInputAttrs { inherit py pyProject groups checkGroups extras; attrs = { }; includeBuildSystem = false; };
@@ -316,7 +316,7 @@ lib.makeScope pkgs.newScope (self: {
     , python ? pkgs.python3
     , preferWheels ? false
     , editablePackageSources ? { }
-    , extraPackages ? ps: [ ]
+    , extraPackages ? _: [ ]
     , groups ? [ "dev" ]
     , checkGroups ? [ "dev" ]
     , extras ? [ "*" ]
@@ -328,8 +328,8 @@ lib.makeScope pkgs.newScope (self: {
 
       # Automatically add dependencies with develop = true as editable packages, but only if path dependencies
       getEditableDeps = set: lib.mapAttrs
-        (name: value: projectDir + "/${value.path}")
-        (lib.filterAttrs (name: dep: dep.develop or false && hasAttr "path" dep) set);
+        (_: value: projectDir + "/${value.path}")
+        (lib.filterAttrs (_: dep: dep.develop or false && hasAttr "path" dep) set);
 
       excludedEditablePackageNames = builtins.filter
         (pkg: editablePackageSources."${pkg}" == null)

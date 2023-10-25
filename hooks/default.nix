@@ -1,12 +1,8 @@
 { python
 , stdenv
-, buildPackages
 , makeSetupHook
-, wheel
-, pip
 , pkgs
 , lib
-,
 }:
 let
   inherit (python.pythonForBuild.pkgs) callPackage;

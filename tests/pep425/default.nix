@@ -1,4 +1,4 @@
-{ writeText, stdenv, lib, pep425, pep425OSX, pep425PythonOldest }:
+{ lib, pep425, pep425OSX, pep425PythonOldest }:
 
 lib.debug.runTests {
 

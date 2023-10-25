@@ -14,7 +14,7 @@ poetry2nix.mkPoetryApplication {
         pytest-select = [ "poetry" ];
       };
     in
-    poetry2nix.defaultPoetryOverrides.extend (self: super:
+    poetry2nix.defaultPoetryOverrides.extend (_: super:
       builtins.mapAttrs
         (package: build-requirements:
           (builtins.getAttr package super).overridePythonAttrs (old: {
