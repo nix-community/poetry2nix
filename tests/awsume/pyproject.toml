@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "awsume-test"
+version = "0.1.0"
+description = "Test of awsume package"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+awsume = "^4.5.3"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

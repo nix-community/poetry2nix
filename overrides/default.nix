@@ -302,6 +302,14 @@ lib.composeManyExtensions [
           dontUseCmakeConfigure = true;
         }
       );
+
+      awsume = super.awsume.overridePythonAttrs(_: {
+        preBuild = ''
+          HOME="$(mktemp -d)"
+          export HOME
+        '';
+      });
+
       bcrypt =
         let
           getCargoHash = version: {
