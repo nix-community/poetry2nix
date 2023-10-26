@@ -1,4 +1,4 @@
-{ lib, pkgs, stdenv }:
+{ lib, pkgs, ... }:
 let
   inherit (import ./semver.nix { inherit lib ireplace; }) satisfiesSemver;
   inherit (builtins) genList length;

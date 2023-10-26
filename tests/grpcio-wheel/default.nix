@@ -1,4 +1,4 @@
-{ poetry2nix, python3, pkgs, runCommand }:
+{ poetry2nix, python3, pkgs }:
 let
   inherit (pkgs.stdenv) isLinux;
   env = poetry2nix.mkPoetryEnv {
