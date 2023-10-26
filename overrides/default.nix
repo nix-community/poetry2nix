@@ -2482,7 +2482,7 @@ lib.composeManyExtensions [
             pkgs.xorg.lndir
             pkgs.qt6.qmake
           ];
-          patches = [
+          patches = lib.optionals (!(old.src.isWheel or false)) [
             confirm-license
           ];
           env.NIX_CFLAGS_COMPILE = "-fpermissive";
