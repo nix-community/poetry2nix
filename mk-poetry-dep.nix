@@ -44,7 +44,6 @@ pythonPackages.callPackage
           isCompatibleEgg = fname: ! lib.strings.hasSuffix ".egg" fname || lib.strings.hasSuffix "py${python.pythonVersion}.egg" fname;
         in
         builtins.filter (f: matchesVersion f.file && hasSupportedExtension f.file && isCompatibleEgg f.file) files;
-      toPath = s: pwd + "/${s}";
       isLocked = lib.length fileCandidates > 0;
       isSource = source != null;
       isGit = isSource && source.type == "git";
@@ -53,7 +52,7 @@ pythonPackages.callPackage
       isDirectory = isSource && source.type == "directory";
       isFile = isSource && source.type == "file";
       isLegacy = isSource && source.type == "legacy";
-      localDepPath = toPath source.url;
+      localDepPath = pwd + "/${source.url}";
 
       buildSystemPkgs =
         let

@@ -1,4 +1,4 @@
-{ poetry2nix, runCommand }:
+{ poetry2nix }:
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
 }
