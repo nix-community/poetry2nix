@@ -141,6 +141,7 @@ in
   contourpy-no-wheel = callTest ./contourpy-no-wheel { };
   pytesseract = callTest ./pytesseract { };
   sphinx5 = callTest ./sphinx5 { };
+  subdirectory = callTest ./subdirectory { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
