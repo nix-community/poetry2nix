@@ -1754,14 +1754,14 @@ lib.composeManyExtensions [
       openbabel-wheel = super.openbabel-wheel.override { preferWheel = true; };
 
       # opencensus is a namespace package but it is distributed incorrectly
-      opencensus = super.opencensus.overridePythonAttrs (oldAttrs: {
+      opencensus = super.opencensus.overridePythonAttrs (_: {
         pythonNamespaces = [
           "opencensus.common"
         ];
       });
 
       # opencensus is a namespace package but it is distributed incorrectly
-      opencensus-context = super.opencensus-context.overridePythonAttrs (oldAttrs: {
+      opencensus-context = super.opencensus-context.overridePythonAttrs (_: {
         pythonNamespaces = [
           "opencensus.common"
         ];
