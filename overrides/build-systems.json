@@ -13412,7 +13412,6 @@
   ],
   "py-cpuinfo": [
     "cython",
-    "py-cpuinfo",
     "setuptools",
     "setuptools-scm"
   ],
