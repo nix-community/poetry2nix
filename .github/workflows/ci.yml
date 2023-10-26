@@ -81,6 +81,7 @@ jobs:
       - name: create a minimal python package
         working-directory: ${{ env.TESTDIR }}
         run: |
+          touch README.md
           mkdir poetry2nix_template_test
           touch poetry2nix_template_test/__init__.py
 
