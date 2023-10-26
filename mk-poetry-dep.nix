@@ -215,15 +215,14 @@ pythonPackages.callPackage
             else if isFile then
               localDepPath
             else if isLegacy then
-              fetchFromLegacy
+              pyproject-nix.fetchers.fetchFromLegacy
                 {
                   pname = name;
-                  inherit python;
                   inherit (fileInfo) file hash;
                   inherit (source) url;
                 }
             else
-              fetchFromPypi {
+              pyproject-nix.fetchers.fetchFromPypi {
                 pname = name;
                 inherit (fileInfo) file hash kind;
                 inherit version;
