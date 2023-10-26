@@ -22,7 +22,7 @@
         };
 
         devShells.default = pkgs.mkShell {
-          packages = [ poetry2nix.packages.${system}.poetry ];
+          packages = [ pkgs.poetry ];
         };
       });
 }
