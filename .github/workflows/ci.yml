@@ -70,6 +70,10 @@ jobs:
         working-directory: ${{ env.TESTDIR }}
         run: nix flake init --template "$GITHUB_WORKSPACE"
 
+      - name: force flake to our poetry2nix version
+        working-directory: ${{ env.TESTDIR }}
+        run: nix flake lock --override-input poetry2nix "$GITHUB_WORKSPACE"
+
       - name: generate pyproject.toml
         working-directory: ${{ env.TESTDIR }}
         run: nix develop -c poetry init --name=poetry2nix-template-test --quiet
