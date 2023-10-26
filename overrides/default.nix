@@ -1980,6 +1980,10 @@ lib.composeManyExtensions [
         }
       );
 
+      plyvel = super.plyvel.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.leveldb ];
+      });
+
       poetry-plugin-export = super.poetry-plugin-export.overridePythonAttrs (_old: {
         dontUsePythonImportsCheck = true;
         pipInstallFlags = [
