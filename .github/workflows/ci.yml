@@ -78,6 +78,12 @@ jobs:
         working-directory: ${{ env.TESTDIR }}
         run: nix develop -c poetry lock --no-update
 
+      - name: create a minimal python package
+        working-directory: ${{ env.TESTDIR }}
+        run: |
+          mkdir poetry2nix_template_test
+          touch poetry2nix_template_test/__init__.py
+
       - name: build the flake
         working-directory: ${{ env.TESTDIR }}
         run: nix build --keep-going -L --show-trace
