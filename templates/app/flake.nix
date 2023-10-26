@@ -14,8 +14,8 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         # see https://github.com/nix-community/poetry2nix/tree/master#api for more functions and examples.
-        inherit (poetry2nix.legacyPackages.${system}) mkPoetryApplication;
         pkgs = nixpkgs.legacyPackages.${system};
+        inherit (import poetry2nix { inherit pkgs; }) mkPoetryApplication;
       in
       {
         packages = {
