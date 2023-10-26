@@ -7,6 +7,11 @@ authors = []
 [tool.poetry.dependencies]
 python = "^3.8"
 pendulum = "^2.1.2"
+orjson = "^3.9.9"
+# rpds-py = "^0.10.6"
+# bcrypt = "^4.0.1"
+# bcrypt = "^4.0.1"
+# granian = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 
