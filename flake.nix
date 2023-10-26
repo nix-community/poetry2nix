@@ -22,6 +22,7 @@
 
     {
       overlay = import ./overlay.nix;
+      lib.mkPoetry2Nix = { pkgs }: import ./default.nix { inherit pkgs; };
 
       githubActions =
         let
@@ -71,27 +72,11 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [
-            (_: _: {
-              p2nix-tools = pkgs.callPackage ./tools { };
-            })
-          ];
-          config = {
-            allowAliases = false;
-            permittedInsecurePackages = [
-              "python3.8-requests-2.29.0"
-              "python3.8-cryptography-40.0.2"
-              "python3.9-requests-2.29.0"
-              "python3.9-cryptography-40.0.2"
-              "python3.10-requests-2.29.0"
-              "python3.10-cryptography-40.0.2"
-              "python3.11-requests-2.29.0"
-              "python3.11-cryptography-40.0.2"
-            ];
-          };
+          config.allowAliases = false;
         };
 
         poetry2nix = import ./default.nix { inherit pkgs; };
+        p2nix-tools = pkgs.callPackage ./tools { };
       in
       rec {
         formatter = treefmtEval.${system}.config.build.wrapper;
