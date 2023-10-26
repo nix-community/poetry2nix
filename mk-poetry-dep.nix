@@ -29,7 +29,7 @@ pythonPackages.callPackage
     }@args:
     let
       inherit (python) stdenv;
-      inherit (pyproject-nix.pypa) normalizePackageName;
+      inherit (pyproject-nix.lib.pypa) normalizePackageName;
       inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi;
 
       inherit (import ./pep425.nix {
@@ -145,7 +145,7 @@ pythonPackages.callPackage
                       pep508Markers = v.markers or "";
                     in
                     compat constraints && (if pep508Markers == "" then true else
-                    (pyproject-nix.pep508.evalMarkers
+                    (pyproject-nix.lib.pep508.evalMarkers
                       (pep508Env // {
                         extra = {
                           # All extras are always enabled
@@ -153,7 +153,7 @@ pythonPackages.callPackage
                           value = lib.attrNames extras;
                         };
                       })
-                      (pyproject-nix.pep508.parseMarkers pep508Markers)))
+                      (pyproject-nix.lib.pep508.parseMarkers pep508Markers)))
                 )
                 dependencies
             );
@@ -215,15 +215,14 @@ pythonPackages.callPackage
             else if isFile then
               localDepPath
             else if isLegacy then
-              fetchFromLegacy
+              pyproject-nix.fetchers.fetchFromLegacy
                 {
                   pname = name;
-                  inherit python;
                   inherit (fileInfo) file hash;
                   inherit (source) url;
                 }
             else
-              fetchFromPypi {
+              pyproject-nix.fetchers.fetchFromPypi {
                 pname = name;
                 inherit (fileInfo) file hash kind;
                 inherit version;

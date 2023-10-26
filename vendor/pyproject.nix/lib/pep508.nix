@@ -3,7 +3,7 @@
 let
   inherit (builtins) match elemAt split foldl' substring stringLength typeOf fromJSON isString head mapAttrs elem length;
   inherit (lib) stringToCharacters fix;
-  inherit (import ./util.nix { inherit lib; }) splitComma;
+  inherit (import ./util.nix { inherit lib; }) splitComma stripStr;
 
   re = {
     operators = "([=><!~^]+)";
@@ -33,9 +33,6 @@ let
       inherit value;
     }
   );
-
-  # Strip leading/trailing whitespace from string
-  stripStr = s: let t = match "[\t ]*(.*[^\t ])[\t ]*" s; in if t == null then "" else head t;
 
   # Remove groupings ( ) from expression
   unparen = expr':

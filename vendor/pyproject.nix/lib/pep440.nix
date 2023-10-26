@@ -151,7 +151,7 @@ fix (self: {
   */
   parseVersionCond = cond: (
     let
-      m = match " *([=><!~^]+) *(.+)" cond;
+      m = match " *([=><!~^]*) *(.+)" cond;
       mAt = elemAt m;
     in
     {
@@ -256,6 +256,7 @@ fix (self: {
     "<" = a: b: self.compareVersions a b < 0;
     ">" = a: b: self.compareVersions a b > 0;
     "===" = throw "Arbitrary equality clause not supported";
+    "" = _a: _b: true;
   };
 
 })

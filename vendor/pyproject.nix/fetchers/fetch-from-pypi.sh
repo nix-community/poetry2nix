@@ -1,4 +1,7 @@
-source $stdenv/setup
+#!/usr/bin/env bash
+
+# shellcheck disable=SC1091,SC2154
+source "$stdenv/setup"
 set -euo pipefail
 
 curl="curl            \
@@ -16,9 +19,9 @@ curl="curl            \
 
 echo "Trying to fetch with predicted URL: $predictedURL"
 
-$curl $predictedURL --output $out && exit 0
+$curl "$predictedURL" --output "$out" && exit 0
 
 echo "Predicted URL '$predictedURL' failed, querying pypi.org"
 $curl "https://pypi.org/pypi/$pname/json" | jq -r ".releases.\"$version\"[] | select(.filename == \"$file\") | .url" > url
 url=$(cat url)
-$curl -k $url --output $out
+$curl "$url" --output "$out"

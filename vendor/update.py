@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/env nix-shell
+#! nix-shell -i python3 -p python3
 import subprocess
 import shutil
 import json
@@ -24,8 +25,14 @@ if __name__ == "__main__":
         pass
 
     os.mkdir("pyproject.nix")
+    os.mkdir("pyproject.nix/lib")
 
+    shutil.copy(f"{store_path}/default.nix", f"pyproject.nix/default.nix")
+
+    # Copy lib/
     for filename in os.listdir(f"{store_path}/lib"):
         if filename.startswith("test") or not filename.endswith(".nix"):
             continue
-        shutil.copy(f"{store_path}/lib/{filename}", f"pyproject.nix/{filename}")
+        shutil.copy(f"{store_path}/lib/{filename}", f"pyproject.nix/lib/{filename}")
+
+    shutil.copytree(f"{store_path}/fetchers", "pyproject.nix/fetchers")

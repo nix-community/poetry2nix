@@ -4,37 +4,41 @@
 # Note it is not possible to use pip
 # https://discuss.python.org/t/pip-download-just-the-source-packages-no-building-no-metadata-etc/4651/12
 
-import os
-import sys
 import netrc
-from urllib.parse import urlparse, urlunparse
-from html.parser import HTMLParser
-import urllib.request
+import os
 import shutil
 import ssl
+import sys
+import urllib.request
+from html.parser import HTMLParser
 from os.path import normpath
+from typing import Optional
+from urllib.parse import urlparse, urlunparse
 
 
 # Parse the legacy index page to extract the href and package names
 class Pep503(HTMLParser):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.sources = {}
-        self.url = None
-        self.name = None
+        self.sources: dict[str, str] = {}
+        self.url: Optional[str] = None
+        self.name: Optional[str] = None
 
-    def handle_data(self, data):
+    def handle_data(self, data: str) -> None:
         if self.url is not None:
             self.name = data
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, Optional[str]]]) -> None:
         if tag == "a":
             for name, value in attrs:
                 if name == "href":
                     self.url = value
 
-    def handle_endtag(self, tag):
+    def handle_endtag(self, tag: str) -> None:
         if self.url is not None:
+            if not self.name:
+                raise ValueError("Name not set")
+
             self.sources[self.name] = self.url
         self.url = None
 
@@ -45,14 +49,17 @@ index_url = url + "/" + package_name + "/"
 package_filename = sys.argv[3]
 
 # Parse username and password for this host from the netrc file if given.
-username, password = None, None
+username: Optional[str] = None
+password: Optional[str] = None
 if os.environ["NETRC"]:
     netrc_obj = netrc.netrc(os.environ["NETRC"])
     host = urlparse(index_url).netloc
     # Strip port number if present
     if ":" in host:
         host = host.split(":")[0]
-    username, _, password = netrc_obj.authenticators(host)
+    authenticators = netrc_obj.authenticators(host)
+    if authenticators:
+        username, _, password = authenticators
 
 print("Reading index %s" % index_url)
 
