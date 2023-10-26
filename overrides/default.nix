@@ -71,6 +71,14 @@ let
     in
     lib.filter (x: !(builtins.elem (lib.getName x) namesToRemove)) packages;
 
+  getCargoLockFromSource = old: path:
+    (pkgs.runCommand "${old.pname}-cargo-lock" { }
+      ''
+        tar xvzf "${old.src}" "${path}"
+        mv "${path}" $out
+      ''
+    );
+
 in
 lib.composeManyExtensions [
   # NixOps
@@ -502,30 +510,6 @@ lib.composeManyExtensions [
 
       cryptography =
         let
-          getCargoHash = version: {
-            "35.0.0" = "sha256-tQoQfo+TAoqAea86YFxyj/LNQCiViu5ij/3wj7ZnYLI=";
-            "36.0.0" = "sha256-Y6TuW7AryVgSvZ6G8WNoDIvi+0tvx8ZlEYF5qB0jfNk=";
-            "36.0.1" = "sha256-kozYXkqt1Wpqyo9GYCwN08J+zV92ZWFJY/f+rulxmeQ=";
-            "36.0.2" = "1a0ni1a3dbv2dvh6gx2i54z8v5j9m6asqg97kkv7gqb1ivihsbp8";
-            "37.0.2" = "sha256-qvrxvneoBXjP96AnUPyrtfmCnZo+IriHR5HbtWQ5Gk8=";
-            "37.0.4" = "sha256-f8r6QclTwkgK20CNe9i65ZOqvSUeDc4Emv6BFBhh1hI";
-            "38.0.1" = "sha256-o8l13fnfEUvUdDasq3LxSPArozRHKVsZfQg9DNR6M6Q=";
-            "38.0.3" = "sha256-lzHLW1N4hZj+nn08NZiPVM/X+SEcIsuZDjEOy0OOkSc=";
-            "38.0.4" = "sha256-BN0kOblUwgHj5QBf52RY2Jx0nBn03lwoN1O5PEohbwY=";
-            "39.0.0" = "sha256-clorC0NtGukpE3DnZ84MSdGhJN+qC89DZPITZFuL01Q=";
-            "39.0.2" = "sha256-Admz48/GS2t8diz611Ciin1HKQEyMDEwHxTpJ5tZ1ZA=";
-            "40.0.0" = "sha256-/TBANavYria9YrBpMgjtFyqg5feBcloETcYJ8fdBgkI=";
-            "40.0.1" = "sha256-gFfDTc2QWBWHBCycVH1dYlCsWQMVcRZfOBIau+njtDU=";
-            "40.0.2" = "sha256-cV4GTfbVYanElXOVmynvrru2wJuWvnT1Z1tQKXdkbg0=";
-            "41.0.1" = "sha256-38q81vRf8QHR8lFRM2KbH7Ng5nY7nmtWRMoPWS9VO/U=";
-            "41.0.2" = "sha256-hkuoICa/suMXlr4u95JbMlFzi27lJqJRmWnX3nZfzKU=";
-            "41.0.3" = "sha256-LQu7waympGUs+CZun2yDQd2gUUAgyisKBG5mddrfSo0=";
-            "41.0.4" = "sha256-oXR8yBUgiA9BOfkZKBJneKWlpwHB71t/74b/5WpiKmw=";
-            "41.0.5" = "sha256-ABCK144//RUJ3AksFHEgqC+kHvoHl1ifpVuqMTkGNH8=";
-          }.${version} or (
-            lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
-          );
-          sha256 = getCargoHash super.cryptography.version;
           isWheel = lib.hasSuffix ".whl" super.cryptography.src;
           scrypto =
             if isWheel then
@@ -550,13 +534,9 @@ lib.composeManyExtensions [
             } // lib.optionalAttrs (lib.versionAtLeast old.version "3.4" && lib.versionOlder old.version "3.5") {
               CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
             } // lib.optionalAttrs (lib.versionAtLeast old.version "3.5" && !isWheel) rec {
-              cargoDeps =
-                pkgs.rustPlatform.fetchCargoTarball {
-                  inherit (old) src;
-                  sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
-                  name = "${old.pname}-${old.version}";
-                  inherit sha256;
-                };
+              cargoDeps = pkgs.rustPlatform.importCargoLock {
+                lockFile = getCargoLockFromSource old "${old.pname}-${old.version}/src/rust/Cargo.lock";
+              };
               cargoRoot = "src/rust";
             }
           );
@@ -845,29 +825,14 @@ lib.composeManyExtensions [
       );
 
       granian =
-        let
-          getRepoHash = version: {
-            "0.2.1" = "sha256-XEhu6M1hFi3/gAKZcei7KJSrIhhlZhlvZvbfyA6VLR4=";
-            "0.2.2" = "sha256-KWwefJ3CfOUGCgAm7AhFlIxRF9qxNEo3npGOxVJ23FY=";
-            "0.2.3" = "sha256-2JnyO0wxkV49R/0wzDb/PnUWWHi3ckwK4nVe7dWeH1k=";
-            "0.2.4" = "sha256-GdQJvVPsWgC1z7La9h11x2pRAP+L998yImhTFrFT5l8=";
-            "0.2.5" = "sha256-vMXMxss77rmXSjoB53eE8XN2jXyIEf03WoQiDfvhDmw=";
-            "0.2.6" = "sha256-l9W9+KDg/43mc0toEz1n1pqw+oQdiHdAxGlS+KLIGhw=";
-            "0.3.0" = "sha256-icBjtW8fZjT3mLo43nKWdirMz6GZIy/RghEO95pHJEU=";
-            "0.3.1" = "sha256-EKK+RxkJ//fY43EjvN1Fry7mn2ZLIaNlTyKPJRxyKZs=";
-          }.${version};
-          sha256 = getRepoHash super.granian.version;
-        in
         super.granian.overridePythonAttrs (old: rec {
-          src = pkgs.fetchFromGitHub {
-            owner = "emmett-framework";
-            repo = "granian";
-            rev = "v${old.version}";
-            inherit sha256;
-          };
           cargoDeps = pkgs.rustPlatform.importCargoLock {
-            lockFile = "${src.out}/Cargo.lock";
+            lockFile = getCargoLockFromSource old "${old.pname}-${old.version}/Cargo.lock";
+            outputHashes = lib.optionalAttrs (lib.versionAtLeast old.version "0.7") {
+              "pyo3-asyncio-0.20.0" = "sha256-GiwowX1xCBnnylDWW0mNfb6hlkn4xJK7RtUSg+NWRhk=";
+            };
           };
+
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
             pkgs.rustPlatform.cargoSetupHook
             pkgs.rustPlatform.maturinBuildHook
@@ -2837,38 +2802,20 @@ lib.composeManyExtensions [
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
       });
 
-      rpds-py =
-        let
-          getCargoHash = version: {
-            "0.8.8" = "sha256-jg9oos4wqewIHe31c3DixIp6fssk742kqt4taWyOq4U=";
-            "0.8.10" = "sha256-D4pbEipVn1r5rrX+wDXi97nDZJyBlkdqhmbJSgQGTLU=";
-            "0.8.11" = "sha256-QZNm/b9s/qr3GHwe9wG7U9/AaQwSPHsQ0F2SFQdgPNo=";
-            "0.8.12" = "sha256-wywBytnfLBnBH2yYi2eLQjASDmFN9VqPABwMuSUxN0Q=";
-            "0.9.2" = "sha256-2LiQ+beFj9+kykObPNtqcg+F+8wBDzvWcauwDLHa7Yo=";
-            "0.10.0" = "sha256-FXjk1Y/Eol4d1xvwz0S42OycZV0cSHM36H+zjEmNPCQ=";
-            "0.10.2" = "sha256-X0Busta5y1ToLcF6/5ZiatP8m/nxFsVGW/ba0MS4hhg=";
-            "0.10.3" = "sha256-iWy6BHVsKsZB0SVrh3CVhryaavk4gAQVvRdu9xBiDRg=";
-            "0.10.4" = "sha256-JOzc6rB65oNhQqjuDNeSgRhvXg2fQDf5ogoYznaBj5Y=";
-            "0.10.5" = "sha256-WB1PaJod7Romvme+lcTR6lh9CAbg+67ptBj838b3KFc=";
-            "0.10.6" = "sha256-8bXCTrZErdE7JhuoudU/4dDndCMwvjy2a+2IY0DWDzg=";
-          }.${version} or (
-            lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
-          );
-        in
-        super.rpds-py.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
-            inherit (old) src;
-            name = "${old.pname}-${old.version}";
-            hash = getCargoHash old.version;
-          };
-          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
-            pkgs.libiconv
-          ];
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            pkgs.rustPlatform.cargoSetupHook
-            pkgs.rustPlatform.maturinBuildHook
-          ];
-        });
+      rpds-py = super.rpds-py.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+        cargoDeps = pkgs.rustPlatform.importCargoLock {
+          lockFile = getCargoLockFromSource old "rpds_py-${old.version}/Cargo.lock";
+        };
+
+        buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+          pkgs.libiconv
+        ];
+
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          pkgs.rustPlatform.cargoSetupHook
+          pkgs.rustPlatform.maturinBuildHook
+        ];
+      });
 
       rtree = super.rtree.overridePythonAttrs (old: {
         propagatedNativeBuildInputs = (old.propagatedNativeBuildInputs or [ ]) ++ [ pkgs.libspatialindex ];
