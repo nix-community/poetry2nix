@@ -146,6 +146,10 @@ in
   plyvel = callTest ./plyvel { };
   awsume = callTest ./awsume { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
+  # pyqt5 = (callTest ./pyqt5 { });
+  pyqt6 = callTest ./pyqt6 { };
+  pyside6 = callTest ./pyside6 { };
+
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
 

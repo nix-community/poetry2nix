@@ -632,8 +632,12 @@ lib.composeManyExtensions [
           '' else "")
         ];
 
-        preBuild = old.preBuild or "" + ''
+        preBuild = (old.preBuild or "") + ''
           make distclean
+        '';
+
+        preInstall = (old.preInstall or "") + ''
+          mkdir -p $out/${self.python.sitePackages}
         '';
 
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
@@ -2455,6 +2459,160 @@ lib.composeManyExtensions [
             ];
           }
         );
+
+      pyqt6 =
+        let
+          # The build from source fails unless the pyqt6 version agrees
+          # with the version of qt6 from nixpkgs. Thus, we prefer using
+          # the wheel here.
+          pyqt6-wheel = super.pyqt6.override { preferWheel = true; };
+          pyqt6 = pyqt6-wheel.overridePythonAttrs (old:
+            let
+              confirm-license = pkgs.writeText "confirm-license.patch" ''
+                diff --git a/project.py b/project.py
+                --- a/project.py
+                +++ b/project.py
+                @@ -163,8 +163,7 @@
+
+                         # Automatically confirm the license if there might not be a command
+                         # line option to do so.
+                -        if tool == 'pep517':
+                -            self.confirm_license = True
+                +        self.confirm_license = True
+
+                         self._check_license()
+
+
+              '';
+              isWheel = old.src.isWheel or false;
+            in
+            {
+              propagatedBuildInputs = old.propagatedBuildInputs ++ [
+                self.dbus-python
+              ];
+              nativeBuildInputs = old.nativeBuildInputs ++ [
+                pkgs.pkg-config
+                self.pyqt6-sip
+                self.sip
+                self.pyqt-builder
+                pkgs.xorg.lndir
+                pkgs.qt6.qmake
+              ] ++ lib.optionals isWheel [
+                pkgs.qt6.full # building from source doesn't properly pick up libraries from pyqt6-qt6
+              ];
+              patches = lib.optionals (!isWheel) [
+                confirm-license
+              ];
+              env.NIX_CFLAGS_COMPILE = "-fpermissive";
+              # be more verbose
+              postPatch = ''
+                cat >> pyproject.toml <<EOF
+                [tool.sip.project]
+                verbose = true
+                EOF
+              '';
+              dontWrapQtApps = true;
+              dontConfigure = true;
+              enableParallelBuilding = true;
+              # HACK: paralellize compilation of make calls within pyqt's setup.py
+              # pkgs/stdenv/generic/setup.sh doesn't set this for us because
+              # make gets called by python code and not its build phase
+              # format=pyproject means the pip-build-hook hook gets used to build this project
+              # pkgs/development/interpreters/python/hooks/pip-build-hook.sh
+              # does not use the enableParallelBuilding flag
+              postUnpack = ''
+                export MAKEFLAGS+="''${enableParallelBuilding:+-j$NIX_BUILD_CORES}"
+              '';
+              preFixup = ''
+                addAutoPatchelfSearchPath ${self.pyqt6-qt6}/${self.python.sitePackages}/PyQt6
+              '';
+            });
+        in
+        pyqt6;
+
+      pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libQt6*" ];
+        preFixup = ''
+          addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PyQt6/Qt6/lib
+        '';
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.libxkbcommon
+          pkgs.gtk3
+          pkgs.speechd
+          pkgs.gst
+          pkgs.gst_all_1.gst-plugins-base
+          pkgs.gst_all_1.gstreamer
+          pkgs.postgresql.lib
+          pkgs.unixODBC
+          pkgs.pcsclite
+          pkgs.xorg.libxcb
+          pkgs.xorg.xcbutil
+          pkgs.xorg.xcbutilcursor
+          pkgs.xorg.xcbutilerrors
+          pkgs.xorg.xcbutilimage
+          pkgs.xorg.xcbutilkeysyms
+          pkgs.xorg.xcbutilrenderutil
+          pkgs.xorg.xcbutilwm
+          pkgs.libdrm
+          pkgs.pulseaudio
+        ];
+      });
+
+      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
+        preFixup = ''
+          addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
+          addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
+        '';
+        postInstall = ''
+          rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
+        '';
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.libxkbcommon
+          pkgs.gtk3
+          pkgs.speechd
+          pkgs.gst
+          pkgs.gst_all_1.gst-plugins-base
+          pkgs.gst_all_1.gstreamer
+          pkgs.postgresql.lib
+          pkgs.unixODBC
+          pkgs.pcsclite
+          pkgs.xorg.libxcb
+          pkgs.xorg.xcbutil
+          pkgs.xorg.xcbutilcursor
+          pkgs.xorg.xcbutilerrors
+          pkgs.xorg.xcbutilimage
+          pkgs.xorg.xcbutilkeysyms
+          pkgs.xorg.xcbutilrenderutil
+          pkgs.xorg.xcbutilwm
+          pkgs.libdrm
+          pkgs.pulseaudio
+          self.shiboken6
+        ];
+      });
+
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = [
+          "libmysqlclient.so.21"
+          "libmimerapi.so"
+          "libQt6Quick3DSpatialAudio.so.6"
+          "libQt6Quick3DHelpersImpl.so.6"
+        ];
+        preFixup = ''
+          addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
+          addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
+        '';
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.nss
+          pkgs.xorg.libXtst
+          pkgs.alsa-lib
+          pkgs.xorg.libxshmfence
+          pkgs.xorg.libxkbfile
+        ];
+        postInstall = ''
+          rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
+        '';
+      });
 
       pytest-datadir = super.pytest-datadir.overridePythonAttrs (
         _old: {

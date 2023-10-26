@@ -15082,6 +15082,9 @@
   "pyqt6": [
     "setuptools"
   ],
+  "pyqt6-sip": [
+    "setuptools"
+  ],
   "pyqtchart": [
     "setuptools"
   ],
@@ -17010,6 +17013,9 @@
   ],
   "pyzufall": [
     "setuptools"
+  ],
+  "qasync": [
+    "poetry-core"
   ],
   "qbittorrent-api": [
     "setuptools"
