@@ -145,6 +145,7 @@ in
   subdirectory = callTest ./subdirectory { };
   plyvel = callTest ./plyvel { };
   awsume = callTest ./awsume { };
+  gobject-introspection = callTest ./gobject-introspection { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
