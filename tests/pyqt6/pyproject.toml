@@ -6,8 +6,8 @@ authors = ["considerate <viktor.kronvall@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-pyqt6 = "6.5.3"
-pyqt6-qt6 = "6.5.3"
+pyqt6 = "6.5.2"
+pyqt6-qt6 = "6.5.2"
 
 [tool.poetry.dev-dependencies]
 
