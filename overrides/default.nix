@@ -310,36 +310,23 @@ lib.composeManyExtensions [
         '';
       });
 
-      bcrypt =
-        let
-          getCargoHash = version: {
-            "4.0.0" = "sha256-HvfRLyUhlXVuvxWrtSDKx3rMKJbjvuiMcDY6g+pYFS0=";
-            "4.0.1" = "sha256-lDWX69YENZFMu7pyBmavUZaalGvFqbHSHfkwkzmDQaY=";
-          }.${version} or (
-            lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
-          );
-        in
-        super.bcrypt.overridePythonAttrs (
-          old: {
-            buildInputs = (old.buildInputs or [ ])
-              ++ [ pkgs.libffi ]
-              ++ lib.optionals (lib.versionAtLeast old.version "4" && stdenv.isDarwin)
-              [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
-            nativeBuildInputs = with pkgs;
-              (old.nativeBuildInputs or [ ])
-                ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
-          } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
-            cargoDeps =
-              pkgs.rustPlatform.fetchCargoTarball
-                {
-                  inherit (old) src;
-                  sourceRoot = "${old.pname}-${old.version}/src/_bcrypt";
-                  name = "${old.pname}-${old.version}";
-                  sha256 = getCargoHash old.version;
-                };
-            cargoRoot = "src/_bcrypt";
-          }
-        );
+      bcrypt = super.bcrypt.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ])
+            ++ [ pkgs.libffi ]
+            ++ lib.optionals (lib.versionAtLeast old.version "4" && stdenv.isDarwin)
+            [ pkgs.darwin.apple_sdk.frameworks.Security pkgs.libiconv ];
+          nativeBuildInputs = with pkgs;
+            (old.nativeBuildInputs or [ ])
+              ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo pkgs.rustPlatform.cargoSetupHook self.setuptools-rust ];
+        } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = getCargoLockFromSource old "${old.pname}-${old.version}/src/_bcrypt/Cargo.lock";
+          };
+          cargoRoot = "src/_bcrypt";
+        }
+      );
+
       bjoern = super.bjoern.overridePythonAttrs (
         old: {
           buildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.libev ];
