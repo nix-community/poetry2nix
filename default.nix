@@ -58,7 +58,9 @@ let
 
       rawDeps = pyProject.tool.poetry."dependencies" or { };
 
-      rawRequiredDeps = lib.filterAttrs (_: v: !(v.optional or false)) rawDeps;
+      isRequired = (dep: !((dep.optional or false) || (builtins.isList dep && !(lib.lists.any isRequired dep))));
+
+      rawRequiredDeps = lib.filterAttrs (_: v: isRequired v) rawDeps;
 
       desiredExtrasDeps = lib.unique
         (lib.concatMap (extra: pyProject.tool.poetry.extras.${extra}) extras);
