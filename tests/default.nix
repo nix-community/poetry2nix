@@ -143,6 +143,8 @@ in
   pytesseract = callTest ./pytesseract { };
   sphinx5 = callTest ./sphinx5 { };
   subdirectory = callTest ./subdirectory { };
+  plyvel = callTest ./plyvel { };
+  awsume = callTest ./awsume { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };

@@ -302,6 +302,14 @@ lib.composeManyExtensions [
           dontUseCmakeConfigure = true;
         }
       );
+
+      awsume = super.awsume.overridePythonAttrs (_: {
+        preBuild = ''
+          HOME="$(mktemp -d)"
+          export HOME
+        '';
+      });
+
       bcrypt =
         let
           getCargoHash = version: {
@@ -1979,6 +1987,10 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      plyvel = super.plyvel.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.leveldb ];
+      });
 
       poetry-plugin-export = super.poetry-plugin-export.overridePythonAttrs (_old: {
         dontUsePythonImportsCheck = true;
