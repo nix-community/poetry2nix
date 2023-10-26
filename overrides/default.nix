@@ -2536,36 +2536,16 @@ lib.composeManyExtensions [
       });
 
       pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" ];
-        preBuild = ''
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
+        preFixup = ''
+          addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
           addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
         '';
-        buildInputs = old.buildInputs ++ [
-          pkgs.libxkbcommon
-          pkgs.qt6.full
-          pkgs.gtk3
-          pkgs.speechd
-          pkgs.gst
-          pkgs.gst_all_1.gst-plugins-base
-          pkgs.gst_all_1.gstreamer
-          pkgs.postgresql.lib
-          pkgs.unixODBC
-          pkgs.pcsclite
-        ];
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
-      });
-
-      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6Quick3DSpatialAudio.so.6" ];
-        preBuild = ''
-          addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
-          addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
-        '';
-        buildInputs = old.buildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
           pkgs.libxkbcommon
-          pkgs.qt6.full
           pkgs.gtk3
           pkgs.speechd
           pkgs.gst
@@ -2574,6 +2554,37 @@ lib.composeManyExtensions [
           pkgs.postgresql.lib
           pkgs.unixODBC
           pkgs.pcsclite
+          pkgs.xorg.libxcb
+          pkgs.xorg.xcbutil
+          pkgs.xorg.xcbutilcursor
+          pkgs.xorg.xcbutilerrors
+          pkgs.xorg.xcbutilimage
+          pkgs.xorg.xcbutilkeysyms
+          pkgs.xorg.xcbutilrenderutil
+          pkgs.xorg.xcbutilwm
+          pkgs.libdrm
+          pkgs.pulseaudio
+          self.shiboken6
+        ];
+      });
+
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = [
+          "libmysqlclient.so.21"
+          "libmimerapi.so"
+          "libQt6Quick3DSpatialAudio.so.6"
+          "libQt6Quick3DHelpersImpl.so.6"
+        ];
+        preFixup = ''
+          addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
+          addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
+        '';
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+          pkgs.nss
+          pkgs.xorg.libXtst
+          pkgs.alsa-lib
+          pkgs.xorg.libxshmfence
+          pkgs.xorg.libxkbfile
         ];
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
