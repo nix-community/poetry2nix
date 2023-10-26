@@ -1753,6 +1753,20 @@ lib.composeManyExtensions [
 
       openbabel-wheel = super.openbabel-wheel.override { preferWheel = true; };
 
+      # opencensus is a namespace package but it is distributed incorrectly
+      opencensus = super.opencensus.overridePythonAttrs (_: {
+        pythonNamespaces = [
+          "opencensus.common"
+        ];
+      });
+
+      # opencensus is a namespace package but it is distributed incorrectly
+      opencensus-context = super.opencensus-context.overridePythonAttrs (_: {
+        pythonNamespaces = [
+          "opencensus.common"
+        ];
+      });
+
       # Overrides for building packages based on OpenCV
       # These flags are inspired by the opencv 4.x package in nixpkgs
       _opencv-python-override =
