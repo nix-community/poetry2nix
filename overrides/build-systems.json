@@ -1065,8 +1065,14 @@
     "setuptools"
   ],
   "arrow": [
-    "flit-core",
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.3.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "1.3.0"
+    }
   ],
   "arsenic": [
     "poetry-core"

@@ -99,6 +99,7 @@ in
   affine = callTest ./affine { };
   affine-pre-2-4 = callTest ./affine-pre-2-4 { };
   cdk-nag = callTest ./cdk-nag { };
+  arrow = callTest ./arrow { };
   gdal = callTest ./gdal { };
   gitlint-core = callTest ./gitlint-core { };
   gitlint = callTest ./gitlint { };
