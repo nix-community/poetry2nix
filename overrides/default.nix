@@ -303,7 +303,7 @@ lib.composeManyExtensions [
         }
       );
 
-      awsume = super.awsume.overridePythonAttrs(_: {
+      awsume = super.awsume.overridePythonAttrs (_: {
         preBuild = ''
           HOME="$(mktemp -d)"
           export HOME
