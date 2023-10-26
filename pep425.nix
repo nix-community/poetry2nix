@@ -1,7 +1,7 @@
-{ lib, stdenv, poetryLib, python, isLinux ? stdenv.isLinux }:
+{ lib, stdenv, python, pyproject-nix, isLinux ? stdenv.isLinux }:
 let
   inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removeSuffix;
-  targetMachine = poetryLib.getTargetMachine stdenv;
+  targetMachine = pyproject-nix.pep599.manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name};
 
   pythonVer =
     let
