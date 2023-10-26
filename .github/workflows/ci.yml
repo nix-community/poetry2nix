@@ -68,7 +68,7 @@ jobs:
 
       - name: initialize flake from poetry2nix template
         working-directory: ${{ env.TESTDIR }}
-        run: nix flake init --template poetry2nix
+        run: nix flake init --template "$GITHUB_WORKSPACE"
 
       - name: generate pyproject.toml
         working-directory: ${{ env.TESTDIR }}
