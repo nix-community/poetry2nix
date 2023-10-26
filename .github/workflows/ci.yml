@@ -47,10 +47,53 @@ jobs:
           signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
       - run: nix build -L ".#${{ matrix.attr }}" --keep-going
 
+  test-template:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
+      - uses: cachix/cachix-action@v12
+        with:
+          name: poetry2nix
+          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+
+      - name: create flake template test directory
+        run: echo "TESTDIR=$(mktemp -d)" >> "$GITHUB_ENV"
+
+      - name: initialize flake from poetry2nix template
+        working-directory: ${{ env.TESTDIR }}
+        run: nix flake init --template "$GITHUB_WORKSPACE"
+
+      - name: generate pyproject.toml
+        working-directory: ${{ env.TESTDIR }}
+        run: nix develop -c poetry init --name=poetry2nix-template-test --quiet
+
+      - name: generate poetry.lock
+        working-directory: ${{ env.TESTDIR }}
+        run: nix develop -c poetry lock --no-update
+
+      - name: create a minimal python package
+        working-directory: ${{ env.TESTDIR }}
+        run: |
+          touch README.md
+          mkdir poetry2nix_template_test
+          touch poetry2nix_template_test/__init__.py
+
+      - name: build the flake
+        working-directory: ${{ env.TESTDIR }}
+        run: nix build --keep-going -L --show-trace
+
   collect:
     runs-on: ubuntu-latest
     needs:
       - nix-build
       - sort-build-systems
+      - test-template
     steps:
       - run: exit 0
