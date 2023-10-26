@@ -1,7 +1,7 @@
 { lib, stdenv, python, pyproject-nix, isLinux ? stdenv.isLinux }:
 let
   inherit (lib.strings) escapeRegex hasPrefix hasSuffix hasInfix splitString removeSuffix;
-  targetMachine = pyproject-nix.pep599.manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name};
+  targetMachine = pyproject-nix.lib.pep599.manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name};
 
   pythonVer =
     let

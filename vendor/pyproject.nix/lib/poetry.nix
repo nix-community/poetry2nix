@@ -4,8 +4,10 @@
 , pep518
 , ...
 }:
+
+lib.fix (self:
 let
-  inherit (builtins) match elemAt foldl' typeOf attrNames head tail mapAttrs;
+  inherit (builtins) match elemAt foldl' typeOf attrNames head tail mapAttrs length filter split;
   inherit (lib) optionalAttrs flatten;
   inherit (import ./util.nix { inherit lib; }) splitComma;
 
@@ -84,55 +86,8 @@ let
     )) [ ]
     (attrNames deps);
 
-  # Supports additional non-standard operators `^` and `~` used by Poetry.
-  # Other operators are passed through to pep440.
-  # Because some expressions desugar to multiple expressions parseVersionCond returns a list.
-  parseVersionCond' = cond: (
-    let
-      m = match "^([~[:digit:]^])(.+)$" cond;
-      mAt = elemAt m;
-      c = mAt 0;
-      rest = mAt 1;
-      # Pad version before parsing as it's _much_ easier to reason about
-      # once they're the same length
-      version = pep440.parseVersion (lib.versions.pad 3 rest);
-    in
-    if m == null then [ (pep440.parseVersionCond cond) ]
-    # Desugar ~ into >= && <
-    else if c == "~" then [
-      {
-        cond = ">=";
-        inherit version;
-      }
-      {
-        cond = "<";
-        version = version // {
-          release = [ (head version.release + 1) ] ++ tail version.release;
-        };
-      }
-    ]
-    # Desugar ^ into >= && <
-    else if c == "^" then [
-      {
-        cond = ">=";
-        inherit version;
-      }
-      {
-        cond = "<";
-        version = version // {
-          release = rewriteCaretRhs version.release;
-        };
-      }
-    ]
-    # Versions without operators are exact matches, add operator according to PEP-440
-    else [{
-      cond = "==";
-      inherit version;
-    }]
-  );
-
   # Normalized version of parseVersionCond'
-  parseVersionConds = s: flatten (map parseVersionCond' (splitComma s));
+  parseVersionConds = s: flatten (map self.parseVersionCond (splitComma s));
 
   dummyMarker = {
     type = "bool";
@@ -240,10 +195,64 @@ in
          build-systems = [ ];  # PEP-518 build-systems (List of parsed PEP-508 strings)
        }
   */
-  # # Analogous to
   parseDependencies = pyproject: {
     dependencies = map parseDependency (normalizeDependendenciesToList (pyproject.tool.poetry.dependencies or { }));
     extras = mapAttrs (_: g: map parseDependency (normalizeDependendenciesToList g.dependencies)) pyproject.tool.poetry.group or { };
     build-systems = pep518.parseBuildSystems pyproject;
   };
-}
+
+  /* Parse a version conditional.
+     Supports additional non-standard operators `^` and `~` used by Poetry.
+
+     Because some expressions desugar to multiple expressions parseVersionCond returns a list.
+
+     Type: parseVersionCond :: string -> [ AttrSet ]
+  */
+  parseVersionCond = cond: (
+    let
+      m = match "^([~[:digit:]^])(.+)$" cond;
+      mAt = elemAt m;
+      c = mAt 0;
+      rest = mAt 1;
+      # Pad version before parsing as it's _much_ easier to reason about
+      # once they're the same length
+      version = pep440.parseVersion (lib.versions.pad 3 rest);
+
+      # Count the number of segments in the input to use an an index in ~ rewriting
+      segments = length (filter (tok: typeOf tok == "string") (split "\\." rest));
+    in
+    if m == null then [ (pep440.parseVersionCond cond) ]
+    # Desugar ~ into >= && <
+    else if c == "~" then [
+      {
+        op = ">=";
+        inherit version;
+      }
+      {
+        op = "<";
+        version = version // {
+          release = lib.imap0 (i: tok: if i >= segments - 1 then 0 else if i == segments - 2 then (tok + 1) else tok) version.release;
+        };
+      }
+    ]
+    # Desugar ^ into >= && <
+    else if c == "^" then [
+      {
+        op = ">=";
+        inherit version;
+      }
+      {
+        op = "<";
+        version = version // {
+          release = rewriteCaretRhs version.release;
+        };
+      }
+    ]
+    # Versions without operators are exact matches, add operator according to PEP-440
+    else [{
+      op = "==";
+      inherit version;
+    }]
+  );
+
+})

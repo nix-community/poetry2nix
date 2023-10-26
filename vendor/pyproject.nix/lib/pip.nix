@@ -4,14 +4,7 @@
 }:
 let
   inherit (builtins) match head tail typeOf split filter foldl' readFile dirOf hasContext unsafeDiscardStringContext;
-
-  stripStr = s:
-    let
-      t = match "[\t ]*(.*[^\t ])[\t ]*" s;
-    in
-    if t == null
-    then ""
-    else head t;
+  inherit (import ./util.nix { inherit lib; }) stripStr;
 
   uncomment = l: head (match " *([^#]*).*" l);
 

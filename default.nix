@@ -5,10 +5,10 @@
 let
   inherit (poetryLib) isCompatible readTOML;
 
-  pyproject-nix = import ./vendor/pyproject.nix { inherit lib; };
+  pyproject-nix = import ./vendor/pyproject.nix { inherit pkgs lib; };
 
   # Name normalization
-  inherit (pyproject-nix.pypa) normalizePackageName;
+  inherit (pyproject-nix.lib.pypa) normalizePackageName;
   normalizePackageSet = lib.attrsets.mapAttrs' (name: value: lib.attrsets.nameValuePair (normalizePackageName name) value);
 
   # Map SPDX identifiers to license names
@@ -172,7 +172,7 @@ lib.makeScope pkgs.newScope (self: {
         in
         lib.listToAttrs (lib.mapAttrsToList (n: v: { name = normalizePackageName n; value = v; }) lockfiles);
 
-      pep508Env = pyproject-nix.pep508.mkEnviron python;
+      pep508Env = pyproject-nix.lib.pep508.mkEnviron python;
 
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions =
@@ -181,9 +181,9 @@ lib.makeScope pkgs.newScope (self: {
             if pkgMeta ? marker then
               (
                 let
-                  marker = pyproject-nix.pep508.parseMarkers pkgMeta.marker;
+                  marker = pyproject-nix.lib.pep508.parseMarkers pkgMeta.marker;
                 in
-                pyproject-nix.pep508.evalMarkers pep508Env marker
+                pyproject-nix.lib.pep508.evalMarkers pep508Env marker
               ) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
         in
         lib.partition supportsPythonVersion poetryLock.package;
