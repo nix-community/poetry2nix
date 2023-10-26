@@ -14247,6 +14247,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pygobject": [
+    "setuptools"
+  ],
   "pygobject-stubs": [
     "setuptools"
   ],
@@ -16387,6 +16390,9 @@
     "setuptools"
   ],
   "python-monkey-business": [
+    "setuptools"
+  ],
+  "python-mpd2": [
     "setuptools"
   ],
   "python-mpv-jsonipc": [

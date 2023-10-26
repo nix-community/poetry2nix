@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "gobject-introspection-test"
+version = "0.1.0"
+description = ""
+authors = ["You <me@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-mpd2 = "^3.1.0"
+PyGObject = "^3.46.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

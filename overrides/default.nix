@@ -2122,31 +2122,29 @@ lib.composeManyExtensions [
             ) else
           super.pyarrow;
 
-      pycairo = (
-        drv: (
-          drv.overridePythonAttrs (
-            _: {
-              format = "other";
-            }
-          )
-        ).overridePythonAttrs (
-          old: {
+      pycairo = super.pycairo.overridePythonAttrs (
+        old: {
+          format = "other";
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            self.meson
+            pkgs.ninja
+            pkg-config
+          ];
 
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-              self.meson
-              pkgs.ninja
-              pkg-config
-            ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+            pkgs.cairo
+          ];
 
-            propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-              pkgs.cairo
-            ];
+          preBuild = ''
+            cd ../
+          '';
 
-            mesonFlags = [ "-Dpython=${if self.isPy3k then "python3" else "python"}" ];
-          }
-        )
-      )
-        super.pycairo;
+          postBuild = ''
+            cd build
+          '';
+          mesonFlags = [ "-Dpython=${if self.isPy3k then "python3" else "python"}" ];
+        }
+      );
 
       pycocotools = super.pycocotools.overridePythonAttrs (
         old: {
