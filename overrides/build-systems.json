@@ -295,8 +295,18 @@
     "setuptools"
   ],
   "aiofiles": [
-    "poetry-core",
-    "setuptools"
+    {
+      "buildSystem": "poetry-core",
+      "until": "23.2.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "23.2.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "23.2.0"
+    }
   ],
   "aioflo": [
     "poetry-core",
@@ -5352,6 +5362,9 @@
     "setuptools"
   ],
   "dyn": [
+    "setuptools"
+  ],
+  "dynaconf": [
     "setuptools"
   ],
   "dynalite-devices": [
@@ -17181,6 +17194,9 @@
     "poetry-core"
   ],
   "quart-cors": [
+    "poetry-core"
+  ],
+  "quart-flask-patch": [
     "poetry-core"
   ],
   "querystring-parser": [
