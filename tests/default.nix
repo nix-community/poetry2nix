@@ -62,6 +62,7 @@ in
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
+  mailchimp3 = callTest ./mailchimp3 { };
   markupsafe2 = callTest ./markupsafe2 { };
   mysqlclient = callTest ./mysqlclient { };
   jq = callTest ./jq { };

@@ -9903,6 +9903,9 @@
   "mailchimp": [
     "setuptools"
   ],
+  "mailchimp3": [
+    "setuptools"
+  ],
   "mailmanclient": [
     "setuptools"
   ],
