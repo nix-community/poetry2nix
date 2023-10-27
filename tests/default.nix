@@ -107,6 +107,7 @@ in
   jupyter-ydoc = callTest ./jupyter-ydoc { };
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
+  pytest-redis = callTest ./pytest-redis { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };

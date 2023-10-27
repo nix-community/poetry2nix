@@ -15969,6 +15969,9 @@
   "pytest-recording": [
     "hatchling"
   ],
+  "pytest-redis": [
+    "setuptools"
+  ],
   "pytest-regressions": [
     "setuptools",
     "setuptools-scm"
