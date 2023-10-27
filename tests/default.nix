@@ -146,6 +146,7 @@ in
   plyvel = callTest ./plyvel { };
   awsume = callTest ./awsume { };
   gobject-introspection = callTest ./gobject-introspection { };
+  python-versions-or = callTest ./python-versions-or { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };

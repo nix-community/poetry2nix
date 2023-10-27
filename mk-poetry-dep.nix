@@ -4,6 +4,7 @@
 , buildPythonPackage
 , poetryLib
 , pep508Env
+, pyVersion
 , pyproject-nix
 }:
 { name
@@ -30,7 +31,8 @@ pythonPackages.callPackage
     let
       inherit (python) stdenv;
       inherit (pyproject-nix.lib.pypa) normalizePackageName;
-      inherit (poetryLib) isCompatible getManyLinuxDeps fetchFromLegacy fetchFromPypi;
+      inherit (poetryLib) getManyLinuxDeps fetchFromLegacy fetchFromPypi;
+      inherit (import ./vendor/pyproject.nix/lib/util.nix { inherit lib; }) splitComma;
 
       inherit (import ./pep425.nix {
         inherit lib python stdenv pyproject-nix;
@@ -132,7 +134,6 @@ pythonPackages.callPackage
 
       propagatedBuildInputs =
         let
-          compat = isCompatible (poetryLib.getPythonVersion python);
           deps = lib.filterAttrs
             (_: v: v)
             (
@@ -143,7 +144,15 @@ pythonPackages.callPackage
                       constraints = v.python or "";
                       pep508Markers = v.markers or "";
                     in
-                    compat constraints && (if pep508Markers == "" then true else
+                    (
+                      lib.all
+                        (constraint:
+                          let
+                            cond = pyproject-nix.lib.pep440.parseVersionCond constraint;
+                          in
+                          pyproject-nix.lib.pep440.comparators.${cond.op} pyVersion cond.version)
+                        (splitComma constraints)
+                    ) && (if pep508Markers == "" then true else
                     (pyproject-nix.lib.pep508.evalMarkers
                       (pep508Env // {
                         extra = {
@@ -163,7 +172,7 @@ pythonPackages.callPackage
       inherit pos;
 
       meta = {
-        broken = ! isCompatible (poetryLib.getPythonVersion python) python-versions;
+        broken = ! poetryLib.checkPythonVersions pyVersion python-versions;
         license = [ ];
         inherit (python.meta) platforms;
       };

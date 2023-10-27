@@ -1,11 +1,13 @@
 { pkgs ? import <nixpkgs> { }
 , lib ? pkgs.lib
-, poetryLib ? import ./lib.nix { inherit lib pkgs; inherit (pkgs) stdenv; }
 }:
 let
-  inherit (poetryLib) isCompatible readTOML;
 
   pyproject-nix = import ./vendor/pyproject.nix { inherit pkgs lib; };
+  inherit (import ./vendor/pyproject.nix/lib/util.nix { inherit lib; }) splitComma;
+
+  poetryLib = import ./lib.nix { inherit lib pkgs pyproject-nix; inherit (pkgs) stdenv; };
+  inherit (poetryLib) readTOML;
 
   # Name normalization
   inherit (pyproject-nix.lib.pypa) normalizePackageName;
@@ -35,23 +37,30 @@ let
     let
       getInputs = attr: attrs.${attr} or [ ];
 
+      pyVersion = pyproject-nix.lib.pep440.parseVersion py.version;
+
       # Get dependencies and filter out depending on interpreter version
       getDeps = depSet:
         let
-          compat = isCompatible (poetryLib.getPythonVersion py);
           depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames depSet);
         in
         builtins.map
-          (
-            dep:
-            let
-              pkg = py.pkgs."${normalizePackageName dep}";
-              constraints = depSet.${dep}.python or "";
-              isCompat = compat constraints;
-            in
-            if isCompat then pkg else null
-          )
-          depAttrs;
+            (
+              dep:
+              let
+                pkg = py.pkgs."${normalizePackageName dep}";
+                constraints = depSet.${dep}.python or "";
+                isCompat = lib.all
+                  (constraint:
+                    let
+                      cond = pyproject-nix.lib.pep440.parseVersionCond constraint;
+                    in
+                    pyproject-nix.lib.pep440.comparators.${cond.op} pyVersion cond.version)
+                  (splitComma constraints);
+              in
+              if isCompat then pkg else null
+            )
+            depAttrs;
 
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;
@@ -90,7 +99,6 @@ let
       checkInputs = mkInput "checkInputs" checkInputs';
       nativeCheckInputs = mkInput "nativeCheckInputs" checkInputs';
     };
-
 
 in
 lib.makeScope pkgs.newScope (self: {
@@ -174,6 +182,8 @@ lib.makeScope pkgs.newScope (self: {
 
       pep508Env = pyproject-nix.lib.pep508.mkEnviron python;
 
+      pyVersion = pyproject-nix.lib.pep440.parseVersion python.version;
+
       # Filter packages by their PEP508 markers & pyproject interpreter version
       partitions =
         let
@@ -184,7 +194,7 @@ lib.makeScope pkgs.newScope (self: {
                   marker = pyproject-nix.lib.pep508.parseMarkers pkgMeta.marker;
                 in
                 pyproject-nix.lib.pep508.evalMarkers pep508Env marker
-              ) else true && isCompatible (poetryLib.getPythonVersion python) pkgMeta.python-versions;
+              ) else true && poetryLib.checkPythonVersions pyVersion pkgMeta.python-versions;
         in
         lib.partition supportsPythonVersion poetryLock.package;
       compatible = partitions.right;
@@ -251,7 +261,7 @@ lib.makeScope pkgs.newScope (self: {
               self: super:
                 {
                   mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
-                    inherit lib python poetryLib pep508Env;
+                    inherit lib python poetryLib pep508Env pyVersion;
                     inherit pyproject-nix;
                   };
 

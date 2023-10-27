@@ -1,49 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pyproject-nix, pkgs, ... }:
 let
-  inherit (import ./semver.nix { inherit lib ireplace; }) satisfiesSemver;
-  inherit (builtins) genList length;
+  inherit (import ./vendor/pyproject.nix/lib/util.nix { inherit lib; }) splitComma;
 
-  # Replace a list entry at defined index with set value
-  ireplace = idx: value: list: (
-    genList (i: if i == idx then value else (builtins.elemAt list i)) (length list)
-  );
-
-  # Get a full semver pythonVersion from a python derivation
-  getPythonVersion = python:
-    let
-      pyVer = lib.splitVersion python.pythonVersion ++ [ "0" ];
-      ver = lib.splitVersion python.version;
-      major = l: lib.elemAt l 0;
-      minor = l: lib.elemAt l 1;
-      joinVersion = v: lib.concatStringsSep "." v;
-    in
-    joinVersion (if major pyVer == major ver && minor pyVer == minor ver then ver else pyVer);
-
-  # Compare a semver expression with a version
-  isCompatible = version:
-    let
-      operators = {
-        "||" = cond1: cond2: cond1 || cond2;
-        "," = cond1: cond2: cond1 && cond2; # , means &&
-        "&&" = cond1: cond2: cond1 && cond2;
-      };
-      splitRe = "(" + (builtins.concatStringsSep "|" (builtins.map (x: lib.replaceStrings [ "|" ] [ "\\|" ] x) (lib.attrNames operators))) + ")";
-    in
-    expr:
-    let
-      tokens = builtins.filter (x: x != "") (builtins.split splitRe expr);
-      combine = acc: v:
-        let
-          isOperator = builtins.typeOf v == "list";
-          operator = if isOperator then (builtins.elemAt v 0) else acc.operator;
-        in
-        if isOperator then (acc // { inherit operator; }) else {
-          inherit operator;
-          state = operators."${operator}" acc.state (satisfiesSemver version v);
-        };
-      initial = { operator = "&&"; state = true; };
-    in
-    if expr == "" then true else (builtins.foldl' combine initial tokens).state;
   fromTOML = builtins.fromTOML or
     (
       toml: builtins.fromJSON (
@@ -125,15 +83,22 @@ let
       };
     };
 
+  checkPythonVersions = pyVersion: python-versions: (
+    lib.any (python-versions': lib.all
+    (cond:
+    let
+      conds = pyproject-nix.lib.poetry.parseVersionCond cond;
+    in
+    lib.all (cond': pyproject-nix.lib.pep440.comparators.${cond'.op} pyVersion cond'.version) conds)
+    (splitComma python-versions')) (builtins.filter lib.isString (builtins.split " *\\|\\| *" python-versions)));
+
 in
 {
   inherit
     getManyLinuxDeps
-    isCompatible
     readTOML
     getBuildSystemPkgs
-    satisfiesSemver
     cleanPythonSources
-    getPythonVersion
+    checkPythonVersions
     ;
 }
