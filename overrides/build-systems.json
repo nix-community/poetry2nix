@@ -9903,6 +9903,9 @@
   "mailchimp": [
     "setuptools"
   ],
+  "mailchimp3": [
+    "setuptools"
+  ],
   "mailmanclient": [
     "setuptools"
   ],
@@ -15965,6 +15968,9 @@
   ],
   "pytest-recording": [
     "hatchling"
+  ],
+  "pytest-redis": [
+    "setuptools"
   ],
   "pytest-regressions": [
     "setuptools",

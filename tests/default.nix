@@ -62,6 +62,7 @@ in
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
+  mailchimp3 = callTest ./mailchimp3 { };
   markupsafe2 = callTest ./markupsafe2 { };
   mysqlclient = callTest ./mysqlclient { };
   jq = callTest ./jq { };
@@ -106,6 +107,7 @@ in
   jupyter-ydoc = callTest ./jupyter-ydoc { };
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
+  pytest-redis = callTest ./pytest-redis { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
