@@ -309,3 +309,48 @@ error: infinite recursion encountered
 ```
 
 This is because `dask[distributed]` depends on `distributed` which depends on `dask`. The solution is to install `dask` (no extras) and `distributed` separately.
+
+#### Overriding package versions
+
+Typically, all versions of a package that `poetry2nix` brings in are found in the `poetry.lock` file.
+
+If you choose to override the package version for a particular dependency using nix, you may get a package that doesn't match the lock file.
+
+Suppose you had the following `poetry.lock` file:
+
+```toml
+[[package]]
+name = "foobar"
+version = "1.0"
+description = "A dummy package"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "foobar-1.0-py3-none-any.whl", hash = "sha256:ae74fb96c20a0277a1d615f1e4d73c8414f5a98db8b799a7931d1582f3390c28"},
+]
+```
+
+Suppose we override the version in our Nix file as follows:
+
+```nix
+let poetryOverrides = self: super: {
+    foobar = super.foobar.overridePythonAttrs (old: rec {
+      version = "2.0";
+      src = super.pkgs.fetchFromGitHub {
+        owner = "fakerepo";
+        repo = "foobar";
+        rev = "refs/tags/${version}";
+        sha256 = lib.fakeSha256;
+      };
+    });
+  };
+in
+poetry2nix.mkPoetryApplication {
+  projectDir = ../.;
+  overrides = poetry2nix.overrides.withDefaults poetryOverrides;
+}
+```
+
+The poetry application will build successfully **but** the version that is selected for the package `foobar` is **2.0** although `poetry.lock` says **1.0**.
+
+**TL;DR**: Overrides supersede `poetry.lock`.
