@@ -19,8 +19,10 @@ jobs:
       - id: set-matrix
         name: Generate Nix Matrix
         run: |
-          set -Eeu
-          echo "matrix=$(nix eval --json '.#githubActions.matrix')" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+
+          matrix="$(nix eval --json '.#githubActions.matrix')"
+          echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
 
   nix-build:
     needs: nix-matrix

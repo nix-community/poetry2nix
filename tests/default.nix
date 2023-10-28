@@ -6,7 +6,7 @@ in
       allowAliases = false;
       allowInsecurePredicate = _: true;
     };
-    overlays = [ flake.overlay ];
+    overlays = [ flake.overlays.default ];
   }
 }:
 let
