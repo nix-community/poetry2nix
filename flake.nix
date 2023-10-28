@@ -21,7 +21,7 @@
     in
 
     {
-      overlay = import ./overlay.nix;
+      overlays.default = import ./overlay.nix;
       lib.mkPoetry2Nix = { pkgs }: import ./default.nix { inherit pkgs; };
 
       githubActions =
@@ -31,7 +31,7 @@
               allowAliases = false;
               allowInsecurePredicate = _: true;
             };
-            overlays = [ self.overlay ];
+            inherit (self) overlays;
             inherit system;
           };
         in
