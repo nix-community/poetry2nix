@@ -21,7 +21,7 @@
     in
 
     {
-      overlays.default = import ./overlay.nix;
+      overlays.default = nixpkgs.lib.composeManyExtensions [ (import ./overlay.nix) ];
       lib.mkPoetry2Nix = { pkgs }: import ./default.nix { inherit pkgs; };
 
       githubActions =
@@ -31,7 +31,7 @@
               allowAliases = false;
               allowInsecurePredicate = _: true;
             };
-            inherit (self) overlays;
+            overlays = [ self.overlays.default ];
             inherit system;
           };
         in
