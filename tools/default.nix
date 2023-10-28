@@ -1,9 +1,4 @@
-{ pkgs ? import <nixpkgs> {
-    overlays = [
-      (import ../overlay.nix)
-    ];
-  }
-}:
+{ pkgs, poetry2nix }:
 let
   inherit (pkgs) lib;
 
@@ -36,7 +31,7 @@ in
       flamegraph.pl $workdir/traceFile.folded > poetry2nix-flamegraph.svg
     '';
 
-  env = pkgs.poetry2nix.mkPoetryEnv {
+  env = poetry2nix.mkPoetryEnv {
     projectDir = ./.;
   };
 
