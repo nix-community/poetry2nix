@@ -9,16 +9,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  sort-build-systems:
-    runs-on: ubuntu-22.04
-    steps:
-    - uses: cachix/install-nix-action@v23
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-    - uses: actions/checkout@v4
-    - name: Check format
-      run: nix-shell --packages jq diffutils --run "diff --unified overrides/build-systems.json <(jq --from-file overrides/sort-build-systems.jq --raw-output --sort-keys < overrides/build-systems.json)"
-
   nix-matrix:
     runs-on: ubuntu-latest
     outputs:
