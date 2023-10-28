@@ -147,6 +147,7 @@ in
   awsume = callTest ./awsume { };
   gobject-introspection = callTest ./gobject-introspection { };
   python-versions-or = callTest ./python-versions-or { };
+  python-markers = callTest ./python-markers { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };

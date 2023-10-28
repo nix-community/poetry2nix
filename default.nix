@@ -4,7 +4,6 @@
 let
 
   pyproject-nix = import ./vendor/pyproject.nix { inherit pkgs lib; };
-  inherit (import ./vendor/pyproject.nix/lib/util.nix { inherit lib; }) splitComma;
 
   poetryLib = import ./lib.nix { inherit lib pkgs pyproject-nix; inherit (pkgs) stdenv; };
   inherit (poetryLib) readTOML;
@@ -49,14 +48,7 @@ let
               dep:
               let
                 pkg = py.pkgs."${normalizePackageName dep}";
-                constraints = depSet.${dep}.python or "";
-                isCompat = lib.all
-                  (constraint:
-                    let
-                      cond = pyproject-nix.lib.pep440.parseVersionCond constraint;
-                    in
-                    pyproject-nix.lib.pep440.comparators.${cond.op} pyVersion cond.version)
-                  (splitComma constraints);
+                isCompat = poetryLib.checkPythonVersions pyVersion (depSet.${dep}.python or "");
               in
               if isCompat then pkg else null
             )
