@@ -32,7 +32,6 @@ pythonPackages.callPackage
       inherit (python) stdenv;
       inherit (pyproject-nix.lib.pypa) normalizePackageName;
       inherit (poetryLib) getManyLinuxDeps fetchFromLegacy fetchFromPypi;
-      inherit (import ./vendor/pyproject.nix/lib/util.nix { inherit lib; }) splitComma;
 
       inherit (import ./pep425.nix {
         inherit lib python stdenv pyproject-nix;
@@ -144,15 +143,7 @@ pythonPackages.callPackage
                       constraints = v.python or "";
                       pep508Markers = v.markers or "";
                     in
-                    (
-                      lib.all
-                        (constraint:
-                          let
-                            cond = pyproject-nix.lib.pep440.parseVersionCond constraint;
-                          in
-                          pyproject-nix.lib.pep440.comparators.${cond.op} pyVersion cond.version)
-                        (splitComma constraints)
-                    ) && (if pep508Markers == "" then true else
+                    (poetryLib.checkPythonVersions pyVersion constraints) && (if pep508Markers == "" then true else
                     (pyproject-nix.lib.pep508.evalMarkers
                       (pep508Env // {
                         extra = {
