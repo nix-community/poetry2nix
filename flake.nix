@@ -76,7 +76,7 @@
         };
 
         poetry2nix = import ./default.nix { inherit pkgs; };
-        p2nix-tools = pkgs.callPackage ./tools { };
+        p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
       in
       rec {
         formatter = treefmtEval.${system}.config.build.wrapper;
