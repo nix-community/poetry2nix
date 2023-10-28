@@ -12865,6 +12865,10 @@
   "plugwise": [
     "setuptools"
   ],
+  "plum-dispatch": [
+    "hatch-vcs",
+    "hatchling"
+  ],
   "plum-py": [
     "setuptools"
   ],
