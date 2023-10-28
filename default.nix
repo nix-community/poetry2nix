@@ -4,7 +4,6 @@
 let
 
   pyproject-nix = import ./vendor/pyproject.nix { inherit pkgs lib; };
-  inherit (import ./vendor/pyproject.nix/lib/util.nix { inherit lib; }) splitComma;
 
   poetryLib = import ./lib.nix { inherit lib pkgs pyproject-nix; inherit (pkgs) stdenv; };
   inherit (poetryLib) readTOML;
