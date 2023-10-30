@@ -23,20 +23,27 @@
 , ...
 }:
 
+let
+  inherit (pyproject-nix.lib) pypa;
+
+  selectWheel = files: lib.take 1 (let
+    wheelFiles = builtins.filter (fileEntry: pypa.isWheelFileName fileEntry.file) files;
+    # Group wheel files by their file name
+    wheelFilesByFileName = lib.listToAttrs (map (fileEntry: lib.nameValuePair fileEntry.file fileEntry) wheelFiles);
+    selectedWheels = pypa.selectWheels python (map (fileEntry: pypa.parseWheelFileName fileEntry.file) wheelFiles);
+  in map (wheel: wheelFilesByFileName.${wheel.filename}) selectedWheels);
+
+in
+
 pythonPackages.callPackage
   (
     { preferWheel ? preferWheels
     , ...
     }@args:
     let
-      inherit (python) stdenv;
       inherit (pyproject-nix.lib.pypa) normalizePackageName;
-      inherit (poetryLib) getManyLinuxDeps fetchFromLegacy fetchFromPypi;
+      inherit (poetryLib) getManyLinuxDeps;
 
-      inherit (import ./pep425.nix {
-        inherit lib python stdenv pyproject-nix;
-      }) selectWheel
-        ;
       fileCandidates =
         let
           supportedRegex = "^.*(" + builtins.concatStringsSep "|" supportedExtensions + ")";
@@ -45,6 +52,7 @@ pythonPackages.callPackage
           isCompatibleEgg = fname: ! lib.strings.hasSuffix ".egg" fname || lib.strings.hasSuffix "py${python.pythonVersion}.egg" fname;
         in
         builtins.filter (f: matchesVersion f.file && hasSupportedExtension f.file && isCompatibleEgg f.file) files;
+
       isLocked = lib.length fileCandidates > 0;
       isSource = source != null;
       isGit = isSource && source.type == "git";
@@ -73,8 +81,10 @@ pythonPackages.callPackage
           isBdist = f: lib.strings.hasSuffix "whl" f.file;
           isSdist = f: ! isBdist f && ! isEgg f;
           isEgg = f: lib.strings.hasSuffix ".egg" f.file;
+
           binaryDist = selectWheel fileCandidates;
           sourceDist = builtins.filter isSdist fileCandidates;
+
           eggs = builtins.filter isEgg fileCandidates;
           # the `wheel` package cannot be built from a wheel, since that requires the wheel package
           # this causes a circular dependency so we special-case ignore its `preferWheel` attribute value
