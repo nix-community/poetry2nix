@@ -2522,7 +2522,7 @@ lib.composeManyExtensions [
               postUnpack = ''
                 export MAKEFLAGS+="''${enableParallelBuilding:+-j$NIX_BUILD_CORES}"
               '';
-              preFixup = ''
+              preFixup = lib.optionalString isWheel ''
                 addAutoPatchelfSearchPath ${self.pyqt6-qt6}/${self.python.sitePackages}/PyQt6
               '';
             });
