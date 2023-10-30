@@ -77,9 +77,7 @@ req = urllib.request.Request(index_url)
 if username and password:
     import base64
 
-    password_b64 = base64.b64encode(":".join((username, password)).encode()).decode(
-        "utf-8"
-    )
+    password_b64 = base64.b64encode(":".join((username, password)).encode()).decode("utf-8")
     req.add_header("Authorization", "Basic {}".format(password_b64))
 response = urllib.request.urlopen(req, context=context)
 index = response.read()
@@ -87,9 +85,7 @@ index = response.read()
 parser = Pep503()
 parser.feed(str(index, "utf-8"))
 if package_filename not in parser.sources:
-    print(
-        "The file %s has not be found in the index %s" % (package_filename, index_url)
-    )
+    print("The file %s has not be found in the index %s" % (package_filename, index_url))
     exit(1)
 
 package_file = open(package_filename, "wb")

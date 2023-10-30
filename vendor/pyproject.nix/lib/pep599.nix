@@ -13,8 +13,8 @@ _:
     i686 = "i686";
     aarch64 = "aarch64";
     armv7l = "armv7l";
-    powerpc64 = "ppc64";
-    powerpc64le = "ppc64le";
+    ppc64 = "powerpc64";
+    ppc64le = "powerpc64le";
     s390x = "s390x";
   };
 }

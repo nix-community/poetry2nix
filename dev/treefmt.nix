@@ -18,6 +18,8 @@
       includes = [ "overrides/build-systems.json" ];
       excludes = [ ];
     };
+
+    black.excludes = [ "vendor/**.py" ];
   };
 
   programs.deadnix.enable = true;
