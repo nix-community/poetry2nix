@@ -11678,6 +11678,12 @@
     "scikit-build",
     "setuptools"
   ],
+  "opencv-python-headless": [
+    "cmake",
+    "pip",
+    "scikit-build",
+    "setuptools"
+  ],
   "opencv4": [
     "setuptools"
   ],
