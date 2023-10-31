@@ -4753,6 +4753,7 @@
     "setuptools"
   ],
   "django-filter": [
+    "flit-core",
     "setuptools"
   ],
   "django-floppyforms": [
