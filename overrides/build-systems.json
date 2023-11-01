@@ -3658,7 +3658,11 @@
     "setuptools"
   ],
   "constantly": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "versioneer",
+      "from": "23.10.0"
+    }
   ],
   "construct": [
     "setuptools"
