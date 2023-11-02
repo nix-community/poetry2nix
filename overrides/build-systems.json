@@ -11677,6 +11677,10 @@
   "opencensus-ext-azure": [
     "setuptools"
   ],
+  "opencv-contrib-python": [
+    "scikit-build",
+    "setuptools"
+  ],
   "opencv-python": [
     "cmake",
     "pip",
