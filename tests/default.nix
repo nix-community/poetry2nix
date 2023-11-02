@@ -119,7 +119,6 @@ in
   textual-dev = callTest ./textual-dev { };
   textual-textarea = callTest ./textual-textarea { };
   fiona-source = callTest ./fiona-source { };
-  fiona-wheel = callTest ./fiona-wheel { };
   shapely-wheel = callTest ./shapely-wheel { };
   cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };
   mkdocstrings-wheel = callTest ./mkdocstrings-wheel { };
@@ -155,6 +154,7 @@ in
   pyqt6 = callTest ./pyqt6 { };
   pyside6 = callTest ./pyside6 { };
   pyarrow-wheel = callTest ./pyarrow-wheel { };
+  fiona-wheel = callTest ./fiona-wheel { };
 
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
