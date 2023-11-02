@@ -7,4 +7,4 @@ if __name__ == "__main__":
     modifier = int(
         (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
     )
-    print(now.strftime(f"%-Y%m.%-d.{modifier}"))
+    print(now.strftime(f"%-Y.%-m.%-d{modifier}"))
