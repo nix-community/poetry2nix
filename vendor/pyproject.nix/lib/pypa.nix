@@ -1,8 +1,8 @@
 { lib, pep600, pep656, ... }:
 let
-  inherit (builtins) concatStringsSep filter split match elemAt compareVersions;
+  inherit (builtins) concatStringsSep filter split match elemAt compareVersions length sort head;
   inherit (lib) isString toLower;
-  inherit (lib.strings) hasPrefix;
+  inherit (lib.strings) hasPrefix toInt;
 
   matchWheelFileName = match "([^-]+)-([^-]+)(-([[:digit:]][^-]*))?-([^-]+)-([^-]+)-(.+).whl";
 
@@ -19,24 +19,11 @@ let
 
   optionalString = s: if s != "" then s else null;
 
-  parseTagVersion = v:
-    let
-      m = match "([0-9])([0-9]*)" v;
-      mAt = elemAt m;
-    in
-    if v == "" then null else assert m != null; {
-      major = mAt 0;
-      minor = optionalString (mAt 1);
-    };
-
-  checkTagVersion = sourceVersion: tagVersion: tagVersion == null || (
-    tagVersion.major == sourceVersion.major && (
-      tagVersion.minor == null || (
-        (compareVersions sourceVersion.minor tagVersion.minor) >= 0
-      )
+  checkTagVersion = sourceVersion: tagVersion: tagVersion == null || tagVersion == sourceVersion.major || (
+    hasPrefix sourceVersion.major tagVersion && (
+      (toInt (sourceVersion.major + sourceVersion.minor)) >= toInt tagVersion
     )
   );
-
 
 in
 lib.fix (self: {
@@ -65,10 +52,7 @@ lib.fix (self: {
      # parsePythonTag "cp37"
      {
        implementation = "cpython";
-       version = {
-         major = "3";
-         minor = "7";
-       };
+       version = "37";
      }
      */
   parsePythonTag =
@@ -79,7 +63,7 @@ lib.fix (self: {
     in
     assert m != null; {
       implementation = normalizeImpl (mAt 0);
-      version = parseTagVersion (mAt 1);
+      version = optionalString (mAt 1);
     };
 
   /* Parse ABI tags.
@@ -93,10 +77,7 @@ lib.fix (self: {
      {
        rest = "dmu";
        implementation = "cp";
-       version = {
-         major = "3";
-         minor = "7";
-       };
+       version = "37";
      }
   */
   parseABITag =
@@ -107,7 +88,7 @@ lib.fix (self: {
     in
     assert m != null; {
       implementation = normalizeImpl (mAt 0);
-      version = parseTagVersion (mAt 1);
+      version = optionalString (mAt 1);
       rest = mAt 2;
     };
 
@@ -130,21 +111,15 @@ lib.fix (self: {
      {
       abiTag = {  # Parsed by pypa.parseABITag
         implementation = "abi";
-        version = {
-          major = "3";
-          minor = null;
-        };
-        flags = [ ];
+        version = "3";
+        rest = "";
       };
       buildTag = null;
       distribution = "cryptography";
       languageTags = [  # Parsed by pypa.parsePythonTag
         {
           implementation = "cpython";
-          version = {
-            major = "3";
-            minor = "7";
-          };
+          version = "37";
         }
       ];
       platformTags = [ "manylinux_2_17_aarch64" "manylinux2014_aarch64" ];
@@ -165,6 +140,9 @@ lib.fix (self: {
       languageTags = map self.parsePythonTag (filter isString (split "\\." (mAt 4)));
       abiTag = self.parseABITag (mAt 5);
       platformTags = filter isString (split "\\." (mAt 6));
+      # Keep filename around so selectWheel & such that returns structured filtered
+      # data becomes more ergonomic to use
+      filename = name;
     };
 
   /* Check whether an ABI tag is compatible with this python interpreter.
@@ -310,4 +288,57 @@ lib.fix (self: {
       &&
       lib.any (self.isPlatformTagCompatible python) file.platformTags
     );
+
+  /* Select compatible wheels from a list and return them in priority order.
+
+     Type: selectWheels :: derivation -> [ AttrSet ] -> [ AttrSet ]
+
+     Example:
+     # selectWheels pkgs.python3 [ (pypa.parseWheelFileName "Pillow-9.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl") ]
+     [ (pypa.parseWheelFileName "Pillow-9.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl") ]
+  */
+  selectWheels =
+    # Python interpreter derivation
+    python:
+    # List of files as parsed by parseWheelFileName
+    files:
+    let
+      # Get sorting/filter criteria fields
+      withSortedTags = map
+        (file:
+          let
+            abiCompatible = self.isABITagCompatible python file.abiTag;
+
+            # Filter only compatible tags
+            languageTags = filter (self.isPythonTagCompatible python) file.languageTags;
+            # Extract the tag as a number. E.g. "37" is `toInt "37"` and "none"/"any" is 0
+            languageTags' = map (tag: if tag == "none" then 0 else toInt tag.version) languageTags;
+
+          in
+          {
+            bestLanguageTag = head (sort (x: y: x > y) languageTags');
+            compatible = abiCompatible && length languageTags > 0 && lib.any (self.isPlatformTagCompatible python) file.platformTags;
+            inherit file;
+          })
+        files;
+
+      # Only consider files compatible with this interpreter
+      compatibleFiles = filter (file: file.compatible) withSortedTags;
+
+      # Sort files based on their tags
+      sorted = sort
+        (
+          x: y:
+            x.file.distribution > y.file.distribution
+            || x.file.version > y.file.version
+            || (x.file.buildTag != null && (y.file.buildTag == null || x.file.buildTag > y.file.buildTag))
+            || x.bestLanguageTag > y.bestLanguageTag
+        )
+        compatibleFiles;
+
+    in
+    # Strip away temporary sorting metadata
+    map (file': file'.file) sorted
+  ;
+
 })
