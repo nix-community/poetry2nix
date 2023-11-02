@@ -122,7 +122,6 @@ in
   fiona-wheel = callTest ./fiona-wheel { };
   shapely-wheel = callTest ./shapely-wheel { };
   cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };
-  pyarrow-wheel = callTest ./pyarrow-wheel { };
   mkdocstrings-wheel = callTest ./mkdocstrings-wheel { };
   test-extras = callTest ./test-extras { };
   test-no-extras = callTest ./test-no-extras { };
@@ -155,6 +154,7 @@ in
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
   pyside6 = callTest ./pyside6 { };
+  pyarrow-wheel = callTest ./pyarrow-wheel { };
 
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
