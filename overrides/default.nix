@@ -1830,40 +1830,38 @@ lib.composeManyExtensions [
         }
       );
 
-      orjson =
-        let
-          getCargoHash = version: {
-            "3.6.7" = "sha256-sz2k9podPB6QSptkyOu7+BoVTrKhefizRtYU+MICPt4=";
-            "3.6.8" = "sha256-vpfceVtYkU09xszNIihY1xbqGWieqDquxwsAmDH8jd4=";
-            "3.7.2" = "sha256-2U37IhftNYjH7sV7Nh51YpR/WjmPmmzX/aGuHsFgwf4=";
-            "3.7.9" = "sha256-QHzAhjHgm4XLxY2zUdnIsd/WWMI7dJLQQAvTXC+2asQ=";
-            "3.8.0" = "sha256-8k0DetamwLqkdcg8V/D2J5ja6IJSLi50CE+ZjFa7Hdc=";
-            "3.8.1" = "sha256-QXguyDxQHW9Fd3Nhmi5JzSxZQuk3HGPhhh/RGuOTZNY=";
-            "3.8.3" = "sha256-oSZO4cN1sJKd0T7pYrKG63is8AZMKaLRZqj5UCVY/14=";
-            "3.8.4" = "sha256-O2W9zO7qHWG+78T+uECICAmecaSIbTTJPktJIPZYElE=";
-            "3.8.5" = "sha256-JtUCJ3TP9EKGcddeyW1e/72k21uKneq9SnZJeLvn9Os=";
-            "3.8.6" = "sha256-8T//q6nQoZhh8oJWDCeQf3gYRew58dXAaxkYELY4CJM=";
-            "3.8.7" = "sha256-JBO8nl0sC+XIn17vI7hC8+nA1HYI9jfvZrl9nCE3k1s=";
-            "3.8.8" = "sha256-AK4HtqPKg2O2FeLHCbY9o+N1BV4QFMNaHVE1NaFYHa4=";
-            "3.8.9" = "sha256-ogkTRRykLF2dTOxilsfwsRH+Au/O0e1kL1e9sFOFLeY=";
-            "3.8.10" = "sha256-AcrTEHv7GYtGe4fXYsM24ElrzfhnOxLYlaon1ZrlD4A=";
-            "3.8.11" = "sha256-/x+0/I3WFxPwVu2LliTgr42SuJX7VjOLe/SGai5OgAw=";
-          }.${version} or (
-            lib.warn "Unknown orjson version: '${version}'. Please update getCargoHash." lib.fakeHash
-          );
-        in
-        super.orjson.overridePythonAttrs (old: if old.src.isWheel or false then { } else {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
-            inherit (old) src;
-            name = "${old.pname}-${old.version}";
-            hash = getCargoHash old.version;
-          };
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            pkgs.rustPlatform.cargoSetupHook
-            pkgs.rustPlatform.maturinBuildHook
-          ];
-          buildInputs = (old.buildInputs or [ ]) ++ lib.optional pkgs.stdenv.isDarwin pkgs.libiconv;
-        });
+      orjson = super.orjson.overridePythonAttrs (old: if old.src.isWheel or false then {} else (let 
+        githubHash = {
+          "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
+          "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
+          "3.8.3" = "sha256-4rBXb4+eAaRfbl2PWZL4I01F0GvbSNqBVtU4L/sXrVc=";
+          "3.8.4" = "sha256-XQBiE8hmLC/AIRt0eJri/ilPHUEYiOxd0onRBQsx+pM=";
+          "3.8.5" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+          "3.8.6" = "sha256-LwLuMcnAubO7U1/KSe6tHaSP9+bi6gDfvGobixzL2gM=";
+          "3.8.7" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+          "3.8.8" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+          "3.8.9" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+        }.${old.version} or lib.fakeHash;
+        # we can count on this repo's root to have Cargo.lock
+
+        src = pkgs.fetchFromGitHub {
+          owner = "ijl";
+          repo = "orjson";
+          rev = old.version;
+          sha256 = githubHash;
+        };
+
+      in {
+        inherit src;
+        cargoDeps = pkgs.rustPlatform.importCargoLock {
+          lockFile = "${src.out}/Cargo.lock";
+        };
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          pkgs.rustPlatform.cargoSetupHook   # handles `importCargoLock`
+          pkgs.rustPlatform.maturinBuildHook # orjson is based on maturin
+        ];
+        buildInputs = (old.buildInputs or [ ]) ++ lib.optional pkgs.stdenv.isDarwin pkgs.libiconv;
+      }));
 
       osqp = super.osqp.overridePythonAttrs (
         old: {
