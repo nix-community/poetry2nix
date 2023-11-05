@@ -32,12 +32,18 @@ in
       ...
     }: {
       name = "orjson-test-${dep}-${version}}";
-      path = poetry2nix.mkPoetryApplication {
-        python = python310;
-        pyproject = ./pyproject.toml;
-        poetrylock = ./. + "/poetry_${dep}_${version}.lock";
-        src = lib.cleanSource ./.;
-        preferWheels = false;
-      };
+      path = let
+        env = poetry2nix.mkPoetryEnv {
+          python = python310;
+          pyproject = ./pyproject.toml;
+          poetrylock = ./. + "/poetry_${dep}_${version}.lock";
+          # src = lib.cleanSource ./.;
+          preferWheels = false;
+        };
+      in
+        pkgs.runCommand "orjson-test" {} ''
+          ${env}/bin/python -c 'import orjson; print(orjson.dumps(dict(hello="world", foo=14, life=42.0)).decode("utf-8"))'
+          touch $out
+        '';
     })
     exclude-broken-maturin)
