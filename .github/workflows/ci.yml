@@ -59,6 +59,45 @@ jobs:
           echo "NIXPKGS_SYSTEM=$(nix eval --raw 'nixpkgs#system')" >> "$GITHUB_ENV"
       - run: nix build -L ".#devShells.${NIXPKGS_SYSTEM}.default" --keep-going
 
+  nix-flake-check:
+    # ensure flake-exposed derivations are correct
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
+      - uses: cachix/cachix-action@v12
+        with:
+          name: poetry2nix
+          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+      - name: check 
+        run: nix flake check
+
+  nix-flake-show:
+    # ensure flake-exposed endpoints (apps, packages, devShells) are of correct types
+    # (something like apps.${SYSTEM}.<app> can be hard to get right)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
+      - uses: cachix/cachix-action@v12
+        with:
+          name: poetry2nix
+          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+      - run: nix flake show
+
+
   test-template:
     runs-on: ${{ matrix.os }}
     strategy:
