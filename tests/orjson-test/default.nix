@@ -1,9 +1,10 @@
-{
-  pkgs,
-  lib,
-  poetry2nix,
-  python310,
-}: let
+{ pkgs
+, lib
+, poetry2nix
+, python310
+,
+}:
+let
   versions = builtins.fromJSON (builtins.readFile ./versions.json);
   # These versions fails because each builds using `maturin >= 0.12.18; < 0.14`,
   # while nixpkgs's rustPlatform uses `maturin > 0.14`. This information is
@@ -18,21 +19,21 @@
   # 2. somehow override maturin build hook to use older version of maturin
   # 3. we maintain patches against pyproject.toml and cargo.toml to make the
   # source works, based on read version.
-  exclude-broken-maturin = builtins.filter ({
-    dep,
-    version,
-    ...
-  }:
-    lib.versionAtLeast version "3.8.2")
-  versions;
+  exclude-broken-maturin = builtins.filter
+    ({ version
+     , ...
+     }:
+      lib.versionAtLeast version "3.8.2")
+    versions;
 in
-  pkgs.linkFarm "orjson-test" (builtins.map ({
-      dep,
-      version,
-      ...
-    }: {
-      name = "orjson-test-${dep}-${version}}";
-      path = let
+pkgs.linkFarm "orjson-test" (builtins.map
+  ({ dep
+   , version
+   , ...
+   }: {
+    name = "orjson-test-${dep}-${version}}";
+    path =
+      let
         env = poetry2nix.mkPoetryEnv {
           python = python310;
           pyproject = ./pyproject.toml;
@@ -41,9 +42,9 @@ in
           preferWheels = false;
         };
       in
-        pkgs.runCommand "orjson-test" {} ''
-          ${env}/bin/python -c 'import orjson; print(orjson.dumps(dict(hello="world", foo=14, life=42.0)).decode("utf-8"))'
-          touch $out
-        '';
-    })
-    exclude-broken-maturin)
+      pkgs.runCommand "orjson-test" { } ''
+        ${env}/bin/python -c 'import orjson; print(orjson.dumps(dict(hello="world", foo=14, life=42.0)).decode("utf-8"))'
+        touch $out
+      '';
+  })
+  exclude-broken-maturin)

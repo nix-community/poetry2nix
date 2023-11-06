@@ -44,15 +44,15 @@ let
           depAttrs = builtins.map (d: lib.toLower d) (builtins.attrNames depSet);
         in
         builtins.map
-            (
-              dep:
-              let
-                pkg = py.pkgs."${normalizePackageName dep}";
-                isCompat = poetryLib.checkPythonVersions pyVersion (depSet.${dep}.python or "");
-              in
-              if isCompat then pkg else null
-            )
-            depAttrs;
+          (
+            dep:
+            let
+              pkg = py.pkgs."${normalizePackageName dep}";
+              isCompat = poetryLib.checkPythonVersions pyVersion (depSet.${dep}.python or "");
+            in
+            if isCompat then pkg else null
+          )
+          depAttrs;
 
       buildSystemPkgs = poetryLib.getBuildSystemPkgs {
         inherit pyProject;

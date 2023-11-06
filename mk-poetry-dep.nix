@@ -26,12 +26,15 @@
 let
   inherit (pyproject-nix.lib) pypa;
 
-  selectWheel = files: lib.take 1 (let
-    wheelFiles = builtins.filter (fileEntry: pypa.isWheelFileName fileEntry.file) files;
-    # Group wheel files by their file name
-    wheelFilesByFileName = lib.listToAttrs (map (fileEntry: lib.nameValuePair fileEntry.file fileEntry) wheelFiles);
-    selectedWheels = pypa.selectWheels python (map (fileEntry: pypa.parseWheelFileName fileEntry.file) wheelFiles);
-  in map (wheel: wheelFilesByFileName.${wheel.filename}) selectedWheels);
+  selectWheel = files: lib.take 1 (
+    let
+      wheelFiles = builtins.filter (fileEntry: pypa.isWheelFileName fileEntry.file) files;
+      # Group wheel files by their file name
+      wheelFilesByFileName = lib.listToAttrs (map (fileEntry: lib.nameValuePair fileEntry.file fileEntry) wheelFiles);
+      selectedWheels = pypa.selectWheels python (map (fileEntry: pypa.parseWheelFileName fileEntry.file) wheelFiles);
+    in
+    map (wheel: wheelFilesByFileName.${wheel.filename}) selectedWheels
+  );
 
 in
 
