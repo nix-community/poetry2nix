@@ -2921,6 +2921,67 @@ lib.composeManyExtensions [
         }
       );
 
+      ruff =
+        let
+          # generated with
+          # curl https://api.github.com/repos/astral-sh/ruff/releases | \
+          #   jq -r '.[].tag_name'  | \
+          #   xargs -I {version} sh -c \
+          #     'nix_prefetch=$(nix-prefetch-github astral-sh ruff --rev {version}); \
+          #      echo "\"$(echo {version} | sed 's/^v//')\" = \"$(echo $nix_prefetch | jq -r .sha256)\";"'
+          getRepoHash = version: {
+            "0.1.4" = "vdhyzFUimc9gBsLpk7WKwQQ0YtGJg3us+6JCFnXSMrI=";
+            "0.1.3" = "AHnEvDzuQd6W+n9wXhMt6TJwoH1rZEY5UXbhFGwl8+g=";
+            "0.1.2" = "hmjsr7Z5k0tX1e6IBYWufnQ4l7qebyqkRTuULmoHqvM=";
+            "0.1.1" = "sBWB8s9QKedactLfSDPq5tCdlELkTGB0jDQH1S8Hq4k=";
+            "0.1.0" = "w4xFIYmvK8nCeCIM3SxS2OdAK3LmV35h0QkXh+tYP7w=";
+            "0.0.292" = "4D7p5ZMdyemDBaWcCO62bhuPPcIypegqP0YZeX+GJRQ=";
+            "0.0.291" = "fAukXL0inAPdDpf//4yHYIQIKj3IifX9ObAM7VskDFI=";
+            "0.0.290" = "w2RqT0n++ggeNoEcrZSAF0056ctDBKGkV+GAscQcwOc=";
+            "0.0.289" = "DBYE3UkA30bFqoTCgE7SBs25wJ6bPvY63e31LEPBK7c=";
+            "0.0.288" = "rDzxGIDUIxK5n8uT0vSFGrp4wOm49KtY7xKRoLZhEF8=";
+            "0.0.287" = "T7PuhQnb7Ae9mYdaxDBltJWx5ODTscvEP3LcSEcSuLo=";
+            "0.0.286" = "5bMfOju1uJV4+a4UTzaanpzU6PjCSK9HHMdhvKVaNcg=";
+            "0.0.285" = "n5FjzngdVSHHnBpVGFXzPlUAEMx96JqjYqgKwymTMzA=";
+            "0.0.284" = "MAlIepodGQL2tHRIPXsHLg4rDYgjfq1opaXIkjNNW1I=";
+            "0.0.283" = "WqvTn/NGyZq9cJ417KPOVEEshDITxs6XdhwZbCXPk2o=";
+            "0.0.282" = "CQsgRTpZTBj07/9SYkrQXtb5FOguCtf5LCli65v20YA=";
+            "0.0.281" = "rIN2GaNrHO6s+6fMUN1a4H58ryoTr8EMjkX34YCCKaU=";
+            "0.0.280" = "Pp/yurRPUHqrCD3V93z5EGMYf4IyLFQOL9d2sNe3TKs=";
+            "0.0.279" = "7f/caaCbYt+Uatd12gATSJgs5Nx/X7YZhXEESl5OtWE=";
+            "0.0.278" = "CM5oV9q9XYhaUV173VoFZl6dDALan4Lkl5PrvZN81c4=";
+            "0.0.277" = "oFSMsiy9airi/SwOxA3YO02polvFl8ZZUHkD71c5unA=";
+            "0.0.276" = "abFvjBmaY6SvfEHm/8P92s3Ns3jswLHrW2RdZc6IS64=";
+            "0.0.275" = "HsoycugHzgudY3Aixv5INlOLTjLMzP+gKMMKIreiODs=";
+            "0.0.274" = "0JaeLvc6pwvt9a7wAbah6sVgmHf6GParwdkiW3jQPaQ=";
+            "0.0.273" = "FZWCA4oEUe7hOodtVypvqXv4REXCAEgY0s6wQSKDWuI=";
+            "0.0.272" = "B4wZTKC1Z6OxXQHrG9Q9VjY6ZnA3FOoMMNfroe+1A7I=";
+            "0.0.271" = "PYzWLEuhU2D6Sq1JEoyAkl4nfaMHaS7G6SLNKaoAJpE=";
+            "0.0.270" = "rruNNP/VkvMQexQ+V/ASxl5flHt00YomMAVzW+eWp20=";
+          }.${version};
+          sha256 = getRepoHash super.ruff.version;
+        in
+        super.ruff.overridePythonAttrs (old: rec {
+          src = pkgs.fetchFromGitHub {
+            owner = "astral-sh";
+            repo = "ruff";
+            rev = "v${old.version}";
+            inherit sha256;
+          };
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = "${src.out}/Cargo.lock";
+          };
+          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+            pkgs.darwin.apple_sdk.frameworks.Security
+            pkgs.darwin.apple_sdk.frameworks.CoreServices
+            pkgs.libiconv
+          ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+        });
+
       scipy = super.scipy.overridePythonAttrs (
         old:
         if old.format != "wheel" then {
