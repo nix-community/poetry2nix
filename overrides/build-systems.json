@@ -1729,6 +1729,15 @@
   "azure-batch": [
     "setuptools"
   ],
+  "azure-cli": [
+    "setuptools"
+  ],
+  "azure-cli-core": [
+    "setuptools"
+  ],
+  "azure-cli-telemetry": [
+    "setuptools"
+  ],
   "azure-common": [
     "setuptools"
   ],
@@ -1796,6 +1805,9 @@
     "setuptools"
   ],
   "azure-mgmt-appconfiguration": [
+    "setuptools"
+  ],
+  "azure-mgmt-appcontainers": [
     "setuptools"
   ],
   "azure-mgmt-applicationinsights": [
@@ -12052,6 +12064,9 @@
     "pbr",
     "setuptools"
   ],
+  "oschmod": [
+    "setuptools"
+  ],
   "oscpy": [
     "setuptools"
   ],
@@ -13363,7 +13378,16 @@
   "pulumi-command": [
     "setuptools"
   ],
+  "pulumi-gcp": [
+    "setuptools"
+  ],
+  "pulumi-kubernetes": [
+    "setuptools"
+  ],
   "pulumi-random": [
+    "setuptools"
+  ],
+  "pulumi-tls": [
     "setuptools"
   ],
   "pure-cdb": [
@@ -13808,6 +13832,9 @@
     "setuptools"
   ],
   "pycomfoconnect": [
+    "setuptools"
+  ],
+  "pycomposefile": [
     "setuptools"
   ],
   "pycontracts": [
