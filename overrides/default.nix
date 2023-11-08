@@ -2961,7 +2961,7 @@ lib.composeManyExtensions [
           }.${version};
           sha256 = getRepoHash super.ruff.version;
         in
-        super.ruff.overridePythonAttrs (old: rec {
+        super.ruff.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) rec {
           src = pkgs.fetchFromGitHub {
             owner = "astral-sh";
             repo = "ruff";
