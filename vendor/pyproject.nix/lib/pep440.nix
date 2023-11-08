@@ -1,7 +1,8 @@
 { lib, ... }:
 let
-  inherit (builtins) split filter match length elemAt head tail foldl' fromJSON typeOf;
+  inherit (builtins) split filter match length elemAt head foldl' fromJSON typeOf;
   inherit (lib) fix isString toInt toLower sublist;
+  inherit (import ./util.nix { inherit lib; }) splitComma;
 
   filterNull = filter (x: x != null);
   filterEmpty = filter (x: length x > 0);
@@ -54,19 +55,19 @@ let
   parseLocal = parseReleaseSuffix "\\+";
 
   # Compare the release fields from the parsed version
-  compareRelease = ra: rb:
+  compareRelease = offset: ra: rb:
     let
-      x = head ra;
-      y = head rb;
+      x = elemAt ra offset;
+      y = elemAt rb offset;
     in
-    if length ra == 0 || length rb == 0 then 0 else
+    if length ra == offset || length rb == offset then 0 else
     (
       if x == "*" || y == "*" then 0 # Wildcards are always considered equal
       else
         (
           if x > y then 1
           else if x < y then -1
-          else compareRelease (tail ra) (tail rb)
+          else compareRelease (offset + 1) ra rb
         )
     );
 
@@ -160,6 +161,42 @@ fix (self: {
     }
   );
 
+  /* Parse a list of version conditionals separated by commas.
+
+     Type: parseVersionConds :: string -> [AttrSet]
+
+     Example:
+       # parseVersionConds ">=3.0.0rc1,<=4.0"
+       [
+         {
+           op = ">=";
+           version = {
+             dev = null;
+             epoch = 0;
+             local = null;
+             post = null;
+             pre = {
+               type = "rc";
+               value = 1;
+             };
+             release = [ 3 0 0 ];
+           };
+         }
+         {
+           op = "<=";
+           version = {
+             dev = null;
+             epoch = 0;
+             local = null;
+             post = null;
+             pre = null;
+             release = [ 4 0 ];
+           };
+         }
+       ]
+  */
+  parseVersionConds = conds: map self.parseVersionCond (splitComma conds);
+
   /* Compare two versions as parsed by `parseVersion` according to PEP-440.
 
      Returns:
@@ -180,7 +217,7 @@ fix (self: {
     # is valid and we need to consider them all.
 
     # Compare release field
-    (compareRelease a.release b.release)
+    (compareRelease 0 a.release b.release)
 
     # Compare pre release
     (
