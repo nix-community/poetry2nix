@@ -350,7 +350,7 @@ fix (self:
           m2 = match "([a-zA-Z0-9_\\.-]+)(.*)" tokens.packageSegment;
 
           # The version conditions as a list of strings
-          conditions = map pep440.parseVersionCond (splitComma (if m1 != null then elemAt m1 2 else elemAt m2 1));
+          conditions = pep440.parseVersionConds (if m1 != null then elemAt m1 2 else elemAt m2 1);
 
           # Extras as a list of strings
           #

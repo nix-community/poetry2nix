@@ -31,13 +31,19 @@ fix (self: {
 
   /* Check if a manylinux tag is compatible with a given stdenv.
 
-     Type: manyLinuxTagCompatible :: AttrSet -> string -> bool
+     Type: manyLinuxTagCompatible :: AttrSet -> derivation -> string -> bool
 
      Example:
-     # manyLinuxTagCompatible pkgs.stdenv "manylinux_2_5_x86_64"
+     # manyLinuxTagCompatible pkgs.stdenv.targetPlatform pkgs.stdenv.cc.libc "manylinux_2_5_x86_64"
      true
   */
-  manyLinuxTagCompatible = stdenv: tag:
+  manyLinuxTagCompatible =
+    # Platform attrset (`lib.systems.elaborate "x86_64-linux"`)
+    platform:
+    # Libc derivation
+    libc:
+    # Platform tag string
+    tag:
     let
       tag' = self.legacyAliases.${tag} or tag;
       m = match "manylinux_([0-9]+)_([0-9]+)_(.*)" tag';
@@ -45,14 +51,15 @@ fix (self: {
       tagMajor = mAt 0;
       tagMinor = mAt 1;
       tagArch = mAt 2;
-      sysVersion' = elemAt (splitVersion stdenv.cc.libc.version);
+      sysVersion' = elemAt (splitVersion libc.version);
       sysMajor = sysVersion' 0;
       sysMinor = sysVersion' 1;
     in
     if m == null then throw "'${tag'}' is not a valid manylinux tag."
-    else if stdenv.cc.libc.pname != "glibc" then false
+    else if platform.libc != "glibc" then false
+    else if libc.pname != "glibc" then false
     else if compareVersions "${sysMajor}.${sysMinor}" "${tagMajor}.${tagMinor}" < 0 then false
-    else if pep599.manyLinuxTargetMachines.${tagArch} != stdenv.targetPlatform.parsed.cpu.name then false
+    else if pep599.manyLinuxTargetMachines.${tagArch} != platform.parsed.cpu.name then false
     else true;
 
 })
