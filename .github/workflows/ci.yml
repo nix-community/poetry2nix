@@ -3,6 +3,9 @@ name: CI
 on:
   pull_request:
   merge_group:
+  push:
+    branches:
+      - "master"
 
 concurrency:
   group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
@@ -130,3 +133,19 @@ jobs:
       - nix-flake-show
     steps:
       - run: exit 0
+
+  release:
+    if: github.ref == 'refs/heads/master'
+    needs: collect
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Generate tag"
+        id: tag
+        run: echo tag=$(./tools/auto_version.py) >> "$GITHUB_OUTPUT"
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.tag.outputs.tag }}"
+          prerelease: false
