@@ -106,10 +106,6 @@ jobs:
         working-directory: ${{ env.TESTDIR }}
         run: nix flake lock --override-input poetry2nix "$GITHUB_WORKSPACE"
 
-      - name: generate pyproject.toml
-        working-directory: ${{ env.TESTDIR }}
-        run: nix develop -c poetry init --name=poetry2nix-template-test --quiet
-
       - name: generate poetry.lock
         working-directory: ${{ env.TESTDIR }}
         run: nix develop -c poetry lock --no-update
