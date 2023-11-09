@@ -16670,6 +16670,8 @@
     "setuptools"
   ],
   "python-ulid": [
+    "hatch-fancy-pypi-readme",
+    "hatch-vcs",
     "setuptools",
     "setuptools-scm"
   ],
