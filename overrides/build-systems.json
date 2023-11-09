@@ -3297,6 +3297,7 @@
     "setuptools"
   ],
   "click-default-group": [
+    "flit-core",
     "setuptools"
   ],
   "click-didyoumean": [
