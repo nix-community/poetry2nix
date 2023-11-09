@@ -19286,6 +19286,9 @@
   "sqlite-fts4": [
     "setuptools"
   ],
+  "sqlite-migrate": [
+    "setuptools"
+  ],
   "sqlite-utils": [
     "setuptools"
   ],
