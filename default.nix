@@ -234,12 +234,6 @@ lib.makeScope pkgs.newScope (self: {
         getFunctorFn
         (
           [
-            # Remove Python packages aliases with non-normalized names to avoid issues with infinite recursion (issue #750).
-            (_self: super: {
-              # Upstream nixpkgs uses non canonical names
-              async-generator = super.async-generator or super.async_generator or null;
-            })
-
             (self: super: lib.attrsets.mapAttrs
               (
                 name: value:
@@ -250,7 +244,7 @@ lib.makeScope pkgs.newScope (self: {
               super)
 
             (
-              self: super:
+              self: _super:
                 {
                   mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
                     inherit lib python poetryLib pep508Env pyVersion;
@@ -258,9 +252,6 @@ lib.makeScope pkgs.newScope (self: {
                   };
 
                   __toPluginAble = toPluginAble self;
-                } // lib.optionalAttrs (! super ? setuptools-scm) {
-                  # The canonical name is setuptools-scm
-                  setuptools-scm = super.setuptools_scm;
                 }
             )
 

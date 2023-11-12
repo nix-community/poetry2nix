@@ -46,7 +46,7 @@ fix (self: {
        #  parseRequiresPython (lib.importTOML ./pyproject.toml)
        [ ]  # List of conditions as returned by `lib.pep440.parseVersionCond`
   */
-  parseRequiresPython = pyproject: map pep440.parseVersionCond (filter isString (split "," (pyproject.project.requires-python or "")));
+  parseRequiresPython = pyproject: pep440.parseVersionConds (pyproject.project.requires-python or "");
 
   /* Takes a dependency structure as returned by `lib.pep621.parseDependencies` and transforms it into
      a structure with it's package names.

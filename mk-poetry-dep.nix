@@ -26,15 +26,12 @@
 let
   inherit (pyproject-nix.lib) pypa;
 
-  selectWheel = files: lib.take 1 (
-    let
-      wheelFiles = builtins.filter (fileEntry: pypa.isWheelFileName fileEntry.file) files;
-      # Group wheel files by their file name
-      wheelFilesByFileName = lib.listToAttrs (map (fileEntry: lib.nameValuePair fileEntry.file fileEntry) wheelFiles);
-      selectedWheels = pypa.selectWheels python (map (fileEntry: pypa.parseWheelFileName fileEntry.file) wheelFiles);
-    in
-    map (wheel: wheelFilesByFileName.${wheel.filename}) selectedWheels
-  );
+  selectWheel = files: lib.take 1 (let
+    wheelFiles = builtins.filter (fileEntry: pypa.isWheelFileName fileEntry.file) files;
+    # Group wheel files by their file name
+    wheelFilesByFileName = lib.listToAttrs (map (fileEntry: lib.nameValuePair fileEntry.file fileEntry) wheelFiles);
+    selectedWheels = pypa.selectWheels python.stdenv.targetPlatform python (map (fileEntry: pypa.parseWheelFileName fileEntry.file) wheelFiles);
+  in map (wheel: wheelFilesByFileName.${wheel.filename}) selectedWheels);
 
 in
 
@@ -105,10 +102,6 @@ pythonPackages.callPackage
             if _isEgg then "egg"
             else if lib.strings.hasSuffix ".whl" name then "wheel"
             else "pyproject";
-          kind =
-            if _isEgg then python.pythonVersion
-            else if format == "pyproject" then "source"
-            else (builtins.elemAt (lib.strings.splitString "-" name) 2);
         };
 
       format = if isWheelUrl then "wheel" else if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
@@ -237,7 +230,7 @@ pythonPackages.callPackage
             else
               pyproject-nix.fetchers.fetchFromPypi {
                 pname = name;
-                inherit (fileInfo) file hash kind;
+                inherit (fileInfo) file hash;
                 inherit version;
               };
         in

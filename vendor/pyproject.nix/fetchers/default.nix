@@ -1,10 +1,15 @@
-{ pkgs
+{ curl
+, jq
 , lib
-,
+, python3
+, runCommand
+, stdenvNoCC
 }:
 let
-  inherit (builtins) substring filter head nixPath;
+  inherit (builtins) substring filter head nixPath elemAt;
   inherit (lib) toLower;
+
+  pyproject = import ../lib { inherit lib; };
 
   # Predict URL from the PyPI index.
   # Args:
@@ -18,10 +23,16 @@ let
       pname
     , # filename including extension
       file
-    , # Language implementation and version tag
-      kind
-    ,
-    }: "https://files.pythonhosted.org/packages/${kind}/${toLower (substring 0 1 file)}/${pname}/${file}";
+    }:
+    let
+      matchedWheel = pyproject.pypa.matchWheelFileName file;
+      matchedEgg = pyproject.pypa.matchEggFileName file;
+      kind =
+        if matchedWheel != null then "wheel"
+        else if matchedEgg != null then elemAt matchedEgg 2
+        else "source";
+    in
+    "https://files.pythonhosted.org/packages/${kind}/${toLower (substring 0 1 file)}/${pname}/${file}";
 in
 lib.mapAttrs (_: func: lib.makeOverridable func) {
   /*
@@ -42,20 +53,18 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
       version
     , # SRI hash
       hash
-    , # Language implementation and version tag
-      kind
     , # Options to pass to `curl`
       curlOpts ? ""
     ,
     }:
     let
-      predictedURL = predictURLFromPypi { inherit pname file kind; };
+      predictedURL = predictURLFromPypi { inherit pname file; };
     in
-    pkgs.stdenvNoCC.mkDerivation {
+    stdenvNoCC.mkDerivation {
       name = file;
       nativeBuildInputs = [
-        pkgs.buildPackages.curl
-        pkgs.buildPackages.jq
+        curl
+        jq
       ];
       isWheel = lib.strings.hasSuffix "whl" file;
       system = "builtin";
@@ -106,9 +115,9 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
         then (head pathParts).path
         else "";
     in
-    pkgs.runCommand file
+    runCommand file
       {
-        nativeBuildInputs = [ pkgs.buildPackages.python3 ];
+        nativeBuildInputs = [ python3 ];
         impureEnvVars = lib.fetchers.proxyImpureEnvVars;
         outputHashMode = "flat";
         outputHashAlgo = "sha256";

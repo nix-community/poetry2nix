@@ -1729,6 +1729,15 @@
   "azure-batch": [
     "setuptools"
   ],
+  "azure-cli": [
+    "setuptools"
+  ],
+  "azure-cli-core": [
+    "setuptools"
+  ],
+  "azure-cli-telemetry": [
+    "setuptools"
+  ],
   "azure-common": [
     "setuptools"
   ],
@@ -1796,6 +1805,9 @@
     "setuptools"
   ],
   "azure-mgmt-appconfiguration": [
+    "setuptools"
+  ],
+  "azure-mgmt-appcontainers": [
     "setuptools"
   ],
   "azure-mgmt-applicationinsights": [
@@ -3285,6 +3297,7 @@
     "setuptools"
   ],
   "click-default-group": [
+    "flit-core",
     "setuptools"
   ],
   "click-didyoumean": [
@@ -11639,7 +11652,14 @@
     "setuptools"
   ],
   "openai": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.0.0"
+    }
   ],
   "openant": [
     "setuptools"
@@ -12050,6 +12070,9 @@
   ],
   "osc-lib": [
     "pbr",
+    "setuptools"
+  ],
+  "oschmod": [
     "setuptools"
   ],
   "oscpy": [
@@ -13363,7 +13386,16 @@
   "pulumi-command": [
     "setuptools"
   ],
+  "pulumi-gcp": [
+    "setuptools"
+  ],
+  "pulumi-kubernetes": [
+    "setuptools"
+  ],
   "pulumi-random": [
+    "setuptools"
+  ],
+  "pulumi-tls": [
     "setuptools"
   ],
   "pure-cdb": [
@@ -13808,6 +13840,9 @@
     "setuptools"
   ],
   "pycomfoconnect": [
+    "setuptools"
+  ],
+  "pycomposefile": [
     "setuptools"
   ],
   "pycontracts": [
@@ -16635,6 +16670,8 @@
     "setuptools"
   ],
   "python-ulid": [
+    "hatch-fancy-pypi-readme",
+    "hatch-vcs",
     "setuptools",
     "setuptools-scm"
   ],
@@ -19247,6 +19284,9 @@
     }
   ],
   "sqlite-fts4": [
+    "setuptools"
+  ],
+  "sqlite-migrate": [
     "setuptools"
   ],
   "sqlite-utils": [

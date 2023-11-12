@@ -3,6 +3,9 @@ name: CI
 on:
   pull_request:
   merge_group:
+  push:
+    branches:
+      - "master"
 
 concurrency:
   group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
@@ -59,6 +62,26 @@ jobs:
           echo "NIXPKGS_SYSTEM=$(nix eval --raw 'nixpkgs#system')" >> "$GITHUB_ENV"
       - run: nix build -L ".#devShells.${NIXPKGS_SYSTEM}.default" --keep-going
 
+  nix-flake-show:
+    # ensure flake-exposed endpoints (apps, packages, devShells) are of correct types
+    # (something like apps.${SYSTEM}.<app> can be hard to get right)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
+      - uses: cachix/cachix-action@v12
+        with:
+          name: poetry2nix
+          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+      - run: nix flake show --all-systems
+
+
   test-template:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -86,10 +109,6 @@ jobs:
         working-directory: ${{ env.TESTDIR }}
         run: nix flake lock --override-input poetry2nix "$GITHUB_WORKSPACE"
 
-      - name: generate pyproject.toml
-        working-directory: ${{ env.TESTDIR }}
-        run: nix develop -c poetry init --name=poetry2nix-template-test --quiet
-
       - name: generate poetry.lock
         working-directory: ${{ env.TESTDIR }}
         run: nix develop -c poetry lock --no-update
@@ -111,5 +130,22 @@ jobs:
       - nix-build
       - nix-build-shell
       - test-template
+      - nix-flake-show
     steps:
       - run: exit 0
+
+  release:
+    if: github.ref == 'refs/heads/master'
+    needs: collect
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Generate tag"
+        id: tag
+        run: echo tag=$(./tools/auto_version.py) >> "$GITHUB_OUTPUT"
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "${{ steps.tag.outputs.tag }}"
+          prerelease: false

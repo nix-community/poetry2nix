@@ -150,6 +150,7 @@ in
   python-versions-or = callTest ./python-versions-or { };
   python-markers = callTest ./python-markers { };
   orjson-test = callTest ./orjson-test { };
+  ruff = callTest ./ruff { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };

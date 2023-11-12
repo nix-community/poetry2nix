@@ -6,6 +6,9 @@ let
 
   matchWheelFileName = match "([^-]+)-([^-]+)(-([[:digit:]][^-]*))?-([^-]+)-([^-]+)-(.+).whl";
 
+  # PEP-625 only specifies .tar.gz as valid extension but .zip is also fairly widespread.
+  matchSdistFileName = match "([^-]+)-(.+)(\.tar\.gz|\.zip)";
+
   # Tag normalization documented in
   # https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#details
   normalizedImpls = {
@@ -92,6 +95,39 @@ lib.fix (self: {
       rest = mAt 2;
     };
 
+  /* Check whether string is a sdist file or not.
+
+     Type: isSdistFileName :: string -> bool
+
+     Example:
+     # isSdistFileName "cryptography-41.0.1.tar.gz"
+     true
+  */
+  isSdistFileName =
+    # The filename string
+    name: matchSdistFileName name != null;
+
+
+  /* Regex match a wheel file name, returning a list of match groups. Returns null if no match.
+
+     Type: matchWheelFileName :: string -> [ string ]
+  */
+  matchWheelFileName = name:
+    let
+      m = match "([^-]+)-([^-]+)(-([[:digit:]][^-]*))?-([^-]+)-([^-]+)-(.+).whl" name;
+    in
+    if m != null then filter isString m else null;
+
+  /* Regex match an egg file name, returning a list of match groups. Returns null if no match.
+
+     Type: matchEggFileName :: string -> [ string ]
+  */
+  matchEggFileName = name:
+    let
+      m = match "([^-]+)-([^-]+)-(.+)\\.egg" name;
+    in
+    if m != null then filter isString m else null;
+
   /* Check whether string is a wheel file or not.
 
      Type: isWheelFileName :: string -> bool
@@ -100,7 +136,9 @@ lib.fix (self: {
      # isWheelFileName "cryptography-41.0.1-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
      true
   */
-  isWheelFileName = name: matchWheelFileName name != null;
+  isWheelFileName =
+    # The filename string
+    name: matchWheelFileName name != null;
 
   /* Parse PEP-427 wheel file names.
 
@@ -179,23 +217,22 @@ lib.fix (self: {
 
   /* Check whether a platform tag is compatible with this python interpreter.
 
-     Type: isPlatformTagCompatible :: derivation -> string -> bool
+     Type: isPlatformTagCompatible :: AttrSet -> derivation -> string -> bool
 
      Example:
      # isPlatformTagCompatible pkgs.python3 "manylinux2014_x86_64"
      true
   */
   isPlatformTagCompatible =
-    # Python interpreter derivation
-    python:
+    # Platform attrset (`lib.systems.elaborate "x86_64-linux"`)
+    platform:
+    # Libc derivation
+    libc:
     # Python tag
     platformTag:
-    let
-      platform = python.stdenv.targetPlatform;
-    in
     if platformTag == "any" then true
-    else if hasPrefix "manylinux" platformTag then pep600.manyLinuxTagCompatible python.stdenv platformTag
-    else if hasPrefix "musllinux" platformTag then pep656.muslLinuxTagCompatible python.stdenv platformTag
+    else if hasPrefix "manylinux" platformTag then pep600.manyLinuxTagCompatible platform libc platformTag
+    else if hasPrefix "musllinux" platformTag then pep656.muslLinuxTagCompatible platform libc platformTag
     else if hasPrefix "macosx" platformTag then
       (
         let
@@ -245,7 +282,7 @@ lib.fix (self: {
      Type: isPythonTagCompatible :: derivation -> AttrSet -> bool
 
      Example:
-     # isPlatformTagCompatible pkgs.python3 (pypa.parsePythonTag "py3")
+     # isPythonTagCompatible pkgs.python3 (pypa.parsePythonTag "py3")
      true
   */
   isPythonTagCompatible =
@@ -277,6 +314,10 @@ lib.fix (self: {
      true
   */
   isWheelFileCompatible =
+    # Platform attrset (`lib.systems.elaborate "x86_64-linux"`)
+    platform:
+    # Libc derivation
+    libc:
     # Python interpreter derivation
     python:
     # The parsed wheel filename
@@ -286,7 +327,7 @@ lib.fix (self: {
       &&
       lib.any (self.isPythonTagCompatible python) file.languageTags
       &&
-      lib.any (self.isPlatformTagCompatible python) file.platformTags
+      lib.any (self.isPlatformTagCompatible platform libc) file.platformTags
     );
 
   /* Select compatible wheels from a list and return them in priority order.
@@ -298,6 +339,8 @@ lib.fix (self: {
      [ (pypa.parseWheelFileName "Pillow-9.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl") ]
   */
   selectWheels =
+    # Platform attrset (`lib.systems.elaborate "x86_64-linux"`)
+    platform:
     # Python interpreter derivation
     python:
     # List of files as parsed by parseWheelFileName
@@ -317,7 +360,7 @@ lib.fix (self: {
           in
           {
             bestLanguageTag = head (sort (x: y: x > y) languageTags');
-            compatible = abiCompatible && length languageTags > 0 && lib.any (self.isPlatformTagCompatible python) file.platformTags;
+            compatible = abiCompatible && length languageTags > 0 && lib.any (self.isPlatformTagCompatible platform python.stdenv.cc.libc) file.platformTags;
             inherit file;
           })
         files;
