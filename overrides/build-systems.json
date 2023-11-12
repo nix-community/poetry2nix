@@ -336,6 +336,10 @@
   "aiohttp-apispec": [
     "setuptools"
   ],
+  "aiohttp-client-cache": [
+    "poetry",
+    "poetry-core"
+  ],
   "aiohttp-cors": [
     "setuptools"
   ],
@@ -351,6 +355,10 @@
   ],
   "aiohttp-retry": [
     "setuptools"
+  ],
+  "aiohttp-rpc": [
+    "poetry",
+    "poetry-core"
   ],
   "aiohttp-socks": [
     "setuptools"
@@ -20267,6 +20275,18 @@
   "todoist": [
     "setuptools"
   ],
+  "toga": [
+    "setuptools",
+    "setuptools-scm"
+  ],
+  "toga-core": [
+    "setuptools",
+    "setuptools-scm"
+  ],
+  "toga-gtk": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "toggl-cli": [
     "pbr",
     "setuptools"
@@ -20472,6 +20492,9 @@
     "setuptools"
   ],
   "transmissionrpc": [
+    "setuptools"
+  ],
+  "travertino": [
     "setuptools"
   ],
   "trectools": [
