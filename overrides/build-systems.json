@@ -13574,6 +13574,9 @@
   "py-vapid": [
     "setuptools"
   ],
+  "pyxis": [
+    "setuptools"
+  ],
   "py-zabbix": [
     "setuptools"
   ],
