@@ -2390,7 +2390,16 @@ lib.composeManyExtensions [
 
       python-ldap = super.python-ldap.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openldap pkgs.cyrus_sasl ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ 
+            pkgs.openldap 
+            pkgs.cyrus_sasl 
+            # Fix for "cannot find -lldap_r: No such file or directory"
+            (pkgs.writeTextFile {
+              name = "openldap-lib-fix";
+              destination = "/lib/libldap_r.so";
+              text = "INPUT ( libldap.so )\n";
+            })
+          ];
         }
       );
 
