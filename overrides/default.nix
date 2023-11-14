@@ -2865,6 +2865,14 @@ lib.composeManyExtensions [
         '';
       });
 
+      reportlab = super.reportlab.overridePythonAttrs (old: {
+        # They loop through LFS standard paths instead of just using pkg-config.
+        postPatch = ''
+          sed -i 's|"/usr/include/freetype2"|"${pkgs.lib.getDev pkgs.freetype}"|' setup.py
+        '';
+        buildInputs = old.buildInputs or [] ++ [ pkgs.freetype ];
+      });
+
       rfc3986-validator = super.rfc3986-validator.overridePythonAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
           self.pytest-runner
