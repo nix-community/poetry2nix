@@ -3962,6 +3962,9 @@
   "customerio": [
     "setuptools"
   ],
+  "cvat-sdk": [
+    "setuptools"
+  ],
   "cvxopt": [
     "setuptools"
   ],
