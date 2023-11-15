@@ -14302,6 +14302,7 @@
     "setuptools"
   ],
   "pygls": [
+    "poetry",
     "setuptools",
     "setuptools-scm"
   ],
