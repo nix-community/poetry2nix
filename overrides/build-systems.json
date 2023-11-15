@@ -16427,6 +16427,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "python-lsp-ruff": [
+    "setuptools"
+  ],
   "python-lsp-server": [
     "setuptools",
     "setuptools-scm"
