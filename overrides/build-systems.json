@@ -18764,6 +18764,9 @@
   "slicerator": [
     "setuptools"
   ],
+  "slippers": [
+    "poetry"
+  ],
   "slither-analyzer": [
     "setuptools"
   ],
