@@ -7721,6 +7721,9 @@
   "herepy": [
     "setuptools"
   ],
+  "heroicons": [
+    "setuptools"
+  ],
   "hetzner": [
     "setuptools"
   ],
