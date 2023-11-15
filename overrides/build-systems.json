@@ -13574,9 +13574,6 @@
   "py-vapid": [
     "setuptools"
   ],
-  "pyxis": [
-    "setuptools"
-  ],
   "py-zabbix": [
     "setuptools"
   ],
@@ -17068,6 +17065,9 @@
     "setuptools"
   ],
   "pyxiaomigateway": [
+    "setuptools"
+  ],
+  "pyxis": [
     "setuptools"
   ],
   "pyxl3": [
