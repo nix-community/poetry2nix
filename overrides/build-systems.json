@@ -20603,6 +20603,9 @@
   "tusker": [
     "poetry"
   ],
+  "tuspy": [
+    "setuptools"
+  ],
   "tuya-iot-py-sdk": [
     "setuptools"
   ],
