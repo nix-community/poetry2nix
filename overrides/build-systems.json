@@ -13351,6 +13351,9 @@
   "ptpython": [
     "setuptools"
   ],
+  "ptvsd": [
+    "setuptools"
+  ],
   "ptyprocess": [
     "flit-core",
     "setuptools"
