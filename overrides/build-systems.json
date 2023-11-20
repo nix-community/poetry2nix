@@ -14317,7 +14317,14 @@
     "setuptools-scm"
   ],
   "pygments": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.17.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.17.0"
+    }
   ],
   "pygments-better-html": [
     "setuptools"
