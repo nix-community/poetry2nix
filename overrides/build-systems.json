@@ -2970,8 +2970,18 @@
     "setuptools"
   ],
   "cattrs": [
-    "poetry-core",
-    "setuptools"
+    {
+      "buildSystem": "poetry-core",
+      "until": "23.2"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "23.2"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "23.2"
+    }
   ],
   "cbeams": [
     "setuptools"
