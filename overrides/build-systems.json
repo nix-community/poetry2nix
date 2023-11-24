@@ -2657,6 +2657,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "bravado": [
+    "setuptools"
+  ],
   "bravado-core": [
     "setuptools"
   ],
