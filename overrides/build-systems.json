@@ -25864,7 +25864,10 @@
   ],
   "uri-template": [
     "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "1.3.0"
+    }
   ],
   "uritemplate": [
     "setuptools"
