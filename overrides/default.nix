@@ -1245,7 +1245,8 @@ lib.composeManyExtensions [
           # jupyterlab?)
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace ', "jupyterlab~=3.0"' ""
+              --replace ', "jupyterlab~=3.0"' "" \
+              --replace ', "jupyterlab~=4.0"' ""
           '';
         }
       );
