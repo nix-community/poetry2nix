@@ -22135,7 +22135,15 @@
     "poetry-core"
   ],
   "yarl": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "cython",
+      "from": "1.9.3"
+    },
+    {
+      "buildSystem": "expandvars",
+      "from": "1.9.3"
+    }
   ],
   "yaspin": [
     "poetry-core",
