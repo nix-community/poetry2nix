@@ -10492,6 +10492,10 @@
       "from": "8.5.3"
     },
     {
+      "buildSystem": "hatch-requirements-txt",
+      "from": "8.5.3"
+    },
+    {
       "buildSystem": "hatchling",
       "from": "8.5.3"
     }
