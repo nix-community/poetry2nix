@@ -10467,6 +10467,7 @@
     "setuptools"
   ],
   "mkdocs-gen-files": [
+    "hatchling",
     "poetry"
   ],
   "mkdocs-git-revision-date-localized-plugin": [
