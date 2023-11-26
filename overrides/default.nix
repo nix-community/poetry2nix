@@ -3622,6 +3622,12 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.babel ];
       });
 
+      mkdocs-material = super.mkdocs-material.overridePythonAttrs (old: {
+        postPatch = old.postPatch or "" + ''
+          sed -i 's/"Framework :: MkDocs",//' pyproject.toml
+        '';
+      });
+
       # patch mkdocstrings to fix jinja2 imports
       mkdocstrings =
         let
