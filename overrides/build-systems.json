@@ -10449,6 +10449,7 @@
     }
   ],
   "mkdocs-autorefs": [
+    "pdm-backend",
     "pdm-pep517",
     "poetry",
     "setuptools"
