@@ -10485,6 +10485,9 @@
     "ipython-genutils",
     "poetry-core"
   ],
+  "mkdocs-linkcheck": [
+    "setuptools"
+  ],
   "mkdocs-literate-nav": [
     "poetry"
   ],
