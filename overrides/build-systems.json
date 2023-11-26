@@ -10470,6 +10470,9 @@
     "hatchling",
     "poetry"
   ],
+  "mkdocs-git-authors-plugin": [
+    "setuptools"
+  ],
   "mkdocs-git-revision-date-localized-plugin": [
     "setuptools"
   ],
