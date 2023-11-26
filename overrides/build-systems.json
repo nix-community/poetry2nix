@@ -10477,6 +10477,7 @@
     "setuptools"
   ],
   "mkdocs-gitlab": [
+    "poetry",
     "setuptools"
   ],
   "mkdocs-jupyter": [
