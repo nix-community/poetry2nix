@@ -10525,6 +10525,9 @@
   "mkdocs-redirects": [
     "setuptools"
   ],
+  "mkdocs-simple-hooks": [
+    "setuptools"
+  ],
   "mkdocs-swagger-ui-tag": [
     "setuptools"
   ],
