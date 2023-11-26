@@ -9122,6 +9122,9 @@
     "setuptools"
   ],
   "jupyterlab-pygments": [
+    "hatch-jupyter-builder",
+    "hatch-nodejs-version",
+    "hatchling",
     "jupyter-packaging",
     "setuptools"
   ],
