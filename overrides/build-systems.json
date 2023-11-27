@@ -17764,6 +17764,9 @@
   "rich-argparse-plus": [
     "flit"
   ],
+  "rich-click": [
+    "setuptools"
+  ],
   "rich-pixels": [
     "poetry-core"
   ],
