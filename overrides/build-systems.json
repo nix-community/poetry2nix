@@ -11747,16 +11747,34 @@
     "setuptools"
   ],
   "opencv-python": [
-    "cmake",
-    "pip",
-    "scikit-build",
-    "setuptools"
+    {
+      "buildSystem": "cmake"
+    },
+    {
+      "buildSystem": "pip",
+      "until": "4.7.0.72"
+    },
+    {
+      "buildSystem": "scikit-build"
+    },
+    {
+      "buildSystem": "setuptools"
+    }
   ],
   "opencv-python-headless": [
-    "cmake",
-    "pip",
-    "scikit-build",
-    "setuptools"
+    {
+      "buildSystem": "cmake"
+    },
+    {
+      "buildSystem": "pip",
+      "until": "4.7.0.72"
+    },
+    {
+      "buildSystem": "scikit-build"
+    },
+    {
+      "buildSystem": "setuptools"
+    }
   ],
   "opencv4": [
     "setuptools"
