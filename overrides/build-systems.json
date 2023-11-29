@@ -14655,7 +14655,14 @@
     "setuptools"
   ],
   "pylint-django": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.5.4"
+    },
+    {
+      "buildSystem": "poetry-core",
+      "from": "2.5.4"
+    }
   ],
   "pylint-flask": [
     "setuptools"

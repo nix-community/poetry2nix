@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "pylint-django-test"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pylint-django = "*"
+
+[build-system]
+requires = ["poetry-core>=1.1"]
+build-backend = "poetry.core.masonry.api"

@@ -111,6 +111,8 @@ in
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
   pytest-redis = callTest ./pytest-redis { };
+  pylint-django = callTest ./pylint-django { };
+  pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
