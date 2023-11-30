@@ -11766,10 +11766,6 @@
       "buildSystem": "cmake"
     },
     {
-      "buildSystem": "pip",
-      "until": "4.7.0.72"
-    },
-    {
       "buildSystem": "scikit-build"
     },
     {
