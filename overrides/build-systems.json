@@ -18349,6 +18349,10 @@
   "scs": [
     "setuptools"
   ],
+  "scylla-driver": [
+    "cython",
+    "setuptools"
+  ],
   "sdds": [
     "setuptools"
   ],
