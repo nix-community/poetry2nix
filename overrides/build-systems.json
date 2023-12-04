@@ -5038,6 +5038,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "djangomix": [
+    "setuptools"
+  ],
   "djangoql": [
     "setuptools"
   ],
