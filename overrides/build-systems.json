@@ -7136,6 +7136,9 @@
   "google-api-python-client": [
     "setuptools"
   ],
+  "google-api-python-client-stubs": [
+    "poetry"
+  ],
   "google-auth": [
     "setuptools"
   ],
