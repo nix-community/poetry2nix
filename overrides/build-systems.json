@@ -20904,6 +20904,9 @@
   "types-html5lib": [
     "setuptools"
   ],
+  "types-httplib2": [
+    "setuptools"
+  ],
   "types-ipaddress": [
     "setuptools"
   ],
