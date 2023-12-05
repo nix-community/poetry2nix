@@ -2569,6 +2569,9 @@
   "bokeh": [
     "setuptools"
   ],
+  "bolt11": [
+    "poetry"
+  ],
   "boltons": [
     "setuptools"
   ],
