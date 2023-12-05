@@ -937,7 +937,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
               buildInputs =
                 (old.buildInputs or [ ])
-                ++ [ pkgs.hdf5 self.pkgconfig ]
+                ++ [ pkgs.hdf5 self.pkg-config ]
                 ++ lib.optional mpiSupport mpi
               ;
               propagatedBuildInputs =
@@ -1179,7 +1179,7 @@ lib.composeManyExtensions [
         else super.jsondiff;
 
       jsonslicer = super.jsonslicer.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.yajl ];
       });
 
@@ -3065,7 +3065,7 @@ lib.composeManyExtensions [
       );
 
       secp256k1 = super.secp256k1.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig pkgs.autoconf pkgs.automake pkgs.libtool ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config pkgs.autoconf pkgs.automake pkgs.libtool ];
         buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
         doCheck = false;
         # Local setuptools versions like "x.y.post0" confuse an internal check
