@@ -1,0 +1,90 @@
+[
+    {
+        "dep": "orjson",
+        "version": "3.6.7"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.6.8"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.7.2"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.7.9"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.0"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.1"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.3"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.4"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.5"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.6"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.7"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.8"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.9"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.10"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.11"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.12"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.13"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.8.14"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.9.0"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.9.5"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.9.7"
+    },
+    {
+        "dep": "orjson",
+        "version": "3.9.10"
+    }
+]

@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-accelerate = "0.18.0"
+accelerate = "*"
 colorama = "^0.4.6"
 datasets = "^2.11.0"
 flexgen = "0.1.7"

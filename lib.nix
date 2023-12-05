@@ -84,13 +84,15 @@ let
     };
 
   checkPythonVersions = pyVersion: python-versions: (
-    lib.any (python-versions': lib.all
-    (cond:
-    let
-      conds = pyproject-nix.lib.poetry.parseVersionCond cond;
-    in
-    lib.all (cond': pyproject-nix.lib.pep440.comparators.${cond'.op} pyVersion cond'.version) conds)
-    (splitComma python-versions')) (builtins.filter lib.isString (builtins.split " *\\|\\| *" python-versions)));
+    lib.any
+      (python-versions': lib.all
+        (cond:
+          let
+            conds = pyproject-nix.lib.poetry.parseVersionCond cond;
+          in
+          lib.all (cond': pyproject-nix.lib.pep440.comparators.${cond'.op} pyVersion cond'.version) conds)
+        (splitComma python-versions'))
+      (builtins.filter lib.isString (builtins.split " *\\|\\| *" python-versions)));
 
 in
 {
