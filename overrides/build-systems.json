@@ -9756,7 +9756,7 @@
     "setuptools"
   ],
   "lnurl": [
-    "setuptools"
+    "poetry"
   ],
   "loca": [
     "flit-core",
