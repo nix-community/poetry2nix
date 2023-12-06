@@ -535,6 +535,7 @@ lib.composeManyExtensions [
             "41.0.3" = "sha256-LQu7waympGUs+CZun2yDQd2gUUAgyisKBG5mddrfSo0=";
             "41.0.4" = "sha256-oXR8yBUgiA9BOfkZKBJneKWlpwHB71t/74b/5WpiKmw=";
             "41.0.5" = "sha256-ABCK144//RUJ3AksFHEgqC+kHvoHl1ifpVuqMTkGNH8=";
+            "41.0.7" = "sha256-VeZhKisCPDRvmSjGNwCgJJeVj65BZ0Ge+yvXbZw86Rw=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -937,7 +938,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
               buildInputs =
                 (old.buildInputs or [ ])
-                ++ [ pkgs.hdf5 self.pkgconfig ]
+                ++ [ pkgs.hdf5 self.pkg-config ]
                 ++ lib.optional mpiSupport mpi
               ;
               propagatedBuildInputs =
@@ -1179,7 +1180,7 @@ lib.composeManyExtensions [
         else super.jsondiff;
 
       jsonslicer = super.jsonslicer.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
         buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.yajl ];
       });
 
@@ -1830,40 +1831,49 @@ lib.composeManyExtensions [
         }
       );
 
-      orjson =
+      orjson = super.orjson.overridePythonAttrs (old: if old.src.isWheel or false then { } else
+      (
         let
-          getCargoHash = version: {
-            "3.6.7" = "sha256-sz2k9podPB6QSptkyOu7+BoVTrKhefizRtYU+MICPt4=";
-            "3.6.8" = "sha256-vpfceVtYkU09xszNIihY1xbqGWieqDquxwsAmDH8jd4=";
-            "3.7.2" = "sha256-2U37IhftNYjH7sV7Nh51YpR/WjmPmmzX/aGuHsFgwf4=";
-            "3.7.9" = "sha256-QHzAhjHgm4XLxY2zUdnIsd/WWMI7dJLQQAvTXC+2asQ=";
-            "3.8.0" = "sha256-8k0DetamwLqkdcg8V/D2J5ja6IJSLi50CE+ZjFa7Hdc=";
-            "3.8.1" = "sha256-QXguyDxQHW9Fd3Nhmi5JzSxZQuk3HGPhhh/RGuOTZNY=";
-            "3.8.3" = "sha256-oSZO4cN1sJKd0T7pYrKG63is8AZMKaLRZqj5UCVY/14=";
-            "3.8.4" = "sha256-O2W9zO7qHWG+78T+uECICAmecaSIbTTJPktJIPZYElE=";
-            "3.8.5" = "sha256-JtUCJ3TP9EKGcddeyW1e/72k21uKneq9SnZJeLvn9Os=";
-            "3.8.6" = "sha256-8T//q6nQoZhh8oJWDCeQf3gYRew58dXAaxkYELY4CJM=";
-            "3.8.7" = "sha256-JBO8nl0sC+XIn17vI7hC8+nA1HYI9jfvZrl9nCE3k1s=";
-            "3.8.8" = "sha256-AK4HtqPKg2O2FeLHCbY9o+N1BV4QFMNaHVE1NaFYHa4=";
-            "3.8.9" = "sha256-ogkTRRykLF2dTOxilsfwsRH+Au/O0e1kL1e9sFOFLeY=";
-            "3.8.10" = "sha256-AcrTEHv7GYtGe4fXYsM24ElrzfhnOxLYlaon1ZrlD4A=";
-            "3.8.11" = "sha256-/x+0/I3WFxPwVu2LliTgr42SuJX7VjOLe/SGai5OgAw=";
-          }.${version} or (
-            lib.warn "Unknown orjson version: '${version}'. Please update getCargoHash." lib.fakeHash
-          );
+          githubHash = {
+            "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
+            "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
+            "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
+            "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
+            "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
+            "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
+            "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
+            "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
+            "3.9.10" = "sha256-MkcuayNDt7/GcswXoFTvzuaZzhQEQV+V7OfKqgJwVIQ=";
+            "3.8.3" = "sha256-4rBXb4+eAaRfbl2PWZL4I01F0GvbSNqBVtU4L/sXrVc=";
+            "3.8.4" = "sha256-XQBiE8hmLC/AIRt0eJri/ilPHUEYiOxd0onRBQsx+pM=";
+            "3.8.5" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+            "3.8.6" = "sha256-LwLuMcnAubO7U1/KSe6tHaSP9+bi6gDfvGobixzL2gM=";
+            "3.8.7" = "sha256-9nBgMcAfG4DTlv41gwQImwyhYm06QeiE/G4ObcLb7wU=";
+            "3.8.8" = "sha256-pRB4QhxJh4JCDWWyp0BH25x8MRn+WieQo/dvB1mQR40=";
+            "3.8.9" = "sha256-0/yvXXj+z2jBEAGxO4BxMnx1zqUoultYSYfSkKs+hKY=";
+          }.${old.version} or lib.fakeHash;
+          # we can count on this repo's root to have Cargo.lock
+
+          src = pkgs.fetchFromGitHub {
+            owner = "ijl";
+            repo = "orjson";
+            rev = old.version;
+            sha256 = githubHash;
+          };
+
         in
-        super.orjson.overridePythonAttrs (old: if old.src.isWheel or false then { } else {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
-            inherit (old) src;
-            name = "${old.pname}-${old.version}";
-            hash = getCargoHash old.version;
+        {
+          inherit src;
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = "${src.out}/Cargo.lock";
           };
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            pkgs.rustPlatform.cargoSetupHook
-            pkgs.rustPlatform.maturinBuildHook
+            pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
+            pkgs.rustPlatform.maturinBuildHook # orjson is based on maturin
           ];
           buildInputs = (old.buildInputs or [ ]) ++ lib.optional pkgs.stdenv.isDarwin pkgs.libiconv;
-        });
+        }
+      ));
 
       osqp = super.osqp.overridePythonAttrs (
         old: {
@@ -2907,6 +2917,7 @@ lib.composeManyExtensions [
             "0.12.0" = "sha256-jdr0xN3Pd/bCoKfLLFNGXHJ+G1ORAft6/W7VS3PbdHs=";
             "0.13.0" = "sha256-bHfxiBSN7/SbZiyYRj01phwrpyH7Fa3xVaA3ceWZYCE=";
             "0.13.1" = "sha256-Q6TNWCJYlHnka4N+Q2OcqSe1h066X9CZK9pUFxxUgrI=";
+            "0.13.2" = "sha256-jaLSrl0oT3Fo/F0FfLvA2wDJk/Fc3d7mBqwRqyWAOsg=";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -3065,7 +3076,7 @@ lib.composeManyExtensions [
       );
 
       secp256k1 = super.secp256k1.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkgconfig pkgs.autoconf pkgs.automake pkgs.libtool ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config pkgs.autoconf pkgs.automake pkgs.libtool ];
         buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
         doCheck = false;
         # Local setuptools versions like "x.y.post0" confuse an internal check

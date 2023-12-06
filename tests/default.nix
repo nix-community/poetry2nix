@@ -111,6 +111,8 @@ in
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
   pytest-redis = callTest ./pytest-redis { };
+  pylint-django = callTest ./pylint-django { };
+  pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
@@ -151,6 +153,7 @@ in
   gobject-introspection = callTest ./gobject-introspection { };
   python-versions-or = callTest ./python-versions-or { };
   python-markers = callTest ./python-markers { };
+  orjson-test = callTest ./orjson-test { };
   ruff = callTest ./ruff { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });

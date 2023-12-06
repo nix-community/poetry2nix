@@ -2569,6 +2569,9 @@
   "bokeh": [
     "setuptools"
   ],
+  "bolt11": [
+    "poetry"
+  ],
   "boltons": [
     "setuptools"
   ],
@@ -14664,7 +14667,14 @@
     "setuptools"
   ],
   "pylint-django": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2.5.4"
+    },
+    {
+      "buildSystem": "poetry-core",
+      "from": "2.5.4"
+    }
   ],
   "pylint-flask": [
     "setuptools"
