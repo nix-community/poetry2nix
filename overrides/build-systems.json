@@ -3898,6 +3898,9 @@
   "cryptg": [
     "setuptools"
   ],
+  "cryptocode": [
+    "setuptools"
+  ],
   "cryptography": [
     "setuptools"
   ],
