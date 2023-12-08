@@ -6353,6 +6353,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "flask-continuum": [
+    "setuptools"
+  ],
   "flask-cors": [
     "setuptools"
   ],
