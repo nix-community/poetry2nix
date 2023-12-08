@@ -11655,6 +11655,9 @@
   "od": [
     "setuptools"
   ],
+  "odata-query": [
+    "poetry-core"
+  ],
   "odfpy": [
     "setuptools"
   ],
