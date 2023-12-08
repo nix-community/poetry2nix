@@ -343,6 +343,9 @@
   "aiohttp-cors": [
     "setuptools"
   ],
+  "aiohttp-devtools": [
+    "setuptools"
+  ],
   "aiohttp-jinja2": [
     "setuptools"
   ],
