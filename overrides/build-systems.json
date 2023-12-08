@@ -9628,6 +9628,9 @@
   "licensecheck": [
     "poetry-core"
   ],
+  "licensing": [
+    "setuptools"
+  ],
   "life360": [
     "setuptools"
   ],
