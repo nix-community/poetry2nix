@@ -7395,10 +7395,14 @@
     "setuptools"
   ],
   "gradio": [
+    "hatch-fancy-pypi-readme",
+    "hatch-requirements-txt",
     "hatchling",
     "setuptools"
   ],
   "gradio-client": [
+    "hatch-fancy-pypi-readme",
+    "hatch-requirements-txt",
     "hatchling",
     "setuptools"
   ],
@@ -13716,6 +13720,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pyarrow-hotfix": [
+    "hatchling"
+  ],
   "pyasn": [
     "setuptools"
   ],
@@ -18188,6 +18195,9 @@
   "sat-stac": [
     "setuptools"
   ],
+  "scalecodec": [
+    "setuptools"
+  ],
   "scales": [
     "setuptools"
   ],
@@ -19608,6 +19618,9 @@
     "setuptools"
   ],
   "streamlink": [
+    "setuptools"
+  ],
+  "streamlit": [
     "setuptools"
   ],
   "streamz": [
