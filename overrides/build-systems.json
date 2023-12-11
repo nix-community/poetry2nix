@@ -5967,6 +5967,9 @@
   "fastapi-restful": [
     "poetry"
   ],
+  "fastapi-sso": [
+    "poetry"
+  ],
   "fastapi-utils": [
     "poetry"
   ],
@@ -20931,6 +20934,9 @@
   "types-paramiko": [
     "setuptools"
   ],
+  "types-passlib": [
+    "setuptools"
+  ],
   "types-pillow": [
     "setuptools"
   ],
@@ -20946,6 +20952,9 @@
   "types-psycopg2": [
     "setuptools"
   ],
+  "types-pyasn1": [
+    "setuptools"
+  ],
   "types-pycocotools": [
     "setuptools"
   ],
@@ -20956,6 +20965,9 @@
     "setuptools"
   ],
   "types-python-dateutil": [
+    "setuptools"
+  ],
+  "types-python-jose": [
     "setuptools"
   ],
   "types-pytz": [
