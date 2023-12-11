@@ -478,8 +478,13 @@ lib.composeManyExtensions [
       );
 
       colour = super.colour.overridePythonAttrs (
-        old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.d2to1 ];
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          patches = old.patches or [ ] ++ [
+            (pkgs.fetchpatch {
+              url = "https://raw.githubusercontent.com/NixOS/nixpkgs/485bbe58365f3c44a42f87b8cec2385b88380d74/pkgs/development/python-modules/colour/remove-unmaintained-d2to1.diff";
+              hash = "sha256-Bj01qQlBd2oydv0afLV2Puqquuo3bnOOyDp7FR8cQnA=";
+            })
+          ];
         }
       );
 

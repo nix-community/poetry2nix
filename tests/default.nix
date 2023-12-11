@@ -155,6 +155,7 @@ in
   python-markers = callTest ./python-markers { };
   orjson-test = callTest ./orjson-test { };
   ruff = callTest ./ruff { };
+  colour = callTest ./colour { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };

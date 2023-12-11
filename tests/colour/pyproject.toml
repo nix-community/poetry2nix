@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-colour"
+version = "0.1.0"
+description = "Test of python colour package"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+colour = "^0.1.5"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
