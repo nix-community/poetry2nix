@@ -6555,6 +6555,9 @@
   "flynt": [
     "setuptools"
   ],
+  "flyteidl": [
+    "setuptools"
+  ],
   "fn": [
     "setuptools"
   ],
