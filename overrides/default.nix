@@ -2963,6 +2963,8 @@ lib.composeManyExtensions [
           #     'nix_prefetch=$(nix-prefetch-github astral-sh ruff --rev {version}); \
           #      echo "\"$(echo {version} | sed 's/^v//')\" = \"$(echo $nix_prefetch | jq -r .sha256)\";"'
           getRepoHash = version: {
+            "0.1.7" = "sha256-Al256/8A/efLrf97xCwEocwgs3ngPnEAmkfcLWdlkTw=";
+            "0.1.6" = "sha256-EX1tXe8KlwjrohzgzKDeJP0PjfKw8+lnQ7eg9PAUAfQ=";
             "0.1.5" = "g52cIw0af/wQSuA4QhC2dCjcDGikirswBDAtwf8Drvo=";
             "0.1.4" = "vdhyzFUimc9gBsLpk7WKwQQ0YtGJg3us+6JCFnXSMrI=";
             "0.1.3" = "AHnEvDzuQd6W+n9wXhMt6TJwoH1rZEY5UXbhFGwl8+g=";
