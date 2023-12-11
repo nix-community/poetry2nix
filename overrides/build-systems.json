@@ -17667,6 +17667,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "requests-ip-rotator": [
+    "setuptools"
+  ],
   "requests-kerberos": [
     "setuptools"
   ],
