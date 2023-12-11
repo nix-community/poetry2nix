@@ -20201,6 +20201,9 @@
   "theanowithoutcuda": [
     "setuptools"
   ],
+  "thefuzz": [
+    "setuptools"
+  ],
   "thelogrus": [
     "poetry-core"
   ],
