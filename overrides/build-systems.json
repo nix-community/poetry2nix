@@ -3216,6 +3216,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "chroma": [
+    "setuptools"
+  ],
   "ci-info": [
     "setuptools"
   ],
