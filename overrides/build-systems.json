@@ -4168,6 +4168,7 @@
   ],
   "dataclasses-json": [
     "poetry-core",
+    "poetry-dynamic-versioning",
     "setuptools"
   ],
   "dataclasses-serialization": [
