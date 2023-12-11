@@ -22061,6 +22061,9 @@
   "xdis": [
     "setuptools"
   ],
+  "xdoctest": [
+    "setuptools"
+  ],
   "xdot": [
     "setuptools"
   ],
