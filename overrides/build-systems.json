@@ -6558,6 +6558,9 @@
   "flyteidl": [
     "setuptools"
   ],
+  "flytekit": [
+    "setuptools"
+  ],
   "fn": [
     "setuptools"
   ],
