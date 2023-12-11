@@ -9403,6 +9403,9 @@
   "langchain": [
     "poetry-core"
   ],
+  "langchain-core": [
+    "poetry-core"
+  ],
   "langchainplus-sdk": [
     "poetry-core"
   ],
