@@ -58,6 +58,7 @@ in
   inherit (poetry2nix) cli;
 
   ansible-molecule = callTest ./ansible-molecule { };
+  black = callTest ./black { };
   blinker-1_6_2 = callTest ./blinker-1_6_2 { };
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
