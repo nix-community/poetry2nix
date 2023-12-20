@@ -673,6 +673,9 @@
   "alembic": [
     "setuptools"
   ],
+  "alembic-postgresql-enum": [
+    "poetry"
+  ],
   "alexapy": [
     "poetry-core"
   ],
