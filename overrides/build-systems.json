@@ -10611,6 +10611,9 @@
   "mmh3": [
     "setuptools"
   ],
+  "mmhash3": [
+    "setuptools"
+  ],
   "mne-python": [
     "setuptools"
   ],
@@ -14535,6 +14538,9 @@
   ],
   "pyialarm": [
     "setuptools"
+  ],
+  "pyiceberg": [
+    "poetry"
   ],
   "pyicloud": [
     "setuptools"
