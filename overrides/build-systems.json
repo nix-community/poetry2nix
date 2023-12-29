@@ -14061,7 +14061,7 @@
     }
   ],
   "pydantic-extra-types": [
-    "hatchling",
+    "hatchling"
   ],
   "pydantic-scim": [
     "setuptools-scm"
