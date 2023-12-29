@@ -7186,6 +7186,9 @@
   "google-auth-oauthlib": [
     "setuptools"
   ],
+  "google-cloud": [
+    "setuptools"
+  ],
   "google-cloud-access-context-manager": [
     "setuptools"
   ],
