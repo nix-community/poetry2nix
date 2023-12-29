@@ -3806,6 +3806,9 @@
   "cose": [
     "setuptools"
   ],
+  "cosmpy": [
+    "poetry-core"
+  ],
   "cot": [
     "setuptools"
   ],
@@ -4049,6 +4052,9 @@
   ],
   "cytoolz": [
     "cython",
+    "setuptools"
+  ],
+  "cvxpy": [
     "setuptools"
   ],
   "d20": [
@@ -7157,6 +7163,9 @@
     "setuptools"
   ],
   "goodwe": [
+    "setuptools"
+  ],
+  "google": [
     "setuptools"
   ],
   "google-api-core": [
@@ -14047,6 +14056,9 @@
       "buildSystem": "hatchling",
       "from": "2.0.0"
     }
+  ],
+  "pydantic-extra-types": [
+    "hatchling",
   ],
   "pydantic-scim": [
     "setuptools-scm"
