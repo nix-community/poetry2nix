@@ -21957,6 +21957,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "wllvm": [
+    "setuptools"
+  ],
   "wmctrl": [
     "setuptools"
   ],
