@@ -1370,13 +1370,10 @@ lib.composeManyExtensions [
           inherit llvm;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.llvmlite.llvm ];
 
-          # Disable static linking
+          # Static linking
           # https://github.com/numba/llvmlite/issues/93
-          postPatch = ''
-            substituteInPlace ffi/Makefile.linux --replace "-static-libstdc++" ""
-
-            substituteInPlace llvmlite/tests/test_binding.py --replace "test_linux" "nope"
-          '';
+          # was disabled by default in
+          # https://github.com/numba/llvmlite/pull/250
 
           # Set directory containing llvm-config binary
           preConfigure = ''
