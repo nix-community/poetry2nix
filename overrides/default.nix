@@ -316,6 +316,7 @@ lib.composeManyExtensions [
             "4.0.0" = "sha256-HvfRLyUhlXVuvxWrtSDKx3rMKJbjvuiMcDY6g+pYFS0=";
             "4.0.1" = "sha256-lDWX69YENZFMu7pyBmavUZaalGvFqbHSHfkwkzmDQaY=";
             "4.1.1" = "sha256-QYg1+DsZEdXB74vuS4SFvV0n5GXkuwHkOS9j1ogSTjA=";
+            "4.1.2" = "sha256-fTD1AKvyeni5ukYjK53gueKLey+rcIUjW/0R289xeb0=";
           }.${version} or (
             lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -2407,9 +2408,9 @@ lib.composeManyExtensions [
 
       python-ldap = super.python-ldap.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ 
-            pkgs.openldap 
-            pkgs.cyrus_sasl 
+          buildInputs = (old.buildInputs or [ ]) ++ [
+            pkgs.openldap
+            pkgs.cyrus_sasl
             # Fix for "cannot find -lldap_r: No such file or directory"
             (pkgs.writeTextFile {
               name = "openldap-lib-fix";
@@ -2887,7 +2888,7 @@ lib.composeManyExtensions [
         postPatch = ''
           sed -i 's|"/usr/include/freetype2"|"${pkgs.lib.getDev pkgs.freetype}"|' setup.py
         '';
-        buildInputs = old.buildInputs or [] ++ [ pkgs.freetype ];
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.freetype ];
       });
 
       rfc3986-validator = super.rfc3986-validator.overridePythonAttrs (old: {
