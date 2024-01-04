@@ -117,6 +117,7 @@ in
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
+  scipy1_11 = callTest ./scipy1_11 { };
   test-group = callTest ./test-group { };
   nbconvert-wheel = callTest ./nbconvert-wheel { };
   duckdb-wheel = callTest ./duckdb-wheel { };
