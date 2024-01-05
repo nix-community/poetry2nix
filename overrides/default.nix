@@ -1452,6 +1452,7 @@ lib.composeManyExtensions [
             pkg-config
           ] ++ lib.optionals (lib.versionAtLeast super.matplotlib.version "3.5.0") [
             self.setuptools-scm
+          ] ++ lib.optionals (lib.versionOlder super.matplotlib.version "3.6.0") [
             self.setuptools-scm-git-archive
           ];
 
