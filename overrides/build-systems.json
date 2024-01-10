@@ -8454,6 +8454,9 @@
   "insights-core": [
     "setuptools"
   ],
+  "instagrapi": [
+    "setuptools"
+  ],
   "installer": [
     "flit-core"
   ],
