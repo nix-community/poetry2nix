@@ -12163,6 +12163,9 @@
   "orderedmultidict": [
     "setuptools"
   ],
+  "orgparse": [
+    "setuptools"
+  ],
   "orjson": [
     "setuptools"
   ],
@@ -21964,6 +21967,9 @@
   ],
   "wled": [
     "poetry-core",
+    "setuptools"
+  ],
+  "wllvm": [
     "setuptools"
   ],
   "wmctrl": [
