@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-pyodbc-wheel"
+version = "0.1.0"
+description = "Test of pyodbc as wheel"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pyodbc = "^5.0.1"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

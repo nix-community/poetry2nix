@@ -2306,6 +2306,14 @@ lib.composeManyExtensions [
           ++ [ pkgs.freetds ];
       });
 
+      pyodbc = super.pyodbc.overridePythonAttrs (
+        old: lib.optionalAttrs ((old.src.isWheel or false) && stdenv.isLinux) {
+          preFixup = old.preFixup or "" + ''
+            addAutoPatchelfSearchPath ${pkgs.unixODBC}
+          '';
+        }
+      );
+
       pyopencl = super.pyopencl.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.numpy ];
