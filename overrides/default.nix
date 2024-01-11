@@ -2593,7 +2593,31 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
+      # MacOS seems to be confused by the wheel installs overlapping
+      # modules in sitepackages that come from the different pyside6
+      # dependencies
+      pyside6 =
+        if stdenv.isDarwin then
+          self.python.pkgs.toPythonModule
+            (pkgs.symlinkJoin {
+              name = "pyside6-combined-addons-essentials";
+              paths = [
+                super.pyside6
+                self.pyside6-essentials
+                self.pyside6-addons
+                self.shiboken6
+              ];
+              # Poetry complains of multiple distInfos when building
+              # the associated application, so we delete redundant
+              # distInfos
+              postBuild = ''
+                rm -rf $out/${self.python.sitePackages}/shiboken6*.dist-info
+                rm -rf $out/${self.python.sitePackages}/PySide6_Essentials*.dist-info
+                rm -rf $out/${self.python.sitePackages}/PySide6_Addons*.dist-info
+              '';
+            }) else super.pyside6;
+      
+      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
