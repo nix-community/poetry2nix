@@ -158,6 +158,7 @@ in
   orjson-test = callTest ./orjson-test { };
   ruff = callTest ./ruff { };
   colour = callTest ./colour { };
+  pyodbc-wheel = callTest ./pyodbc-wheel { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
