@@ -2654,7 +2654,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
+      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
@@ -2663,7 +2663,7 @@ lib.composeManyExtensions [
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
           pkgs.libxkbcommon
           pkgs.gtk3
           pkgs.speechd
@@ -2687,7 +2687,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [
           "libmysqlclient.so.21"
           "libmimerapi.so"
@@ -2698,7 +2698,7 @@ lib.composeManyExtensions [
           addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
           addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
           pkgs.nss
           pkgs.xorg.libXtst
           pkgs.alsa-lib
