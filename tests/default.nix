@@ -114,6 +114,7 @@ in
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
+  pyside6 = callTest ./pyside6 { };
   rasterio = callTest ./rasterio { };
   scientific = callTest ./scientific { };
   scipy1_9 = callTest ./scipy1_9 { };
@@ -162,7 +163,6 @@ in
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
-  pyside6 = callTest ./pyside6 { };
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
 

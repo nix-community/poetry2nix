@@ -2602,11 +2602,13 @@ lib.composeManyExtensions [
             (pkgs.symlinkJoin {
               name = "pyside6-combined-addons-essentials";
               paths = [
-                super.pyside6
                 self.pyside6-essentials
                 self.pyside6-addons
                 self.shiboken6
               ];
+              preBuild = ''
+                cp -r ${super.pyside6}/* $out/
+              '';
               # Poetry complains of multiple distInfos when building
               # the associated application, so we delete redundant
               # distInfos
@@ -2626,7 +2628,7 @@ lib.composeManyExtensions [
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = builtins.filter (p: p!=super.pyside6) (old.propagatedBuildInputs ++ [
           pkgs.libxkbcommon
           pkgs.gtk3
           pkgs.speechd
@@ -2647,10 +2649,12 @@ lib.composeManyExtensions [
           pkgs.libdrm
           pkgs.pulseaudio
           self.shiboken6
-        ];
+          # For apprpriate final path of executables
+          self.pyside6
+        ]);
       });
 
-      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [
           "libmysqlclient.so.21"
           "libmimerapi.so"
@@ -2661,13 +2665,15 @@ lib.composeManyExtensions [
           addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
           addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = builtins.filter (p: p!=super.pyside6) (old.propagatedBuildInputs ++ [
           pkgs.nss
           pkgs.xorg.libXtst
           pkgs.alsa-lib
           pkgs.xorg.libxshmfence
           pkgs.xorg.libxkbfile
-        ];
+          # For apprpriate final path of executables
+          self.pyside6
+        ]);
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
