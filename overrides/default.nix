@@ -3045,8 +3045,9 @@ lib.composeManyExtensions [
           enableParallelBuilding = true;
           buildInputs = (old.buildInputs or [ ]) ++ [ self.numpy.blas ];
           preConfigure = ''
-            sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
             export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
+          '' + lib.optionalString (lib.versionOlder super.scipy.version "1.11.1") ''
+            sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
           '';
           preBuild = lib.optional (lib.versionOlder super.scipy.version "1.9.0") ''
             ln -s ${self.numpy.cfg} site.cfg
