@@ -3806,6 +3806,9 @@
   "cose": [
     "setuptools"
   ],
+  "cosmpy": [
+    "poetry-core"
+  ],
   "cot": [
     "setuptools"
   ],
@@ -7159,6 +7162,9 @@
   "goodwe": [
     "setuptools"
   ],
+  "google": [
+    "setuptools"
+  ],
   "google-api-core": [
     "setuptools"
   ],
@@ -7175,6 +7181,9 @@
     "setuptools"
   ],
   "google-auth-oauthlib": [
+    "setuptools"
+  ],
+  "google-cloud": [
     "setuptools"
   ],
   "google-cloud-access-context-manager": [
@@ -14047,6 +14056,9 @@
       "buildSystem": "hatchling",
       "from": "2.0.0"
     }
+  ],
+  "pydantic-extra-types": [
+    "hatchling"
   ],
   "pydantic-scim": [
     "setuptools-scm"
