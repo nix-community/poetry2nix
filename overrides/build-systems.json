@@ -3871,6 +3871,9 @@
   "credstash": [
     "setuptools"
   ],
+  "crewai": [
+    "poetry"
+  ],
   "crispy-bootstrap5": [
     "setuptools"
   ],
@@ -8936,6 +8939,9 @@
     "setuptools"
   ],
   "jsonpath-ng": [
+    "setuptools"
+  ],
+  "jsonpath-python": [
     "setuptools"
   ],
   "jsonpath-rw": [
@@ -16495,6 +16501,9 @@
     "pbr",
     "setuptools"
   ],
+  "python-iso639": [
+    "setuptools"
+  ],
   "python-izone": [
     "setuptools",
     "setuptools-scm"
@@ -16902,6 +16911,9 @@
   "pytile": [
     "poetry-core",
     "setuptools"
+  ],
+  "pytils": [
+    "poetry-core"
   ],
   "pytimeparse": [
     "setuptools"
@@ -20503,6 +20515,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "tools": [
+    "setuptools"
+  ],
   "toolz": [
     "setuptools"
   ],
@@ -21274,6 +21289,12 @@
     "setuptools"
   ],
   "unrardll": [
+    "setuptools"
+  ],
+  "unstructured": [
+    "setuptools"
+  ],
+  "unstructured-client": [
     "setuptools"
   ],
   "untangle": [
