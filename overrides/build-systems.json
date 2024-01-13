@@ -21103,6 +21103,9 @@
   "types-typed-ast": [
     "setuptools"
   ],
+  "types-ujson": [
+    "setuptools"
+  ],
   "types-urllib3": [
     "setuptools"
   ],
