@@ -2998,6 +2998,7 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.2.0" = "sha256-xivZHfQcdlp2ccpZiKb+Z70Ej8Vquqy/5A+MLpkEf2E=";
             "0.1.15" = "sha256-DzdzMO9PEwf4HmpG8SxRJTmdrmkXuQ8RsIchvsKstH8=";
             "0.1.14" = "sha256-UTXC0wbiH/Puu8gOXsD/yLMpre3IJPaT73Z/0rGStYU=";
             "0.1.13" = "sha256-cH/Vw04QQ3U7E1ZCwozjhPcn0KVljP976/p3okrBpEU=";
@@ -3041,18 +3042,33 @@ lib.composeManyExtensions [
             lib.warn "Unknown ruff version: '${version}'. Please update getRepoHash." lib.fakeHash
           );
 
+          getCargoHash = version: {
+            "0.2.0" = "sha256-zlatDyCWZr4iFY0fVCzhQmUGJxKMQvZd6HAt0PFlMwY=";
+            "0.1.15" = "sha256-M6qGG/JniEdNO2Qcw7u52JUJahucgiZcjWOaq50E6Ns=";
+          }.${version} or (
+            lib.warn "Unknown ruff version: '${version}'. Please update getCargoHash." null
+         );
+
           sha256 = getRepoHash super.ruff.version;
         in
-        super.ruff.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) rec {
+        super.ruff.overridePythonAttrs (old: let
           src = pkgs.fetchFromGitHub {
             owner = "astral-sh";
             repo = "ruff";
             rev = "v${old.version}";
             inherit sha256;
           };
-          cargoDeps = pkgs.rustPlatform.importCargoLock {
+
+          cargoDeps = let hash = getCargoHash super.ruff.version; in
+          if hash == null then pkgs.rustPlatform.importCargoLock {
             lockFile = "${src.out}/Cargo.lock";
+          } else pkgs.rustPlatform.fetchCargoTarball {
+            name = "ruff-${old.version}-cargo-deps";
+            inherit src hash;
           };
+        in lib.optionalAttrs (!(old.src.isWheel or false)){
+          inherit src cargoDeps;
+
           buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
             pkgs.darwin.apple_sdk.frameworks.Security
             pkgs.darwin.apple_sdk.frameworks.CoreServices
