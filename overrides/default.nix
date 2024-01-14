@@ -2989,6 +2989,9 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.1.15" = "sha256-DzdzMO9PEwf4HmpG8SxRJTmdrmkXuQ8RsIchvsKstH8=";
+            "0.1.14" = "sha256-UTXC0wbiH/Puu8gOXsD/yLMpre3IJPaT73Z/0rGStYU=";
+            "0.1.13" = "sha256-cH/Vw04QQ3U7E1ZCwozjhPcn0KVljP976/p3okrBpEU=";
             "0.1.12" = "sha256-Phmg/WpuiUhAMZwut/i6biynYXTTaIOxRTIyJ8NNvCs=";
             "0.1.11" = "sha256-yKb74GADeALai4qZ/+dR6u/QzKQF5404+YJKSYU/oFU=";
             "0.1.10" = "sha256-uFbqL4hFVpH12gSCUmib+Q24cApWKtGa8mRmKFUTQok=";
@@ -3025,7 +3028,10 @@ lib.composeManyExtensions [
             "0.0.272" = "B4wZTKC1Z6OxXQHrG9Q9VjY6ZnA3FOoMMNfroe+1A7I=";
             "0.0.271" = "PYzWLEuhU2D6Sq1JEoyAkl4nfaMHaS7G6SLNKaoAJpE=";
             "0.0.270" = "rruNNP/VkvMQexQ+V/ASxl5flHt00YomMAVzW+eWp20=";
-          }.${version};
+          }.${version} or (
+            lib.warn "Unknown ruff version: '${version}'. Please update getRepoHash." lib.fakeHash
+          );
+
           sha256 = getRepoHash super.ruff.version;
         in
         super.ruff.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) rec {
