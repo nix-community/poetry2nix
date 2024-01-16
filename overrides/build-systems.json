@@ -656,6 +656,7 @@
     "setuptools"
   ],
   "alabaster": [
+    "flit-core",
     "setuptools"
   ],
   "aladdin-connect": [
@@ -11383,10 +11384,12 @@
     "setuptools"
   ],
   "ninja": [
-    "flit-core"
+    "flit-core",
+    "setuptools"
   ],
   "ninja-python": [
-    "flit-core"
+    "flit-core",
+    "scikit-build"
   ],
   "nipy": [
     "cython",
@@ -17417,6 +17420,9 @@
     "setuptools"
   ],
   "quandl": [
+    "setuptools"
+  ],
+  "quantile-python": [
     "setuptools"
   ],
   "quantiphy": [
