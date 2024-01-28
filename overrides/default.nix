@@ -946,7 +946,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
               buildInputs =
                 (old.buildInputs or [ ])
-                ++ [ pkgs.hdf5 self.pkg-config ]
+                ++ [ pkgs.hdf5 self.pkgconfig ]
                 ++ lib.optional mpiSupport mpi
               ;
               propagatedBuildInputs =
