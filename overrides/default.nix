@@ -859,6 +859,12 @@ lib.composeManyExtensions [
           }
         );
 
+      gnureadline = super.gnureadline.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
+        }
+      );
+
       grandalf = super.grandalf.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
