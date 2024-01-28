@@ -4311,6 +4311,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "debian-parser": [
+    "setuptools"
+  ],
   "debianbts": [
     "setuptools"
   ],
