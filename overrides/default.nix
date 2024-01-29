@@ -887,9 +887,10 @@ lib.composeManyExtensions [
         }
       );
 
-      granian =
+      granian = super.granian.overridePythonAttrs (old: if old.src.isWheel or false then { } else
+      (
         let
-          getRepoHash = version: {
+          githubHash = {
             "0.2.1" = "sha256-XEhu6M1hFi3/gAKZcei7KJSrIhhlZhlvZvbfyA6VLR4=";
             "0.2.2" = "sha256-KWwefJ3CfOUGCgAm7AhFlIxRF9qxNEo3npGOxVJ23FY=";
             "0.2.3" = "sha256-2JnyO0wxkV49R/0wzDb/PnUWWHi3ckwK4nVe7dWeH1k=";
@@ -898,16 +899,19 @@ lib.composeManyExtensions [
             "0.2.6" = "sha256-l9W9+KDg/43mc0toEz1n1pqw+oQdiHdAxGlS+KLIGhw=";
             "0.3.0" = "sha256-icBjtW8fZjT3mLo43nKWdirMz6GZIy/RghEO95pHJEU=";
             "0.3.1" = "sha256-EKK+RxkJ//fY43EjvN1Fry7mn2ZLIaNlTyKPJRxyKZs=";
-          }.${version};
-          sha256 = getRepoHash super.granian.version;
-        in
-        super.granian.overridePythonAttrs (old: rec {
+            "1.0.2" = "sha256-HOLimDGV078ZJadjywbBgpYIKR2jVk9ZAIt0kk62Va4=";
+          }.${old.version} or lib.fakeHash;
+          # we can count on this repo's root to have Cargo.lock
+
           src = pkgs.fetchFromGitHub {
             owner = "emmett-framework";
             repo = "granian";
             rev = "v${old.version}";
-            inherit sha256;
+            sha256 = githubHash;
           };
+        in
+        {
+          inherit src;
           cargoDeps = pkgs.rustPlatform.importCargoLock {
             lockFile = "${src.out}/Cargo.lock";
           };
@@ -915,7 +919,8 @@ lib.composeManyExtensions [
             pkgs.rustPlatform.cargoSetupHook
             pkgs.rustPlatform.maturinBuildHook
           ];
-        });
+        }
+      ));
 
       gitpython = super.gitpython.overridePythonAttrs (
         old: {
