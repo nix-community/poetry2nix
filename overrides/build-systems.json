@@ -15500,6 +15500,9 @@
   "pyruckus": [
     "setuptools"
   ],
+  "pyrundeck": [
+    "setuptools"
+  ],
   "pysabnzbd": [
     "setuptools"
   ],
