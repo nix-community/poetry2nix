@@ -173,6 +173,11 @@ lib.composeManyExtensions [
         }
       );
 
+      aiokafka = super.aiokafka.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.zlib ];
+      });
+
       aiohttp-swagger3 = super.aiohttp-swagger3.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.pytest-runner ];
