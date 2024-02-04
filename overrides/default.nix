@@ -887,7 +887,7 @@ lib.composeManyExtensions [
         }
       );
 
-      granian = super.granian.overridePythonAttrs (old: if old.src.isWheel or false then { } else
+      granian = super.granian.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false))
       (
         let
           githubHash = {
