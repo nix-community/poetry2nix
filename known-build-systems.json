@@ -5,6 +5,7 @@
   "flit-core",
   "pbr",
   "cython",
+  "cython3",
   "hatchling",
   "hatch-vcs",
   "setuptools",

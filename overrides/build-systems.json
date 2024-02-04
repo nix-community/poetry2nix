@@ -12380,13 +12380,20 @@
     "setuptools"
   ],
   "pandas": [
-    "cython",
     "meson-python",
     "oldest-supported-numpy",
     "setuptools",
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
+    },
+    {
+      "buildSystem": "cython",
+      "until": "2.2.0"
+    },
+    {
+      "buildSystem": "cython3",
+      "from": "2.2.0"
     }
   ],
   "pandas-datareader": [

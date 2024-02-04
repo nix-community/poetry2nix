@@ -10,6 +10,13 @@ let
     , extraAttrs ? [ ]
     }:
     let
+      getBuildSystem = buildSystem:
+        if buildSystem == "cython" then
+          self.python.pythonForBuild.pkgs.cython
+        else if buildSystem == "cython3" then
+          self.python.pythonForBuild.pkgs.cython_3
+        else
+          self.${buildSystem};
       buildSystem =
         if builtins.isAttrs attr then
           let
@@ -23,15 +30,11 @@ let
                 lib.versionOlder drv.version attr.until
               else
                 true;
-            intendedBuildSystem =
-              if attr.buildSystem == "cython" then
-                self.python.pythonForBuild.pkgs.cython
-              else
-                self.${attr.buildSystem};
+            intendedBuildSystem = getBuildSystem attr.buildSystem;
           in
           if fromIsValid && untilIsValid then intendedBuildSystem else null
         else
-          if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
+          getBuildSystem attr;
     in
     if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !self.isPy3k then drv
     else if drv == null then null
