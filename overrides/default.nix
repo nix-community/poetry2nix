@@ -1387,6 +1387,13 @@ lib.composeManyExtensions [
         }
       );
 
+      m2crypto = super.m2crypto.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
+        }
+      );
+
       markdown-it-py = super.markdown-it-py.overridePythonAttrs (
         old: {
           propagatedBuildInputs = builtins.filter (i: i.pname != "mdit-py-plugins") old.propagatedBuildInputs;
