@@ -15015,6 +15015,9 @@
   "pynetgear": [
     "setuptools"
   ],
+  "pynetworktables": [
+    "setuptools"
+  ],
   "pyngrok": [
     "setuptools"
   ],
