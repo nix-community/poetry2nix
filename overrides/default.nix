@@ -2461,22 +2461,11 @@ lib.composeManyExtensions [
         '';
       });
 
-
       pytoml = super.pytoml.overridePythonAttrs (
         _old: {
           doCheck = false;
         }
       );
-
-      pytorch-lightning = super.pytorch-lightning.override {
-        unpackPhase = ''
-          # $src remains a gzipped tarball otherwise.
-          mkdir -p tmp
-          tar xvf $src --directory=tmp
-          mv tmp/pytorch-lightning*/* .
-          rm -rf tmp
-        '';
-      };
 
       pyqt5 =
         let
