@@ -25,13 +25,13 @@ let
                 true;
             intendedBuildSystem =
               if attr.buildSystem == "cython" then
-                self.python.pythonForBuild.pkgs.cython
+                (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.cython
               else
                 self.${attr.buildSystem};
           in
           if fromIsValid && untilIsValid then intendedBuildSystem else null
         else
-          if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
+          if attr == "cython" then (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.cython else self.${attr};
     in
     if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !self.isPy3k then drv
     else if drv == null then null
@@ -101,7 +101,7 @@ lib.composeManyExtensions [
     let
       inherit (self.python) stdenv;
       inherit (pkgs.buildPackages) pkg-config;
-      pyBuildPackages = self.python.pythonForBuild.pkgs;
+      pyBuildPackages = (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs;
 
       selectQt5 = version:
         let
@@ -129,7 +129,7 @@ lib.composeManyExtensions [
         qtxmlpatterns
       ];
 
-      bootstrappingBase = pkgs.${self.python.pythonAttr}.pythonForBuild.pkgs;
+      bootstrappingBase = (pkgs.${self.python.pythonAttr}.pythonOnBuildForHost or pkgs.${self.python.pythonAttr}.pythonForBuild).pkgs;
     in
 
     {
