@@ -3401,14 +3401,33 @@ lib.composeManyExtensions [
             "0.10" = "0ypdy9sq4211djqh4ni5ap9l7whq9hw0vhsxjfl3a0a4czlldxqp";
           }.${version};
           sha256 = getRepoHash super.watchfiles.version;
+
+          getCargoHash = version: {
+            "0.21.0" = "sha256-KDm1nGeg4oDcbopedPfzalK2XO1c1ZQUZu6xhfRdQx4=";
+            "0.20.0" = "sha256-ChUs7YJE1ZEIONhUUbVAW/yDYqqUR/k/k10Ce7jw8Xo=";
+          }.${version} or (
+            lib.warn "Unknown watchfiles version: '${version}'. Please update getCargoHash." null
+         );
         in
-        super.watchfiles.overridePythonAttrs (old: rec {
+        super.watchfiles.overridePythonAttrs (old: let
           src = pkgs.fetchFromGitHub {
             owner = "samuelcolvin";
             repo = "watchfiles";
             rev = "v${old.version}";
             inherit sha256;
           };
+
+          cargoDeps = let hash = getCargoHash super.watchfiles.version; in
+          if hash == null then pkgs.rustPlatform.importCargoLock {
+            lockFile = "${src.out}/Cargo.lock";
+          } else pkgs.rustPlatform.fetchCargoTarball {
+            name = "watchfiles-${old.version}-cargo-deps";
+            inherit src hash;
+          };
+
+        in {
+          inherit src cargoDeps;
+
           patchPhase = builtins.concatStringsSep "\n" [
             (old.patchPhase or "")
             ''
@@ -3416,9 +3435,6 @@ lib.composeManyExtensions [
               substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
             ''
           ];
-          cargoDeps = pkgs.rustPlatform.importCargoLock {
-            lockFile = "${src.out}/Cargo.lock";
-          };
           buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
             pkgs.darwin.apple_sdk.frameworks.Security
             pkgs.darwin.apple_sdk.frameworks.CoreServices
