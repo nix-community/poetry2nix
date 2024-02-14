@@ -25,13 +25,13 @@ let
                 true;
             intendedBuildSystem =
               if attr.buildSystem == "cython" then
-                self.python.pythonForBuild.pkgs.cython
+                (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.cython
               else
                 self.${attr.buildSystem};
           in
           if fromIsValid && untilIsValid then intendedBuildSystem else null
         else
-          if attr == "cython" then self.python.pythonForBuild.pkgs.cython else self.${attr};
+          if attr == "cython" then (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.cython else self.${attr};
     in
     if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !self.isPy3k then drv
     else if drv == null then null
@@ -101,7 +101,7 @@ lib.composeManyExtensions [
     let
       inherit (self.python) stdenv;
       inherit (pkgs.buildPackages) pkg-config;
-      pyBuildPackages = self.python.pythonForBuild.pkgs;
+      pyBuildPackages = (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs;
 
       selectQt5 = version:
         let
@@ -129,7 +129,7 @@ lib.composeManyExtensions [
         qtxmlpatterns
       ];
 
-      bootstrappingBase = pkgs.${self.python.pythonAttr}.pythonForBuild.pkgs;
+      bootstrappingBase = (pkgs.${self.python.pythonAttr}.pythonOnBuildForHost or pkgs.${self.python.pythonAttr}.pythonForBuild).pkgs;
     in
 
     {
@@ -172,6 +172,11 @@ lib.composeManyExtensions [
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.m2r ];
         }
       );
+
+      aiokafka = super.aiokafka.overridePythonAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.zlib ];
+      });
 
       aiohttp-swagger3 = super.aiohttp-swagger3.overridePythonAttrs (
         old: {
@@ -544,6 +549,7 @@ lib.composeManyExtensions [
             "41.0.5" = "sha256-ABCK144//RUJ3AksFHEgqC+kHvoHl1ifpVuqMTkGNH8=";
             "41.0.6" = "sha256-E7O0035BnJfTQeZNAN3Oz0fMbfj45htvnK8AHOzfdcY=";
             "41.0.7" = "sha256-VeZhKisCPDRvmSjGNwCgJJeVj65BZ0Ge+yvXbZw86Rw=";
+            "42.0.2" = "sha256-jw/FC5rQO77h6omtBp0Nc2oitkVbNElbkBUduyprTIc=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -858,6 +864,12 @@ lib.composeManyExtensions [
             '';
           }
         );
+
+      gnureadline = super.gnureadline.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
+        }
+      );
 
       grandalf = super.grandalf.overridePythonAttrs (
         old: {
@@ -1378,6 +1390,13 @@ lib.composeManyExtensions [
         old: {
           nativeBuildInputs = with pkgs.buildPackages; (old.nativeBuildInputs or [ ]) ++ [ pkg-config libxml2.dev libxslt.dev ] ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
           buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [ libxml2 libxslt ];
+        }
+      );
+
+      m2crypto = super.m2crypto.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.swig ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl ];
         }
       );
 
@@ -2442,22 +2461,11 @@ lib.composeManyExtensions [
         '';
       });
 
-
       pytoml = super.pytoml.overridePythonAttrs (
         _old: {
           doCheck = false;
         }
       );
-
-      pytorch-lightning = super.pytorch-lightning.override {
-        unpackPhase = ''
-          # $src remains a gzipped tarball otherwise.
-          mkdir -p tmp
-          tar xvf $src --directory=tmp
-          mv tmp/pytorch-lightning*/* .
-          rm -rf tmp
-        '';
-      };
 
       pyqt5 =
         let
@@ -2974,6 +2982,7 @@ lib.composeManyExtensions [
             "0.16.0" = "sha256-I1F9BS+0pQ7kufcK5dxfHj0LrVR8r8xM6k8mtf7emZ4=";
             "0.16.1" = "sha256-aSXLPkRGrvyp5mLDnG2D8ZPgG9a3fX+g1KVisNtRadc=";
             "0.16.2" = "sha256-aPmi/5UAkePf4nC2zRjXY+vZsAsiRZqTHyZZmzFHcqE=";
+            "0.17.1" = "sha256-sFutrKLa2ISxtUN7hmw2P02nl4SM6Hn4yj1kkXrNWmI=";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -3019,6 +3028,10 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.2.0" = "sha256-xivZHfQcdlp2ccpZiKb+Z70Ej8Vquqy/5A+MLpkEf2E=";
+            "0.1.15" = "sha256-DzdzMO9PEwf4HmpG8SxRJTmdrmkXuQ8RsIchvsKstH8=";
+            "0.1.14" = "sha256-UTXC0wbiH/Puu8gOXsD/yLMpre3IJPaT73Z/0rGStYU=";
+            "0.1.13" = "sha256-cH/Vw04QQ3U7E1ZCwozjhPcn0KVljP976/p3okrBpEU=";
             "0.1.12" = "sha256-Phmg/WpuiUhAMZwut/i6biynYXTTaIOxRTIyJ8NNvCs=";
             "0.1.11" = "sha256-yKb74GADeALai4qZ/+dR6u/QzKQF5404+YJKSYU/oFU=";
             "0.1.10" = "sha256-uFbqL4hFVpH12gSCUmib+Q24cApWKtGa8mRmKFUTQok=";
@@ -3055,19 +3068,37 @@ lib.composeManyExtensions [
             "0.0.272" = "B4wZTKC1Z6OxXQHrG9Q9VjY6ZnA3FOoMMNfroe+1A7I=";
             "0.0.271" = "PYzWLEuhU2D6Sq1JEoyAkl4nfaMHaS7G6SLNKaoAJpE=";
             "0.0.270" = "rruNNP/VkvMQexQ+V/ASxl5flHt00YomMAVzW+eWp20=";
-          }.${version};
+          }.${version} or (
+            lib.warn "Unknown ruff version: '${version}'. Please update getRepoHash." lib.fakeHash
+          );
+
+          getCargoHash = version: {
+            "0.2.0" = "sha256-zlatDyCWZr4iFY0fVCzhQmUGJxKMQvZd6HAt0PFlMwY=";
+            "0.1.15" = "sha256-M6qGG/JniEdNO2Qcw7u52JUJahucgiZcjWOaq50E6Ns=";
+          }.${version} or (
+            lib.warn "Unknown ruff version: '${version}'. Please update getCargoHash." null
+         );
+
           sha256 = getRepoHash super.ruff.version;
         in
-        super.ruff.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) rec {
+        super.ruff.overridePythonAttrs (old: let
           src = pkgs.fetchFromGitHub {
             owner = "astral-sh";
             repo = "ruff";
             rev = "v${old.version}";
             inherit sha256;
           };
-          cargoDeps = pkgs.rustPlatform.importCargoLock {
+
+          cargoDeps = let hash = getCargoHash super.ruff.version; in
+          if hash == null then pkgs.rustPlatform.importCargoLock {
             lockFile = "${src.out}/Cargo.lock";
+          } else pkgs.rustPlatform.fetchCargoTarball {
+            name = "ruff-${old.version}-cargo-deps";
+            inherit src hash;
           };
+        in lib.optionalAttrs (!(old.src.isWheel or false)){
+          inherit src cargoDeps;
+
           buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
             pkgs.darwin.apple_sdk.frameworks.Security
             pkgs.darwin.apple_sdk.frameworks.CoreServices
@@ -3400,14 +3431,33 @@ lib.composeManyExtensions [
             "0.10" = "0ypdy9sq4211djqh4ni5ap9l7whq9hw0vhsxjfl3a0a4czlldxqp";
           }.${version};
           sha256 = getRepoHash super.watchfiles.version;
+
+          getCargoHash = version: {
+            "0.21.0" = "sha256-KDm1nGeg4oDcbopedPfzalK2XO1c1ZQUZu6xhfRdQx4=";
+            "0.20.0" = "sha256-ChUs7YJE1ZEIONhUUbVAW/yDYqqUR/k/k10Ce7jw8Xo=";
+          }.${version} or (
+            lib.warn "Unknown watchfiles version: '${version}'. Please update getCargoHash." null
+         );
         in
-        super.watchfiles.overridePythonAttrs (old: rec {
+        super.watchfiles.overridePythonAttrs (old: let
           src = pkgs.fetchFromGitHub {
             owner = "samuelcolvin";
             repo = "watchfiles";
             rev = "v${old.version}";
             inherit sha256;
           };
+
+          cargoDeps = let hash = getCargoHash super.watchfiles.version; in
+          if hash == null then pkgs.rustPlatform.importCargoLock {
+            lockFile = "${src.out}/Cargo.lock";
+          } else pkgs.rustPlatform.fetchCargoTarball {
+            name = "watchfiles-${old.version}-cargo-deps";
+            inherit src hash;
+          };
+
+        in {
+          inherit src cargoDeps;
+
           patchPhase = builtins.concatStringsSep "\n" [
             (old.patchPhase or "")
             ''
@@ -3415,9 +3465,6 @@ lib.composeManyExtensions [
               substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
             ''
           ];
-          cargoDeps = pkgs.rustPlatform.importCargoLock {
-            lockFile = "${src.out}/Cargo.lock";
-          };
           buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
             pkgs.darwin.apple_sdk.frameworks.Security
             pkgs.darwin.apple_sdk.frameworks.CoreServices

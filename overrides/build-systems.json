@@ -5969,6 +5969,9 @@
     "hatchling",
     "setuptools"
   ],
+  "fastapi-camelcase": [
+    "setuptools"
+  ],
   "fastapi-csrf-protect": [
     "poetry-core"
   ],
@@ -15012,6 +15015,9 @@
   "pynetgear": [
     "setuptools"
   ],
+  "pynetworktables": [
+    "setuptools"
+  ],
   "pyngrok": [
     "setuptools"
   ],
@@ -15492,6 +15498,9 @@
     "setuptools"
   ],
   "pyruckus": [
+    "setuptools"
+  ],
+  "pyrundeck": [
     "setuptools"
   ],
   "pysabnzbd": [
@@ -21101,6 +21110,9 @@
     "setuptools"
   ],
   "types-typed-ast": [
+    "setuptools"
+  ],
+  "types-ujson": [
     "setuptools"
   ],
   "types-urllib3": [
