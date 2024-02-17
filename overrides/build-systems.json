@@ -4026,6 +4026,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "cylp": [
+    "setuptools"
+  ],
   "cymem": [
     "cython",
     "setuptools"
@@ -4552,6 +4555,9 @@
   "discovery30303": [
     "poetry-core",
     "setuptools"
+  ],
+  "disjoint-set": [
+    "poetry"
   ],
   "diskcache": [
     "setuptools"
@@ -15542,6 +15548,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pyscipopt": [
+    "setuptools"
+  ],
   "pyscreenshot": [
     "setuptools"
   ],
@@ -18742,6 +18751,9 @@
   ],
   "shellingham": [
     "setuptools"
+  ],
+  "shelved-cache": [
+    "poetry"
   ],
   "shexjsg": [
     "pbr"
@@ -22002,6 +22014,9 @@
     "setuptools"
   ],
   "winsspi": [
+    "setuptools"
+  ],
+  "wirerope": [
     "setuptools"
   ],
   "withings-api": [
