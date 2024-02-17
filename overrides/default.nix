@@ -475,6 +475,13 @@ lib.composeManyExtensions [
         }
       );
 
+    clarabel = super.dbt-extractor.overridePythonAttrs
+      (
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cargo pkgs.rustc pkgs.maturin ];
+        }
+      );
+      
       cloudflare = super.cloudflare.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
