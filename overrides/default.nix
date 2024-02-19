@@ -475,13 +475,13 @@ lib.composeManyExtensions [
         }
       );
 
-    clarabel = super.dbt-extractor.overridePythonAttrs
-      (
-        old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cargo pkgs.rustc pkgs.maturin ];
-        }
-      );
-      
+      clarabel = super.dbt-extractor.overridePythonAttrs
+        (
+          old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cargo pkgs.rustc pkgs.maturin ];
+          }
+        );
+
       cloudflare = super.cloudflare.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
@@ -2961,6 +2961,7 @@ lib.composeManyExtensions [
             "0.16.1" = "sha256-aSXLPkRGrvyp5mLDnG2D8ZPgG9a3fX+g1KVisNtRadc=";
             "0.16.2" = "sha256-aPmi/5UAkePf4nC2zRjXY+vZsAsiRZqTHyZZmzFHcqE=";
             "0.17.1" = "sha256-sFutrKLa2ISxtUN7hmw2P02nl4SM6Hn4yj1kkXrNWmI=";
+            "0.18.0" = "sha256-wd1teRDhjQWlKjFIahURj0iwcfkpyUvqIWXXscW7eek=";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -3055,38 +3056,43 @@ lib.composeManyExtensions [
             "0.1.15" = "sha256-M6qGG/JniEdNO2Qcw7u52JUJahucgiZcjWOaq50E6Ns=";
           }.${version} or (
             lib.warn "Unknown ruff version: '${version}'. Please update getCargoHash." null
-         );
+          );
 
           sha256 = getRepoHash super.ruff.version;
         in
-        super.ruff.overridePythonAttrs (old: let
-          src = pkgs.fetchFromGitHub {
-            owner = "astral-sh";
-            repo = "ruff";
-            rev = "v${old.version}";
-            inherit sha256;
-          };
+        super.ruff.overridePythonAttrs (old:
+          let
+            src = pkgs.fetchFromGitHub {
+              owner = "astral-sh";
+              repo = "ruff";
+              rev = "v${old.version}";
+              inherit sha256;
+            };
 
-          cargoDeps = let hash = getCargoHash super.ruff.version; in
-          if hash == null then pkgs.rustPlatform.importCargoLock {
-            lockFile = "${src.out}/Cargo.lock";
-          } else pkgs.rustPlatform.fetchCargoTarball {
-            name = "ruff-${old.version}-cargo-deps";
-            inherit src hash;
-          };
-        in lib.optionalAttrs (!(old.src.isWheel or false)){
-          inherit src cargoDeps;
+            cargoDeps = let hash = getCargoHash super.ruff.version; in
+              if hash == null then
+                pkgs.rustPlatform.importCargoLock
+                  {
+                    lockFile = "${src.out}/Cargo.lock";
+                  } else
+                pkgs.rustPlatform.fetchCargoTarball {
+                  name = "ruff-${old.version}-cargo-deps";
+                  inherit src hash;
+                };
+          in
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            inherit src cargoDeps;
 
-          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
-            pkgs.darwin.apple_sdk.frameworks.Security
-            pkgs.darwin.apple_sdk.frameworks.CoreServices
-            pkgs.libiconv
-          ];
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            pkgs.rustPlatform.cargoSetupHook
-            pkgs.rustPlatform.maturinBuildHook
-          ];
-        });
+            buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+              pkgs.darwin.apple_sdk.frameworks.Security
+              pkgs.darwin.apple_sdk.frameworks.CoreServices
+              pkgs.libiconv
+            ];
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+              pkgs.rustPlatform.cargoSetupHook
+              pkgs.rustPlatform.maturinBuildHook
+            ];
+          });
 
       scipy = super.scipy.overridePythonAttrs (
         old:
@@ -3415,44 +3421,49 @@ lib.composeManyExtensions [
             "0.20.0" = "sha256-ChUs7YJE1ZEIONhUUbVAW/yDYqqUR/k/k10Ce7jw8Xo=";
           }.${version} or (
             lib.warn "Unknown watchfiles version: '${version}'. Please update getCargoHash." null
-         );
+          );
         in
-        super.watchfiles.overridePythonAttrs (old: let
-          src = pkgs.fetchFromGitHub {
-            owner = "samuelcolvin";
-            repo = "watchfiles";
-            rev = "v${old.version}";
-            inherit sha256;
-          };
+        super.watchfiles.overridePythonAttrs (old:
+          let
+            src = pkgs.fetchFromGitHub {
+              owner = "samuelcolvin";
+              repo = "watchfiles";
+              rev = "v${old.version}";
+              inherit sha256;
+            };
 
-          cargoDeps = let hash = getCargoHash super.watchfiles.version; in
-          if hash == null then pkgs.rustPlatform.importCargoLock {
-            lockFile = "${src.out}/Cargo.lock";
-          } else pkgs.rustPlatform.fetchCargoTarball {
-            name = "watchfiles-${old.version}-cargo-deps";
-            inherit src hash;
-          };
+            cargoDeps = let hash = getCargoHash super.watchfiles.version; in
+              if hash == null then
+                pkgs.rustPlatform.importCargoLock
+                  {
+                    lockFile = "${src.out}/Cargo.lock";
+                  } else
+                pkgs.rustPlatform.fetchCargoTarball {
+                  name = "watchfiles-${old.version}-cargo-deps";
+                  inherit src hash;
+                };
 
-        in {
-          inherit src cargoDeps;
+          in
+          {
+            inherit src cargoDeps;
 
-          patchPhase = builtins.concatStringsSep "\n" [
-            (old.patchPhase or "")
-            ''
-              substituteInPlace "Cargo.lock" --replace 'version = "0.0.0"' 'version = "${old.version}"'
-              substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
-            ''
-          ];
-          buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
-            pkgs.darwin.apple_sdk.frameworks.Security
-            pkgs.darwin.apple_sdk.frameworks.CoreServices
-            pkgs.libiconv
-          ];
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            pkgs.rustPlatform.cargoSetupHook
-            pkgs.rustPlatform.maturinBuildHook
-          ];
-        });
+            patchPhase = builtins.concatStringsSep "\n" [
+              (old.patchPhase or "")
+              ''
+                substituteInPlace "Cargo.lock" --replace 'version = "0.0.0"' 'version = "${old.version}"'
+                substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
+              ''
+            ];
+            buildInputs = (old.buildInputs or [ ]) ++ lib.optionals stdenv.isDarwin [
+              pkgs.darwin.apple_sdk.frameworks.Security
+              pkgs.darwin.apple_sdk.frameworks.CoreServices
+              pkgs.libiconv
+            ];
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+              pkgs.rustPlatform.cargoSetupHook
+              pkgs.rustPlatform.maturinBuildHook
+            ];
+          });
 
       weasyprint = super.weasyprint.overridePythonAttrs (
         old: {
