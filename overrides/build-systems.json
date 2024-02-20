@@ -5994,6 +5994,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "fastapi-plugins": [
+    "setuptools"
+  ],
   "fastapi-restful": [
     "poetry"
   ],
