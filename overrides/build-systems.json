@@ -16462,6 +16462,9 @@
   "python-fedora": [
     "setuptools"
   ],
+  "python-firebase": [
+    "setuptools"
+  ],
   "python-flirt": [
     "setuptools"
   ],
