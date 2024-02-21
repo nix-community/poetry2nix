@@ -5501,7 +5501,14 @@
     "setuptools"
   ],
   "editables": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.4"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.4"
+    }
   ],
   "editdistance": [
     "cython",
