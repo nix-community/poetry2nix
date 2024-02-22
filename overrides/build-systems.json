@@ -5219,6 +5219,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "django-autoslug": [
+    "setuptools"
+  ],
   "django-bootstrap-form": [
     "setuptools"
   ],
@@ -5233,7 +5236,8 @@
     "setuptools-scm"
   ],
   "django-bootstrap5": [
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "django-cache-memoize": [
     "setuptools"
@@ -5828,6 +5832,7 @@
     "setuptools"
   ],
   "dparse": [
+    "hatchling",
     "setuptools"
   ],
   "dparse2": [
@@ -6199,6 +6204,9 @@
     "setuptools"
   ],
   "email-validator": [
+    "setuptools"
+  ],
+  "emails": [
     "setuptools"
   ],
   "emailthreads": [
@@ -13555,6 +13563,9 @@
   "ndg-httpsclient": [
     "setuptools"
   ],
+  "ndh": [
+    "poetry-core"
+  ],
   "ndindex": [
     "cython"
   ],
@@ -15155,6 +15166,9 @@
     "setuptools"
   ],
   "peco": [
+    "setuptools"
+  ],
+  "peertube": [
     "setuptools"
   ],
   "peewee": [
@@ -17800,6 +17814,9 @@
     "setuptools"
   ],
   "pyobihai": [
+    "setuptools"
+  ],
+  "pyocclient": [
     "setuptools"
   ],
   "pyocd": [
@@ -21252,7 +21269,8 @@
     "setuptools"
   ],
   "safety-schemas": [
-    "hatchling"
+    "hatchling",
+    "poetry-core"
   ],
   "sagemaker": [
     "setuptools"
@@ -26165,6 +26183,9 @@
     "setuptools"
   ],
   "wagtail": [
+    "setuptools"
+  ],
+  "wagtail-autocomplete": [
     "setuptools"
   ],
   "wagtail-localize": [
