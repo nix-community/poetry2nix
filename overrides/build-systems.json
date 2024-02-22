@@ -12705,6 +12705,9 @@
   "peco": [
     "setuptools"
   ],
+  "peertube": [
+    "setuptools"
+  ],
   "peewee": [
     "cython",
     "setuptools"
