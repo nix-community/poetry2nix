@@ -5602,6 +5602,9 @@
   "email-validator": [
     "setuptools"
   ],
+  "emails": [
+    "setuptools"
+  ],
   "emailthreads": [
     "setuptools"
   ],
