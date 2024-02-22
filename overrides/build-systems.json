@@ -18261,6 +18261,9 @@
   "safety": [
     "setuptools"
   ],
+  "safety-schemas": [
+    "poetry-core"
+  ],
   "sagemaker": [
     "setuptools"
   ],
