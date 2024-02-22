@@ -4730,7 +4730,8 @@
     "setuptools"
   ],
   "django-bootstrap5": [
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "django-cache-memoize": [
     "setuptools"
