@@ -1280,7 +1280,8 @@ lib.composeManyExtensions [
           # jupyterlab?)
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace ', "jupyterlab~=3.0"' ""
+              --replace ', "jupyterlab~=3.0"' "" \
+              --replace ', "jupyterlab~=4.0"' ""
           '';
         }
       );
@@ -1937,7 +1938,12 @@ lib.composeManyExtensions [
 
         # For OSX, we need to add a dependency on libcxx, which provides
         # `complex.h` and other libraries that pandas depends on to build.
-        postPatch = lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
+        postPatch = ''
+          if [ -f pyproject.toml ]; then
+            substituteInPlace pyproject.toml \
+              --replace 'meson-python==0.13.1' 'meson-python'
+          fi
+        '' + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
           if [ -f setup.py ]; then
             cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
             echo "Adding $cpp_sdk to the setup.py common_include variable"
