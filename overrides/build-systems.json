@@ -15099,6 +15099,9 @@
   "pynzb": [
     "setuptools"
   ],
+  "pyocclient": [
+    "setuptools"
+  ],
   "pyobihai": [
     "setuptools"
   ],
