@@ -5279,6 +5279,7 @@
     "setuptools"
   ],
   "dparse": [
+    "hatchling",
     "setuptools"
   ],
   "dparse2": [
