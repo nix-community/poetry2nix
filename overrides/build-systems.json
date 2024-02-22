@@ -11243,6 +11243,9 @@
   "ndg-httpsclient": [
     "setuptools"
   ],
+  "ndh": [
+    "poetry-core"
+  ],
   "ndindex": [
     "cython"
   ],
