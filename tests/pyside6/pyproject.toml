@@ -5,8 +5,9 @@ description = ""
 authors = ["considerate <viktor.kronvall@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
-pyside6 = "^6.6.0"
+python = ">=3.10,<3.12"
+# PySide6 >= 6.5.3 require MacOS >11, which is currently incompatible with the default github-actions
+pyside6 = "<6.5.3"
 
 [tool.poetry.dev-dependencies]
 

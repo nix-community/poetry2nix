@@ -972,7 +972,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
               buildInputs =
                 (old.buildInputs or [ ])
-                ++ [ pkgs.hdf5 self.pkg-config ]
+                ++ [ pkgs.hdf5 self.pkgconfig ]
                 ++ lib.optional mpiSupport mpi
               ;
               propagatedBuildInputs =
@@ -2615,7 +2615,33 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
+      # MacOS seems to be confused by the wheel installs overlapping
+      # modules in sitepackages that come from the different pyside6
+      # dependencies
+      pyside6 =
+        if stdenv.isDarwin then
+          self.python.pkgs.toPythonModule
+            (pkgs.symlinkJoin {
+              name = "pyside6-combined-addons-essentials";
+              paths = [
+                self.pyside6-essentials
+                self.pyside6-addons
+                self.shiboken6
+              ];
+              preBuild = ''
+                cp -r ${super.pyside6}/* $out/
+              '';
+              # Poetry complains of multiple distInfos when building
+              # the associated application, so we delete redundant
+              # distInfos
+              postBuild = ''
+                rm -rf $out/${self.python.sitePackages}/shiboken6*.dist-info
+                rm -rf $out/${self.python.sitePackages}/PySide6_Essentials*.dist-info
+                rm -rf $out/${self.python.sitePackages}/PySide6_Addons*.dist-info
+              '';
+            }) else super.pyside6;
+      
+      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
@@ -2624,7 +2650,7 @@ lib.composeManyExtensions [
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = builtins.filter (p: p!=super.pyside6) (old.propagatedBuildInputs ++ [
           pkgs.libxkbcommon
           pkgs.gtk3
           pkgs.speechd
@@ -2645,10 +2671,12 @@ lib.composeManyExtensions [
           pkgs.libdrm
           pkgs.pulseaudio
           self.shiboken6
-        ];
+          # For apprpriate final path of executables
+          self.pyside6
+        ]);
       });
 
-      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [
           "libmysqlclient.so.21"
           "libmimerapi.so"
@@ -2659,13 +2687,15 @@ lib.composeManyExtensions [
           addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
           addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = builtins.filter (p: p!=super.pyside6) (old.propagatedBuildInputs ++ [
           pkgs.nss
           pkgs.xorg.libXtst
           pkgs.alsa-lib
           pkgs.xorg.libxshmfence
           pkgs.xorg.libxkbfile
-        ];
+          # For apprpriate final path of executables
+          self.pyside6
+        ]);
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
