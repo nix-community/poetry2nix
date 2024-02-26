@@ -9443,6 +9443,9 @@
   "l18n": [
     "setuptools"
   ],
+  "laces": [
+    "flit-core"
+  ],
   "labgrid": [
     "setuptools",
     "setuptools-scm"
