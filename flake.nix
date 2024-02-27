@@ -76,7 +76,10 @@
     // (flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
-        config.allowAliases = false;
+        config = {
+          allowAliases = false;
+          allowInsecurePredicate = x: x.pname == "python";  # Allow "insecure" Python2
+        };
       };
 
       poetry2nix = import ./default.nix {inherit pkgs;};
@@ -94,6 +97,7 @@
           nativeBuildInputs = with pkgs; [
             p2nix-tools.env
             p2nix-tools.flamegraph
+            p2nix-tools.py2-astparse
             nixpkgs-fmt
             poetry
             niv
