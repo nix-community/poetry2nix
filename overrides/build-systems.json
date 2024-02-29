@@ -11147,6 +11147,9 @@
   "macaroonbakery": [
     "setuptools"
   ],
+  "macholib": [
+    "setuptools"
+  ],
   "maestral": [
     "pbr",
     "setuptools"
