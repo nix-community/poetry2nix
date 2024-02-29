@@ -10005,6 +10005,9 @@
   "mac-alias": [
     "setuptools"
   ],
+  "macholib": [
+    "setuptools"
+  ],
   "maestral": [
     "pbr",
     "setuptools"
