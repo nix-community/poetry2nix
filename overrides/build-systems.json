@@ -17255,6 +17255,9 @@
   "pyinputevent": [
     "setuptools"
   ],
+  "pyinstaller-hooks-contrib": [
+    "setuptools"
+  ],
   "pyinsteon": [
     "setuptools"
   ],
