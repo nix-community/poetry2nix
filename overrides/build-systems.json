@@ -733,6 +733,9 @@
     "hatchling",
     "setuptools"
   ],
+  "altgraph": [
+    "setuptools"
+  ],
   "amaranth": [
     "setuptools",
     "setuptools-scm"
