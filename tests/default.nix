@@ -166,6 +166,7 @@ in
   pyside6 = callTest ./pyside6 { };
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
+  tensorflow = callTest ./tensorflow { };
 
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
