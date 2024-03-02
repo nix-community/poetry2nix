@@ -265,6 +265,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "aiodataloader": [
+    "hatchling"
+  ],
   "aiodiscover": [
     "setuptools"
   ],
@@ -3427,6 +3430,9 @@
   "cloudinary": [
     "setuptools"
   ],
+  "cloudpathlib": [
+    "flit-core"
+  ],
   "cloudpickle": [
     "setuptools"
   ],
@@ -3653,6 +3659,9 @@
   "conda": [
     "setuptools"
   ],
+  "confection": [
+    "setuptools"
+  ],
   "config-formatter": [
     "setuptools"
   ],
@@ -3811,6 +3820,9 @@
     "poetry-core"
   ],
   "cot": [
+    "setuptools"
+  ],
+  "courlan": [
     "setuptools"
   ],
   "covcore": [
@@ -4100,6 +4112,9 @@
     "setuptools"
   ],
   "dash": [
+    "setuptools"
+  ],
+  "dash-colorscales": [
     "setuptools"
   ],
   "dash-core-components": [
@@ -4809,6 +4824,9 @@
   "django-discover-runner": [
     "setuptools"
   ],
+  "django-drf-filepond": [
+    "setuptools"
+  ],
   "django-dynamic-preferences": [
     "setuptools"
   ],
@@ -5472,6 +5490,9 @@
   "ebaysdk": [
     "setuptools"
   ],
+  "ebooklib": [
+    "setuptools"
+  ],
   "ec2instanceconnectcli": [
     "setuptools"
   ],
@@ -5895,6 +5916,9 @@
     "setuptools"
   ],
   "extras": [
+    "setuptools"
+  ],
+  "extruct": [
     "setuptools"
   ],
   "eyed3": [
@@ -6448,6 +6472,9 @@
   "flask-mysqldb": [
     "setuptools"
   ],
+  "flask-ngrok": [
+    "setuptools"
+  ],
   "flask-openid": [
     "setuptools"
   ],
@@ -6898,7 +6925,8 @@
     "setuptools-scm"
   ],
   "genanki": [
-    "setuptools"
+    "setuptools",
+    "pytest-runner"
   ],
   "generic": [
     "poetry-core",
@@ -7479,6 +7507,9 @@
   "graphene-django": [
     "setuptools"
   ],
+  "graphene-sqlalchemy": [
+    "setuptools"
+  ],
   "graphite-web": [
     "setuptools"
   ],
@@ -7964,6 +7995,9 @@
     "poetry",
     "poetry-core"
   ],
+  "html-text": [
+    "setuptools"
+  ],
   "html-void-elements": [
     "poetry",
     "poetry-core"
@@ -7980,6 +8014,9 @@
   ],
   "html5tagger": [
     "setuptools-scm"
+  ],
+  "htmldate": [
+    "setuptools"
   ],
   "htmllaundry": [
     "setuptools"
@@ -9051,6 +9088,9 @@
   "jsonstreams": [
     "setuptools"
   ],
+  "jstyleson": [
+    "setuptools"
+  ],
   "jug": [
     "setuptools"
   ],
@@ -9225,6 +9265,9 @@
     "setuptools"
   ],
   "justbytes": [
+    "setuptools"
+  ],
+  "justext": [
     "setuptools"
   ],
   "justnimbus": [
@@ -10429,10 +10472,16 @@
   "mezzanine": [
     "setuptools"
   ],
+  "mf2py": [
+    "poetry"
+  ],
   "micawber": [
     "setuptools"
   ],
   "micloud": [
+    "setuptools"
+  ],
+  "microdata": [
     "setuptools"
   ],
   "midiutil": [
@@ -12564,6 +12613,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "pathlib-abc": [
+    "hatchling"
+  ],
   "pathlib2": [
     "setuptools"
   ],
@@ -13965,6 +14017,9 @@
     "setuptools"
   ],
   "pycketcasts": [
+    "setuptools"
+  ],
+  "pycld2": [
     "setuptools"
   ],
   "pyclimacell": [
@@ -15443,6 +15498,9 @@
   ],
   "pyrate-limiter": [
     "poetry-core"
+  ],
+  "pyrdfa3": [
+    "setuptools"
   ],
   "pyreadability": [
     "setuptools"
@@ -17716,6 +17774,9 @@
   "repeated-test": [
     "setuptools-scm"
   ],
+  "replicate": [
+    "setuptools"
+  ],
   "repocheck": [
     "setuptools"
   ],
@@ -18333,6 +18394,9 @@
   ],
   "schema": [
     "setuptools"
+  ],
+  "ipyleaflet": [
+    "jupyter-packaging"
   ],
   "schema-salad": [
     "setuptools"
@@ -19166,7 +19230,8 @@
     "setuptools-scm"
   ],
   "spacy": [
-    "setuptools"
+    "setuptools",
+    "cython"
   ],
   "spacy-alignments": [
     "setuptools"
@@ -19548,6 +19613,9 @@
   "sqltrie": [
     "setuptools-scm"
   ],
+  "squarify": [
+    "setuptools"
+  ],
   "srp": [
     "setuptools"
   ],
@@ -19772,6 +19840,9 @@
   "striprtf": [
     "setuptools"
   ],
+  "strsimpy": [
+    "setuptools"
+  ],
   "structlog": [
     "flit-core",
     "hatch-fancy-pypi-readme",
@@ -19836,6 +19907,9 @@
     "poetry-core"
   ],
   "suds-community": [
+    "setuptools"
+  ],
+  "summa": [
     "setuptools"
   ],
   "sumo": [
@@ -20675,6 +20749,9 @@
   "trackpy": [
     "setuptools"
   ],
+  "trafilatura": [
+    "setuptools"
+  ],
   "trailrunner": [
     "flit-core"
   ],
@@ -20865,7 +20942,15 @@
     "setuptools"
   ],
   "twisted": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatchling",
+      "from": "24.3.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "24.3.0"
+    }
   ],
   "twitch-python": [
     "setuptools"
@@ -21671,6 +21756,10 @@
   "vobject": [
     "setuptools"
   ],
+  "voila": [
+    "hatchling",
+    "hatch-jupyter-builder"
+  ],
   "volkszaehler": [
     "setuptools"
   ],
@@ -21845,6 +21934,9 @@
     "setuptools"
   ],
   "wcwidth": [
+    "setuptools"
+  ],
+  "weasel": [
     "setuptools"
   ],
   "weasyprint": [
@@ -22294,6 +22386,9 @@
   "xxhash": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "xyzservices": [
+    "setuptools"
   ],
   "yabadaba": [
     "setuptools"
