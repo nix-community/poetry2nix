@@ -10147,6 +10147,7 @@
   ],
   "marshmallow": [
     "setuptools"
+    "flit-core"
   ],
   "marshmallow-dataclass": [
     "setuptools"
@@ -20866,6 +20867,7 @@
   ],
   "twisted": [
     "setuptools"
+    "hatchling"
   ],
   "twitch-python": [
     "setuptools"
