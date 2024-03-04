@@ -323,6 +323,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "aiogram": [
+    "hatchling"
+  ],
   "aioharmony": [
     "setuptools"
   ],
