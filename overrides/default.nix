@@ -1723,36 +1723,17 @@ lib.composeManyExtensions [
               ];
             }) else super.notebook;
 
-      # The following are dependencies of torch >= 2.0.0.
-      # torch doesn't officially support system CUDA, unless you build it yourself.
       nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
-        autoPatchelfIgnoreMissingDeps = true;
-        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu11.)
-        postFixup = ''
-          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
-        '';
-        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu11
-        ];
-      });
+         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+           self.nvidia-cublas-cu11
+         ];
+       });
 
-      nvidia-cuda-nvrtc-cu11 = super.nvidia-cuda-nvrtc-cu11.overridePythonAttrs (_: {
-        # (Bytecode collision happens with nvidia-cudnn-cu11.)
-        postFixup = ''
-          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
-        '';
-      });
-
-      nvidia-cusolver-cu11 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
-        autoPatchelfIgnoreMissingDeps = true;
-        # (Bytecode collision happens with nvidia-cusolver-cu11.)
-        postFixup = ''
-          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
-        '';
-        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu11
-        ];
-      });
+       nvidia-cusolver-cu11 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
+         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+           self.nvidia-cublas-cu11
+         ];
+       });
 
       omegaconf = super.omegaconf.overridePythonAttrs (
         old: {
@@ -3314,8 +3295,8 @@ lib.composeManyExtensions [
       };
 
       torch = super.torch.overridePythonAttrs (old: {
-        # torch has an auto-magical way to locate the cuda libraries from site-packages.
         autoPatchelfIgnoreMissingDeps = true;
+
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
           self.numpy
         ];
@@ -3754,5 +3735,43 @@ lib.composeManyExtensions [
         preferWheel = true;
       };
     }
+  )
+  # The following are dependencies of torch >= 2.0.0.
+  # torch doesn't officially support system CUDA, unless you build it yourself.
+  (self: super: lib.genAttrs [
+    "nvidia-cublas-cu11"
+    "nvidia-cublas-cu12"
+    "nvidia-cuda-cupti-cu11"
+    "nvidia-cuda-cupti-cu12"
+    "nvidia-cuda-curand-cu11"
+    "nvidia-cuda-curand-cu12"
+    "nvidia-cuda-nvrtc-cu11"
+    "nvidia-cuda-nvrtc-cu12"
+    "nvidia-cuda-runtime-cu11"
+    "nvidia-cuda-runtime-cu12"
+    "nvidia-cudnn-cu11"
+    "nvidia-cudnn-cu12"
+    "nvidia-cufft-cu11"
+    "nvidia-cufft-cu12"
+    "nvidia-curand-cu11"
+    "nvidia-curand-cu12"
+    "nvidia-cusolver-cu11"
+    "nvidia-cusolver-cu12"
+    "nvidia-cusparse-cu11"
+    "nvidia-cusparse-cu12"
+    "nvidia-nccl-cu11"
+    "nvidia-nccl-cu12"
+    "nvidia-nvjitlink-cu11"
+    "nvidia-nvjitlink-cu12"
+    "nvidia-nvtx-cu11"
+    "nvidia-nvtx-cu12"
+  ] (name: super.${name}.overridePythonAttrs (_old: {
+    # 1. Remove __init__.py because all the cuda packages include it
+    # 2. Symlink the cuda libraries to the lib directory so autopatchelf can find them
+    postFixup = ''
+      rm -rf $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+      ln -sfn $out/${self.python.sitePackages}/nvidia/*/lib/lib*.so* $out/lib
+    '';
+  }))
   )
 ]
