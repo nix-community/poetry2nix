@@ -4958,6 +4958,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "django-qr-code": [
+    "setuptools"
+  ],
   "django-ranged-response": [
     "setuptools"
   ],
