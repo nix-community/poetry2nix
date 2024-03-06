@@ -4973,6 +4973,9 @@
   "django-rest-auth": [
     "setuptools"
   ],
+  "django-rest-framework": [
+    "setuptools"
+  ],
   "django-rest-polymorphic": [
     "setuptools"
   ],
