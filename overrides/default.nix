@@ -2316,6 +2316,10 @@ lib.composeManyExtensions [
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
       });
 
+      sphinxcontrib-jquery = super.sphinxcontrib-jquery.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.sphinx ];
+      });
+
       sphinxcontrib-qthelp = super.sphinxcontrib-qthelp.overridePythonAttrs (old: {
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
       });
