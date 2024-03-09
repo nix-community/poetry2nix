@@ -52,7 +52,7 @@ let
   # Find gitignore files recursively in parent directory stopping with .git
   findGitIgnores = path:
     let
-      parent = path + "/..";
+      parent = builtins.dirOf path;
       gitIgnore = path + "/.gitignore";
       isGitRoot = builtins.pathExists (path + "/.git");
       hasGitIgnore = builtins.pathExists gitIgnore;
