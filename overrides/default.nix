@@ -3148,6 +3148,7 @@ lib.composeManyExtensions [
 
       scikit-learn = super.scikit-learn.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          nativeBuildInputs = (removePackagesByName (old.nativeBuildInputs or []) [ self.cython ]) ++ [ self.cython_3 ];
           buildInputs = (old.buildInputs or [ ]) ++ [
             pkgs.gfortran
           ] ++ lib.optionals stdenv.cc.isClang [
