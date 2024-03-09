@@ -3147,7 +3147,7 @@ lib.composeManyExtensions [
       );
 
       scikit-learn = super.scikit-learn.overridePythonAttrs (
-        old: {
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           buildInputs = (old.buildInputs or [ ]) ++ [
             pkgs.gfortran
           ] ++ lib.optionals stdenv.cc.isClang [
@@ -3157,7 +3157,6 @@ lib.composeManyExtensions [
           ];
 
           enableParallelBuilding = true;
-        } // lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
               --replace 'setuptools<60.0' 'setuptools'
