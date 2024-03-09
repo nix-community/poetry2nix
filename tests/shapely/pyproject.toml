@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-shapely = "*"
+shapely = ">=2.0.4"
 
 [tool.poetry.dev-dependencies]
 
