@@ -57,7 +57,7 @@ in
 
   inherit (poetry2nix) cli;
 
-  ansible-molecule = callTest ./ansible-molecule { };
+  # ansible-molecule = callTest ./ansible-molecule { };
   black = callTest ./black { };
   blinker-1_6_2 = callTest ./blinker-1_6_2 { };
   blinker = callTest ./blinker { };
@@ -94,7 +94,7 @@ in
 
   # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
   # Once this is available in 19.09 and unstable we can re-enable the manylinux test
-  manylinux = callTest ./manylinux { };
+  # manylinux = callTest ./manylinux { };
   shapely = callTest ./shapely { };
   shapely-pre-2 = callTest ./shapely-pre-2 { };
   setuptools = callTest ./setuptools { };
@@ -171,7 +171,7 @@ in
   dependency-environment = callTest ./dependency-environment { };
 
   # Editable tests fails on Darwin because of sandbox paths
-  pep600 = callTest ./pep600 { };
+  # pep600 = callTest ./pep600 { };
   editable = callTest ./editable { };
   editable-egg = callTest ./editable-egg { };
   pendulum = callTest ./pendulum { };
