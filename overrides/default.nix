@@ -2920,9 +2920,10 @@ lib.composeManyExtensions [
         }
       );
 
-      rasterio = super.rasterio.overridePythonAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.gdal ];
-      });
+      rasterio = let gdal = pkgs.gdal.override { useJava = false; }; in
+        super.rasterio.overridePythonAttrs (old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
+        });
 
       referencing = super.referencing.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = old.postPatch or "" + ''
@@ -3175,7 +3176,7 @@ lib.composeManyExtensions [
 
       scikit-learn = super.scikit-learn.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          nativeBuildInputs = old.nativeBuildInputs or [] ++ [
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
             self.cython
             pkgs.gfortran
           ] ++ lib.optionals stdenv.cc.isClang [
