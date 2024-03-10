@@ -8,7 +8,8 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.10"
 numpy = "*"
 scipy = "*"
-scikit-learn = "*"
+# 1.4.1 requires cython 3 which exists but doesn't seem to work in nixpkgs
+scikit-learn = "<1.4.1"
 seaborn = "*"
 pandas = "*"
 jupyter = "*"
