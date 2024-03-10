@@ -2177,25 +2177,13 @@ lib.composeManyExtensions [
 
       pycairo = super.pycairo.overridePythonAttrs (
         old: {
-          format = "other";
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            self.meson
-            pkgs.ninja
             pkg-config
           ];
 
           propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
             pkgs.cairo
           ];
-
-          preBuild = ''
-            cd ../
-          '';
-
-          postBuild = ''
-            cd build
-          '';
-          mesonFlags = [ "-Dpython=${if self.isPy3k then "python3" else "python"}" ];
         }
       );
 
@@ -2270,9 +2258,29 @@ lib.composeManyExtensions [
       );
 
       pygobject = super.pygobject.overridePythonAttrs (
-        old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
-          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.glib pkgs.gobject-introspection ];
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          format = "pyproject";
+
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            pkg-config
+            pkgs.meson
+            pkgs.ninja
+            pkgs.gobject-introspection
+            self.meson-python
+          ];
+
+          buildInputs = old.buildInputs or [ ] ++ [
+            pkgs.cairo
+            pkgs.glib
+          ] ++ lib.optionals stdenv.isDarwin [ pkgs.ncurses ];
+
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+            self.pycairo
+          ];
+
+          postConfigure = ''
+            cd ..
+          '';
         }
       );
 
