@@ -1391,9 +1391,11 @@ lib.composeManyExtensions [
             }) else super.lsassy;
 
       lxml = super.lxml.overridePythonAttrs (
-        old: {
-          nativeBuildInputs = with pkgs.buildPackages; (old.nativeBuildInputs or [ ]) ++ [ pkg-config libxml2.dev libxslt.dev ] ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
-          buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [ libxml2 libxslt ];
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          nativeBuildInputs = with pkgs.buildPackages; old.nativeBuildInputs or [ ]
+            ++ [ pkg-config libxml2.dev libxslt.dev ]
+            ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxml2 pkgs.libxslt ];
         }
       );
 
