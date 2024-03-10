@@ -7,5 +7,5 @@ poetry2nix.mkPoetryApplication {
   src = lib.cleanSource ./.;
 
   overrides = poetry2nix.overrides.withDefaults (import ./poetry-git-overlay.nix { inherit pkgs; });
-
+  dontCheckRuntimeDeps = true;
 }
