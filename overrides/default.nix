@@ -3175,8 +3175,8 @@ lib.composeManyExtensions [
 
       scikit-learn = super.scikit-learn.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          nativeBuildInputs = (removePackagesByName (old.nativeBuildInputs or [ ]) [ self.cython ]) ++ [
-            self.cython_3
+          nativeBuildInputs = old.nativeBuildInputs or [] ++ [
+            self.cython
             pkgs.gfortran
           ] ++ lib.optionals stdenv.cc.isClang [
             pkgs.llvmPackages.openmp
