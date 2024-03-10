@@ -5,6 +5,11 @@ let
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     src = lib.cleanSource ./.;
+    overrides = poetry2nix.overrides.withDefaults (_: super: {
+      opencv-python = super.opencv-python.override {
+        preferWheel = true;
+      };
+    });
   };
   p = pkg.python.withPackages (ps: [ ps.numpy ps.opencv-python ]);
 in
