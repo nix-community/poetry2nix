@@ -2284,6 +2284,10 @@ lib.composeManyExtensions [
         }
       );
 
+      pymdown-extensions = super.pymdown-extensions.overridePythonAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ self.pyyaml ];
+      });
+
       pylint = super.pylint.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
