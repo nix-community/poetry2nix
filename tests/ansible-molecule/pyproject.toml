@@ -11,6 +11,8 @@ ansible = "~5.1.0"
 molecule = "^3.5.2"
 setuptools-scm = "<8"
 setuptools-scm-git-archive = "1.4"
+# requires cython 3
+lxml = "<5"
 
 [tool.poetry.dev-dependencies]
 
