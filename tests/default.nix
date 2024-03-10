@@ -171,7 +171,7 @@ in
   dependency-environment = callTest ./dependency-environment { };
 
   # Editable tests fails on Darwin because of sandbox paths
-  # pep600 = callTest ./pep600 { };
+  pep600 = callTest ./pep600 { };
   editable = callTest ./editable { };
   editable-egg = callTest ./editable-egg { };
   pendulum = callTest ./pendulum { };

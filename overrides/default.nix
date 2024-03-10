@@ -861,14 +861,14 @@ lib.composeManyExtensions [
       });
 
       gdal = super.gdal.overridePythonAttrs (
-          old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ gdal ];
-            preBuild = (old.preBuild or "") + ''
-              substituteInPlace setup.cfg \
-                --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
-            '';
-          }
-        );
+        old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ gdal ];
+          preBuild = (old.preBuild or "") + ''
+            substituteInPlace setup.cfg \
+              --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
+          '';
+        }
+      );
 
       gnureadline = super.gnureadline.overridePythonAttrs (
         old: {
@@ -1270,14 +1270,7 @@ lib.composeManyExtensions [
 
       jupyterlab-widgets = super.jupyterlab-widgets.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.jupyter-packaging ];
-        } // lib.optionalAttrs (!(old.src.isWheel or false)) {
-          # remove the dependency cycle (why does jupyter-pygments depend on
-          # jupyterlab?)
-          postPatch = ''
-            substituteInPlace pyproject.toml \
-              --replace ', "jupyterlab~=3.0"' ""
-          '';
+          buildInputs = old.buildInputs or [ ] ++ [ self.jupyter-packaging ];
         }
       );
 
@@ -1775,7 +1768,9 @@ lib.composeManyExtensions [
       );
 
       open3d = super.open3d.overridePythonAttrs (old: {
-        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.ipywidgets ];
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+          self.ipywidgets
+        ];
         buildInputs = (old.buildInputs or [ ]) ++ [
           pkgs.libusb1
         ] ++ lib.optionals stdenv.isLinux [
@@ -1783,24 +1778,26 @@ lib.composeManyExtensions [
         ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0" && !pkgs.mesa.meta.broken) [
           pkgs.mesa
         ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0") [
-          (
-            pkgs.symlinkJoin {
-              name = "llvm-with-ubuntu-compatible-symlink";
-              paths = [
-                pkgs.llvm_10.lib
-                (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
-                  ''
-                    mkdir -p "$out/lib/";
-                    ln -s "${pkgs.llvm_10.lib}/lib/libLLVM-10.so" "$out/lib/libLLVM-10.so.1"
-                  ''
-                )
-              ];
-            })
+          (pkgs.symlinkJoin {
+            name = "llvm-with-ubuntu-compatible-symlink";
+            paths = [
+              pkgs.llvm_11.lib
+              (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
+                ''
+                  mkdir -p "$out/lib/";
+                  ln -s "${pkgs.llvm_11.lib}/lib/libLLVM-11.so" "$out/lib/libLLVM-11.so.1"
+                ''
+              )
+            ];
+          })
         ];
 
         # Patch the dylib in the binary distribution to point to the nix build of libomp
         preFixup = lib.optionalString (stdenv.isDarwin && lib.versionAtLeast super.open3d.version "0.16.0") ''
-          install_name_tool -change /opt/homebrew/opt/libomp/lib/libomp.dylib ${pkgs.llvmPackages.openmp}/lib/libomp.dylib $out/lib/python*/site-packages/open3d/cpu/pybind.cpython-*-darwin.so
+          install_name_tool -change \
+            /opt/homebrew/opt/libomp/lib/libomp.dylib \
+            ${pkgs.llvmPackages.openmp}/lib/libomp.dylib \
+            $out/lib/python*/site-packages/open3d/cpu/pybind.cpython-*-darwin.so
         '';
 
         # TODO(Sem Mulder): Add overridable flags for CUDA/PyTorch/Tensorflow support.
@@ -2917,8 +2914,8 @@ lib.composeManyExtensions [
       );
 
       rasterio = super.rasterio.overridePythonAttrs (old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
-        });
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
+      });
 
       referencing = super.referencing.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = old.postPatch or "" + ''
