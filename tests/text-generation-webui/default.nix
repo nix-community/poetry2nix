@@ -6,4 +6,5 @@ poetry2nix.mkPoetryApplication {
   poetrylock = ./poetry.lock;
   src = lib.cleanSource ./.;
   preferWheels = true;
+  dontCheckRuntimeDeps = true;
 }
