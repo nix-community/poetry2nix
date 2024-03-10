@@ -3146,6 +3146,17 @@ lib.composeManyExtensions [
         }
       );
 
+      gitlint = super.gitlint.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          postPatch = old.postPatch or "" + ''
+            {
+              echo '[tool.hatch.build.targets.wheel]'
+              echo 'packages = ["gitlint-core/gitlint"]'
+            } >> pyproject.toml
+          '';
+        }
+      );
+
       scikit-learn = super.scikit-learn.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           nativeBuildInputs = (removePackagesByName (old.nativeBuildInputs or [ ]) [ self.cython ]) ++ [
