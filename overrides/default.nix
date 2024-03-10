@@ -130,6 +130,15 @@ lib.composeManyExtensions [
       ];
 
       bootstrappingBase = (pkgs.${self.python.pythonAttr}.pythonOnBuildForHost or pkgs.${self.python.pythonAttr}.pythonForBuild).pkgs;
+
+      # Build gdal without python bindings to prevent version mixing
+      # We're only interested in the native libraries, not the python ones
+      # as we build that separately.
+      gdal = (pkgs.gdal.override { useJava = false; }).overrideAttrs (old: {
+        doInstallCheck = false;
+        doCheck = false;
+        cmakeFlags = old.cmakeFlags or [ ] ++ [ "-DBUILD_PYTHON_BINDINGS=OFF" ];
+      });
     in
 
     {
@@ -839,11 +848,11 @@ lib.composeManyExtensions [
       fiona = super.fiona.overridePythonAttrs (
         old: {
           format = lib.optionalString (!(old.src.isWheel or false)) "setuptools";
-          buildInputs = old.buildInputs or [ ] ++ [ pkgs.gdal ];
+          buildInputs = old.buildInputs or [ ] ++ [ gdal ];
           nativeBuildInputs = old.nativeBuildInputs or [ ]
             ++ lib.optionals ((old.src.isWheel or false) && (!pkgs.stdenv.isDarwin)) [ pkgs.autoPatchelfHook ]
             # for gdal-config
-            ++ [ pkgs.gdal ];
+            ++ [ gdal ];
         }
       );
 
@@ -851,20 +860,7 @@ lib.composeManyExtensions [
         VERSION = old.version;
       });
 
-      gdal =
-        let
-          # Build gdal without python bindings to prevent version mixing
-          # We're only interested in the native libraries, not the python ones
-          # as we build that separately.
-          gdal = pkgs.gdal.overrideAttrs (old: {
-            doInstallCheck = false;
-            doCheck = false;
-            cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-              "-DBUILD_PYTHON_BINDINGS=OFF"
-            ];
-          });
-        in
-        super.gdal.overridePythonAttrs (
+      gdal = super.gdal.overridePythonAttrs (
           old: {
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ gdal ];
             preBuild = (old.preBuild or "") + ''
@@ -2920,8 +2916,7 @@ lib.composeManyExtensions [
         }
       );
 
-      rasterio = let gdal = pkgs.gdal.override { useJava = false; }; in
-        super.rasterio.overridePythonAttrs (old: {
+      rasterio = super.rasterio.overridePythonAttrs (old: {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
         });
 
