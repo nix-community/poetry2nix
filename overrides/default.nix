@@ -24,14 +24,17 @@ let
               else
                 true;
             intendedBuildSystem =
-              if attr.buildSystem == "cython" then
-                (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.cython
+              if lib.elem attr.buildSystem [ "cython" "cython_3" ] then
+                (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.${attr.buildSystem}
               else
                 self.${attr.buildSystem};
           in
           if fromIsValid && untilIsValid then intendedBuildSystem else null
         else
-          if attr == "cython" then (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.cython else self.${attr};
+          if lib.elem attr [ "cython" "cython_3" ] then
+            (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.${attr}
+          else
+            self.${attr};
     in
     if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !self.isPy3k then drv
     else if drv == null then null
@@ -1392,7 +1395,8 @@ lib.composeManyExtensions [
 
       lxml = super.lxml.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          nativeBuildInputs = with pkgs.buildPackages; old.nativeBuildInputs or [ ]
+          nativeBuildInputs = with pkgs.buildPackages;
+            old.nativeBuildInputs or [ ]
             ++ [ pkg-config libxml2.dev libxslt.dev ]
             ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxml2 pkgs.libxslt ];

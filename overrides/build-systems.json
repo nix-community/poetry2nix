@@ -9976,7 +9976,14 @@
     "setuptools"
   ],
   "lxml": [
-    "cython",
+    {
+      "buildSystem": "cython",
+      "until": "5"
+    },
+    {
+      "buildSystem": "cython_3",
+      "from": "5"
+    },
     "setuptools"
   ],
   "lxml-stubs": [
@@ -18398,7 +18405,14 @@
     "setuptools"
   ],
   "scikit-learn": [
-    "cython",
+    {
+      "buildSystem": "cython",
+      "until": "1.4.0"
+    },
+    {
+      "buildSystem": "cython_3",
+      "from": "1.4.1"
+    },
     "oldest-supported-numpy",
     "setuptools"
   ],
