@@ -611,11 +611,11 @@ lib.composeManyExtensions [
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
       });
 
-      daphne = super.daphne.overridePythonAttrs (_old: {
-        postPatch = ''
-          substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
-        '';
-      });
+      # daphne = super.daphne.overridePythonAttrs (_old: {
+      #   postPatch = ''
+      #     substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+      #   '';
+      # });
 
       darts = super.darts.override {
         preferWheel = true;
