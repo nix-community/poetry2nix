@@ -21065,6 +21065,9 @@
   "types-markdown": [
     "setuptools"
   ],
+  "types-oauthlib": [
+    "setuptools"
+  ],
   "types-orjson": [
     "setuptools"
   ],
@@ -21153,6 +21156,9 @@
     "setuptools"
   ],
   "typesystem": [
+    "setuptools"
+  ],
+  "types-xmltodict": [
     "setuptools"
   ],
   "typical": [
