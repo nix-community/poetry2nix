@@ -1785,18 +1785,20 @@ lib.composeManyExtensions [
         ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0" && !pkgs.mesa.meta.broken) [
           pkgs.mesa
         ] ++ lib.optionals (lib.versionAtLeast super.open3d.version "0.16.0") [
-          (pkgs.symlinkJoin {
-            name = "llvm-with-ubuntu-compatible-symlink";
-            paths = [
-              pkgs.llvm_11.lib
-              (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
-                ''
-                  mkdir -p "$out/lib/";
-                  ln -s "${pkgs.llvm_11.lib}/lib/libLLVM-11.so" "$out/lib/libLLVM-11.so.1"
-                ''
-              )
-            ];
-          })
+          (
+            pkgs.symlinkJoin {
+              name = "llvm-with-ubuntu-compatible-symlink";
+              paths = [
+                pkgs.llvm_11.lib
+                (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
+                  ''
+                    mkdir -p "$out/lib/";
+                    ln -s "${pkgs.llvm_11.lib}/lib/libLLVM-11.so" "$out/lib/libLLVM-11.so.1"
+                  ''
+                )
+              ];
+            }
+          )
         ];
 
         # Patch the dylib in the binary distribution to point to the nix build of libomp
@@ -2263,8 +2265,6 @@ lib.composeManyExtensions [
 
       pygobject = super.pygobject.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          format = "pyproject";
-
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
             pkg-config
             pkgs.meson
