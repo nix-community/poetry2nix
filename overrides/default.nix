@@ -2356,9 +2356,14 @@ lib.composeManyExtensions [
       });
 
       pyodbc = super.pyodbc.overridePythonAttrs (
-        old: lib.optionalAttrs ((old.src.isWheel or false) && stdenv.isLinux) {
-          preFixup = old.preFixup or "" + ''
+        old: lib.optionalAttrs (old.src.isWheel or false) {
+          preFixup = old.preFixup or "" + lib.optionalString stdenv.isLinux ''
             addAutoPatchelfSearchPath ${pkgs.unixODBC}
+          '' + lib.optionalString stdenv.isDarwin ''
+            install_name_tool -change \
+              /opt/homebrew/opt/unixodbc/lib/libodbc.2.dylib \
+              ${lib.getLib pkgs.unixODBC}/lib/libodbc.2.dylib \
+              $out/${self.python.sitePackages}/pyodbc.cpython-*-darwin.so
           '';
         }
       );
