@@ -1142,6 +1142,9 @@
   "asgi-csrf": [
     "setuptools"
   ],
+  "asgi-lifespan": [
+    "setuptools"
+  ],
   "asgineer": [
     "setuptools"
   ],
