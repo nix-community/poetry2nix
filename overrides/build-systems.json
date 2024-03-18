@@ -4892,6 +4892,9 @@
   "django-maintenance-mode": [
     "setuptools"
   ],
+  "django-markdownify": [
+    "setuptools"
+  ],
   "django-model-utils": [
     "setuptools",
     "setuptools-scm"
