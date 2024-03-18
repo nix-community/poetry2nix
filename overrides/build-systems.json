@@ -7188,6 +7188,9 @@
   "google": [
     "setuptools"
   ],
+  "google-ai-generativelanguage": [
+    "setuptools"
+  ],
   "google-api-core": [
     "setuptools"
   ],
