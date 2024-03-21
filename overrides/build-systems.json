@@ -3428,7 +3428,14 @@
     "setuptools"
   ],
   "cloudpickle": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.0.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "3.0.0"
+    }
   ],
   "cloudscraper": [
     "setuptools"
@@ -4119,6 +4126,10 @@
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
+    },
+    {
+      "buildSystem": "tomli",
+      "from": "2023.4.0"
     }
   ],
   "dask-awkward": [
@@ -5153,9 +5164,22 @@
     "setuptools"
   ],
   "dnspython": [
-    "poetry-core",
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.5.0"
+    }
   ],
   "dnspythonchia": [
     "setuptools",
@@ -6000,6 +6024,9 @@
   "fastapi-restful": [
     "poetry"
   ],
+  "fastapi-sessions": [
+    "setuptools"
+  ],
   "fastapi-sso": [
     "poetry"
   ],
@@ -6730,7 +6757,11 @@
   "frozenlist": [
     "cython",
     "expandvars",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "tomli",
+      "from": "1.4.1"
+    }
   ],
   "fs": [
     "setuptools"
@@ -6863,6 +6894,12 @@
   ],
   "gcal-sync": [
     "setuptools"
+  ],
+  "gcloud-aio-auth": [
+    "poetry-core"
+  ],
+  "gcloud-aio-storage": [
+    "poetry-core"
   ],
   "gcovr": [
     "setuptools"
@@ -10108,6 +10145,9 @@
   ],
   "mapbox-earcut": [
     "setuptools"
+  ],
+  "maphash": [
+    "poetry-core"
   ],
   "mariadb": [
     "setuptools"
@@ -22366,6 +22406,10 @@
     },
     {
       "buildSystem": "expandvars",
+      "from": "1.9.3"
+    },
+    {
+      "buildSystem": "tomli",
       "from": "1.9.3"
     }
   ],
