@@ -3428,7 +3428,14 @@
     "setuptools"
   ],
   "cloudpickle": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.0.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "3.0.0"
+    }
   ],
   "cloudscraper": [
     "setuptools"
