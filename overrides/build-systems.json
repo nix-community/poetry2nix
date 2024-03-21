@@ -4518,6 +4518,10 @@
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
+    },
+    {
+      "buildSystem": "tomli",
+      "from": "2023.4.0"
     }
   ],
   "dask-awkward": [
