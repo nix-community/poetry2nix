@@ -10146,6 +10146,9 @@
   "mapbox-earcut": [
     "setuptools"
   ],
+  "maphash": [
+    "poetry-core"
+  ],
   "mariadb": [
     "setuptools"
   ],
