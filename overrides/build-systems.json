@@ -6895,6 +6895,9 @@
   "gcal-sync": [
     "setuptools"
   ],
+  "gcloud-aio-auth": [
+    "poetry-core"
+  ],
   "gcovr": [
     "setuptools"
   ],
