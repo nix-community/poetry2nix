@@ -6757,7 +6757,11 @@
   "frozenlist": [
     "cython",
     "expandvars",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "tomli",
+      "from": "1.4.1"
+    }
   ],
   "fs": [
     "setuptools"
