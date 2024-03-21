@@ -26791,6 +26791,10 @@
     {
       "buildSystem": "expandvars",
       "from": "1.9.3"
+    },
+    {
+      "buildSystem": "tomli",
+      "from": "1.9.3"
     }
   ],
   "yasi": [
