@@ -6024,6 +6024,9 @@
   "fastapi-restful": [
     "poetry"
   ],
+  "fastapi-sessions": [
+    "setuptools"
+  ],
   "fastapi-sso": [
     "poetry"
   ],
