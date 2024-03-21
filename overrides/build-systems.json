@@ -6898,6 +6898,9 @@
   "gcloud-aio-auth": [
     "poetry-core"
   ],
+  "gcloud-aio-storage": [
+    "poetry-core"
+  ],
   "gcovr": [
     "setuptools"
   ],
