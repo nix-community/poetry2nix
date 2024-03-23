@@ -1788,15 +1788,20 @@ lib.composeManyExtensions [
           (
             pkgs.symlinkJoin {
               name = "llvm-with-ubuntu-compatible-symlink";
-              paths = [
-                pkgs.llvm_11.lib
-                (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
-                  ''
-                    mkdir -p "$out/lib/";
-                    ln -s "${pkgs.llvm_11.lib}/lib/libLLVM-11.so" "$out/lib/libLLVM-11.so.1"
-                  ''
-                )
-              ];
+              paths =
+                let
+                  llvmVersion = "12";
+                  llvmPkg = pkgs."llvm_${llvmVersion}";
+                in
+                [
+                  llvmPkg.lib
+                  (pkgs.runCommand "llvm-ubuntu-compatible-symlink" { }
+                    ''
+                      mkdir -p "$out/lib/";
+                      ln -s "${llvmPkg.lib}/lib/libLLVM-${llvmVersion}.so" "$out/lib/libLLVM-${llvmVersion}.so.1"
+                    ''
+                  )
+                ];
             }
           )
         ];
