@@ -2,13 +2,13 @@
 let
   env = poetry2nix.mkPoetryEnv {
     python = python310;
-    preferWheels = true;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     overrides = poetry2nix.overrides.withDefaults (_: super: {
-      threadpoolctl = super.threadpoolctl.overridePythonAttrs (_: {
-        format = "wheel";
-      });
+      threadpoolctl = super.threadpoolctl.override { preferWheel = true; };
+      pandas = super.pandas.override { preferWheel = true; };
+      pyquaternion = super.pyquaternion.override { preferWheel = true; };
+      scikit-learn = super.scikit-learn.override { preferWheel = true; };
     });
   };
 in
