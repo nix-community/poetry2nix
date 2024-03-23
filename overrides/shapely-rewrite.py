@@ -3,6 +3,7 @@ Rewrite libc/library path references to Nix store paths
 Nixpkgs uses a normal patch for this but we need to be less
 sensitive to changes between versions.
 """
+
 from textwrap import dedent
 import sys
 import ast
