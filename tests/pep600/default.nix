@@ -5,8 +5,8 @@ let
     preferWheels = true;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
-    overrides = poetry2nix.overrides.withDefaults (_self: super: {
-      threadpoolctl = super.threadpoolctl.overridePythonAttrs (_old: {
+    overrides = poetry2nix.overrides.withDefaults (_: super: {
+      threadpoolctl = super.threadpoolctl.overridePythonAttrs (_: {
         format = "wheel";
       });
     });

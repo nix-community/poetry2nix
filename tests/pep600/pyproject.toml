@@ -8,7 +8,7 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.10"
 # this is a mess https://github.com/isl-org/Open3D/issues/2991
 # https://github.com/isl-org/Open3D/issues/5747#issuecomment-1332731934
-open3d = "=0.17.0"
+open3d = "*"
 scikit-learn = "=1.4.0"
 jupyter-packaging = "=0.12.3"
 addict = "*"
