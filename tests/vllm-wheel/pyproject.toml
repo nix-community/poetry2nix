@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "vllm-wheel"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+bitsandbytes = "^0.43.0"
+torch = "2.1.2"
+vllm = "0.3.3"
+
+# See https://docs.vllm.ai/en/latest/quantization/auto_awq.html
+autoawq = "^0.2.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
