@@ -23,8 +23,21 @@
           default = self.packages.${system}.myapp;
         };
 
+        # Shell for app dependencies.
+        #
+        #     nix develop
+        #
+        # Use this shell for developing your app.
         devShells.default = pkgs.mkShell {
           inputsFrom = [ self.packages.${system}.myapp ];
+        };
+
+        # Shell for poetry.
+        #
+        #     nix develop .#poetry
+        #
+        # Use this shell for changes to pyproject.toml and poetry.lock.
+        devShells.poetry = pkgs.mkShell {
           packages = [ pkgs.poetry ];
         };
       });
