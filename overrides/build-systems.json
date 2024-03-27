@@ -7866,6 +7866,9 @@
   "gitignore-parser": [
     "setuptools"
   ],
+  "gitlab-lint" : [
+    "poetry"
+  ],
   "gitlike-commands": [
     "poetry-core"
   ],
