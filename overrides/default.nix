@@ -264,6 +264,10 @@ lib.composeManyExtensions [
               attr = "flit-core";
             } else super.argon2-cffi;
 
+      autoawq-kernels = super.autoawq-kernels.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
+
       aws-cdk-asset-node-proxy-agent-v6 = super.aws-cdk-asset-node-proxy-agent-v6.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
