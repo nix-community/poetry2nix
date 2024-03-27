@@ -7089,6 +7089,9 @@
   "gitlike-commands": [
     "poetry-core"
   ],
+  "gitlab-lint" : [
+    "poetry"
+  ],
   "gitlint": [
     {
       "buildSystem": "setuptools",
