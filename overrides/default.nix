@@ -264,6 +264,10 @@ lib.composeManyExtensions [
               attr = "flit-core";
             } else super.argon2-cffi;
 
+      autoawq-kernels = super.autoawq-kernels.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
+
       aws-cdk-asset-node-proxy-agent-v6 = super.aws-cdk-asset-node-proxy-agent-v6.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
@@ -360,6 +364,10 @@ lib.composeManyExtensions [
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl pkgs.acl ];
         }
       );
+
+      bitsandbytes = super.bitsandbytes.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       cairocffi = super.cairocffi.overridePythonAttrs (
         old: {
@@ -597,6 +605,10 @@ lib.composeManyExtensions [
               cargoRoot = "src/rust";
             }
           );
+
+      cupy-cuda12x = super.cupy-cuda12x.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
@@ -1366,7 +1378,7 @@ lib.composeManyExtensions [
           );
           llvm = pkgs."llvmPackages_${llvm_version}".llvm or (throw "LLVM${llvm_version} has been removed from nixpkgs; upgrade llvmlite or use older nixpkgs");
         in
-        {
+        lib.optionalAttrs (!old.src.isWheel or false) {
           inherit llvm;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.llvmlite.llvm ];
 
@@ -1664,6 +1676,12 @@ lib.composeManyExtensions [
         }
       );
 
+      numba = super.numba.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.tbb_2021_8 ];
+        }
+      );
+
       netcdf4 = super.netcdf4.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
@@ -1737,6 +1755,13 @@ lib.composeManyExtensions [
               ];
             }) else super.notebook;
 
+      nvidia-cublas-cu12 = super.nvidia-cublas-cu12.overridePythonAttrs (attrs: {
+        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu12.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+      };
+
       # The following are dependencies of torch >= 2.0.0.
       # torch doesn't officially support system CUDA, unless you build it yourself.
       nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
@@ -1757,6 +1782,13 @@ lib.composeManyExtensions [
         '';
       });
 
+      nvidia-cuda-nvrtc-cu12 = super.nvidia-cuda-nvrtc-cu12.overridePythonAttrs (_: {
+        # (Bytecode collision happens with nvidia-cudnn-cu12.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+      });
+
       nvidia-cusolver-cu11 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
         autoPatchelfIgnoreMissingDeps = true;
         # (Bytecode collision happens with nvidia-cusolver-cu11.)
@@ -1766,6 +1798,28 @@ lib.composeManyExtensions [
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
           self.nvidia-cublas-cu11
         ];
+      });
+
+      nvidia-cusolver-cu12 = super.nvidia-cusolver-cu12.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+        # (Bytecode collision happens with nvidia-cusolver-cu12.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+          self.nvidia-cublas-cu12
+        ];
+      });
+      
+      nvidia-cusparse-cu12 = super.nvidia-cusparse-cu12.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
+
+      nvidia-cuda-cupti-cu12 = super.nvidia-cuda-cupti-cu12.overridePythonAttrs (attrs: {
+        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu12.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
       });
 
       omegaconf = super.omegaconf.overridePythonAttrs (
@@ -3454,7 +3508,7 @@ lib.composeManyExtensions [
                 };
 
           in
-          {
+          lib.optionalAttrs (!old.src.isWheel or false) {
             inherit src cargoDeps;
 
             patchPhase = builtins.concatStringsSep "\n" [
@@ -3781,6 +3835,14 @@ lib.composeManyExtensions [
         (old: { buildInputs = old.buildInputs or [ ] ++ [ self.pytest-runner ]; });
       pydantic = super.pydantic.overridePythonAttrs
         (old: { buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxcrypt ]; });
+
+      vllm = super.vllm.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
+
+      xformers = super.xformers.overridePythonAttrs (attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       y-py = super.y-py.override {
         preferWheel = true;
