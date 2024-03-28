@@ -1755,6 +1755,13 @@ lib.composeManyExtensions [
               ];
             }) else super.notebook;
 
+      nvidia-cublas-cu12 = super.nvidia-cublas-cu12.overridePythonAttrs (attrs: {
+        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu12.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+      };
+
       # The following are dependencies of torch >= 2.0.0.
       # torch doesn't officially support system CUDA, unless you build it yourself.
       nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
@@ -1770,6 +1777,13 @@ lib.composeManyExtensions [
 
       nvidia-cuda-nvrtc-cu11 = super.nvidia-cuda-nvrtc-cu11.overridePythonAttrs (_: {
         # (Bytecode collision happens with nvidia-cudnn-cu11.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
+      });
+
+      nvidia-cuda-nvrtc-cu12 = super.nvidia-cuda-nvrtc-cu12.overridePythonAttrs (_: {
+        # (Bytecode collision happens with nvidia-cudnn-cu12.)
         postFixup = ''
           rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
         '';
@@ -1799,6 +1813,13 @@ lib.composeManyExtensions [
       
       nvidia-cusparse-cu12 = super.nvidia-cusparse-cu12.overridePythonAttrs (attrs: {
         autoPatchelfIgnoreMissingDeps = true;
+      });
+
+      nvidia-cuda-cupti-cu12 = super.nvidia-cuda-cupti-cu12.overridePythonAttrs (attrs: {
+        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu12.)
+        postFixup = ''
+          rm -r $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        '';
       });
 
       omegaconf = super.omegaconf.overridePythonAttrs (
