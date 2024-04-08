@@ -46,7 +46,7 @@ in
   };
 
   removeGitDependenciesHook = makeRemoveSpecialDependenciesHook {
-    fields = [ "git" "branch" "rev" "tag" ];
+    fields = [ "git" "branch" "rev" "tag" "subdirectory" ];
     kind = "git";
   };
 
