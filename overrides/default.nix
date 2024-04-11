@@ -2046,6 +2046,14 @@ lib.composeManyExtensions [
             ++ lib.optionals (lib.versionAtLeast old.version "7.1.0") [ xorg.libxcb ]
             ++ lib.optionals self.isPyPy [ tk xorg.libX11 ];
           preConfigure = lib.optional (old.format != "wheel") preConfigure;
+
+          # https://github.com/nix-community/poetry2nix/issues/1139
+          patches = (old.patches or [ ]) ++ pkgs.lib.optionals (old.version == "9.5.0") [
+            (pkgs.fetchpatch {
+              url = "https://github.com/python-pillow/Pillow/commit/0ec0a89ead648793812e11739e2a5d70738c6be5.diff";
+              sha256 = "sha256-rZfk+OXZU6xBpoumIW30E80gRsox/Goa3hMDxBUkTY0=";
+            })
+          ];
         }
       );
 
