@@ -20865,7 +20865,10 @@
     "setuptools"
   ],
   "twisted": [
-    "setuptools"
+    "setuptools",
+    "hatchling",
+    "setuptools",
+    "hatch-fancy-pypi-readme"
   ],
   "twitch-python": [
     "setuptools"

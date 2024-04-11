@@ -160,6 +160,7 @@ in
   colour = callTest ./colour { };
   pyodbc-wheel = callTest ./pyodbc-wheel { };
   gnureadline = callTest ./gnureadline { };
+  twisted = callTest ./twisted { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
