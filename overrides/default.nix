@@ -886,6 +886,23 @@ lib.composeManyExtensions [
         }
       );
 
+      gdstk = super.gdstk.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools pkgs.zlib pkgs.qhull ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cmake ];
+        dontUseCmakeConfigure = true;
+        # gdstk ships with its own FindQhull.cmake, but that isn't
+        # included in the python release -- fix
+        postPatch = ''
+          if [ ! -e cmake_modules/FindQhull.cmake ]; then
+            mkdir -p cmake_modules
+            cp ${pkgs.fetchurl {
+              url = "https://github.com/heitzmann/gdstk/raw/57c9ecec1f7bc2345182bcf383602a792026a28b/cmake_modules/FindQhull.cmake";
+              hash = "sha256-lJNWAfSItbg7jsHfe7gZryqJruHjjMM0GXudXa/SJu4=";
+            }} cmake_modules/FindQhull.cmake
+          fi
+        '';
+      });
+
       gnureadline = super.gnureadline.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
