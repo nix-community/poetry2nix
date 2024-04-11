@@ -7620,6 +7620,9 @@
     "hatchling",
     "setuptools"
   ],
+  "gdspy": [
+    "setuptools"
+  ],
   "gdtoolkit": [
     "setuptools"
   ],
