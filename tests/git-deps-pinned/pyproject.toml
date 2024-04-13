@@ -5,8 +5,8 @@ description = "poetry2nix test"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-alembic = { git = "https://github.com/sqlalchemy/alembic.git", tag = "rel_1_3_1" }
+python = "^3.8"
+alembic = "^1.13.1"
 colorama = { git = "https://github.com/tartley/colorama.git", rev = "4321bbfda9aa190acdad05eb901d3b59439f0ec9" }
 s3transfer = { git = "https://github.com/boto/s3transfer.git", branch = "develop" }
 
