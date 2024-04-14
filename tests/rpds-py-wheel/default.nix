@@ -7,20 +7,20 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      _: super: {
-        rpds-py = super.rpds-py.override {
+      _: prev: {
+        rpds-py = prev.rpds-py.override {
           preferWheel = isLinux;
         };
 
-        referencing = super.referencing.override {
+        referencing = prev.referencing.override {
           preferWheel = isLinux;
         };
 
-        jsonschema-specifications = super.jsonschema-specifications.override {
+        jsonschema-specifications = prev.jsonschema-specifications.override {
           preferWheel = isLinux;
         };
 
-        jsonschema = super.jsonschema.override {
+        jsonschema = prev.jsonschema.override {
           preferWheel = isLinux;
         };
       }

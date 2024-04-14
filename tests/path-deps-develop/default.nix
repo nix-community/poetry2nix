@@ -8,9 +8,9 @@ let
       dep1 = null;
     };
 
-    overrides = poetry2nix.overrides.withDefaults (self: super: {
-      dep1 = super.dep1.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools ];
+    overrides = poetry2nix.overrides.withDefaults (final: prev: {
+      dep1 = prev.dep1.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools ];
       });
     });
   };

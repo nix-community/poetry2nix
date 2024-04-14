@@ -6,8 +6,8 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      _: super: {
-        numpy = super.numpy.override {
+      _: prev: {
+        numpy = prev.numpy.override {
           preferWheel = true;
         };
       }

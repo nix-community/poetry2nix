@@ -6,7 +6,7 @@ poetry2nix.mkPoetryApplication {
   poetrylock = ./poetry.lock;
   src = lib.cleanSource ./.;
   pwd = ./.;
-  overrides = poetry2nix.overrides.withDefaults (self: super: {
-    trivial = self.addBuildSystem "poetry" super.trivial;
+  overrides = poetry2nix.overrides.withDefaults (final: prev: {
+    trivial = final.addBuildSystem "poetry" prev.trivial;
   });
 }

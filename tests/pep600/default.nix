@@ -4,11 +4,11 @@ let
     python = python310;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
-    overrides = poetry2nix.overrides.withDefaults (_: super: {
-      threadpoolctl = super.threadpoolctl.override { preferWheel = true; };
-      pandas = super.pandas.override { preferWheel = true; };
-      pyquaternion = super.pyquaternion.override { preferWheel = true; };
-      scikit-learn = super.scikit-learn.override { preferWheel = true; };
+    overrides = poetry2nix.overrides.withDefaults (_final: prev: {
+      threadpoolctl = prev.threadpoolctl.override { preferWheel = true; };
+      pandas = prev.pandas.override { preferWheel = true; };
+      pyquaternion = prev.pyquaternion.override { preferWheel = true; };
+      scikit-learn = prev.scikit-learn.override { preferWheel = true; };
     });
   };
 in
