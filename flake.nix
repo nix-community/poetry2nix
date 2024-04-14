@@ -14,54 +14,60 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    nix-github-actions,
-    treefmt-nix,
-    systems,
-  }: let
-    eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
-    treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
-  in
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , nix-github-actions
+    , treefmt-nix
+    , systems
+    ,
+    }:
+    let
+      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
+      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
+    in
     {
-      overlays.default = nixpkgs.lib.composeManyExtensions [(import ./overlay.nix)];
-      lib.mkPoetry2Nix = {pkgs}: import ./default.nix {inherit pkgs;};
+      overlays.default = nixpkgs.lib.composeManyExtensions [ (import ./overlay.nix) ];
+      lib.mkPoetry2Nix = { pkgs }: import ./default.nix { inherit pkgs; };
 
-      githubActions = let
-        mkPkgs = system:
-          import nixpkgs {
-            config = {
-              allowAliases = false;
-              allowInsecurePredicate = _: true;
+      githubActions =
+        let
+          mkPkgs = system:
+            import nixpkgs {
+              config = {
+                allowAliases = false;
+                allowInsecurePredicate = _: true;
+              };
+              overlays = [ self.overlays.default ];
+              inherit system;
             };
-            overlays = [self.overlays.default];
-            inherit system;
-          };
-      in
+        in
         nix-github-actions.lib.mkGithubMatrix {
           checks = {
-            x86_64-linux = let
-              pkgs = mkPkgs "x86_64-linux";
-            in
-              import ./tests {inherit pkgs;}
+            x86_64-linux =
+              let
+                pkgs = mkPkgs "x86_64-linux";
+              in
+              import ./tests { inherit pkgs; }
               // {
                 formatting = treefmtEval.x86_64-linux.config.build.check self;
               };
 
-            x86_64-darwin = let
-              pkgs = mkPkgs "x86_64-darwin";
-              inherit (pkgs) lib;
-              tests = import ./tests {inherit pkgs;};
-            in {
-              # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
-              aggregate =
-                pkgs.runCommand "darwin-aggregate"
-                {
-                  env.TEST_INPUTS = lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (_: v: lib.isDerivation v) tests));
-                } "touch $out";
-            };
+            x86_64-darwin =
+              let
+                pkgs = mkPkgs "x86_64-darwin";
+                inherit (pkgs) lib;
+                tests = import ./tests { inherit pkgs; };
+              in
+              {
+                # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
+                aggregate =
+                  pkgs.runCommand "darwin-aggregate"
+                    {
+                      env.TEST_INPUTS = lib.concatStringsSep " " (lib.attrValues (lib.filterAttrs (_: v: lib.isDerivation v) tests));
+                    } "touch $out";
+              };
           };
         };
 
@@ -73,15 +79,17 @@
         default = self.templates.app;
       };
     }
-    // (flake-utils.lib.eachDefaultSystem (system: let
+    // (flake-utils.lib.eachDefaultSystem (system:
+    let
       pkgs = import nixpkgs {
         inherit system;
         config.allowAliases = false;
       };
 
-      poetry2nix = import ./default.nix {inherit pkgs;};
-      p2nix-tools = pkgs.callPackage ./tools {inherit poetry2nix;};
-    in rec {
+      poetry2nix = import ./default.nix { inherit pkgs; };
+      p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
+    in
+    rec {
       formatter = treefmtEval.${system}.config.build.wrapper;
 
       packages = {
@@ -111,7 +119,7 @@
           type = "app";
           program = pkgs.poetry;
         };
-        poetry2nix = flake-utils.lib.mkApp {drv = packages.poetry2nix;};
+        poetry2nix = flake-utils.lib.mkApp { drv = packages.poetry2nix; };
         default = apps.poetry2nix;
       };
     }));
