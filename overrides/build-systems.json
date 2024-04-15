@@ -5682,10 +5682,13 @@
     "setuptools"
   ],
   "dnspython": [
-    "hatchling",
     "poetry-core",
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    {
+      "buildSystem": "hatchling",
+      "from": "2.6.1"
+    }
   ],
   "dnspythonchia": [
     "setuptools",
@@ -11366,6 +11369,9 @@
   "maubot": [
     "setuptools"
   ],
+  "maturin": [
+    "setuptools"
+  ],
   "mautrix": [
     "setuptools"
   ],
@@ -11585,6 +11591,9 @@
   ],
   "meteofrance-api": [
     "poetry-core",
+    "setuptools"
+  ],
+  "methodtools": [
     "setuptools"
   ],
   "metprint": [
@@ -12052,6 +12061,9 @@
   "mpl-scatter-density": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "mpire": [
+    "setuptools"
   ],
   "mpldatacursor": [
     "setuptools"
