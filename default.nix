@@ -509,8 +509,8 @@ lib.makeScope pkgs.newScope (self: {
       combining it with poetry2nix default overrides
     */
     withDefaults = overlay: [
-      overlay
       self.defaultPoetryOverrides
+      overlay
     ];
   };
 })
