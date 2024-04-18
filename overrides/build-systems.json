@@ -22672,6 +22672,10 @@
     {
       "buildSystem": "flit-core",
       "from": "0.4.4"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.5.0"
     }
   ],
   "sqltrie": [
