@@ -3013,6 +3013,15 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.4.0" = "sha256-9XF7aH3cK8t/UqP5V6EnBiZAngN8ELyMAYke8oxwyLo=";
+            "0.3.7" = "sha256-PS4YJpVut+KtEgSlTVtoVdlu6FVipPIzsl01/Io5N64=";
+            "0.3.6" = "sha256-Xgpeyp5OAuBQgYYVIaGteY0NAePEYJTZDUxMh0a3+/g=";
+            "0.3.5" = "sha256-sGmNrkZv03yzEm9fM00H/BZnVr915LW3qGWjci1QACc=";
+            "0.3.4" = "sha256-P0k/0tWbhY2HaxI4QThxpHD48JUjtF/d3iU4MIFhdHI=";
+            "0.3.3" = "sha256-uErhX0GyJ1P5YFpQkwwi7oKvLkK7lziAzz/3at7pfA0=";
+            "0.3.2" = "sha256-2Pt2HuDB9JLD9E1q0JH7jyVoc0II5uVL1l8pAod+9V4=";
+            "0.3.1" = "sha256-MuvVpMBEQSOz6vSEhw7fmvAwgUu/7hrbtP8/MsIL57c=";
+            "0.3.0" = "sha256-U77Bwgbt2T8xkamrWOnOpNRF+8skLWhX8JqgPqowcQw=";
             "0.2.2" = "sha256-wCjPlKlw0IAh5oH4W7DUw3KBxR4bt9Ho7ncRL5TbD/0=";
             "0.2.1" = "sha256-VcDDGi6fPGZ75+J7aOSr7S6Gt5bpr0vM2Sk/Utlmf4k=";
             "0.2.0" = "sha256-xivZHfQcdlp2ccpZiKb+Z70Ej8Vquqy/5A+MLpkEf2E=";
@@ -3060,6 +3069,7 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.4.0" = "sha256-FRDnTv+3pn/eV/TJ+fdHiWIttcKZ8VDgF3ELjxqZp14=";
             "0.2.2" = "sha256-LgKiUWd7mWVuZDsnM+1KVS5Trze4Funh2w8cILzsRY8=";
             "0.2.1" = "sha256-atuZw8TML/CujTsXGLdSoahP1y04qdxjcmiNVLy0fns=";
             "0.2.0" = "sha256-zlatDyCWZr4iFY0fVCzhQmUGJxKMQvZd6HAt0PFlMwY=";
