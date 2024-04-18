@@ -3443,7 +3443,8 @@ lib.composeManyExtensions [
             lib.warn "Unknown watchfiles version: '${version}'. Please update getCargoHash." null
           );
         in
-        super.watchfiles.overridePythonAttrs (old:
+        super.watchfiles.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false))
+        (
           let
             src = pkgs.fetchFromGitHub {
               owner = "samuelcolvin";
@@ -3483,7 +3484,7 @@ lib.composeManyExtensions [
               pkgs.rustPlatform.cargoSetupHook
               pkgs.rustPlatform.maturinBuildHook
             ];
-          });
+          }));
 
       weasyprint = super.weasyprint.overridePythonAttrs (
         old: {
