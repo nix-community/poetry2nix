@@ -20235,8 +20235,18 @@
   "pyzmq": [
     "cython",
     "packaging",
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "26.0.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "26.0.0"
+    },
+    {
+      "buildSystem": "scikit-build",
+      "from": "26.0.0"
+    }
   ],
   "pyzufall": [
     "setuptools"
