@@ -30,6 +30,16 @@ is [./default.nix](./default.nix).
 The resulting `poetry2nix` attribute set contains (only) the [API attributes](#api) like
 `mkPoetryApplication`.
 
+Hint:
+This example assumes that `nixpkgs` and `poetry2nix` are managed and pinned by
+the handy [niv tool](https://github.com/nmattia/niv). In your terminal just run:
+
+```shell
+nix-shell -p niv
+niv init
+niv add nix-community/poetry2nix
+```
+
 You can then build your Python application with Nix by running:
 
 ```shell
@@ -41,16 +51,6 @@ Finally, you can run your Python application from the new `./result` symlinked f
 ```shell
 # replace <script> with the name in the [tool.poetry.scripts] section of your pyproject.toml
 ./result/bin/<script>
-```
-
-Hint:
-This example assumes that `nixpkgs` and `poetry2nix` are managed and pinned by
-the handy [niv tool](https://github.com/nmattia/niv). In your terminal just run:
-
-```shell
-nix-shell -p niv
-niv init
-niv add nix-community/poetry2nix
 ```
 
 ## Quickstart flake.nix
