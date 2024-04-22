@@ -93,7 +93,7 @@ nix run .
 ```
 
 A larger real-world setup can be found in [./templates/app/flake.nix](./templates/app/flake.nix).
-This example is also exported as a flake template so thath you can start your _poetry2nix_ project
+This example is also exported as a flake template so that you can start your _poetry2nix_ project
 conveniently through:
 
 ```shell
