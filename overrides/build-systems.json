@@ -6623,6 +6623,9 @@
   "fastapi-users": [
     "hatchling"
   ],
+  "fastapi-users-db-sqlalchemy": [
+    "hatchling"
+  ],
   "fastapi-utils": [
     "poetry"
   ],
