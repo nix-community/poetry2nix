@@ -22671,7 +22671,8 @@
     },
     {
       "buildSystem": "flit-core",
-      "from": "0.4.4"
+      "from": "0.4.4",
+      "until": "0.5.0"
     },
     {
       "buildSystem": "hatchling",
