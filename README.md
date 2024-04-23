@@ -338,12 +338,12 @@ a [NETRC file](https://everything.curl.dev/usingcurl/netrc.html)
 [environment variables](https://python-poetry.org/docs/repositories/#publishing-to-a-private-repository)
 a [custom crendentials file](https://python-poetry.org/docs/repositories/#configuring-credentials)
 and others,
-__poetry2nix__ only supports one: the `NETRC` file method that secretly adds credentials to your
+__poetry2nix only supports one: the `NETRC` file method__ that secretly adds credentials to your
 http calls to the repository url, e.g. `https://example.org/simple/`.
 
-For this to work, follow the three steps:
+For this to work, __follow these three steps__:
 
-1. Create or locate your `NETRC` file into your computer, usually in your home folder `/home/user/<username>/.netrc`
+1. __Create or locate your `NETRC` file__ into your computer, usually in your home folder `/home/user/<username>/.netrc`
 or `/etc/nix/netrc` with credentials like:
 
 ```netrc
@@ -352,7 +352,7 @@ login <repository-username>
 password <repository-password-or-token>
 ```
 
-2. Mount the path to the `NETRC` file into the Nix build sandbox with Nix
+2. __Mount the `NETRC` file into the Nix build sandbox__ with Nix
 [extra-sandbox-paths](https://nixos.org/manual/nix/stable/command-ref/conf-file#conf-extra-sandbox-paths)
 setting; otherwise __poetry2nix__ is not able to access that file
 from within the Nix sandbox.
@@ -368,9 +368,9 @@ This is not recommended as you expose your secrets to all Nix builds.
 Better just mount it for single, specific __poetry2nix__ builds directly in the terminal:
 
 ```shell
-# non-flake-style
+# non-flake project
 nix-build --option extra-sandbox-paths /etc/nix/netrc default.nix
-# flake-style
+# flake project
 nix build . --extra-sandbox-paths /etc/nix/netrc
 ```
 
@@ -388,13 +388,38 @@ If you are not a trusted user, this
 and package downloads will fail.
 
 3. Tell __poetry2nix__ where to find the `NETRC` file inside the Nix sandbox.
-This is done through an environment variable inside the sandbox also called `NETRC` containing the path
-to the file.
-__poetry2nix__ is implemented to create such an environment variable inside the sandbox
-if we add a fake Nix search path (Nix workaround) through an `-I NETRC=<netrc-path>` argument:
+For that you have to __pass an environment variable  called `NETRC` into the sandbox__ containing the path
+to the file. Depending on whether you use flakes or not you have the following options:
+
+__For flakes__ the only option is to add the environment variable to the "nix-daemon", the process
+that actually creates sandboxes and performs builds on your behalf.
+
+On NixOS you can add the env variable to the nix-daemon through its [psystemd](https://systemd.io/) configuration:
+
+```nix
+systemd.services.nix-daemon = {
+  serviceConfig = {
+    Environment = "NETRC=/etc/nix/netrc";
+  };
+};
+```
+
+This environment variable will automatically be passed to all your builds so you can
+keep using the build commands as before;
 
 ```shell
-# non-flake-style
+# non-flake project
+nix-build --option extra-sandbox-paths /etc/nix/netrc default.nix
+# flake project
+nix build . --extra-sandbox-paths /etc/nix/netrc
+```
+
+__For a non-flake project__ you can alternatively pass the `NETRC` path value through
+a fake Nix search path `-I NETRC=<netrc-path>` argument in the terminal; such a search path doesn't work with flakes.
+__poetry2nix__ contains special code to forward this variable as an environment variable into any Python sandbox.
+
+```shell
+# non-flake project
 nix-build -I NETRC=/etc/nix/netrc --option extra-sandbox-paths /etc/nix/netrc default.nix 
 ```
 
