@@ -10686,7 +10686,14 @@
     "setuptools"
   ],
   "mockito": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.5.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.5.0"
+    }
   ],
   "mockupdb": [
     "setuptools"
