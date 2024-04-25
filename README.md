@@ -312,7 +312,7 @@ in pkgs.poetry2nix.mkPoetryApplication {
 
 ## FAQ
 
-**Q.** Does poetry2nix install wheels our sdists?
+**Q.** Does poetry2nix install wheels or sdists?
 
 **A.** By default, poetry2nix installs from source. If you want to give precedence to wheels, look at the `preferWheel` and `preferWheels` attributes.
 
