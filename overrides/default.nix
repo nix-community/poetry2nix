@@ -269,6 +269,32 @@ lib.composeManyExtensions [
         }
       );
 
+      apsw = super.apsw.overridePythonAttrs (old: if old.src.isWheel or false then { } else
+      (
+        let
+          githubHash = {
+            "3.45.3.0" = "sha256-7z9JXJn2a6RJAc+7KrkzzScrNmbb06ud6L1rBinzkP8=";
+            "3.45.2.0" = "sha256-tTi3/10W4OoGH6PQVhvPWc5o09on5BZrWoAvrfh4C/E=";
+            "3.45.1.0" = "sha256-NkpkciLR2TgfK/7UQHEzvQu8qRj4UJyOlGQbiV23qrc=";
+            "3.45.0.0" = "sha256-ZwP1pxqlX9WBrvxBt4xZm10VJ5zW+0MjxUO0r3Ue+Dc=";
+            "3.44.2.0" = "sha256-H7aqZHU4SXNrfbv6iwHckkNm5MeGkro42+njSoFJgS4=";
+          }.${old.version} or lib.fakeHash;
+          # pypi sources don't build, whereas github sources do
+
+          src = pkgs.fetchFromGitHub {
+            owner = "rogerbinns";
+            repo = "apsw";
+            rev = old.version;
+            sha256 = githubHash;
+          };
+
+        in
+        {
+          inherit src;
+          buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
+        }
+      ));
+
       argon2-cffi =
         if (lib.versionAtLeast super.argon2-cffi.version "21.2.0") then
           addBuildSystem'
