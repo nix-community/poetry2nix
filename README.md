@@ -263,7 +263,7 @@ Sometimes when it can be convenient to create a custom instance of `poetry2nix` 
 ```nix
 let
   # self & super refers to poetry2nix
-  p2nix = poetry2nix.overrideScope' (self: super: {
+  p2nix = poetry2nix.overrideScope (self: super: {
 
     # pyself & pysuper refers to python packages
     defaultPoetryOverrides = super.defaultPoetryOverrides.extend (pyself: pysuper: {
@@ -289,7 +289,7 @@ let
       (self: super: {
 
         # p2self & p2super refers to poetry2nix
-        poetry2nix = super.poetry2nix.overrideScope' (p2nixself: p2nixsuper: {
+        poetry2nix = super.poetry2nix.overrideScope (p2nixself: p2nixsuper: {
 
           # pyself & pysuper refers to python packages
           defaultPoetryOverrides = p2nixsuper.defaultPoetryOverrides.extend (pyself: pysuper: {
