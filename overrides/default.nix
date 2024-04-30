@@ -3342,6 +3342,14 @@ lib.composeManyExtensions [
         }
       );
 
+      tensorflow-io-gcs-filesystem = super.tensorflow-io-gcs-filesystem.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [
+            pkgs.libtensorflow
+          ];
+        }
+      );
+
       tensorflow = super.tensorflow.overridePythonAttrs (
         _old: {
           postInstall = ''
