@@ -4518,6 +4518,10 @@
     {
       "buildSystem": "versioneer",
       "from": "2.0.0"
+    },
+    {
+      "buildSystem": "tomli",
+      "from": "2023.4.0"
     }
   ],
   "dask-awkward": [
@@ -6609,6 +6613,9 @@
   "fastapi-restful": [
     "poetry"
   ],
+  "fastapi-sessions": [
+    "setuptools"
+  ],
   "fastapi-sso": [
     "poetry",
     "poetry-core"
@@ -7391,7 +7398,11 @@
   "frozenlist": [
     "cython",
     "expandvars",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "tomli",
+      "from": "1.4.1"
+    }
   ],
   "frozenlist2": [
     "setuptools"
@@ -7541,6 +7552,12 @@
   ],
   "gcal-sync": [
     "setuptools"
+  ],
+  "gcloud-aio-auth": [
+    "poetry-core"
+  ],
+  "gcloud-aio-storage": [
+    "poetry-core"
   ],
   "gcodepy": [
     "setuptools"
@@ -11221,6 +11238,9 @@
   ],
   "mapbox-earcut": [
     "setuptools"
+  ],
+  "maphash": [
+    "poetry-core"
   ],
   "mariadb": [
     "setuptools"
@@ -26770,6 +26790,10 @@
     },
     {
       "buildSystem": "expandvars",
+      "from": "1.9.3"
+    },
+    {
+      "buildSystem": "tomli",
       "from": "1.9.3"
     }
   ],
