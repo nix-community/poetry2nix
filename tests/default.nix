@@ -159,6 +159,7 @@ in
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
   pyside6 = callTest ./pyside6 { };
+  tensorflow = callTest ./tensorflow { };
 
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };

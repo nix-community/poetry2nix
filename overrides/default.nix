@@ -974,7 +974,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
               buildInputs =
                 (old.buildInputs or [ ])
-                ++ [ pkgs.hdf5 self.pkg-config ]
+                ++ [ pkgs.hdf5 pkgs.pkg-config ]
                 ++ lib.optional mpiSupport mpi
               ;
               propagatedBuildInputs =
@@ -3338,6 +3338,14 @@ lib.composeManyExtensions [
             self.protobuf
             self.werkzeug
             self.absl-py
+          ];
+        }
+      );
+
+      tensorflow-io-gcs-filesystem = super.tensorflow-io-gcs-filesystem.overridePythonAttrs (
+        old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [
+            pkgs.libtensorflow
           ];
         }
       );
