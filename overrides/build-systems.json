@@ -14790,13 +14790,20 @@
     "setuptools"
   ],
   "pandas": [
-    "cython",
     "meson-python",
     "oldest-supported-numpy",
     "setuptools",
     {
+      "buildSystem": "cython_0",
+      "until": "2.2.0"
+    },
+    {
       "buildSystem": "versioneer",
       "from": "2.0.0"
+    },
+    {
+      "buildSystem": "cython",
+      "from": "2.2.0"
     }
   ],
   "pandas-datareader": [
