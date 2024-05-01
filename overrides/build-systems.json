@@ -17904,6 +17904,9 @@
   "pyphotonfile": [
     "setuptools"
   ],
+  "pypika": [
+    "setuptools"
+  ],
   "pypika-tortoise": [
     "poetry-core"
   ],
