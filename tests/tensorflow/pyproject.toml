@@ -1,19 +1,12 @@
 [tool.poetry]
-name = "ansible-molecule"
+name = "test-tensorflow"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-ansible = "^9.3.0"
-molecule = "^24.2.0"
-setuptools-scm = "<8"
-setuptools-scm-git-archive = "1.4"
-lxml = "^5"
-
-
-[tool.poetry.dev-dependencies]
+python = ">=3.9, <3.12"
+tensorflow = "^2.14"
 
 [build-system]
 requires = ["poetry-core"]
