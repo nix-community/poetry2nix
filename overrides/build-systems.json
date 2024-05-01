@@ -18923,6 +18923,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pytest-md": [
+    "setuptools"
+  ],
   "pytest-metadata": [
     "hatch-vcs",
     "hatchling",
