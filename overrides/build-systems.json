@@ -10042,6 +10042,9 @@
   "jupyter-events": [
     "hatchling"
   ],
+  "jupyter-existing-provisioner": [
+    "setuptools"
+  ],
   "jupyter-lsp": [
     "setuptools"
   ],
