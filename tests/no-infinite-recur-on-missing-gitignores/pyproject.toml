@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "test-infrec"
+version = "0.1.0"
+description = "Test of nix infrec"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

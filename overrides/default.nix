@@ -235,7 +235,7 @@ lib.composeManyExtensions [
 
       ansible-lint = super.ansible-lint.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
           preBuild = ''
             export HOME=$(mktemp -d)
           '';
@@ -886,6 +886,23 @@ lib.composeManyExtensions [
         }
       );
 
+      gdstk = super.gdstk.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools pkgs.zlib pkgs.qhull ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cmake ];
+        dontUseCmakeConfigure = true;
+        # gdstk ships with its own FindQhull.cmake, but that isn't
+        # included in the python release -- fix
+        postPatch = ''
+          if [ ! -e cmake_modules/FindQhull.cmake ]; then
+            mkdir -p cmake_modules
+            cp ${pkgs.fetchurl {
+              url = "https://github.com/heitzmann/gdstk/raw/57c9ecec1f7bc2345182bcf383602a792026a28b/cmake_modules/FindQhull.cmake";
+              hash = "sha256-lJNWAfSItbg7jsHfe7gZryqJruHjjMM0GXudXa/SJu4=";
+            }} cmake_modules/FindQhull.cmake
+          fi
+        '';
+      });
+
       gnureadline = super.gnureadline.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.ncurses ];
@@ -1184,7 +1201,7 @@ lib.composeManyExtensions [
             self.pytestrunner
             self.cryptography
             self.pyjwt
-            self.setuptools-scm-git-archive
+            self.setuptools-scm
           ];
         }
       );
@@ -1375,13 +1392,10 @@ lib.composeManyExtensions [
           inherit llvm;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.llvmlite.llvm ];
 
-          # Disable static linking
+          # Static linking
           # https://github.com/numba/llvmlite/issues/93
-          postPatch = ''
-            substituteInPlace ffi/Makefile.linux --replace "-static-libstdc++" ""
-
-            substituteInPlace llvmlite/tests/test_binding.py --replace "test_linux" "nope"
-          '';
+          # was disabled by default in
+          # https://github.com/numba/llvmlite/pull/250
 
           # Set directory containing llvm-config binary
           preConfigure = ''
@@ -1494,8 +1508,6 @@ lib.composeManyExtensions [
             pkg-config
           ] ++ lib.optionals (lib.versionAtLeast super.matplotlib.version "3.5.0") [
             self.setuptools-scm
-          ] ++ lib.optionals (lib.versionOlder super.matplotlib.version "3.6.0") [
-            self.setuptools-scm-git-archive
           ];
 
           # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
@@ -1566,11 +1578,11 @@ lib.composeManyExtensions [
                   excludes = [ "pyproject.toml" ];
                 })
               ];
-              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
             }
           )) else
           super.molecule.overridePythonAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
+            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
           });
 
       msgpack = super.msgpack.overridePythonAttrs (
@@ -2034,6 +2046,14 @@ lib.composeManyExtensions [
             ++ lib.optionals (lib.versionAtLeast old.version "7.1.0") [ xorg.libxcb ]
             ++ lib.optionals self.isPyPy [ tk xorg.libX11 ];
           preConfigure = lib.optional (old.format != "wheel") preConfigure;
+
+          # https://github.com/nix-community/poetry2nix/issues/1139
+          patches = (old.patches or [ ]) ++ pkgs.lib.optionals (!(old.src.isWheel or false) && old.version == "9.5.0") [
+            (pkgs.fetchpatch {
+              url = "https://github.com/python-pillow/Pillow/commit/0ec0a89ead648793812e11739e2a5d70738c6be5.diff";
+              sha256 = "sha256-rZfk+OXZU6xBpoumIW30E80gRsox/Goa3hMDxBUkTY0=";
+            })
+          ];
         }
       );
 
@@ -2041,6 +2061,9 @@ lib.composeManyExtensions [
         old: {
           buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [
             libheif
+          ];
+          nativeBuildInputs = with pkgs; (old.nativeBuildInputs or [ ]) ++ [
+            pkg-config
           ];
         }
       );
@@ -2349,6 +2372,10 @@ lib.composeManyExtensions [
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
       });
 
+      sphinxcontrib-jquery = super.sphinxcontrib-jquery.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.sphinx ];
+      });
+
       sphinxcontrib-qthelp = super.sphinxcontrib-qthelp.overridePythonAttrs (old: {
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
       });
@@ -2628,7 +2655,7 @@ lib.composeManyExtensions [
         pyqt6;
 
       pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libQt6*" ];
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PyQt6/Qt6/lib
         '';
@@ -2655,7 +2682,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
+      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
@@ -2664,7 +2691,7 @@ lib.composeManyExtensions [
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
           pkgs.libxkbcommon
           pkgs.gtk3
           pkgs.speechd
@@ -2688,7 +2715,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [
           "libmysqlclient.so.21"
           "libmimerapi.so"
@@ -2699,7 +2726,7 @@ lib.composeManyExtensions [
           addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
           addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
           pkgs.nss
           pkgs.xorg.libXtst
           pkgs.alsa-lib
@@ -3450,7 +3477,7 @@ lib.composeManyExtensions [
         old: {
           inherit (pkgs.python3.pkgs.vispy) patches;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            self.setuptools-scm-git-archive
+            self.setuptools-scm
           ];
         }
       );
@@ -3737,7 +3764,7 @@ lib.composeManyExtensions [
       });
 
       selinux = super.selinux.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
       });
 
       setuptools-scm = super.setuptools-scm.overridePythonAttrs (_old: {
