@@ -5,8 +5,8 @@ description = "poetry2nix test"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-opencv-python = "4.1.2.30"
+python = "^3.9"
+opencv-python = "^4.9.0.80"
 
 [build-system]
 requires = ["poetry-core"]
