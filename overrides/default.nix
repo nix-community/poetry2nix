@@ -269,6 +269,16 @@ lib.composeManyExtensions [
         }
       );
 
+      apsw = super.apsw.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          postPatch = ''
+            # without this patch a download of sqlite is attempted
+            substituteInPlace setup.py --replace 'if self.fetch:' 'if False:'
+          '';
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.sqlite ];
+        }
+      );
+
       argon2-cffi =
         if (lib.versionAtLeast super.argon2-cffi.version "21.2.0") then
           addBuildSystem'

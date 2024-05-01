@@ -155,6 +155,7 @@ in
   colour = callTest ./colour { };
   gnureadline = callTest ./gnureadline { };
   scientific = callTest ./scientific { };
+  apsw = callTest ./apsw { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
