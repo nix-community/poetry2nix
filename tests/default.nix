@@ -112,6 +112,7 @@ in
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
+  pyside6 = callTest ./pyside6 { };
   rasterio = callTest ./rasterio { };
   scipy1_11 = callTest ./scipy1_11 { };
   test-group = callTest ./test-group { };
@@ -156,6 +157,7 @@ in
   gnureadline = callTest ./gnureadline { };
   scientific = callTest ./scientific { };
   apsw = callTest ./apsw { };
+  no-infinite-recur-on-missing-gitignores = callTest ./no-infinite-recur-on-missing-gitignores { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
