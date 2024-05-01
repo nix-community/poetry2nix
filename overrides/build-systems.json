@@ -820,6 +820,9 @@
     "hatchling",
     "setuptools"
   ],
+  "altgraph": [
+    "setuptools"
+  ],
   "amaranth": [
     "setuptools",
     "setuptools-scm"
@@ -11156,6 +11159,9 @@
   "macaroonbakery": [
     "setuptools"
   ],
+  "macholib": [
+    "setuptools"
+  ],
   "maestral": [
     "pbr",
     "setuptools"
@@ -17259,6 +17265,9 @@
     "setuptools"
   ],
   "pyinputevent": [
+    "setuptools"
+  ],
+  "pyinstaller-hooks-contrib": [
     "setuptools"
   ],
   "pyinsteon": [
