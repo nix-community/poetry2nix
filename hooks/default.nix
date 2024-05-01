@@ -1,11 +1,11 @@
 { python, stdenv, makeSetupHook, pkgs, lib }:
 let
-  inherit (python) pythonForBuild;
-  inherit (pythonForBuild.pkgs) callPackage;
-  pythonInterpreter = pythonForBuild.interpreter;
+  pythonOnBuildForHost = python.pythonOnBuildForHost or python.pythonForBuild;
+  inherit (pythonOnBuildForHost.pkgs) callPackage;
+  pythonInterpreter = pythonOnBuildForHost.interpreter;
   pythonSitePackages = python.sitePackages;
 
-  nonOverlayedPython = pkgs.python3.pythonForBuild.withPackages (ps: [ ps.tomlkit ]);
+  nonOverlayedPython = (pkgs.python3.pythonOnBuildForHost or pkgs.python3.pythonForBuild).withPackages (ps: [ ps.tomlkit ]);
   makeRemoveSpecialDependenciesHook =
     { fields
     , kind
