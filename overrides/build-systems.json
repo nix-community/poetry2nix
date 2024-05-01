@@ -11366,10 +11366,10 @@
   "mattermostdriver": [
     "setuptools"
   ],
-  "maubot": [
+  "maturin": [
     "setuptools"
   ],
-  "maturin": [
+  "maubot": [
     "setuptools"
   ],
   "mautrix": [
@@ -12058,12 +12058,12 @@
   "mpi4py": [
     "setuptools"
   ],
+  "mpire": [
+    "setuptools"
+  ],
   "mpl-scatter-density": [
     "setuptools",
     "setuptools-scm"
-  ],
-  "mpire": [
-    "setuptools"
   ],
   "mpldatacursor": [
     "setuptools"
