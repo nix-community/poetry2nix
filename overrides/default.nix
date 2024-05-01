@@ -2062,6 +2062,9 @@ lib.composeManyExtensions [
           buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [
             libheif
           ];
+          nativeBuildInputs = with pkgs; (old.nativeBuildInputs or [ ]) ++ [
+            pkg-config
+          ];
         }
       );
 
