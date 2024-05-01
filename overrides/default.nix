@@ -682,8 +682,6 @@ lib.composeManyExtensions [
       });
 
       deepspeed = super.deepspeed.overridePythonAttrs (old: rec {
-        # autoPatchelfIgnoreMissingDeps = true;
-
         CUDA_HOME = pkgs.symlinkJoin {
           name = "deepspeed-cuda-home";
           paths = [
@@ -693,7 +691,7 @@ lib.composeManyExtensions [
             pkgs.cudaPackages.cuda_nvcc
           ];
         };
-        buildInputs = (old.buildInputs or [ ])++ [ self.setuptools ];
+        buildInputs = old.buildInputs or [ ] ++ [ self.setuptools ];
         LD_LIBRARY_PATH = "${CUDA_HOME}/lib";
         preBuild = ''
           # Prevent the build from trying to access the default triton cache directory under /homeless-shelter
