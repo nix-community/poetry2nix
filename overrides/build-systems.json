@@ -25546,6 +25546,9 @@
   "types-urllib3": [
     "setuptools"
   ],
+  "types-xmltodict": [
+    "setuptools"
+  ],
   "typesentry": [
     "setuptools"
   ],
@@ -25553,9 +25556,6 @@
     "setuptools"
   ],
   "typesystem": [
-    "setuptools"
-  ],
-  "types-xmltodict": [
     "setuptools"
   ],
   "typical": [
