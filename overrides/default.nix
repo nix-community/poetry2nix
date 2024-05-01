@@ -235,7 +235,7 @@ lib.composeManyExtensions [
 
       ansible-lint = super.ansible-lint.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
           preBuild = ''
             export HOME=$(mktemp -d)
           '';
@@ -1184,7 +1184,7 @@ lib.composeManyExtensions [
             self.pytestrunner
             self.cryptography
             self.pyjwt
-            self.setuptools-scm-git-archive
+            self.setuptools-scm
           ];
         }
       );
@@ -1491,8 +1491,6 @@ lib.composeManyExtensions [
             pkg-config
           ] ++ lib.optionals (lib.versionAtLeast super.matplotlib.version "3.5.0") [
             self.setuptools-scm
-          ] ++ lib.optionals (lib.versionOlder super.matplotlib.version "3.6.0") [
-            self.setuptools-scm-git-archive
           ];
 
           # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
@@ -1563,11 +1561,11 @@ lib.composeManyExtensions [
                   excludes = [ "pyproject.toml" ];
                 })
               ];
-              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
             }
           )) else
           super.molecule.overridePythonAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
+            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
           });
 
       msgpack = super.msgpack.overridePythonAttrs (
@@ -2629,7 +2627,7 @@ lib.composeManyExtensions [
         pyqt6;
 
       pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libQt6*" ];
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PyQt6/Qt6/lib
         '';
@@ -3451,7 +3449,7 @@ lib.composeManyExtensions [
         old: {
           inherit (pkgs.python3.pkgs.vispy) patches;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            self.setuptools-scm-git-archive
+            self.setuptools-scm
           ];
         }
       );
@@ -3738,7 +3736,7 @@ lib.composeManyExtensions [
       });
 
       selinux = super.selinux.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
       });
 
       setuptools-scm = super.setuptools-scm.overridePythonAttrs (_old: {
