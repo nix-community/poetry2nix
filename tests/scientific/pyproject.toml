@@ -5,14 +5,15 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.12"
 numpy = "*"
-scipy = "*"
+scipy = "~1.10"
 scikit-learn = "*"
 seaborn = "*"
 pandas = "*"
 jupyter = "*"
 psutil = "5.9.5"
+lxml = "^5"
 
 # FIXME: pin a lower version until we figure out how to build newer ones
 nbconvert = "<7"
