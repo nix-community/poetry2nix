@@ -112,6 +112,7 @@ in
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
+  pyside6 = callTest ./pyside6 { };
   rasterio = callTest ./rasterio { };
   scipy1_11 = callTest ./scipy1_11 { };
   test-group = callTest ./test-group { };
