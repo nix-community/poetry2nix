@@ -350,6 +350,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "aiogram": [
+    "hatchling"
+  ],
   "aiohappyeyeballs": [
     "poetry-core"
   ],
