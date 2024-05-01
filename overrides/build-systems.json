@@ -927,8 +927,7 @@
   ],
   "ansible-compat": [
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "ansible-core": [
     "setuptools"
@@ -6229,10 +6228,8 @@
     "setuptools"
   ],
   "enrich": [
-    "pip",
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "enterpriseattack": [
     "setuptools"
@@ -11936,7 +11933,6 @@
     "setuptools"
   ],
   "molecule": [
-    "pip",
     "setuptools",
     "setuptools-scm"
   ],
@@ -21708,10 +21704,6 @@
   "setuptools-scm": [
     "setuptools"
   ],
-  "setuptools-scm-git-archive": [
-    "setuptools",
-    "setuptools-scm"
-  ],
   "setuptools-trial": [
     "setuptools"
   ],
@@ -22987,10 +22979,8 @@
     "setuptools"
   ],
   "subprocess-tee": [
-    "pip",
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "subprocess32": [
     "setuptools",
