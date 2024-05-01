@@ -5405,6 +5405,9 @@
   "django-maintenance-mode": [
     "setuptools"
   ],
+  "django-markdownify": [
+    "setuptools"
+  ],
   "django-markdownx": [
     "setuptools"
   ],
