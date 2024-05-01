@@ -116,15 +116,14 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
         else "";
     in
     runCommand file
-      {
+      ({
         nativeBuildInputs = [ python3 ];
-        impureEnvVars = lib.fetchers.proxyImpureEnvVars;
+        impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ (lib.optional lib.inPureEvalMode "NETRC");
         outputHashMode = "flat";
         outputHashAlgo = "sha256";
         outputHash = hash;
-        NETRC = netrc_file;
         passthru.isWheel = lib.strings.hasSuffix "whl" file;
-      } ''
+      } // lib.optionalAttrs (!lib.inPureEvalMode) { NETRC = netrc_file; }) ''
       python ${./fetch-from-legacy.py} ${url} ${pname} ${file}
       mv ${file} $out
     '';
