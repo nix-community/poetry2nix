@@ -734,8 +734,11 @@
     "setuptools"
   ],
   "alabaster": [
-    "flit-core",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "flit-core",
+      "from": "0.7.13"
+    }
   ],
   "aladdin-connect": [
     "setuptools"
