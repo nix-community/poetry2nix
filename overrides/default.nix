@@ -1564,7 +1564,7 @@ lib.composeManyExtensions [
                   excludes = [ "pyproject.toml" ];
                 })
               ];
-              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm];
+              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
             }
           )) else
           super.molecule.overridePythonAttrs (old: {
