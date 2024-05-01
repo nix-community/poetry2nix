@@ -30,6 +30,7 @@ in
   common-pkgs-2 = callTest ./common-pkgs-2 { };
 
   env = callTest ./env { };
+  ansible-molecule = callTest ./ansible-molecule { };
   pytest-metadata = callTest ./pytest-metadata { };
   pytest-randomly = callTest ./pytest-randomly { };
   file-src-deps = callTest ./file-src-deps { };
@@ -44,7 +45,6 @@ in
   path-deps-develop = callTest ./path-deps-develop { };
   path-deps-level2 = callTest ./path-deps-level2 { };
   operators = callTest ./operators { };
-  preferWheel = callTest ./prefer-wheel { };
   prefer-wheels = callTest ./prefer-wheels { };
   closure-size = callTest ./closure-size {
     inherit (pkgs) postgresql;
@@ -57,7 +57,6 @@ in
 
   inherit (poetry2nix) cli;
 
-  ansible-molecule = callTest ./ansible-molecule { };
   black = callTest ./black { };
   blinker-1_6_2 = callTest ./blinker-1_6_2 { };
   blinker = callTest ./blinker { };
@@ -73,7 +72,6 @@ in
   option = callTest ./option { };
   fastapi-utils = callTest ./fastapi-utils { };
   awscli = callTest ./awscli { };
-  aiopath = callTest ./aiopath { };
   fetched-projectdir = callTest ./fetched-projectdir { };
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
@@ -115,8 +113,6 @@ in
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
   rasterio = callTest ./rasterio { };
-  scientific = callTest ./scientific { };
-  scipy1_9 = callTest ./scipy1_9 { };
   scipy1_11 = callTest ./scipy1_11 { };
   test-group = callTest ./test-group { };
   nbconvert-wheel = callTest ./nbconvert-wheel { };
@@ -133,7 +129,6 @@ in
   missing-iswheel = callTest ./missing-iswheel { };
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
-  matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
   matplotlib-post-3-7 = callTest ./matplotlib-post-3-7 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
   virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
@@ -158,15 +153,15 @@ in
   orjson-test = callTest ./orjson-test { };
   ruff = callTest ./ruff { };
   colour = callTest ./colour { };
-  pyodbc-wheel = callTest ./pyodbc-wheel { };
   gnureadline = callTest ./gnureadline { };
   twisted = callTest ./twisted { };
+  scientific = callTest ./scientific { };
+  apsw = callTest ./apsw { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };
   pyside6 = callTest ./pyside6 { };
-  pyarrow-wheel = callTest ./pyarrow-wheel { };
-  fiona-wheel = callTest ./fiona-wheel { };
+  tensorflow = callTest ./tensorflow { };
 
   # Test deadlocks on darwin, sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
@@ -184,4 +179,19 @@ in
   # ERROR: MarkupSafe-2.0.1-cp39-cp39-linux_aarch64.whl is not a supported wheel on this platform.
   extended-cross = callTest ./extended-cross { };
   trivial-cross = callTest ./trivial-cross { };
+
+  # impure when using a wheel
+  pyodbc-wheel = callTest ./pyodbc-wheel { };
+  # linux-only API (AIO)
+  aiopath = callTest ./aiopath { };
+  # doesn't compile on darwin
+  matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
+  # the version of scipy used here doesn't build from source on darwin
+  scipy1_9 = callTest ./scipy1_9 { };
+} // lib.optionalAttrs (!(stdenv.isDarwin && stdenv.isAarch64)) {
+  # not a wheel on aarch64-darwin
+  preferWheel = callTest ./prefer-wheel { };
+} // lib.optionalAttrs (!stdenv.isDarwin || stdenv.isAarch64) {
+  pyarrow-wheel = callTest ./pyarrow-wheel { };
+  fiona-wheel = callTest ./fiona-wheel { };
 }
