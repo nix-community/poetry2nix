@@ -1,15 +1,13 @@
 [tool.poetry]
-name = "shapely-test"
+name = "test-tensorflow"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-shapely = ">=2.0.4"
-
-[tool.poetry.dev-dependencies]
+python = ">=3.9, <3.12"
+tensorflow = "^2.14"
 
 [build-system]
-requires = ["poetry-core>=1"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
