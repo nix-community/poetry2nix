@@ -478,6 +478,28 @@ lib.composeManyExtensions [
           )
         );
 
+      cmake = super.cmake.overridePythonAttrs (
+        old: rec {
+          cmake-ver-hashes = version: {
+            "3.26.3" = "sha256-tlAp/pJlla0pUxWke28YDK5u/Ir/1MKhGHbpvKcWPVA=";
+          }.${version} or (
+            lib.warn "Unknown cmake version: '${version}'. Please update cmake-ver-hases." lib.fakeHash
+          );
+
+          cmake-src = pkgs.fetchgit {
+            url = "https://gitlab.kitware.com/cmake/cmake.git";
+            rev = "v" + super.cmake.version;
+            sha256 = cmake-ver-hashes super.cmake.version;
+          };
+
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.cmake pkgs.ninja pkgs.glibc ];
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmake ];
+
+          CMAKE_ARGS = "-DCMakeProject_SOURCE_DIR='${cmake-src}'";
+          dontUseCmakeConfigure = true;
+        }
+      );
+
       cmdstanpy = super.cmdstanpy.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmdstan ];

@@ -3790,7 +3790,26 @@
     "setuptools"
   ],
   "cmake": [
-    "flit-core"
+    {
+      "buildSystem": "scikit-build",
+      "until": "3.29.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "3.29.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "3.29.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "3.27.9"
+    },
+    {
+      "buildSystem": "scikit-build-core",
+      "from": "3.29.0"
+    }
   ],
   "cmarkgfm": [
     "setuptools"
