@@ -2629,7 +2629,7 @@ lib.composeManyExtensions [
         pyqt6;
 
       pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libQt6*" ];
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PyQt6/Qt6/lib
         '';
