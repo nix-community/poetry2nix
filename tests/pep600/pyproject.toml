@@ -5,9 +5,20 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-open3d = "=0.15.2"
-jupyter-packaging = "<0.12.0"
+python = "^3.10"
+# this is a mess https://github.com/isl-org/Open3D/issues/2991
+# https://github.com/isl-org/Open3D/issues/5747#issuecomment-1332731934
+open3d = "*"
+scikit-learn = "*"
+jupyter-packaging = "=0.12.3"
+addict = "*"
+pillow = "*"
+matplotlib = "*"
+numpy = "*"
+pandas = "*"
+pyyaml = "*"
+tqdm = "*"
+pyquaternion = "*"
 
 [tool.poetry.dev-dependencies]
 
