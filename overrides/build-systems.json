@@ -927,8 +927,7 @@
   ],
   "ansible-compat": [
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "ansible-core": [
     "setuptools"
@@ -4749,6 +4748,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "debian-parser": [
+    "setuptools"
+  ],
   "debianbts": [
     "setuptools"
   ],
@@ -5403,6 +5405,9 @@
   "django-maintenance-mode": [
     "setuptools"
   ],
+  "django-markdownify": [
+    "setuptools"
+  ],
   "django-markdownx": [
     "setuptools"
   ],
@@ -5682,10 +5687,13 @@
     "setuptools"
   ],
   "dnspython": [
-    "hatchling",
     "poetry-core",
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    {
+      "buildSystem": "hatchling",
+      "from": "2.6.1"
+    }
   ],
   "dnspythonchia": [
     "setuptools",
@@ -6229,10 +6237,8 @@
     "setuptools"
   ],
   "enrich": [
-    "pip",
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "enterpriseattack": [
     "setuptools"
@@ -11363,6 +11369,9 @@
   "mattermostdriver": [
     "setuptools"
   ],
+  "maturin": [
+    "setuptools"
+  ],
   "maubot": [
     "setuptools"
   ],
@@ -11585,6 +11594,9 @@
   ],
   "meteofrance-api": [
     "poetry-core",
+    "setuptools"
+  ],
+  "methodtools": [
     "setuptools"
   ],
   "metprint": [
@@ -11936,7 +11948,6 @@
     "setuptools"
   ],
   "molecule": [
-    "pip",
     "setuptools",
     "setuptools-scm"
   ],
@@ -12047,6 +12058,9 @@
     "setuptools"
   ],
   "mpi4py": [
+    "setuptools"
+  ],
+  "mpire": [
     "setuptools"
   ],
   "mpl-scatter-density": [
@@ -18915,6 +18929,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "pytest-md": [
+    "setuptools"
+  ],
   "pytest-metadata": [
     "hatch-vcs",
     "hatchling",
@@ -21708,10 +21725,6 @@
   "setuptools-scm": [
     "setuptools"
   ],
-  "setuptools-scm-git-archive": [
-    "setuptools",
-    "setuptools-scm"
-  ],
   "setuptools-trial": [
     "setuptools"
   ],
@@ -22987,10 +23000,8 @@
     "setuptools"
   ],
   "subprocess-tee": [
-    "pip",
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "subprocess32": [
     "setuptools",
