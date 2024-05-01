@@ -78,6 +78,7 @@ in
   sqlalchemy = callTest ./sqlalchemy { };
   sqlalchemy2 = callTest ./sqlalchemy2 { };
   tzlocal = callTest ./tzlocal { };
+  jake = callTest ./jake { };
 
   ml-stack = callTest ./ml-stack { };
 

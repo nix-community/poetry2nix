@@ -4421,6 +4421,9 @@
   "cycler": [
     "setuptools"
   ],
+  "cyclonedx-bom": [
+    "poetry-core"
+  ],
   "cyclonedx-python-lib": [
     "poetry-core",
     "setuptools"
@@ -9659,6 +9662,9 @@
   "jaeger-client": [
     "setuptools"
   ],
+  "jake": [
+    "poetry-core"
+  ],
   "janus": [
     "setuptools"
   ],
@@ -14743,6 +14749,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "ossindex-lib": [
+    "poetry-core"
+  ],
   "ots-python": [
     "setuptools-scm"
   ],
@@ -15677,6 +15686,9 @@
     "setuptools"
   ],
   "polling": [
+    "setuptools"
+  ],
+  "polling2": [
     "setuptools"
   ],
   "polyfactory": [
