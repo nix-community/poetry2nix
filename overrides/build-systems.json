@@ -5690,12 +5690,21 @@
     "setuptools"
   ],
   "dnspython": [
-    "poetry-core",
-    "setuptools",
-    "setuptools-scm",
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "2.5.0"
+    },
     {
       "buildSystem": "hatchling",
-      "from": "2.6.1"
+      "from": "2.5.0"
     }
   ],
   "dnspythonchia": [
