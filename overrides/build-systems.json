@@ -6620,6 +6620,12 @@
     "poetry",
     "poetry-core"
   ],
+  "fastapi-users": [
+    "hatchling"
+  ],
+  "fastapi-users-db-sqlalchemy": [
+    "hatchling"
+  ],
   "fastapi-utils": [
     "poetry"
   ],
@@ -16117,6 +16123,9 @@
   "pvo": [
     "poetry-core",
     "setuptools"
+  ],
+  "pwdlib": [
+    "hatchling"
   ],
   "pweave": [
     "setuptools"
