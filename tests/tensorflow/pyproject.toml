@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "test-ruff"
+name = "test-tensorflow"
 version = "0.1.0"
-description = "Test of the ruff package"
+description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.11"
-ruff = "0.4.2"
+python = ">=3.9, <3.12"
+tensorflow = "^2.14"
 
 [build-system]
 requires = ["poetry-core"]

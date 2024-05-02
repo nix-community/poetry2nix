@@ -6,6 +6,109 @@ _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix deriva
 
 For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
+## Quickstart Non-flake
+
+You can turn your Python application into a Nix package with a few lines
+by adding a `default.nix` next to your `pyproject.toml` and `poetry.lock` files:
+
+```nix
+# file: default.nix
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  # Let all API attributes like "poetry2nix.mkPoetryApplication" 
+  # use the packages and versions (python3, poetry etc.) from our pinned nixpkgs above
+  # under the hood:
+  poetry2nix = import sources.poetry2nix { inherit pkgs; };
+  myPythonApp = poetry2nix.mkPoetryApplication { projectDir = ./.; };
+in
+myPythonApp
+```
+
+The Nix code being executed by `import sources.poetry2nix { inherit pkgs; }`
+is [./default.nix](./default.nix).
+The resulting `poetry2nix` attribute set contains (only) the [API attributes](#api) like
+`mkPoetryApplication`.
+
+Hint:
+This example assumes that `nixpkgs` and `poetry2nix` are managed and pinned by
+the handy [niv tool](https://github.com/nmattia/niv). In your terminal just run:
+
+```shell
+nix-shell -p niv
+niv init
+niv add nix-community/poetry2nix
+```
+
+You can then build your Python application with Nix by running:
+
+```shell
+nix-build default.nix
+```
+
+Finally, you can run your Python application from the new `./result` symlinked folder:
+
+```shell
+# replace <script> with the name in the [tool.poetry.scripts] section of your pyproject.toml
+./result/bin/<script>
+```
+
+## Quickstart flake.nix
+
+If your project uses the experimental `flake.nix` schema, you don't need niv.
+This repository provides _poetry2nix_ as a flake as well for you to import
+as a flake input. For example:
+
+```nix
+# file: flake.nix
+{
+  description = "Python application packaged using poetry2nix";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.poetry2nix.url = "github:nix-community/poetry2nix";
+
+  outputs = { self, nixpkgs, poetry2nix }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+      # create a custom "mkPoetryApplication" API function that under the hood uses
+      # the packages and versions (python3, poetry etc.) from our pinned nixpkgs above:
+      inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryApplication;
+      myPythonApp = mkPoetryApplication { projectDir = ./.; };
+    in
+    {
+      apps.${system}.default = {
+        type = "app";
+        # replace <script> with the name in the [tool.poetry.scripts] section of your pyproject.toml
+        program = "${myPythonApp}/bin/<script>";
+      };
+    };
+}
+```
+
+You can then (build and) run your Python app with
+
+```shell
+nix run .
+```
+
+A larger real-world setup can be found in [./templates/app/flake.nix](./templates/app/flake.nix).
+This example is also exported as a flake template so that you can start your _poetry2nix_ project
+conveniently through:
+
+```shell
+nix flake init --template github:nix-community/poetry2nix
+```
+
+Additionally, this project flake provides an [overlay](https://wiki.nixos.org/wiki/Overlays)
+to merge `poetry2nix` into your `pkgs` and access it as `pkgs.poetry2nix`.
+Just replace the three lines `pkgs = ...`, `inherit ...` and `myPythonApp = ...` above with:
+
+```nix
+pkgs = nixpkgs.legacyPackages.${system}.extend poetry2nix.overlay;
+myPythonApp = pkgs.poetry2nix.mkPoetryApplication { projectDir = self; };
+```
+
 ## Table of contents
 - [API](#api)
 - [FAQ](#FAQ)
@@ -79,8 +182,8 @@ in app.dependencyEnv
 After building this expression, your CLI and app can be called with these commands
 
 ```shell
-$ result/bin/python -m admin
-$ result/bin/gunicorn web:app
+./result/bin/python -m admin
+./result/bin/gunicorn web:app
 ```
 
 If you prefer to build a single binary that runs `gunicorn web:app`, use [`pkgs.writeShellApplication`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/trivial-builders.nix#L317) for a simple wrapper.
@@ -263,7 +366,7 @@ Sometimes when it can be convenient to create a custom instance of `poetry2nix` 
 ```nix
 let
   # self & super refers to poetry2nix
-  p2nix = poetry2nix.overrideScope' (self: super: {
+  p2nix = poetry2nix.overrideScope (self: super: {
 
     # pyself & pysuper refers to python packages
     defaultPoetryOverrides = super.defaultPoetryOverrides.extend (pyself: pysuper: {
@@ -289,7 +392,7 @@ let
       (self: super: {
 
         # p2self & p2super refers to poetry2nix
-        poetry2nix = super.poetry2nix.overrideScope' (p2nixself: p2nixsuper: {
+        poetry2nix = super.poetry2nix.overrideScope (p2nixself: p2nixsuper: {
 
           # pyself & pysuper refers to python packages
           defaultPoetryOverrides = p2nixsuper.defaultPoetryOverrides.extend (pyself: pysuper: {
@@ -309,10 +412,127 @@ in pkgs.poetry2nix.mkPoetryApplication {
 }
 ```
 
+## Using private Python package repositories with authentication
+
+Poetry by default downloads Python packages (wheels, sources, etc.) from [PyPI](https://pypi.org)
+but supports to specify one or more alternative repositories in a
+["package source" section](https://python-poetry.org/docs/repositories/#package-sources)
+in the `pyproject.toml` file:
+
+```toml
+[[tool.poetry.source]]
+name = "private-repository"
+url = "https://example.org/simple/"
+priority = "primary"
+...
+```
+
+Poetry then bakes the individual source repository urls for each Python package together with
+a cryptographic hash of the package into its `poetry.lock` file.
+This is great for reproducibility as Poetry knows where to download packages from later
+and can ensure that the packages haven't been modified.
+
+__Poetry2nix__ downloads the same packages from the same repository urls in the lock file
+and reuses the hashes. However, many private Python repositories require authentication
+with credentials like username and password token, especially in companies.
+
+While Poetry supports several methods of authentication like through
+a [NETRC file](https://everything.curl.dev/usingcurl/netrc.html)
+[environment variables](https://python-poetry.org/docs/repositories/#publishing-to-a-private-repository)
+a [custom crendentials file](https://python-poetry.org/docs/repositories/#configuring-credentials)
+and others,
+__poetry2nix only supports one: the `NETRC` file method__ that secretly adds credentials to your
+http calls to the repository url, e.g. `https://example.org/simple/`.
+
+For this to work, __follow these three steps__:
+
+1. __Create or locate your `NETRC` file__ into your computer, usually in your home folder `/home/user/<username>/.netrc`
+or `/etc/nix/netrc` with credentials like:
+
+```netrc
+machine https://example.org
+login <repository-username>
+password <repository-password-or-token>
+```
+
+2. __Mount the `NETRC` file into the Nix build sandbox__ with Nix
+[extra-sandbox-paths](https://nixos.org/manual/nix/stable/command-ref/conf-file#conf-extra-sandbox-paths)
+setting; otherwise __poetry2nix__ is not able to access that file
+from within the Nix sandbox.
+You can mount the file either through the global Nix/NixOS config, usually `/etc/nix/nix.conf`:
+
+```ini
+# file: nix.conf
+extra-sandbox-paths /etc/nix/netrc`
+```
+
+This is not recommended as you expose your secrets to all Nix builds.
+
+Better just mount it for single, specific __poetry2nix__ builds directly in the terminal:
+
+```shell
+# non-flake project
+nix-build --option extra-sandbox-paths /etc/nix/netrc default.nix
+# flake project
+nix build . --extra-sandbox-paths /etc/nix/netrc
+```
+
+Note that the username you're executing this command with must be a
+["trusted-user"](https://nixos.org/manual/nix/stable/command-ref/conf-file#conf-trusted-users)
+in the global Nix/NixOS config, usually `/etc/nix/nix.conf`:
+
+```ini
+# file: nix.conf
+trusted-users <username>
+```
+
+If you are not a trusted user, this
+[extra setting will be silently ignored](https://github.com/NixOS/nix/issues/6115#issuecomment-1060626260)
+and package downloads will fail.
+
+3. Tell __poetry2nix__ where to find the `NETRC` file inside the Nix sandbox.
+For that you have to __pass an environment variable  called `NETRC` into the sandbox__ containing the path
+to the file. Depending on whether you use flakes or not you have the following options:
+
+__For flakes__ the only option is to add the environment variable to the "nix-daemon", the process
+that actually creates sandboxes and performs builds on your behalf.
+
+On NixOS you can add the env variable to the nix-daemon through its [systemd](https://systemd.io/) configuration:
+
+```nix
+systemd.services.nix-daemon = {
+  serviceConfig = {
+    Environment = "NETRC=/etc/nix/netrc";
+  };
+};
+```
+
+This environment variable will automatically be passed to all your builds so you can
+keep using the build commands as before;
+
+```shell
+# non-flake project
+nix-build --option extra-sandbox-paths /etc/nix/netrc default.nix
+# flake project
+nix build . --extra-sandbox-paths /etc/nix/netrc
+```
+
+__For a non-flake project__ you can alternatively pass the `NETRC` path value through
+a fake Nix search path `-I NETRC=<netrc-path>` argument in the terminal; such a search path doesn't work with flakes.
+__poetry2nix__ contains special code to forward this variable as an environment variable into any Python sandbox.
+
+```shell
+# non-flake project
+nix-build -I NETRC=/etc/nix/netrc --option extra-sandbox-paths /etc/nix/netrc default.nix 
+```
+
+Note: The alternative to pass the `NETRC` path environment variable
+into the sandbox via the (impureEnvVars setting](https://nixos.org/manual/nix/stable/language/advanced-attributes.html##adv-attr-impureEnvVars)
+doesn't work.
 
 ## FAQ
 
-**Q.** Does poetry2nix install wheels our sdists?
+**Q.** Does poetry2nix install wheels or sdists?
 
 **A.** By default, poetry2nix installs from source. If you want to give precedence to wheels, look at the `preferWheel` and `preferWheels` attributes.
 
@@ -353,15 +573,6 @@ poetry2nix.mkPoetryApplication {
 - [Package and deploy Python apps faster with Poetry and Nix](https://www.youtube.com/watch?v=TbIHRHy7_JM)
 This is a short (11 minutes) video tutorial by [Steve Purcell](https://github.com/purcell/) from [Tweag](https://tweag.io) walking you through how to get started with a small web development project.
 
-## Using the flake
-
-For the experimental flakes functionality we provide _poetry2nix_ as a flake providing an overlay
-to use with [nixpkgs](https://nixos.org/nixpkgs/manual). Additionally, the flake provides
-a flake template to quickly start using _poetry2nix_ in a project:
-
-```sh
-nix flake init --template github:nix-community/poetry2nix
-```
 ## Contributing
 
 Contributions to this project are welcome in the form of GitHub PRs. Please consider the following before creating PRs:
