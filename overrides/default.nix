@@ -709,6 +709,24 @@ lib.composeManyExtensions [
           (lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
       });
 
+      deepspeed = super.deepspeed.overridePythonAttrs (old: rec {
+        CUDA_HOME = pkgs.symlinkJoin {
+          name = "deepspeed-cuda-home";
+          paths = [
+            pkgs.cudaPackages.libnvjitlink
+            pkgs.cudaPackages.libcufft
+            pkgs.cudaPackages.libcusparse
+            pkgs.cudaPackages.cuda_nvcc
+          ];
+        };
+        buildInputs = old.buildInputs or [ ] ++ [ self.setuptools ];
+        LD_LIBRARY_PATH = "${CUDA_HOME}/lib";
+        preBuild = ''
+          # Prevent the build from trying to access the default triton cache directory under /homeless-shelter
+          export TRITON_CACHE_DIR=$TMPDIR
+        '';
+      });
+
       dictdiffer = super.dictdiffer.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [ self.pytest-runner ];
