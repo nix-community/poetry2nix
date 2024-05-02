@@ -111,7 +111,7 @@ jobs:
 
       - name: generate poetry.lock
         working-directory: ${{ env.TESTDIR }}
-        run: nix develop -c poetry lock --no-update
+        run: nix develop '.#poetry' -c poetry lock --no-update
 
       - name: create a minimal python package
         working-directory: ${{ env.TESTDIR }}
