@@ -25,16 +25,16 @@ let
                 true;
             intendedBuildSystem =
               if lib.elem attr.buildSystem [ "cython" "cython_0" ] then
-                (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.${attr.buildSystem}
+                (final.python.pythonOnBuildForHost or final.python.pythonForBuild).pkgs.${attr.buildSystem}
               else
                 final.${attr.buildSystem};
           in
           if fromIsValid && untilIsValid then intendedBuildSystem else null
         else
           if lib.elem attr [ "cython" "cython_0" ] then
-            (self.python.pythonOnBuildForHost or self.python.pythonForBuild).pkgs.${attr}
+            (final.python.pythonOnBuildForHost or final.python.pythonForBuild).pkgs.${attr}
           else
-            self.${attr};
+            final.${attr};
     in
     if (attr == "flit-core" || attr == "flit" || attr == "hatchling") && !final.isPy3k then drv
     else if drv == null then null
@@ -132,7 +132,7 @@ lib.composeManyExtensions [
         qtxmlpatterns
       ];
 
-      bootstrappingBase = (pkgs.${self.python.pythonAttr}.pythonOnBuildForHost or pkgs.${self.python.pythonAttr}.pythonForBuild).pkgs;
+      bootstrappingBase = (pkgs.${final.python.pythonAttr}.pythonOnBuildForHost or pkgs.${final.python.pythonAttr}.pythonForBuild).pkgs;
 
       # Build gdal without python bindings to prevent version mixing
       # We're only interested in the native libraries, not the python ones
@@ -235,7 +235,7 @@ lib.composeManyExtensions [
 
       ansible-lint = prev.ansible-lint.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools-scm ];
           preBuild = ''
             export HOME=$(mktemp -d)
           '';
@@ -269,7 +269,7 @@ lib.composeManyExtensions [
         }
       );
 
-      apsw = super.apsw.overridePythonAttrs (
+      apsw = prev.apsw.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             # without this patch a download of sqlite is attempted
@@ -709,7 +709,7 @@ lib.composeManyExtensions [
           (lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
       });
 
-      deepspeed = super.deepspeed.overridePythonAttrs (old: rec {
+      deepspeed = prev.deepspeed.overridePythonAttrs (old: rec {
         CUDA_HOME = pkgs.symlinkJoin {
           name = "deepspeed-cuda-home";
           paths = [
@@ -719,7 +719,7 @@ lib.composeManyExtensions [
             pkgs.cudaPackages.cuda_nvcc
           ];
         };
-        buildInputs = old.buildInputs or [ ] ++ [ self.setuptools ];
+        buildInputs = old.buildInputs or [ ] ++ [ final.setuptools ];
         LD_LIBRARY_PATH = "${CUDA_HOME}/lib";
         preBuild = ''
           # Prevent the build from trying to access the default triton cache directory under /homeless-shelter
@@ -897,7 +897,7 @@ lib.composeManyExtensions [
         VERSION = old.version;
       });
 
-      gdal = super.gdal.overridePythonAttrs (
+      gdal = prev.gdal.overridePythonAttrs (
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ gdal ];
           preBuild = (old.preBuild or "") + ''
@@ -907,8 +907,8 @@ lib.composeManyExtensions [
         }
       );
 
-      gdstk = super.gdstk.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools pkgs.zlib pkgs.qhull ];
+      gdstk = prev.gdstk.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools pkgs.zlib pkgs.qhull ];
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cmake ];
         dontUseCmakeConfigure = true;
         # gdstk ships with its own FindQhull.cmake, but that isn't
@@ -1440,7 +1440,7 @@ lib.composeManyExtensions [
               '';
             }) else prev.lsassy;
 
-      lxml = super.lxml.overridePythonAttrs (
+      lxml = prev.lxml.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           nativeBuildInputs = with pkgs.buildPackages;
             old.nativeBuildInputs or [ ]
@@ -1602,7 +1602,7 @@ lib.composeManyExtensions [
               buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools final.setuptools-scm ];
             }
           )) else
-          super.molecule.overridePythonAttrs (old: {
+          prev.molecule.overridePythonAttrs (old: {
             buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools final.setuptools-scm ];
           });
 
@@ -1819,9 +1819,9 @@ lib.composeManyExtensions [
         }
       );
 
-      open3d = super.open3d.overridePythonAttrs (old: {
+      open3d = prev.open3d.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-          self.ipywidgets
+          final.ipywidgets
         ];
         buildInputs = (old.buildInputs or [ ]) ++ [
           pkgs.libusb1
@@ -2128,7 +2128,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      polling2 = super.polling2.overridePythonAttrs (
+      polling2 = prev.polling2.overridePythonAttrs (
         old: {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ final.pytest-runner ];
         }
@@ -2686,7 +2686,7 @@ lib.composeManyExtensions [
         in
         pyqt6;
 
-      pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
+      pyqt6-qt6 = prev.pyqt6-qt6.overridePythonAttrs (old: {
         autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${final.python.sitePackages}/PyQt6/Qt6/lib
@@ -3015,7 +3015,7 @@ lib.composeManyExtensions [
         }
       );
 
-      rasterio = super.rasterio.overridePythonAttrs (old: {
+      rasterio = prev.rasterio.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
       });
 
@@ -3458,7 +3458,7 @@ lib.composeManyExtensions [
         }
       );
 
-      tensorflow-io-gcs-filesystem = super.tensorflow-io-gcs-filesystem.overridePythonAttrs (
+      tensorflow-io-gcs-filesystem = prev.tensorflow-io-gcs-filesystem.overridePythonAttrs (
         old: {
           buildInputs = (old.buildInputs or [ ]) ++ [
             pkgs.libtensorflow
