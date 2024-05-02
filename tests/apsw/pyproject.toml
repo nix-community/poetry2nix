@@ -1,14 +1,12 @@
 [tool.poetry]
-name = "shapely-test"
+name = "test-apsw"
 version = "0.1.0"
-description = ""
+description = "Test of python apsw package"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-shapely = ">=2.0.4"
-
-[tool.poetry.dev-dependencies]
+python = "^3.9"
+apsw = "^3"
 
 [build-system]
 requires = ["poetry-core>=1"]

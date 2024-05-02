@@ -1,13 +1,12 @@
 [tool.poetry]
-name = "git-deps"
+name = "test-twisted"
 version = "0.1.0"
-description = "poetry2nix test"
+description = "Test of python twisted package"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-alembic = { git = "https://github.com/sqlalchemy/alembic.git", tag = "rel_1_3_1" }
-gitlab-lint = "0.3.0"
+twisted = "^24.3.0"
 
 [build-system]
 requires = ["poetry-core"]
