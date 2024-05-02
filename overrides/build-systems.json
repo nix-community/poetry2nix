@@ -7867,8 +7867,8 @@
     "setuptools"
   ],
   "gitlab-lint": [
-    "setuptools",
-    "poetry-core"
+    "poetry-core",
+    "setuptools"
   ],
   "gitlike-commands": [
     "poetry-core"
