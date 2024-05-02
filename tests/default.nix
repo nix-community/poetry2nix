@@ -160,6 +160,7 @@ in
   scientific = callTest ./scientific { };
   apsw = callTest ./apsw { };
   no-infinite-recur-on-missing-gitignores = callTest ./no-infinite-recur-on-missing-gitignores { };
+  pyzmq = callTest ./pyzmq { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };

@@ -2939,6 +2939,18 @@ lib.composeManyExtensions [
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.zeromq ];
+          # setting dontUseCmakeConfigure is necessary because:
+          #
+          # 1. pyzmq uses scikit-build-core as of pyzmq version 26.0.0
+          # 2. scikit-build-core requires the *Python* cmake package to find the cmake binary
+          # 3. since scikit-build-core's is in nativeBuildInputs and python
+          #    cmake depends on pkgs.cmake that puts cmake in pyzmq's
+          #    nativeBuildInputs
+          # 4. point 3 causes the pyzmq build it use vanilla cmake configure
+          #    instead of cmake via scikit-build-core
+          #
+          # what a heaping mess
+          dontUseCmakeConfigure = lib.versionAtLeast old.version "26.0.0";
         }
       );
 
@@ -3254,6 +3266,19 @@ lib.composeManyExtensions [
             sed -i pyproject.toml -e 's/numpy==[0-9]\+\.[0-9]\+\.[0-9]\+;/numpy;/g'
           '';
         } else old
+      );
+
+      scikit-build-core = super.scikit-build-core.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+            self.pyproject-metadata
+            self.pathspec
+            # these are _intentionally_ the *Python* wrappers for cmake and
+            # ninja, both of which are used by scikit-build-core
+            self.cmake
+            self.ninja
+          ];
+        }
       );
 
       scikit-image = super.scikit-image.overridePythonAttrs (
