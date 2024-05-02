@@ -24222,8 +24222,15 @@
     "setuptools"
   ],
   "twisted": [
-    "hatchling",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "24.3.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "24.3.0"
+    }
   ],
   "twitch-python": [
     "setuptools"

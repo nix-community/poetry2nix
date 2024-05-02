@@ -155,6 +155,7 @@ in
   ruff = callTest ./ruff { };
   colour = callTest ./colour { };
   gnureadline = callTest ./gnureadline { };
+  twisted = callTest ./twisted { };
   scientific = callTest ./scientific { };
   apsw = callTest ./apsw { };
   no-infinite-recur-on-missing-gitignores = callTest ./no-infinite-recur-on-missing-gitignores { };
