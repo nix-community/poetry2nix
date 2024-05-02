@@ -17,6 +17,7 @@ let
 
 in
 {
+  # {x86_64,aarch64}-{linux,darwin}
   trivial = callTest ./trivial { };
 
   # Uses the updated 1.2.0 lockfile format
@@ -26,13 +27,10 @@ in
   composable-defaults = callTest ./composable-defaults { };
   override = callTest ./override-support { };
   override-default = callTest ./override-default-support { };
-  common-pkgs-1 = callTest ./common-pkgs-1 { };
-  common-pkgs-2 = callTest ./common-pkgs-2 { };
 
   env = callTest ./env { };
   ansible-molecule = callTest ./ansible-molecule { };
   pytest-metadata = callTest ./pytest-metadata { };
-  pytest-randomly = callTest ./pytest-randomly { };
   file-src-deps = callTest ./file-src-deps { };
   file-src-deps-level2 = callTest ./file-src-deps-level2 { };
   file-wheel-deps = callTest ./file-wheel-deps { };
@@ -52,7 +50,6 @@ in
   extras = callTest ./extras { };
   source-filter = callTest ./source-filter { };
   canonical-module-names = callTest ./canonical-module-names { };
-  wandb = callTest ./wandb { };
   utf8-pyproject = callTest ./utf8-pyproject { };
 
   inherit (poetry2nix) cli;
@@ -72,7 +69,6 @@ in
   option = callTest ./option { };
   fastapi-utils = callTest ./fastapi-utils { };
   awscli = callTest ./awscli { };
-  fetched-projectdir = callTest ./fetched-projectdir { };
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
   sqlalchemy = callTest ./sqlalchemy { };
@@ -91,9 +87,6 @@ in
   jupyterlab-3 = callTest ./jupyterlab-3 { };
   jupyterlab = callTest ./jupyterlab { };
 
-  # manylinux requires nixpkgs with https://github.com/NixOS/nixpkgs/pull/75763
-  # Once this is available in 19.09 and unstable we can re-enable the manylinux test
-  manylinux = callTest ./manylinux { };
   shapely = callTest ./shapely { };
   shapely-pre-2 = callTest ./shapely-pre-2 { };
   setuptools = callTest ./setuptools { };
@@ -104,7 +97,6 @@ in
   cattrs-pre-23-2 = callTest ./cattrs-pre-23-2 { };
   cdk-nag = callTest ./cdk-nag { };
   arrow = callTest ./arrow { };
-  gdal = callTest ./gdal { };
   gitlint-core = callTest ./gitlint-core { };
   gitlint = callTest ./gitlint { };
   jupyter-ydoc = callTest ./jupyter-ydoc { };
@@ -113,15 +105,11 @@ in
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
-  pyside6 = callTest ./pyside6 { };
-  rasterio = callTest ./rasterio { };
   scipy1_11 = callTest ./scipy1_11 { };
   test-group = callTest ./test-group { };
   nbconvert-wheel = callTest ./nbconvert-wheel { };
   duckdb-wheel = callTest ./duckdb-wheel { };
   shandy-sqlfmt = callTest ./shandy-sqlfmt { };
-  textual-dev = callTest ./textual-dev { };
-  textual-textarea = callTest ./textual-textarea { };
   fiona-source = callTest ./fiona-source { };
   shapely-wheel = callTest ./shapely-wheel { };
   cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };
@@ -145,7 +133,6 @@ in
   contourpy-wheel = callTest ./contourpy-wheel { };
   contourpy-no-wheel = callTest ./contourpy-no-wheel { };
   pytesseract = callTest ./pytesseract { };
-  sphinx5 = callTest ./sphinx5 { };
   subdirectory = callTest ./subdirectory { };
   plyvel = callTest ./plyvel { };
   awsume = callTest ./awsume { };
@@ -163,19 +150,9 @@ in
   pyzmq = callTest ./pyzmq { };
   git-subdirectory-hook = callTest ./git-subdirectory-hook { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
-  # pyqt5 = (callTest ./pyqt5 { });
-  pyqt6 = callTest ./pyqt6 { };
-  pyside6 = callTest ./pyside6 { };
-  tensorflow = callTest ./tensorflow { };
-
-  # Test deadlocks on darwin, sandboxing issue?
-  dependency-environment = callTest ./dependency-environment { };
-
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
   editable = callTest ./editable { };
-  editable-egg = callTest ./editable-egg { };
-  pendulum = callTest ./pendulum { };
 
   # Fails because of missing inputs on darwin
   text-generation-webui = callTest ./text-generation-webui { };
@@ -193,10 +170,37 @@ in
   matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
   # the version of scipy used here doesn't build from source on darwin
   scipy1_9 = callTest ./scipy1_9 { };
-} // lib.optionalAttrs (!(stdenv.isDarwin && stdenv.isAarch64)) {
-  # not a wheel on aarch64-darwin
+} // lib.optionalAttrs (!stdenv.isAarch64) {
+  # no wheel for aarch64 for the tested packages
+  # x86_64-{linux,darwin}
   preferWheel = callTest ./prefer-wheel { };
 } // lib.optionalAttrs (!stdenv.isDarwin || stdenv.isAarch64) {
+  # {x86_64,aarch64}-linux
+  # aarch64-darwin
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
+} // lib.optionalAttrs (!(stdenv.isLinux && stdenv.isAarch64)) {
+  # x86_64-linux
+  # {x86_64,aarch64}-darwin
+  pyqt6 = callTest ./pyqt6 { };
+  pyside6 = callTest ./pyside6 { };
+  textual-dev = callTest ./textual-dev { };
+  textual-textarea = callTest ./textual-textarea { };
+  sphinx5 = callTest ./sphinx5 { };
+  wandb = callTest ./wandb { };
+  # sphinx build from the following tests fail on aarch64-linux
+  manylinux = callTest ./manylinux { };
+  gdal = callTest ./gdal { };
+  rasterio = callTest ./rasterio { };
+  common-pkgs-1 = callTest ./common-pkgs-1 { };
+  common-pkgs-2 = callTest ./common-pkgs-2 { };
+  pytest-randomly = callTest ./pytest-randomly { };
+  fetched-projectdir = callTest ./fetched-projectdir { };
+} // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
+  pendulum = callTest ./pendulum { };
+  tensorflow = callTest ./tensorflow { };
+  # Test deadlocks on darwin and fails to start at all with aarch64-linux,
+  # sandboxing issue?
+  dependency-environment = callTest ./dependency-environment { };
+  editable-egg = callTest ./editable-egg { };
 }

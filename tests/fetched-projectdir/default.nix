@@ -8,7 +8,7 @@ let
     sha256 = "sha256-+Ey384Nz6hvDZAA5OYO0EAGkGjY9Kz4134CRIMjEeyg=";
   };
   # patch the project dir to use poetry-core instead of poetry
-  projectDir = pkgs.runCommand "pyproject-dir" { } ''
+  projectDir = pkgs.runCommand "fetched-projectdir" { } ''
     mkdir -p $out
     cp -r ${rawProjectDir}/* $out
     sed \

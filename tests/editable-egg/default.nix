@@ -13,7 +13,7 @@ let
     };
   };
 in
-runCommand "env-test"
+runCommand "editable-egg-test"
 { } ''
   cp -r --no-preserve=mode ${./src} src
 

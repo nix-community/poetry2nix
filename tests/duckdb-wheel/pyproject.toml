@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-duckdb = "^0.6.1"
+duckdb = "0.8.1"
 
 [build-system]
 requires = ["poetry-core>=1"]

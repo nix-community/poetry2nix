@@ -15,7 +15,7 @@ let
     app = overridden;
   };
 in
-runCommand "app-env-test"
+runCommand "dependency-environment-test"
 { } ''
   ${depEnv}/bin/gunicorn --bind=unix:socket trivial:app &
   sleep 1
