@@ -78,6 +78,7 @@ in
   sqlalchemy = callTest ./sqlalchemy { };
   sqlalchemy2 = callTest ./sqlalchemy2 { };
   tzlocal = callTest ./tzlocal { };
+  jake = callTest ./jake { };
 
   ml-stack = callTest ./ml-stack { };
 
@@ -112,6 +113,7 @@ in
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
+  pyside6 = callTest ./pyside6 { };
   rasterio = callTest ./rasterio { };
   scipy1_11 = callTest ./scipy1_11 { };
   test-group = callTest ./test-group { };
@@ -154,8 +156,11 @@ in
   ruff = callTest ./ruff { };
   colour = callTest ./colour { };
   gnureadline = callTest ./gnureadline { };
+  twisted = callTest ./twisted { };
   scientific = callTest ./scientific { };
   apsw = callTest ./apsw { };
+  no-infinite-recur-on-missing-gitignores = callTest ./no-infinite-recur-on-missing-gitignores { };
+  pyzmq = callTest ./pyzmq { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # pyqt5 = (callTest ./pyqt5 { });
   pyqt6 = callTest ./pyqt6 { };

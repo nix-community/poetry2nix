@@ -734,8 +734,11 @@
     "setuptools"
   ],
   "alabaster": [
-    "flit-core",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "flit-core",
+      "from": "0.7.13"
+    }
   ],
   "aladdin-connect": [
     "setuptools"
@@ -815,6 +818,9 @@
   ],
   "altair": [
     "hatchling",
+    "setuptools"
+  ],
+  "altgraph": [
     "setuptools"
   ],
   "amaranth": [
@@ -927,8 +933,7 @@
   ],
   "ansible-compat": [
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "ansible-core": [
     "setuptools"
@@ -4416,6 +4421,9 @@
   "cycler": [
     "setuptools"
   ],
+  "cyclonedx-bom": [
+    "poetry-core"
+  ],
   "cyclonedx-python-lib": [
     "poetry-core",
     "setuptools"
@@ -4748,6 +4756,9 @@
   "debian-inspector": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "debian-parser": [
+    "setuptools"
   ],
   "debianbts": [
     "setuptools"
@@ -5211,6 +5222,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "django-autoslug": [
+    "setuptools"
+  ],
   "django-bootstrap-form": [
     "setuptools"
   ],
@@ -5225,7 +5239,8 @@
     "setuptools-scm"
   ],
   "django-bootstrap5": [
-    "hatchling"
+    "hatchling",
+    "setuptools"
   ],
   "django-cache-memoize": [
     "setuptools"
@@ -5403,6 +5418,9 @@
   "django-maintenance-mode": [
     "setuptools"
   ],
+  "django-markdownify": [
+    "setuptools"
+  ],
   "django-markdownx": [
     "setuptools"
   ],
@@ -5479,6 +5497,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "django-qr-code": [
+    "setuptools"
+  ],
   "django-ranged-response": [
     "setuptools"
   ],
@@ -5492,6 +5513,9 @@
     "setuptools"
   ],
   "django-rest-auth": [
+    "setuptools"
+  ],
+  "django-rest-framework": [
     "setuptools"
   ],
   "django-rest-polymorphic": [
@@ -5679,10 +5703,22 @@
     "setuptools"
   ],
   "dnspython": [
-    "hatchling",
-    "poetry-core",
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "2.5.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.5.0"
+    }
   ],
   "dnspythonchia": [
     "setuptools",
@@ -5802,6 +5838,7 @@
     "setuptools"
   ],
   "dparse": [
+    "hatchling",
     "setuptools"
   ],
   "dparse2": [
@@ -6175,6 +6212,9 @@
   "email-validator": [
     "setuptools"
   ],
+  "emails": [
+    "setuptools"
+  ],
   "emailthreads": [
     "setuptools"
   ],
@@ -6226,10 +6266,8 @@
     "setuptools"
   ],
   "enrich": [
-    "pip",
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "enterpriseattack": [
     "setuptools"
@@ -7588,6 +7626,9 @@
     "hatchling",
     "setuptools"
   ],
+  "gdspy": [
+    "setuptools"
+  ],
   "gdtoolkit": [
     "setuptools"
   ],
@@ -7823,6 +7864,10 @@
     "poetry-core"
   ],
   "gitignore-parser": [
+    "setuptools"
+  ],
+  "gitlab-lint": [
+    "poetry-core",
     "setuptools"
   ],
   "gitlike-commands": [
@@ -9621,6 +9666,9 @@
   "jaeger-client": [
     "setuptools"
   ],
+  "jake": [
+    "poetry-core"
+  ],
   "janus": [
     "setuptools"
   ],
@@ -11135,6 +11183,9 @@
   "macaroonbakery": [
     "setuptools"
   ],
+  "macholib": [
+    "setuptools"
+  ],
   "maestral": [
     "pbr",
     "setuptools"
@@ -11360,6 +11411,9 @@
   "mattermostdriver": [
     "setuptools"
   ],
+  "maturin": [
+    "setuptools"
+  ],
   "maubot": [
     "setuptools"
   ],
@@ -11582,6 +11636,9 @@
   ],
   "meteofrance-api": [
     "poetry-core",
+    "setuptools"
+  ],
+  "methodtools": [
     "setuptools"
   ],
   "metprint": [
@@ -11933,7 +11990,6 @@
     "setuptools"
   ],
   "molecule": [
-    "pip",
     "setuptools",
     "setuptools-scm"
   ],
@@ -12044,6 +12100,9 @@
     "setuptools"
   ],
   "mpi4py": [
+    "setuptools"
+  ],
+  "mpire": [
     "setuptools"
   ],
   "mpl-scatter-density": [
@@ -13520,6 +13579,9 @@
   "ndg-httpsclient": [
     "setuptools"
   ],
+  "ndh": [
+    "poetry-core"
+  ],
   "ndindex": [
     "cython"
   ],
@@ -14691,6 +14753,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "ossindex-lib": [
+    "poetry-core"
+  ],
   "ots-python": [
     "setuptools-scm"
   ],
@@ -15120,6 +15185,9 @@
     "setuptools"
   ],
   "peco": [
+    "setuptools"
+  ],
+  "peertube": [
     "setuptools"
   ],
   "peewee": [
@@ -15622,6 +15690,9 @@
     "setuptools"
   ],
   "polling": [
+    "setuptools"
+  ],
+  "polling2": [
     "setuptools"
   ],
   "polyfactory": [
@@ -17232,6 +17303,9 @@
   "pyinputevent": [
     "setuptools"
   ],
+  "pyinstaller-hooks-contrib": [
+    "setuptools"
+  ],
   "pyinsteon": [
     "setuptools"
   ],
@@ -17762,6 +17836,9 @@
     "setuptools"
   ],
   "pyobihai": [
+    "setuptools"
+  ],
+  "pyocclient": [
     "setuptools"
   ],
   "pyocd": [
@@ -18911,6 +18988,9 @@
   "pytest-logdog": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "pytest-md": [
+    "setuptools"
   ],
   "pytest-metadata": [
     "hatch-vcs",
@@ -20155,8 +20235,18 @@
   "pyzmq": [
     "cython",
     "packaging",
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools",
+      "until": "26.0.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until": "26.0.0"
+    },
+    {
+      "buildSystem": "scikit-build-core",
+      "from": "26.0.0"
+    }
   ],
   "pyzufall": [
     "setuptools"
@@ -21211,7 +21301,8 @@
     "setuptools"
   ],
   "safety-schemas": [
-    "hatchling"
+    "hatchling",
+    "poetry-core"
   ],
   "sagemaker": [
     "setuptools"
@@ -21704,10 +21795,6 @@
   ],
   "setuptools-scm": [
     "setuptools"
-  ],
-  "setuptools-scm-git-archive": [
-    "setuptools",
-    "setuptools-scm"
   ],
   "setuptools-trial": [
     "setuptools"
@@ -22984,10 +23071,8 @@
     "setuptools"
   ],
   "subprocess-tee": [
-    "pip",
     "setuptools",
-    "setuptools-scm",
-    "setuptools-scm-git-archive"
+    "setuptools-scm"
   ],
   "subprocess32": [
     "setuptools",
@@ -24163,8 +24248,15 @@
     "setuptools"
   ],
   "twisted": [
-    "hatchling",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "24.3.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "24.3.0"
+    }
   ],
   "twitch-python": [
     "setuptools"
@@ -25400,6 +25492,9 @@
   "types-mock": [
     "setuptools"
   ],
+  "types-oauthlib": [
+    "setuptools"
+  ],
   "types-orjson": [
     "setuptools"
   ],
@@ -25482,6 +25577,9 @@
     "setuptools"
   ],
   "types-urllib3": [
+    "setuptools"
+  ],
+  "types-xmltodict": [
     "setuptools"
   ],
   "typesentry": [
@@ -25776,7 +25874,10 @@
   ],
   "uri-template": [
     "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "1.3.0"
+    }
   ],
   "uritemplate": [
     "setuptools"
@@ -26130,6 +26231,9 @@
     "setuptools"
   ],
   "wagtail": [
+    "setuptools"
+  ],
+  "wagtail-autocomplete": [
     "setuptools"
   ],
   "wagtail-localize": [

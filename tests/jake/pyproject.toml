@@ -1,12 +1,14 @@
 [tool.poetry]
-name = "test-ruff"
+name = "jake-test"
 version = "0.1.0"
-description = "Test of the ruff package"
+description = "Test of jake package"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.11"
-ruff = "0.4.2"
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+jake = "^3.0.11"
 
 [build-system]
 requires = ["poetry-core"]

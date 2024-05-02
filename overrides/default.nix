@@ -235,7 +235,7 @@ lib.composeManyExtensions [
 
       ansible-lint = super.ansible-lint.overridePythonAttrs (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
           preBuild = ''
             export HOME=$(mktemp -d)
           '';
@@ -583,6 +583,7 @@ lib.composeManyExtensions [
             "42.0.1" = "sha256-Kq/TSoI1cm9Pwg5CulNlAADmxdq0oWbgymHeMErUtcE=";
             "42.0.2" = "sha256-jw/FC5rQO77h6omtBp0Nc2oitkVbNElbkBUduyprTIc=";
             "42.0.3" = "sha256-QBZLGXdQz2WIBlAJM+yBk1QgmfF4b3G0Y1I5lZmAmtU=";
+            "42.0.4" = "sha256-qaXQiF1xZvv4sNIiR2cb5TfD7oNiYdvUwcm37nh2P2M=";
             "42.0.5" = "sha256-Pw3ftpcDMfZr/w6US5fnnyPVsFSB9+BuIKazDocYjTU=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
@@ -626,7 +627,9 @@ lib.composeManyExtensions [
       cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
         postPatch = ''
-          substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+          if [ -f setup.py ]; then
+            substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+          fi
         '';
       });
 
@@ -704,6 +707,24 @@ lib.composeManyExtensions [
       ddtrace = super.ddtrace.overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++
           (lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
+      });
+
+      deepspeed = super.deepspeed.overridePythonAttrs (old: rec {
+        CUDA_HOME = pkgs.symlinkJoin {
+          name = "deepspeed-cuda-home";
+          paths = [
+            pkgs.cudaPackages.libnvjitlink
+            pkgs.cudaPackages.libcufft
+            pkgs.cudaPackages.libcusparse
+            pkgs.cudaPackages.cuda_nvcc
+          ];
+        };
+        buildInputs = old.buildInputs or [ ] ++ [ self.setuptools ];
+        LD_LIBRARY_PATH = "${CUDA_HOME}/lib";
+        preBuild = ''
+          # Prevent the build from trying to access the default triton cache directory under /homeless-shelter
+          export TRITON_CACHE_DIR=$TMPDIR
+        '';
       });
 
       dictdiffer = super.dictdiffer.overridePythonAttrs (
@@ -885,6 +906,23 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      gdstk = super.gdstk.overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools pkgs.zlib pkgs.qhull ];
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.cmake ];
+        dontUseCmakeConfigure = true;
+        # gdstk ships with its own FindQhull.cmake, but that isn't
+        # included in the python release -- fix
+        postPatch = ''
+          if [ ! -e cmake_modules/FindQhull.cmake ]; then
+            mkdir -p cmake_modules
+            cp ${pkgs.fetchurl {
+              url = "https://github.com/heitzmann/gdstk/raw/57c9ecec1f7bc2345182bcf383602a792026a28b/cmake_modules/FindQhull.cmake";
+              hash = "sha256-lJNWAfSItbg7jsHfe7gZryqJruHjjMM0GXudXa/SJu4=";
+            }} cmake_modules/FindQhull.cmake
+          fi
+        '';
+      });
 
       gnureadline = super.gnureadline.overridePythonAttrs (
         old: {
@@ -1184,7 +1222,7 @@ lib.composeManyExtensions [
             self.pytestrunner
             self.cryptography
             self.pyjwt
-            self.setuptools-scm-git-archive
+            self.setuptools-scm
           ];
         }
       );
@@ -1491,8 +1529,6 @@ lib.composeManyExtensions [
             pkg-config
           ] ++ lib.optionals (lib.versionAtLeast super.matplotlib.version "3.5.0") [
             self.setuptools-scm
-          ] ++ lib.optionals (lib.versionOlder super.matplotlib.version "3.6.0") [
-            self.setuptools-scm-git-archive
           ];
 
           # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
@@ -1563,11 +1599,11 @@ lib.composeManyExtensions [
                   excludes = [ "pyproject.toml" ];
                 })
               ];
-              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
             }
           )) else
           super.molecule.overridePythonAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm self.setuptools-scm-git-archive ];
+            buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools self.setuptools-scm ];
           });
 
       msgpack = super.msgpack.overridePythonAttrs (
@@ -1957,7 +1993,12 @@ lib.composeManyExtensions [
 
         # For OSX, we need to add a dependency on libcxx, which provides
         # `complex.h` and other libraries that pandas depends on to build.
-        postPatch = lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
+        postPatch = ''
+          if [ -f pyproject.toml ]; then
+            substituteInPlace pyproject.toml \
+              --replace 'meson-python==0.13.1' 'meson-python'
+          fi
+        '' + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
           if [ -f setup.py ]; then
             cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
             echo "Adding $cpp_sdk to the setup.py common_include variable"
@@ -2031,6 +2072,14 @@ lib.composeManyExtensions [
             ++ lib.optionals (lib.versionAtLeast old.version "7.1.0") [ xorg.libxcb ]
             ++ lib.optionals self.isPyPy [ tk xorg.libX11 ];
           preConfigure = lib.optional (old.format != "wheel") preConfigure;
+
+          # https://github.com/nix-community/poetry2nix/issues/1139
+          patches = (old.patches or [ ]) ++ pkgs.lib.optionals (!(old.src.isWheel or false) && old.version == "9.5.0") [
+            (pkgs.fetchpatch {
+              url = "https://github.com/python-pillow/Pillow/commit/0ec0a89ead648793812e11739e2a5d70738c6be5.diff";
+              sha256 = "sha256-rZfk+OXZU6xBpoumIW30E80gRsox/Goa3hMDxBUkTY0=";
+            })
+          ];
         }
       );
 
@@ -2038,6 +2087,9 @@ lib.composeManyExtensions [
         old: {
           buildInputs = with pkgs; (old.buildInputs or [ ]) ++ [
             libheif
+          ];
+          nativeBuildInputs = with pkgs; (old.nativeBuildInputs or [ ]) ++ [
+            pkg-config
           ];
         }
       );
@@ -2075,6 +2127,12 @@ lib.composeManyExtensions [
           "--no-deps"
         ];
       });
+
+      polling2 = super.polling2.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ self.pytest-runner ];
+        }
+      );
 
       portend = super.portend.overridePythonAttrs (
         old: {
@@ -2344,6 +2402,10 @@ lib.composeManyExtensions [
 
       sphinxcontrib-jsmath = super.sphinxcontrib-jsmath.overridePythonAttrs (old: {
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ self.sphinx ];
+      });
+
+      sphinxcontrib-jquery = super.sphinxcontrib-jquery.overridePythonAttrs (old: {
+        propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.sphinx ];
       });
 
       sphinxcontrib-qthelp = super.sphinxcontrib-qthelp.overridePythonAttrs (old: {
@@ -2625,7 +2687,7 @@ lib.composeManyExtensions [
         pyqt6;
 
       pyqt6-qt6 = super.pyqt6-qt6.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libQt6*" ];
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PyQt6/Qt6/lib
         '';
@@ -2652,7 +2714,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: {
+      pyside6-essentials = super.pyside6-essentials.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
         preFixup = ''
           addAutoPatchelfSearchPath $out/${self.python.sitePackages}/PySide6
@@ -2661,7 +2723,7 @@ lib.composeManyExtensions [
         postInstall = ''
           rm -r $out/${self.python.sitePackages}/PySide6/__pycache__
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
           pkgs.libxkbcommon
           pkgs.gtk3
           pkgs.speechd
@@ -2685,7 +2747,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: {
+      pyside6-addons = super.pyside6-addons.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [
           "libmysqlclient.so.21"
           "libmimerapi.so"
@@ -2696,7 +2758,7 @@ lib.composeManyExtensions [
           addAutoPatchelfSearchPath ${self.shiboken6}/${self.python.sitePackages}/shiboken6
           addAutoPatchelfSearchPath ${self.pyside6-essentials}/${self.python.sitePackages}/PySide6
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
           pkgs.nss
           pkgs.xorg.libXtst
           pkgs.alsa-lib
@@ -2877,6 +2939,18 @@ lib.composeManyExtensions [
         old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.zeromq ];
+          # setting dontUseCmakeConfigure is necessary because:
+          #
+          # 1. pyzmq uses scikit-build-core as of pyzmq version 26.0.0
+          # 2. scikit-build-core requires the *Python* cmake package to find the cmake binary
+          # 3. since scikit-build-core's is in nativeBuildInputs and python
+          #    cmake depends on pkgs.cmake that puts cmake in pyzmq's
+          #    nativeBuildInputs
+          # 4. point 3 causes the pyzmq build it use vanilla cmake configure
+          #    instead of cmake via scikit-build-core
+          #
+          # what a heaping mess
+          dontUseCmakeConfigure = lib.versionAtLeast old.version "26.0.0";
         }
       );
 
@@ -3050,6 +3124,17 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.4.2" = "sha256-AnAJi0srzwxU/22Uy+OjaSBdAEjCXH99J7VDvI03HDU=";
+            "0.4.1" = "sha256-VTFwuNoqh0RLk0AHTPWEwrja0/aErmUlz82MnCc58jA=";
+            "0.4.0" = "sha256-9XF7aH3cK8t/UqP5V6EnBiZAngN8ELyMAYke8oxwyLo=";
+            "0.3.7" = "sha256-PS4YJpVut+KtEgSlTVtoVdlu6FVipPIzsl01/Io5N64=";
+            "0.3.6" = "sha256-Xgpeyp5OAuBQgYYVIaGteY0NAePEYJTZDUxMh0a3+/g=";
+            "0.3.5" = "sha256-sGmNrkZv03yzEm9fM00H/BZnVr915LW3qGWjci1QACc=";
+            "0.3.4" = "sha256-P0k/0tWbhY2HaxI4QThxpHD48JUjtF/d3iU4MIFhdHI=";
+            "0.3.3" = "sha256-uErhX0GyJ1P5YFpQkwwi7oKvLkK7lziAzz/3at7pfA0=";
+            "0.3.2" = "sha256-2Pt2HuDB9JLD9E1q0JH7jyVoc0II5uVL1l8pAod+9V4=";
+            "0.3.1" = "sha256-MuvVpMBEQSOz6vSEhw7fmvAwgUu/7hrbtP8/MsIL57c=";
+            "0.3.0" = "sha256-U77Bwgbt2T8xkamrWOnOpNRF+8skLWhX8JqgPqowcQw=";
             "0.2.2" = "sha256-wCjPlKlw0IAh5oH4W7DUw3KBxR4bt9Ho7ncRL5TbD/0=";
             "0.2.1" = "sha256-VcDDGi6fPGZ75+J7aOSr7S6Gt5bpr0vM2Sk/Utlmf4k=";
             "0.2.0" = "sha256-xivZHfQcdlp2ccpZiKb+Z70Ej8Vquqy/5A+MLpkEf2E=";
@@ -3060,15 +3145,15 @@ lib.composeManyExtensions [
             "0.1.11" = "sha256-yKb74GADeALai4qZ/+dR6u/QzKQF5404+YJKSYU/oFU=";
             "0.1.10" = "sha256-uFbqL4hFVpH12gSCUmib+Q24cApWKtGa8mRmKFUTQok=";
             "0.1.9" = "sha256-Dtzzh4ersTLbAsG06d8dJa1rFgsruicU0bXl5IAUZMg=";
-            "0.1.8" = "sha256-zf2280aSmGstcgxoU/IWtdtdWExvdKLBNh4Cn5tC1vU";
+            "0.1.8" = "sha256-zf2280aSmGstcgxoU/IWtdtdWExvdKLBNh4Cn5tC1vU=";
             "0.1.7" = "sha256-Al256/8A/efLrf97xCwEocwgs3ngPnEAmkfcLWdlkTw=";
             "0.1.6" = "sha256-EX1tXe8KlwjrohzgzKDeJP0PjfKw8+lnQ7eg9PAUAfQ=";
-            "0.1.5" = "g52cIw0af/wQSuA4QhC2dCjcDGikirswBDAtwf8Drvo=";
-            "0.1.4" = "vdhyzFUimc9gBsLpk7WKwQQ0YtGJg3us+6JCFnXSMrI=";
-            "0.1.3" = "AHnEvDzuQd6W+n9wXhMt6TJwoH1rZEY5UXbhFGwl8+g=";
-            "0.1.2" = "hmjsr7Z5k0tX1e6IBYWufnQ4l7qebyqkRTuULmoHqvM=";
-            "0.1.1" = "sBWB8s9QKedactLfSDPq5tCdlELkTGB0jDQH1S8Hq4k=";
-            "0.1.0" = "w4xFIYmvK8nCeCIM3SxS2OdAK3LmV35h0QkXh+tYP7w=";
+            "0.1.5" = "sha256-g52cIw0af/wQSuA4QhC2dCjcDGikirswBDAtwf8Drvo=";
+            "0.1.4" = "sha256-vdhyzFUimc9gBsLpk7WKwQQ0YtGJg3us+6JCFnXSMrI=";
+            "0.1.3" = "sha256-AHnEvDzuQd6W+n9wXhMt6TJwoH1rZEY5UXbhFGwl8+g=";
+            "0.1.2" = "sha256-hmjsr7Z5k0tX1e6IBYWufnQ4l7qebyqkRTuULmoHqvM=";
+            "0.1.1" = "sha256-sBWB8s9QKedactLfSDPq5tCdlELkTGB0jDQH1S8Hq4k=";
+            "0.1.0" = "sha256-w4xFIYmvK8nCeCIM3SxS2OdAK3LmV35h0QkXh+tYP7w=";
             "0.0.292" = "4D7p5ZMdyemDBaWcCO62bhuPPcIypegqP0YZeX+GJRQ=";
             "0.0.291" = "fAukXL0inAPdDpf//4yHYIQIKj3IifX9ObAM7VskDFI=";
             "0.0.290" = "w2RqT0n++ggeNoEcrZSAF0056ctDBKGkV+GAscQcwOc=";
@@ -3097,6 +3182,17 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.4.2" = "sha256-KpB5xHPuk5qb2yDHfe9U95qNMgW0PHX9RJcOOkKREsY=";
+            "0.4.1" = "sha256-H2ULx1UXkRmCyC7fky394Q8z3HZaNbwF7IqAidY6/Ac=";
+            "0.4.0" = "sha256-FRDnTv+3pn/eV/TJ+fdHiWIttcKZ8VDgF3ELjxqZp14=";
+            "0.3.7" = "sha256-T5lYoWV9HdwN22ADi6ce66LM8XEOuqHx/ocTPhnl1Hk=";
+            "0.3.6" = "sha256-OcZRrARGVcPUatDzmWVLHjpTaJbLd0XjAyNXMzNBxP8=";
+            "0.3.5" = "sha256-ckKG2kNxUt/mJq4DBk+E2aee6xx+/S50z2Cxfqni6io=";
+            "0.3.4" = "sha256-trCl2IBPh33vZ14PGLxxItb1S0/6UXnF1GMFNwvlnZA=";
+            "0.3.3" = "sha256-OY7KkI6DjiGlc/bV1/1Lx4AdxuGnJxL+LLj1gnV7Ibs=";
+            "0.3.2" = "sha256-3Z1rr70goiYpHn6knO2KgjXwOMwD3EhY3PwsdGqKNhM=";
+            "0.3.1" = "sha256-DPynb9T4M5Hf3YfTARybJsvpvgQuuLZ+dGSG6v5YJYE=";
+            "0.3.0" = "sha256-tyMw1Io8FpyOWWwkQu8HK1nEmOns/aKm2GtLI8B7NBc=";
             "0.2.2" = "sha256-LgKiUWd7mWVuZDsnM+1KVS5Trze4Funh2w8cILzsRY8=";
             "0.2.1" = "sha256-atuZw8TML/CujTsXGLdSoahP1y04qdxjcmiNVLy0fns=";
             "0.2.0" = "sha256-zlatDyCWZr4iFY0fVCzhQmUGJxKMQvZd6HAt0PFlMwY=";
@@ -3170,6 +3266,19 @@ lib.composeManyExtensions [
             sed -i pyproject.toml -e 's/numpy==[0-9]\+\.[0-9]\+\.[0-9]\+;/numpy;/g'
           '';
         } else old
+      );
+
+      scikit-build-core = super.scikit-build-core.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+            self.pyproject-metadata
+            self.pathspec
+            # these are _intentionally_ the *Python* wrappers for cmake and
+            # ninja, both of which are used by scikit-build-core
+            self.cmake
+            self.ninja
+          ];
+        }
       );
 
       scikit-image = super.scikit-image.overridePythonAttrs (
@@ -3447,7 +3556,7 @@ lib.composeManyExtensions [
         old: {
           inherit (pkgs.python3.pkgs.vispy) patches;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            self.setuptools-scm-git-archive
+            self.setuptools-scm
           ];
         }
       );
@@ -3734,7 +3843,7 @@ lib.composeManyExtensions [
       });
 
       selinux = super.selinux.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm-git-archive ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ self.setuptools-scm ];
       });
 
       setuptools-scm = super.setuptools-scm.overridePythonAttrs (_old: {
