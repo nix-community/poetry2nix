@@ -8,8 +8,8 @@ on:
       - "master"
 
 concurrency:
-  group: ${{ github.repository }}-${{ github.workflow }}
-  cancel-in-progress: false
+  group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   nix-matrix:
@@ -139,6 +139,9 @@ jobs:
     needs: collect
     name: "Release"
     runs-on: "ubuntu-latest"
+    concurrency:
+      group: ${{ github.repository }}-${{ github.workflow }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - name: "Generate tag"
