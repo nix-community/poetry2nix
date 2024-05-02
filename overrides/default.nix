@@ -2104,6 +2104,12 @@ lib.composeManyExtensions [
         ];
       });
 
+      polling2 = super.polling2.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ self.pytest-runner ];
+        }
+      );
+
       portend = super.portend.overridePythonAttrs (
         old: {
           # required for the extra "toml" dependency in setuptools_scm[toml]
