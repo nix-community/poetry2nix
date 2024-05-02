@@ -8,8 +8,8 @@ on:
       - "master"
 
 concurrency:
-  group: ${{ github.repository }}-${{ github.workflow }}
-  cancel-in-progress: false
+  group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   nix-matrix:
@@ -111,7 +111,7 @@ jobs:
 
       - name: generate poetry.lock
         working-directory: ${{ env.TESTDIR }}
-        run: nix develop -c poetry lock --no-update
+        run: nix develop '.#poetry' -c poetry lock --no-update
 
       - name: create a minimal python package
         working-directory: ${{ env.TESTDIR }}
@@ -139,6 +139,9 @@ jobs:
     needs: collect
     name: "Release"
     runs-on: "ubuntu-latest"
+    concurrency:
+      group: ${{ github.repository }}-${{ github.workflow }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - name: "Generate tag"
