@@ -394,7 +394,7 @@ to the file. Depending on whether you use flakes or not you have the following o
 __For flakes__ the only option is to add the environment variable to the "nix-daemon", the process
 that actually creates sandboxes and performs builds on your behalf.
 
-On NixOS you can add the env variable to the nix-daemon through its [psystemd](https://systemd.io/) configuration:
+On NixOS you can add the env variable to the nix-daemon through its [systemd](https://systemd.io/) configuration:
 
 ```nix
 systemd.services.nix-daemon = {
