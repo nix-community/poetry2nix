@@ -1,7 +1,7 @@
 { pkgs }:
-_self: super: {
+_final: prev: {
 
-  pyramid-deferred-sqla = super.pyramid-deferred-sqla.overridePythonAttrs (
+  pyramid-deferred-sqla = prev.pyramid-deferred-sqla.overridePythonAttrs (
     _: {
       src = pkgs.fetchgit {
         url = "https://github.com/niteoweb/pyramid_deferred_sqla.git";

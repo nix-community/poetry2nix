@@ -7,8 +7,8 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      _self: super: {
-        markdown-it-py = super.markdown-it-py.override {
+      _final: prev: {
+        markdown-it-py = prev.markdown-it-py.override {
           preferWheel = isLinux;
         };
       }

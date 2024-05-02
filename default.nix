@@ -196,7 +196,7 @@ lib.makeScope pkgs.newScope (self: {
       #
       # We need to avoid mixing multiple versions of pythonPackages in the same
       # closure as python can only ever have one version of a dependency
-      baseOverlay = self: super:
+      baseOverlay = final: prev:
         let
           lockPkgs = builtins.listToAttrs (
             builtins.map
@@ -205,14 +205,14 @@ lib.makeScope pkgs.newScope (self: {
                 let normalizedName = normalizePackageName pkgMeta.name; in
                 {
                   name = normalizedName;
-                  value = self.mkPoetryDep (
+                  value = final.mkPoetryDep (
                     pkgMeta // {
                       inherit pwd preferWheels;
                       pos = poetrylockPos;
                       source = pkgMeta.source or null;
                       # Default to files from lock file version 2.0 and fall back to 1.1
                       files = pkgMeta.files or lockFiles.${normalizedName};
-                      pythonPackages = self;
+                      pythonPackages = final;
 
                       sourceSpec = (normalizePackageSet pyProject.tool.poetry.dependencies or { }).${normalizedName}
                         or (normalizePackageSet pyProject.tool.poetry.dev-dependencies or { }).${normalizedName}
@@ -224,7 +224,7 @@ lib.makeScope pkgs.newScope (self: {
               )
               (lib.reverseList compatible)
           );
-          buildSystems = builtins.listToAttrs (builtins.map (x: { name = x; value = super.${x}; }) nixpkgsBuildSystems);
+          buildSystems = builtins.listToAttrs (builtins.map (x: { name = x; value = prev.${x}; }) nixpkgsBuildSystems);
         in
         lockPkgs // buildSystems // {
           # Create a dummy null package for the current project in case any dependencies depend on the root project (issue #307)
@@ -234,45 +234,45 @@ lib.makeScope pkgs.newScope (self: {
         getFunctorFn
         (
           [
-            (self: super: lib.attrsets.mapAttrs
+            (final: prev: lib.attrsets.mapAttrs
               (
                 name: value:
-                  if lib.isDerivation value && self.hasPythonModule value && (normalizePackageName name) != name
+                  if lib.isDerivation value && final.hasPythonModule value && (normalizePackageName name) != name
                   then null
                   else value
               )
-              super)
+              prev)
 
             (
-              self: _super:
+              final: _prev:
                 {
-                  mkPoetryDep = self.callPackage ./mk-poetry-dep.nix {
+                  mkPoetryDep = final.callPackage ./mk-poetry-dep.nix {
                     inherit lib python poetryLib pep508Env pyVersion;
                     inherit pyproject-nix;
                   };
 
-                  __toPluginAble = toPluginAble self;
+                  __toPluginAble = toPluginAble final;
                 }
             )
 
             # Fix infinite recursion in a lot of packages because of checkInputs
-            (_self: super: lib.mapAttrs
+            (_final: prev: lib.mapAttrs
               (_name: value: (
                 if lib.isDerivation value && lib.hasAttr "overridePythonAttrs" value
                 then value.overridePythonAttrs (_: { doCheck = false; })
                 else value
               ))
-              super)
+              prev)
 
             # Null out any filtered packages, we don't want python.pkgs from nixpkgs
-            (_self: _super: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
+            (_final: _prev: builtins.listToAttrs (builtins.map (x: { name = normalizePackageName x.name; value = null; }) incompatible))
             # Create poetry2nix layer
             baseOverlay
 
           ] ++ # User provided overrides
           (if builtins.typeOf overrides == "list" then overrides else [ overrides ])
         );
-      packageOverrides = lib.foldr lib.composeExtensions (_self: _super: { }) overlays;
+      packageOverrides = lib.foldr lib.composeExtensions (_final: _prev: { }) overlays;
       py = python.override { inherit packageOverrides; self = py; };
 
       inputAttrs = mkInputAttrs { inherit py pyProject groups checkGroups extras; attrs = { }; includeBuildSystem = false; };
@@ -476,10 +476,10 @@ lib.makeScope pkgs.newScope (self: {
 
     overrideOverlay = fn:
       let
-        overlay = self: super:
+        overlay = final: prev:
           let
-            defaultSet = defaults self super;
-            customSet = fn self super;
+            defaultSet = defaults final prev;
+            customSet = fn final prev;
           in
           defaultSet // customSet;
       in

@@ -2,6 +2,7 @@
 [![Chat on Matrix](https://matrix.to/img/matrix-badge.svg)](https://matrix.to/#/#poetry2nix:blad.is)
 
 # poetry2nix
+
 _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
 
 For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
@@ -110,8 +111,9 @@ myPythonApp = pkgs.poetry2nix.mkPoetryApplication { projectDir = self; };
 ```
 
 ## Table of contents
+
 - [API](#api)
-- [FAQ](#FAQ)
+- [FAQ](#faq)
 - [How-to guides](#how-to-guides)
 - [Using the flake](#using-the-flake)
 - [Contributing](#contributing)
@@ -159,6 +161,7 @@ poetry = "poetry.console.application:main"
 ```
 
 #### Example
+
 ```nix
 poetry2nix.mkPoetryApplication {
     projectDir = ./.;
@@ -191,6 +194,7 @@ If you prefer to build a single binary that runs `gunicorn web:app`, use [`pkgs.
 Note: If you need to perform overrides on the application, use `app.dependencyEnv.override { app = app.override { ... }; }`. See [./tests/dependency-environment/default.nix](./tests/dependency-environment/default.nix) for a full example.
 
 ### mkPoetryEnv
+
 Creates an environment that provides a Python interpreter along with all dependencies declared by the designated poetry project and lock files. Also allows package sources of an application to be installed in editable mode for fast development. `mkPoetryEnv` takes an attribute set with the following attributes (attributes without default are mandatory):
 
 - **projectDir**: path to the root of the project.
@@ -206,6 +210,7 @@ Creates an environment that provides a Python interpreter along with all depende
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
 #### Example
+
 ```nix
 poetry2nix.mkPoetryEnv {
     projectDir = ./.;
@@ -215,6 +220,7 @@ poetry2nix.mkPoetryEnv {
 See [./tests/env/default.nix](./tests/env/default.nix) for a working example.
 
 #### Example with editable packages
+
 ```nix
 poetry2nix.mkPoetryEnv {
     projectDir = ./.;
@@ -227,6 +233,7 @@ poetry2nix.mkPoetryEnv {
 See [./tests/editable/default.nix](./tests/editable/default.nix) for a working example of an editable package.
 
 #### Example shell.nix
+
 The `env` attribute of the attribute set created by `mkPoetryEnv` contains a shell environment.
 
 ```nix
@@ -242,7 +249,9 @@ in myAppEnv.env
 ```
 
 #### Example shell.nix with external dependencies
+
 For a shell environment including external dependencies, override the `env` to add dependency packages (for example, `pkgs.hello`) as build inputs.
+
 ```nix
 { pkgs ? import <nixpkgs> {} }:
 let
@@ -258,6 +267,7 @@ in myAppEnv.env.overrideAttrs (oldAttrs: {
 ```
 
 ### mkPoetryPackages
+
 Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poetryLock }`. Where `python` is the interpreter specified, `poetryPackages` is a list of all generated python packages, `pyProject` is the parsed `pyproject.toml` and `poetryLock` is the parsed `poetry.lock` file. `mkPoetryPackages` takes an attribute set with the following attributes (attributes without default are mandatory):
 
 - **projectDir**: path to the root of the project.
@@ -272,6 +282,7 @@ Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poet
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
 #### Example
+
 ```nix
 poetry2nix.mkPoetryPackages {
     projectDir = ./.;
@@ -280,6 +291,7 @@ poetry2nix.mkPoetryPackages {
 ```
 
 ### mkPoetryScriptsPackage
+
 Creates a package containing the scripts from `tool.poetry.scripts` of the `pyproject.toml`:
 
 - **projectDir**: path to the root of the project.
@@ -287,6 +299,7 @@ Creates a package containing the scripts from `tool.poetry.scripts` of the `pypr
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 
 #### Example
+
 ```nix
 poetry2nix.mkPoetryScriptsPackage {
     projectDir = ./.;
@@ -295,6 +308,7 @@ poetry2nix.mkPoetryScriptsPackage {
 ```
 
 ### mkPoetryEditablePackage
+
 Creates a package containing editable sources. Changes in the specified paths will be reflected in an interactive nix-shell session without the need to restart it:
 
 - **projectDir**: path to the root of the project.
@@ -303,6 +317,7 @@ Creates a package containing editable sources. Changes in the specified paths wi
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
 
 #### Example
+
 ```nix
 poetry2nix.mkPoetryEditablePackage {
     projectDir = ./.;
@@ -318,9 +333,11 @@ poetry2nix.mkPoetryEditablePackage {
 _poetry2nix_ bundles a set of default overrides that fix problems with various Python packages. These overrides are implemented in [overrides](./overrides/default.nix).
 
 ### overrides.withDefaults
+
 Returns a list containing the specified overlay and `defaultPoetryOverrides`.
 
 Takes an attribute set with the following attributes (attributes without default are mandatory):
+
 - **src**: project source directory
 
 #### Example
@@ -328,12 +345,14 @@ Takes an attribute set with the following attributes (attributes without default
 ```nix
 poetry2nix.mkPoetryEnv {
     projectDir = ./.;
-    overrides = poetry2nix.overrides.withDefaults (self: super: { foo = null; });
+    overrides = poetry2nix.overrides.withDefaults (final: prev: { foo = null; });
 }
 ```
+
 See [./tests/override-support/default.nix](./tests/override-support/default.nix) for a working example.
 
 ### overrides.withoutDefaults
+
 Returns a list containing just the specified overlay, ignoring `defaultPoetryOverrides`.
 
 #### Example
@@ -341,12 +360,14 @@ Returns a list containing just the specified overlay, ignoring `defaultPoetryOve
 ```nix
 poetry2nix.mkPoetryEnv {
     projectDir = ./.;
-    overrides = poetry2nix.overrides.withoutDefaults (self: super: { foo = null; });
+    overrides = poetry2nix.overrides.withoutDefaults (final: prev: { foo = null; });
 }
 ```
 
 ### cleanPythonSources
+
 Provides a source filtering mechanism that:
+
 - Filters gitignore's
 - Filters pycache/pyc files
 - Uses cleanSourceFilter to filter out .git/.hg, .o/.so, editor backup files & nix result symlinks
@@ -360,18 +381,20 @@ poetry2nix.cleanPythonSources {
 ```
 
 ### Creating a custom Poetry2nix instance
+
 Sometimes when it can be convenient to create a custom instance of `poetry2nix` with a different set of default overrides.
 
 #### Example
+
 ```nix
 let
-  # self & super refers to poetry2nix
-  p2nix = poetry2nix.overrideScope (self: super: {
+  # final & prev refers to poetry2nix
+  p2nix = poetry2nix.overrideScope' (final: prev: {
 
-    # pyself & pysuper refers to python packages
-    defaultPoetryOverrides = super.defaultPoetryOverrides.extend (pyself: pysuper: {
+    # pyself & pyprev refers to python packages
+    defaultPoetryOverrides = prev.defaultPoetryOverrides.extend (pyfinal: pyprev: {
 
-      my-custom-pkg = super.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
+      my-custom-pkg = prev.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
 
     });
 
@@ -384,20 +407,21 @@ p2nix.mkPoetryApplication {
 ```
 
 or as a [nixpkgs overlay](https://nixos.org/nixpkgs/manual/#chap-overlays):
+
 ```nix
 let
   pkgs = import <nixpkgs> {
     overlays = [
-      # self & super refers to nixpkgs
-      (self: super: {
+      # final & prev refers to nixpkgs
+      (final: prev: {
 
-        # p2self & p2super refers to poetry2nix
-        poetry2nix = super.poetry2nix.overrideScope (p2nixself: p2nixsuper: {
+        # p2nixfinal & p2nixprev refers to poetry2nix
+        poetry2nix = prev.poetry2nix.overrideScope' (p2nixfinal: p2nixprev: {
 
-          # pyself & pysuper refers to python packages
-          defaultPoetryOverrides = p2nixsuper.defaultPoetryOverrides.extend (pyself: pysuper: {
+          # pyfinal & pyprev refers to python packages
+          defaultPoetryOverrides = p2nixprev.defaultPoetryOverrides.extend (pyfinal: pyprev: {
 
-            my-custom-pkg = super.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
+            my-custom-pkg = prev.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
 
           });
 
@@ -523,7 +547,7 @@ __poetry2nix__ contains special code to forward this variable as an environment 
 
 ```shell
 # non-flake project
-nix-build -I NETRC=/etc/nix/netrc --option extra-sandbox-paths /etc/nix/netrc default.nix 
+nix-build -I NETRC=/etc/nix/netrc --option extra-sandbox-paths /etc/nix/netrc default.nix
 ```
 
 Note: The alternative to pass the `NETRC` path environment variable
@@ -549,7 +573,7 @@ Any package that is used, but isn't in the `poetry.lock` file (most commonly [bu
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
   overrides = poetry2nix.overrides.withDefaults (final: prev: {
-    # Notice that using .overridePythonAttrs or .overrideAttrs wont work!
+    # Notice that using .overridePythonAttrs or .overrideAttrs won't work!
     some-dependency = prev.some-dependency.override {
       preferWheel = true;
     };
@@ -570,6 +594,7 @@ poetry2nix.mkPoetryApplication {
 **A.** Have a look at the following document [edgecase.md](./docs/edgecases.md)
 
 ## How-to guides
+
 - [Package and deploy Python apps faster with Poetry and Nix](https://www.youtube.com/watch?v=TbIHRHy7_JM)
 This is a short (11 minutes) video tutorial by [Steve Purcell](https://github.com/purcell/) from [Tweag](https://tweag.io) walking you through how to get started with a small web development project.
 
@@ -607,10 +632,13 @@ nix-build --expr 'with import <unstable> {}; callPackage ./tests/default.nix {}'
 To sort `overrides/build-systems.json` according to the [`sort-build-systems` job](.github/workflows/ci.yml), patch the source with the output of the "Check format" step, like this: `nix-shell [omitted] | patch -p0`.
 
 ## Contact
+
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
 
 ## Acknowledgements
+
 Development of `poetry2nix` has been supported by [Tweag](https://tweag.io).
 
 ## License
+
 _poetry2nix_ is released under the terms of the MIT license.

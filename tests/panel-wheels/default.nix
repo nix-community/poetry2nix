@@ -11,16 +11,16 @@ let
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     overrides = poetry2nix.overrides.withDefaults (
-      _self: super: {
-        bokeh = super.bokeh.override {
+      _final: prev: {
+        bokeh = prev.bokeh.override {
           preferWheel = true;
         };
 
-        panel = super.panel.override {
+        panel = prev.panel.override {
           preferWheel = true;
         };
 
-        pillow = super.pillow.override {
+        pillow = prev.pillow.override {
           preferWheel = true;
         };
       }

@@ -7,8 +7,8 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      _self: super: {
-        grpcio = super.grpcio.override {
+      _final: prev: {
+        grpcio = prev.grpcio.override {
           preferWheel = isLinux;
         };
       }

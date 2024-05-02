@@ -1,7 +1,7 @@
 { pkgs }:
-_self: super: {
+_final: prev: {
 
-  alembic = super.alembic.overridePythonAttrs (
+  alembic = prev.alembic.overridePythonAttrs (
     _: {
       src = pkgs.fetchgit {
         url = "https://github.com/sqlalchemy/alembic.git";
@@ -11,7 +11,7 @@ _self: super: {
     }
   );
 
-  colorama = super.colorama.overridePythonAttrs (
+  colorama = prev.colorama.overridePythonAttrs (
     _: {
       src = pkgs.fetchgit {
         url = "https://github.com/tartley/colorama.git";
@@ -21,7 +21,7 @@ _self: super: {
     }
   );
 
-  s3transfer = super.s3transfer.overridePythonAttrs (
+  s3transfer = prev.s3transfer.overridePythonAttrs (
     _: {
       src = pkgs.fetchgit {
         url = "https://github.com/boto/s3transfer.git";

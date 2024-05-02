@@ -42,7 +42,7 @@ class UrlPackage(Package):
     def expression(self, output: str) -> str:
         sha256 = output.rstrip()
         return textwrap.dedent("""
-            %s = super.%s.overridePythonAttrs (
+            %s = prev.%s.overridePythonAttrs (
               _: {
                 src = pkgs.fetchzip {
                   url = "%s";
@@ -76,7 +76,7 @@ class GitPackage(Package):
     def expression(self, output: str) -> str:
         meta = json.loads(output)
         return textwrap.dedent("""
-            %s = super.%s.overridePythonAttrs (
+            %s = prev.%s.overridePythonAttrs (
               _: {
                 src = pkgs.fetchgit {
                   url = "%s";
@@ -131,7 +131,7 @@ def main() -> None:
 
         lines = [
             "{ pkgs }:",
-            "self: super: {",
+            "final: prev: {",
         ]
 
         for f in futures:

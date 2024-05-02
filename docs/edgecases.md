@@ -128,11 +128,11 @@ In order to be able to build `django-floppyforms` we should modify our nix defin
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
   overrides = poetry2nix.defaultPoetryOverrides.extend
-    (self: super: {
-      django-floppyforms = super.django-floppyforms.overridePythonAttrs
+    (final: prev: {
+      django-floppyforms = prev.django-floppyforms.overridePythonAttrs
       (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ prev.setuptools ];
         }
       );
     });
@@ -150,17 +150,17 @@ Your file might then look something like this:
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
   overrides = poetry2nix.defaultPoetryOverrides.extend
-    (self: super: {
-      first-dependency = super.first-dependency.overridePythonAttrs
+    (final: prev: {
+      first-dependency = prev.first-dependency.overridePythonAttrs
       (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ super.buildtools ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ prev.buildtools ];
         }
       );
-      second-dependency = super.second-dependency.overridePythonAttrs
+      second-dependency = prev.second-dependency.overridePythonAttrs
       (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ super.pdm ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ prev.pdm ];
         }
       );
     });
@@ -180,10 +180,10 @@ let
     simpervisor = [ "setuptools" ];
     pandas = [ "versioneer" ];
   };
-  p2n-overrides = p2n.defaultPoetryOverrides.extend (self: super:
+  p2n-overrides = p2n.defaultPoetryOverrides.extend (final: prev:
     builtins.mapAttrs (package: build-requirements:
-      (builtins.getAttr package super).overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ (builtins.map (pkg: if builtins.isString pkg then builtins.getAttr pkg super else pkg) build-requirements);
+      (builtins.getAttr package prev).overridePythonAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ (builtins.map (pkg: if builtins.isString pkg then builtins.getAttr pkg prev else pkg) build-requirements);
       })
     ) pypkgs-build-requirements
   );
@@ -212,9 +212,9 @@ Resulting override:
 
 ```nix
 {
-  python-ulid = super.python-ulid.overridePythonAttrs (
+  python-ulid = prev.python-ulid.overridePythonAttrs (
     old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ self.setuptools-scm ];
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.setuptools-scm ];
     }
   );
 }
@@ -224,9 +224,9 @@ Resulting override:
 
 **Please update `getCargoHash` and there is a stanza that gives out the hash**
 
-This has known solution https://github.com/nix-community/poetry2nix/pull/1116
+This has known solution <https://github.com/nix-community/poetry2nix/pull/1116>
 
-Though, the solution still needs human-in-a-loop as there are many cases where 
+Though, the solution still needs human-in-a-loop as there are many cases where
 there is no expected hash provided.
 
 There are then 2 ways you can solve this while waiting for the PR to merge:
@@ -278,7 +278,6 @@ We have many issues come in thanks to the recent boom of maturin and setuptools-
 While the ecosystem is growing, we have an escape hatch to use `preferWheels`
 if you trust pip wheel dists. `preferWheels` is basically Python's version of
 compiled binary, so it is vulnerable to supply chain attacks.
-
 
 ```nix
 poetry2nix.mkPoetryApplication {
@@ -333,10 +332,10 @@ files = [
 Suppose we override the version in our Nix file as follows:
 
 ```nix
-let poetryOverrides = self: super: {
-    foobar = super.foobar.overridePythonAttrs (old: rec {
+let poetryOverrides = final: prev: {
+    foobar = prev.foobar.overridePythonAttrs (old: rec {
       version = "2.0";
-      src = super.pkgs.fetchFromGitHub {
+      src = prev.pkgs.fetchFromGitHub {
         owner = "fakerepo";
         repo = "foobar";
         rev = "refs/tags/${version}";

@@ -6,11 +6,11 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      _: super: {
-        contourpy = super.contourpy.override {
+      _: prev: {
+        contourpy = prev.contourpy.override {
           preferWheel = true;
         };
-        numpy = super.numpy.override {
+        numpy = prev.numpy.override {
           preferWheel = true;
         };
       }

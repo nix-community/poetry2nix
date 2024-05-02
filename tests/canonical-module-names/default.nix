@@ -10,8 +10,8 @@ poetry2nix.mkPoetryApplication {
     poetry2nix.defaultPoetryOverrides
     (import ./poetry-git-overlay.nix { inherit pkgs; })
     (
-      _self: super: {
-        pyramid-deferred-sqla = super.pyramid-deferred-sqla.overridePythonAttrs (
+      _final: prev: {
+        pyramid-deferred-sqla = prev.pyramid-deferred-sqla.overridePythonAttrs (
           _old: {
             postPatch = ''
               touch LICENSE

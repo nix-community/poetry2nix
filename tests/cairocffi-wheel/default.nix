@@ -6,8 +6,8 @@ let
     poetrylock = ./poetry.lock;
     preferWheels = false;
     overrides = poetry2nix.overrides.withDefaults (
-      _: super: {
-        cairocffi = super.cairocffi.override {
+      _: prev: {
+        cairocffi = prev.cairocffi.override {
           preferWheel = true;
         };
       }
