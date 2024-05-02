@@ -6,6 +6,109 @@ _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix deriva
 
 For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
+## Quickstart Non-flake
+
+You can turn your Python application into a Nix package with a few lines
+by adding a `default.nix` next to your `pyproject.toml` and `poetry.lock` files:
+
+```nix
+# file: default.nix
+let
+  sources = import ./nix/sources.nix;
+  pkgs = import sources.nixpkgs { };
+  # Let all API attributes like "poetry2nix.mkPoetryApplication" 
+  # use the packages and versions (python3, poetry etc.) from our pinned nixpkgs above
+  # under the hood:
+  poetry2nix = import sources.poetry2nix { inherit pkgs; };
+  myPythonApp = poetry2nix.mkPoetryApplication { projectDir = ./.; };
+in
+myPythonApp
+```
+
+The Nix code being executed by `import sources.poetry2nix { inherit pkgs; }`
+is [./default.nix](./default.nix).
+The resulting `poetry2nix` attribute set contains (only) the [API attributes](#api) like
+`mkPoetryApplication`.
+
+Hint:
+This example assumes that `nixpkgs` and `poetry2nix` are managed and pinned by
+the handy [niv tool](https://github.com/nmattia/niv). In your terminal just run:
+
+```shell
+nix-shell -p niv
+niv init
+niv add nix-community/poetry2nix
+```
+
+You can then build your Python application with Nix by running:
+
+```shell
+nix-build default.nix
+```
+
+Finally, you can run your Python application from the new `./result` symlinked folder:
+
+```shell
+# replace <script> with the name in the [tool.poetry.scripts] section of your pyproject.toml
+./result/bin/<script>
+```
+
+## Quickstart flake.nix
+
+If your project uses the experimental `flake.nix` schema, you don't need niv.
+This repository provides _poetry2nix_ as a flake as well for you to import
+as a flake input. For example:
+
+```nix
+# file: flake.nix
+{
+  description = "Python application packaged using poetry2nix";
+
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.poetry2nix.url = "github:nix-community/poetry2nix";
+
+  outputs = { self, nixpkgs, poetry2nix }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+      # create a custom "mkPoetryApplication" API function that under the hood uses
+      # the packages and versions (python3, poetry etc.) from our pinned nixpkgs above:
+      inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryApplication;
+      myPythonApp = mkPoetryApplication { projectDir = ./.; };
+    in
+    {
+      apps.${system}.default = {
+        type = "app";
+        # replace <script> with the name in the [tool.poetry.scripts] section of your pyproject.toml
+        program = "${myPythonApp}/bin/<script>";
+      };
+    };
+}
+```
+
+You can then (build and) run your Python app with
+
+```shell
+nix run .
+```
+
+A larger real-world setup can be found in [./templates/app/flake.nix](./templates/app/flake.nix).
+This example is also exported as a flake template so that you can start your _poetry2nix_ project
+conveniently through:
+
+```shell
+nix flake init --template github:nix-community/poetry2nix
+```
+
+Additionally, this project flake provides an [overlay](https://wiki.nixos.org/wiki/Overlays)
+to merge `poetry2nix` into your `pkgs` and access it as `pkgs.poetry2nix`.
+Just replace the three lines `pkgs = ...`, `inherit ...` and `myPythonApp = ...` above with:
+
+```nix
+pkgs = nixpkgs.legacyPackages.${system}.extend poetry2nix.overlay;
+myPythonApp = pkgs.poetry2nix.mkPoetryApplication { projectDir = self; };
+```
+
 ## Table of contents
 - [API](#api)
 - [FAQ](#FAQ)
@@ -79,8 +182,8 @@ in app.dependencyEnv
 After building this expression, your CLI and app can be called with these commands
 
 ```shell
-$ result/bin/python -m admin
-$ result/bin/gunicorn web:app
+./result/bin/python -m admin
+./result/bin/gunicorn web:app
 ```
 
 If you prefer to build a single binary that runs `gunicorn web:app`, use [`pkgs.writeShellApplication`](https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/trivial-builders.nix#L317) for a simple wrapper.
@@ -470,15 +573,6 @@ poetry2nix.mkPoetryApplication {
 - [Package and deploy Python apps faster with Poetry and Nix](https://www.youtube.com/watch?v=TbIHRHy7_JM)
 This is a short (11 minutes) video tutorial by [Steve Purcell](https://github.com/purcell/) from [Tweag](https://tweag.io) walking you through how to get started with a small web development project.
 
-## Using the flake
-
-For the experimental flakes functionality we provide _poetry2nix_ as a flake providing an overlay
-to use with [nixpkgs](https://nixos.org/nixpkgs/manual). Additionally, the flake provides
-a flake template to quickly start using _poetry2nix_ in a project:
-
-```sh
-nix flake init --template github:nix-community/poetry2nix
-```
 ## Contributing
 
 Contributions to this project are welcome in the form of GitHub PRs. Please consider the following before creating PRs:
