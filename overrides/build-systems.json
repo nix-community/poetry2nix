@@ -20244,7 +20244,7 @@
       "until": "26.0.0"
     },
     {
-      "buildSystem": "scikit-build",
+      "buildSystem": "scikit-build-core",
       "from": "26.0.0"
     }
   ],
