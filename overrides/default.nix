@@ -626,7 +626,9 @@ lib.composeManyExtensions [
       cyclonedx-python-lib = super.cyclonedx-python-lib.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ self.setuptools ];
         postPatch = ''
-          substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+          if [ -f setup.py ]; then
+            substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+          fi
         '';
       });
 
@@ -2101,6 +2103,12 @@ lib.composeManyExtensions [
           "--no-deps"
         ];
       });
+
+      polling2 = super.polling2.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ self.pytest-runner ];
+        }
+      );
 
       portend = super.portend.overridePythonAttrs (
         old: {
