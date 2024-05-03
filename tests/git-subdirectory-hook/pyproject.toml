@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "test-subdirectory"
+version = "0.1.0"
+description = "Test of subdirectory"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dependencies.trivial]
+git = "https://github.com/nix-community/poetry2nix"
+subdirectory = "tests/pytest-randomly"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
