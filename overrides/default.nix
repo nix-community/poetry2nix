@@ -640,7 +640,10 @@ lib.composeManyExtensions [
 
       daphne = prev.daphne.overridePythonAttrs (_old: {
         postPatch = ''
-          substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+          # sometimes setup.py doesn't exist
+          if [ -f setup.py ]; then
+            substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+          fi
         '';
       });
 
