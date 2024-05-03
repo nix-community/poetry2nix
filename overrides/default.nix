@@ -2803,8 +2803,11 @@ lib.composeManyExtensions [
       pytest-django = prev.pytest-django.overridePythonAttrs (
         _old: {
           postPatch = ''
-            substituteInPlace setup.py --replace "'pytest>=3.6'," ""
-            substituteInPlace setup.py --replace "'pytest>=3.6'" ""
+            # sometimes setup.py doesn't exist
+            if [ -f setup.py ]; then
+              substituteInPlace setup.py --replace "'pytest>=3.6'," ""
+              substituteInPlace setup.py --replace "'pytest>=3.6'" ""
+            fi
           '';
         }
       );
