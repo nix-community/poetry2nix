@@ -1392,6 +1392,13 @@ lib.composeManyExtensions [
         }
       );
 
+      llama-index = prev.llama-index.overridePythonAttrs (_old: {
+        postInstall = ''
+          # Conflicts with same file from `llama-index-cli`
+          rm -f $out/bin/llamaindex-cli
+        '';
+      });
+
       llvmlite = prev.llvmlite.overridePythonAttrs (
         old:
         let
