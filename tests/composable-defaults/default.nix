@@ -1,6 +1,6 @@
 { poetry2nix, python3 }:
 let
-  p2nix = poetry2nix.overrideScope' (_final: prev: {
+  p2nix = poetry2nix.overrideScope (_final: prev: {
     defaultPoetryOverrides = prev.defaultPoetryOverrides.extend (_pyfinal: _pyprev: {
       my-custom-pkg = prev.my-custom-pkg.overridePythonAttrs (_oldAttrs: { });
     });
