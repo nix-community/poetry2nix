@@ -5513,10 +5513,10 @@
   "django-permissionedforms": [
     "setuptools"
   ],
-  "django-pglocks": [
+  "django-pg-zero-downtime-migrations": [
     "setuptools"
   ],
-  "django-pg-zero-downtime-migrations": [
+  "django-pglocks": [
     "setuptools"
   ],
   "django-phonenumber-field": [
