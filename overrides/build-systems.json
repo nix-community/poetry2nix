@@ -21,6 +21,9 @@
   "accelerate": [
     "setuptools"
   ],
+  "access-points": [
+    "setuptools"
+  ],
   "accuweather": [
     "setuptools"
   ],
@@ -4088,6 +4091,9 @@
   "contexttimer": [
     "setuptools"
   ],
+  "contextvars": [
+    "setuptools"
+  ],
   "contourpy": [
     "pybind11",
     {
@@ -4739,6 +4745,9 @@
     "cython",
     "setuptools"
   ],
+  "ddtrace-graphql": [
+    "setuptools"
+  ],
   "deal": [
     "flit-core",
     "setuptools"
@@ -5198,6 +5207,12 @@
   "django-5": [
     "setuptools"
   ],
+  "django-add-default-value": [
+    "setuptools"
+  ],
+  "django-admin-multiple-choice-list-filter": [
+    "setuptools"
+  ],
   "django-admin-sortable2": [
     "setuptools"
   ],
@@ -5206,6 +5221,9 @@
   ],
   "django-allauth-2fa": [
     "hatchling"
+  ],
+  "django-annoying": [
+    "setuptools"
   ],
   "django-anymail": [
     "hatchling",
@@ -5240,6 +5258,9 @@
   ],
   "django-bootstrap5": [
     "hatchling",
+    "setuptools"
+  ],
+  "django-braces": [
     "setuptools"
   ],
   "django-cache-memoize": [
@@ -5279,6 +5300,9 @@
     "setuptools"
   ],
   "django-compressor": [
+    "setuptools"
+  ],
+  "django-concurrency": [
     "setuptools"
   ],
   "django-configurations": [
@@ -5322,6 +5346,9 @@
   "django-currentuser": [
     "hatchling"
   ],
+  "django-debug-panel": [
+    "setuptools"
+  ],
   "django-debug-toolbar": [
     {
       "buildSystem": "setuptools",
@@ -5331,6 +5358,12 @@
       "buildSystem": "hatchling",
       "from": "3.8.0"
     }
+  ],
+  "django-decorator-include": [
+    "setuptools"
+  ],
+  "django-deprecate-fields": [
+    "setuptools"
   ],
   "django-discover-runner": [
     "setuptools"
@@ -5342,6 +5375,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "django-enumfields": [
+    "setuptools"
+  ],
   "django-environ": [
     "setuptools"
   ],
@@ -5350,6 +5386,9 @@
   ],
   "django-filter": [
     "flit-core",
+    "setuptools"
+  ],
+  "django-fixture-magic": [
     "setuptools"
   ],
   "django-floppyforms": [
@@ -5401,6 +5440,9 @@
   ],
   "django-js-asset": [
     "hatchling",
+    "setuptools"
+  ],
+  "django-json-widget": [
     "setuptools"
   ],
   "django-libsass": [
@@ -5471,6 +5513,9 @@
   "django-permissionedforms": [
     "setuptools"
   ],
+  "django-pg-zero-downtime-migrations": [
+    "setuptools"
+  ],
   "django-pglocks": [
     "setuptools"
   ],
@@ -5500,10 +5545,16 @@
   "django-qr-code": [
     "setuptools"
   ],
+  "django-quicky": [
+    "setuptools"
+  ],
   "django-ranged-response": [
     "setuptools"
   ],
   "django-raster": [
+    "setuptools"
+  ],
+  "django-ratelimit": [
     "setuptools"
   ],
   "django-redis": [
@@ -5533,14 +5584,23 @@
   "django-rq": [
     "setuptools"
   ],
+  "django-rq-scheduler": [
+    "setuptools"
+  ],
   "django-scim2": [
     "poetry-core"
   ],
   "django-scopes": [
     "setuptools"
   ],
+  "django-ses": [
+    "setuptools"
+  ],
   "django-sesame": [
     "poetry-core",
+    "setuptools"
+  ],
+  "django-session-security": [
     "setuptools"
   ],
   "django-silk": [
@@ -5595,6 +5655,9 @@
   ],
   "django-types": [
     "poetry-core"
+  ],
+  "django-user-agents": [
+    "setuptools"
   ],
   "django-versatileimagefield": [
     "setuptools"
@@ -8329,6 +8392,9 @@
   "graphene-django": [
     "setuptools"
   ],
+  "graphene-django-optimizer": [
+    "setuptools"
+  ],
   "graphite-web": [
     "setuptools"
   ],
@@ -8348,6 +8414,9 @@
     "setuptools"
   ],
   "graphql-subscription-manager": [
+    "setuptools"
+  ],
+  "graphql-ws": [
     "setuptools"
   ],
   "graphqlclient": [
@@ -11507,6 +11576,9 @@
   "mdp": [
     "setuptools"
   ],
+  "mdstat": [
+    "setuptools"
+  ],
   "mdtraj": [
     "cython_0",
     "setuptools"
@@ -11573,6 +11645,9 @@
     "setuptools"
   ],
   "memory-profiler": [
+    "setuptools"
+  ],
+  "meraki": [
     "setuptools"
   ],
   "mercantile": [
@@ -15796,6 +15871,9 @@
   "pprintpp": [
     "setuptools"
   ],
+  "pprofile": [
+    "setuptools"
+  ],
   "pproxy": [
     "setuptools"
   ],
@@ -19101,6 +19179,9 @@
   "pytest-resource-path": [
     "setuptools"
   ],
+  "pytest-retry": [
+    "setuptools"
+  ],
   "pytest-reverse": [
     "setuptools"
   ],
@@ -21156,6 +21237,9 @@
   ],
   "rq": [
     "hatchling",
+    "setuptools"
+  ],
+  "rq-scheduler": [
     "setuptools"
   ],
   "rsa": [
