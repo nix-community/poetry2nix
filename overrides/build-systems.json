@@ -8188,6 +8188,9 @@
   "google-resumable-media": [
     "setuptools"
   ],
+  "google-search-results": [
+    "setuptools"
+  ],
   "googleapis-common-protos": [
     "setuptools"
   ],
