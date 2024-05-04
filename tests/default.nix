@@ -179,10 +179,13 @@ in
   # aarch64-darwin
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
+} // lib.optionalAttrs ((stdenv.isLinux && stdenv.isx86_64) || (stdenv.isDarwin && stdenv.isAarch64)) {
+  # x86_64-linux
+  # aarch64-darwin
+  pyqt6 = callTest ./pyqt6 { };
 } // lib.optionalAttrs (!(stdenv.isLinux && stdenv.isAarch64)) {
   # x86_64-linux
   # {x86_64,aarch64}-darwin
-  pyqt6 = callTest ./pyqt6 { };
   pyside6 = callTest ./pyside6 { };
   textual-dev = callTest ./textual-dev { };
   textual-textarea = callTest ./textual-textarea { };
