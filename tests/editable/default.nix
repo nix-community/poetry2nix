@@ -13,7 +13,7 @@ let
     };
   };
 in
-runCommand "env-test"
+runCommand "editable-test"
   { } ''
   cp -r --no-preserve=mode ${./src} src
   echo 'print("Changed")' > src/trivial/__main__.py
