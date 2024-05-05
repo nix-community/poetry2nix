@@ -3961,34 +3961,23 @@ lib.composeManyExtensions [
   )
   # The following are dependencies of torch >= 2.0.0.
   # torch doesn't officially support system CUDA, unless you build it yourself.
-  (self: super: lib.genAttrs [
-    "nvidia-cublas-cu11"
-    "nvidia-cublas-cu12"
-    "nvidia-cuda-cupti-cu11"
-    "nvidia-cuda-cupti-cu12"
-    "nvidia-cuda-curand-cu11"
-    "nvidia-cuda-curand-cu12"
-    "nvidia-cuda-nvrtc-cu11"
-    "nvidia-cuda-nvrtc-cu12"
-    "nvidia-cuda-runtime-cu11"
-    "nvidia-cuda-runtime-cu12"
-    "nvidia-cudnn-cu11"
-    "nvidia-cudnn-cu12"
-    "nvidia-cufft-cu11"
-    "nvidia-cufft-cu12"
-    "nvidia-curand-cu11"
-    "nvidia-curand-cu12"
-    "nvidia-cusolver-cu11"
-    "nvidia-cusolver-cu12"
-    "nvidia-cusparse-cu11"
-    "nvidia-cusparse-cu12"
-    "nvidia-nccl-cu11"
-    "nvidia-nccl-cu12"
-    "nvidia-nvjitlink-cu11"
-    "nvidia-nvjitlink-cu12"
-    "nvidia-nvtx-cu11"
-    "nvidia-nvtx-cu12"
-  ]
+  (self: super: lib.genAttrs
+    (lib.mapConcat
+      (pkg: [ "nvidia-${pkg}-cu11" "nvidia-${pkg}-cu12" ]) [
+      "cublas"
+      "cuda-cupti"
+      "cuda-curand"
+      "cuda-nvrtc"
+      "cuda-runtime"
+      "cudnn"
+      "cufft"
+      "curand"
+      "cusolver"
+      "cusparse"
+      "nccl"
+      "nvjitlink"
+      "nvtx"
+    ])
     (name: super.${name}.overridePythonAttrs (_: {
       # 1. Remove __init__.py because all the cuda packages include it
       # 2. Symlink the cuda libraries to the lib directory so autopatchelf can find them
