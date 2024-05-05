@@ -1792,34 +1792,27 @@ lib.composeManyExtensions [
               ];
             }) else prev.notebook;
 
-      # The following are dependencies of torch >= 2.0.0.
-      # torch doesn't officially support system CUDA, unless you build it yourfinal.
       nvidia-cudnn-cu11 = prev.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
-        autoPatchelfIgnoreMissingDeps = true;
-        # (Bytecode collision happens with nvidia-cuda-nvrtc-cu11.)
-        postFixup = ''
-          rm -r $out/${final.python.sitePackages}/nvidia/{__pycache__,__init__.py}
-        '';
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
           final.nvidia-cublas-cu11
         ];
       });
 
-      nvidia-cuda-nvrtc-cu11 = prev.nvidia-cuda-nvrtc-cu11.overridePythonAttrs (_: {
-        # (Bytecode collision happens with nvidia-cudnn-cu11.)
-        postFixup = ''
-          rm -r $out/${final.python.sitePackages}/nvidia/{__pycache__,__init__.py}
-        '';
+      nvidia-cudnn-cu12 = prev.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
+        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+          final.nvidia-cublas-cu12
+        ];
       });
 
       nvidia-cusolver-cu11 = prev.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
-        autoPatchelfIgnoreMissingDeps = true;
-        # (Bytecode collision happens with nvidia-cusolver-cu11.)
-        postFixup = ''
-          rm -r $out/${final.python.sitePackages}/nvidia/{__pycache__,__init__.py}
-        '';
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
           final.nvidia-cublas-cu11
+        ];
+      });
+
+      nvidia-cusolver-cu12 = prev.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
+        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
+          final.nvidia-cublas-cu12
         ];
       });
 
@@ -2680,7 +2673,7 @@ lib.composeManyExtensions [
               dontWrapQtApps = true;
               dontConfigure = true;
               enableParallelBuilding = true;
-              # HACK: paralellize compilation of make calls within pyqt's setup.py
+              # HACK: parallelize compilation of make calls within pyqt's setup.py
               # pkgs/stdenv/generic/setup.sh doesn't set this for us because
               # make gets called by python code and not its build phase
               # format=pyproject means the pip-build-hook hook gets used to build this project
@@ -3518,6 +3511,7 @@ lib.composeManyExtensions [
       torch = prev.torch.overridePythonAttrs (old: {
         # torch has an auto-magical way to locate the cuda libraries from site-packages.
         autoPatchelfIgnoreMissingDeps = true;
+
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
           final.numpy
         ];
@@ -3965,4 +3959,32 @@ lib.composeManyExtensions [
       };
     }
   )
+  # The following are dependencies of torch >= 2.0.0.
+  # torch doesn't officially support system CUDA, unless you build it yourself.
+  (self: super: lib.genAttrs
+    (lib.concatMap
+      (pkg: [ "nvidia-${pkg}-cu11" "nvidia-${pkg}-cu12" ])
+      [
+        "cublas"
+        "cuda-cupti"
+        "cuda-curand"
+        "cuda-nvrtc"
+        "cuda-runtime"
+        "cudnn"
+        "cufft"
+        "curand"
+        "cusolver"
+        "cusparse"
+        "nccl"
+        "nvjitlink"
+        "nvtx"
+      ])
+    (name: super.${name}.overridePythonAttrs (_: {
+      # 1. Remove __init__.py because all the cuda packages include it
+      # 2. Symlink the cuda libraries to the lib directory so autopatchelf can find them
+      postFixup = ''
+        rm -rf $out/${self.python.sitePackages}/nvidia/{__pycache__,__init__.py}
+        ln -sfn $out/${self.python.sitePackages}/nvidia/*/lib/lib*.so* $out/lib
+      '';
+    })))
 ]
