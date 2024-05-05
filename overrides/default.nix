@@ -1792,39 +1792,27 @@ lib.composeManyExtensions [
               ];
             }) else prev.notebook;
 
-      nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
+      nvidia-cudnn-cu11 = prev.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu11
+          final.nvidia-cublas-cu11
         ];
       });
 
-      nvidia-cudnn-cu12 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
+      nvidia-cudnn-cu12 = prev.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu12
+          final.nvidia-cublas-cu12
         ];
       });
 
-      nvidia-cusolver-cu11 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
+      nvidia-cusolver-cu11 = prev.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu11
+          final.nvidia-cublas-cu11
         ];
       });
 
-      nvidia-cusolver-cu12 = super.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
+      nvidia-cusolver-cu12 = prev.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu12
-        ];
-      });
-
-      nvidia-cudnn-cu11 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
-        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu11
-        ];
-      });
-
-      nvidia-cudnn-cu12 = super.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
-        propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
-          self.nvidia-cublas-cu12
+          final.nvidia-cublas-cu12
         ];
       });
 
@@ -4001,7 +3989,7 @@ lib.composeManyExtensions [
     "nvidia-nvtx-cu11"
     "nvidia-nvtx-cu12"
   ]
-    (name: super.${name}.overridePythonAttrs (_old: {
+    (name: super.${name}.overridePythonAttrs (_: {
       # 1. Remove __init__.py because all the cuda packages include it
       # 2. Symlink the cuda libraries to the lib directory so autopatchelf can find them
       postFixup = ''
