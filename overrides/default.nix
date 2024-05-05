@@ -288,6 +288,10 @@ lib.composeManyExtensions [
               attr = "flit-core";
             } else prev.argon2-cffi;
 
+      autoawq-kernels = prev.autoawq-kernels.overridePythonAttrs (_attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
+
       aws-cdk-asset-node-proxy-agent-v6 = prev.aws-cdk-asset-node-proxy-agent-v6.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
@@ -384,6 +388,10 @@ lib.composeManyExtensions [
           buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.openssl pkgs.acl ];
         }
       );
+
+      bitsandbytes = prev.bitsandbytes.overridePythonAttrs (_attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       cairocffi = prev.cairocffi.overridePythonAttrs (
         old: {
@@ -623,6 +631,10 @@ lib.composeManyExtensions [
               cargoRoot = "src/rust";
             }
           );
+
+      cupy-cuda12x = prev.cupy-cuda12x.overridePythonAttrs (_attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       cyclonedx-python-lib = prev.cyclonedx-python-lib.overridePythonAttrs (old: {
         propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ final.setuptools ];
@@ -1419,7 +1431,7 @@ lib.composeManyExtensions [
           );
           llvm = pkgs."llvmPackages_${llvm_version}".llvm or (throw "LLVM${llvm_version} has been removed from nixpkgs; upgrade llvmlite or use older nixpkgs");
         in
-        {
+        lib.optionalAttrs (!(old.src.isWheel or false)) {
           inherit llvm;
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.llvmlite.llvm ];
 
@@ -1715,6 +1727,12 @@ lib.composeManyExtensions [
         }
       );
 
+      numba = prev.numba.overridePythonAttrs (
+        old: {
+          autoPatchelfIgnoreMissingDeps = old.src.isWheel or false;
+        }
+      );
+
       netcdf4 = prev.netcdf4.overridePythonAttrs (
         old: {
           propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
@@ -1798,7 +1816,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      nvidia-cudnn-cu12 = prev.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
+      nvidia-cudnn-cu12 = prev.nvidia-cudnn-cu12.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
           final.nvidia-cublas-cu12
         ];
@@ -1810,7 +1828,7 @@ lib.composeManyExtensions [
         ];
       });
 
-      nvidia-cusolver-cu12 = prev.nvidia-cusolver-cu11.overridePythonAttrs (attrs: {
+      nvidia-cusolver-cu12 = prev.nvidia-cusolver-cu12.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
           final.nvidia-cublas-cu12
         ];
@@ -3626,7 +3644,7 @@ lib.composeManyExtensions [
                 };
 
           in
-          {
+          lib.optionalAttrs (!old.src.isWheel or false) {
             inherit src cargoDeps;
 
             patchPhase = builtins.concatStringsSep "\n" [
@@ -3953,6 +3971,31 @@ lib.composeManyExtensions [
         (old: { buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ]; });
       pydantic = prev.pydantic.overridePythonAttrs
         (old: { buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxcrypt ]; });
+
+      vllm = prev.vllm.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = true;
+      } // lib.optionalAttrs (!(old.src.isWheel or false)) rec {
+        CUDA_HOME = pkgs.symlinkJoin {
+          name = "vllm-cuda-home";
+          paths = [
+            pkgs.cudaPackages.libcusparse
+            pkgs.cudaPackages.libnvjitlink
+            pkgs.cudaPackages.libcublas
+            pkgs.cudaPackages.libcusolver
+            pkgs.cudaPackages.cuda_nvcc
+            pkgs.cudaPackages.cuda_cccl
+            pkgs.cudaPackages.cuda_cudart
+          ];
+        };
+        nativeBuildInputs = old.nativeBuildInputs ++ [
+          pkgs.which
+        ];
+        LD_LIBRARY_PATH = "${CUDA_HOME}/lib";
+      });
+
+      xformers = prev.xformers.overridePythonAttrs (_attrs: {
+        autoPatchelfIgnoreMissingDeps = true;
+      });
 
       y-py = prev.y-py.override {
         preferWheel = true;
