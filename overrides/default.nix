@@ -3962,22 +3962,23 @@ lib.composeManyExtensions [
   # The following are dependencies of torch >= 2.0.0.
   # torch doesn't officially support system CUDA, unless you build it yourself.
   (self: super: lib.genAttrs
-    (lib.mapConcat
-      (pkg: [ "nvidia-${pkg}-cu11" "nvidia-${pkg}-cu12" ]) [
-      "cublas"
-      "cuda-cupti"
-      "cuda-curand"
-      "cuda-nvrtc"
-      "cuda-runtime"
-      "cudnn"
-      "cufft"
-      "curand"
-      "cusolver"
-      "cusparse"
-      "nccl"
-      "nvjitlink"
-      "nvtx"
-    ])
+    (lib.concatMap
+      (pkg: [ "nvidia-${pkg}-cu11" "nvidia-${pkg}-cu12" ])
+      [
+        "cublas"
+        "cuda-cupti"
+        "cuda-curand"
+        "cuda-nvrtc"
+        "cuda-runtime"
+        "cudnn"
+        "cufft"
+        "curand"
+        "cusolver"
+        "cusparse"
+        "nccl"
+        "nvjitlink"
+        "nvtx"
+      ])
     (name: super.${name}.overridePythonAttrs (_: {
       # 1. Remove __init__.py because all the cuda packages include it
       # 2. Symlink the cuda libraries to the lib directory so autopatchelf can find them
