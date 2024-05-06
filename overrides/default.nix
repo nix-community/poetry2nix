@@ -881,7 +881,7 @@ lib.composeManyExtensions [
 
       fastapi = prev.fastapi.overridePythonAttrs (old: {
         # fastapi 0.111 depends on fastapi-cli, which depends on fastapi, resulting in infinite recursion
-        propagatedBuildInputs = builtins.filter (i: i.pname != "fastapi-cli") old.propagatedBuildInputs;
+        propagatedBuildInputs = builtins.filter (e: e.pname != "fastapi-cli") old.propagatedBuildInputs;
       });
 
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
@@ -3987,7 +3987,7 @@ lib.composeManyExtensions [
         # Filter out vllm-nccl-cu12 because vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix.
         # Set VLLM_NCCL_SO_PATH at runtime to specify the nccl so instead.
         # See https://github.com/vllm-project/vllm/issues/4224
-        propagatedBuildInputs = builtins.filter (i: i.pname != "vllm-nccl-cu12") old.propagatedBuildInputs;
+        propagatedBuildInputs = builtins.filter (e: e.pname != "vllm-nccl-cu12") old.propagatedBuildInputs;
       } // lib.optionalAttrs (!(old.src.isWheel or false)) rec {
         CUDA_HOME = pkgs.symlinkJoin {
           name = "vllm-cuda-home";
