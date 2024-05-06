@@ -881,7 +881,7 @@ lib.composeManyExtensions [
 
       fastapi = prev.fastapi.overridePythonAttrs (old: {
         # fastapi 0.111 depends on fastapi-cli, which depends on fastapi, resulting in infinite recursion
-        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.fastapi-cli ];
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) (lib.optional final?fastapi-cli final.fastapi-cli);
       });
 
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
