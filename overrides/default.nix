@@ -698,7 +698,9 @@ lib.composeManyExtensions [
 
       dbus-python = prev.dbus-python.overridePythonAttrs (old: {
         outputs = [ "out" "dev" ];
-
+        nativeBuildInputs = old.nativeBuildInputs or [ ]
+          ++ lib.optionals (lib.versionAtLeast old.version "1.3") [ pkgs.dbus ];
+      } // lib.optionalAttrs (lib.versionOlder old.version "1.3") {
         postPatch = old.postPatch or "" + ''
           substituteInPlace ./configure --replace /usr/bin/file ${pkgs.file}/bin/file
           substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
