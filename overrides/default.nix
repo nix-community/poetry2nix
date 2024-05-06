@@ -2892,9 +2892,11 @@ lib.composeManyExtensions [
 
       python-magic = prev.python-magic.overridePythonAttrs (old:
         let
+          inherit (pkgs.stdenv.hostPlatform.extensions) sharedLibrary;
+          libPath = "${lib.getLib pkgs.file}/lib/libmagic${sharedLibrary}";
           fixupScriptText = ''
             substituteInPlace magic/loader.py \
-              --replace "'libmagic.so.1'" "'${lib.getLib pkgs.file}/lib/libmagic.so.1'"
+              --replace "find_library('magic')" "'${libPath}'"
           '';
           isWheel = old.src.isWheel or false;
         in
