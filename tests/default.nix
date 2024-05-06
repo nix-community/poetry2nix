@@ -83,7 +83,7 @@ in
   #
   # 1. the nix community finishes up work on darwinSDKVersion
   # 2. GitHub figures out its aarch64-darwin story
-  ml-stack-old = callTest ./ml-stack { };
+  ml-stack-old = callTest ./ml-stack-old { };
 
   dependency-groups = callTest ./dependency-groups { };
 
