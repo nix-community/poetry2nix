@@ -150,6 +150,8 @@ in
   pyzmq = callTest ./pyzmq { };
   git-subdirectory-hook = callTest ./git-subdirectory-hook { };
   pandas = callTest ./pandas { };
+  python-magic = callTest ./python-magic { };
+  cmdstanpy = callTest ./cmdstanpy { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
