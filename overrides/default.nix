@@ -4004,7 +4004,7 @@ lib.composeManyExtensions [
         # so we do it ourselves
         #
         # See https://github.com/vllm-project/vllm/issues/4224
-        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [final.vllm-nccl-cu12];
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.vllm-nccl-cu12 ];
 
         autoPatchelfIgnoreMissingDeps = true;
       } // lib.optionalAttrs (!(old.src.isWheel or false)) rec {
