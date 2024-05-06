@@ -4000,8 +4000,7 @@ lib.composeManyExtensions [
 
       vllm = prev.vllm.overridePythonAttrs (old: {
         # vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to
-        # the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix,
-        # so we do it ourselves
+        # the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix.
         #
         # See https://github.com/vllm-project/vllm/issues/4224
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.vllm-nccl-cu12 ];
