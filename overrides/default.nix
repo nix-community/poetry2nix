@@ -487,12 +487,21 @@ lib.composeManyExtensions [
         );
 
       cmdstanpy = prev.cmdstanpy.overridePythonAttrs (
-        old: {
-          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ pkgs.cmdstan ];
-          patchPhase = ''
+        old:
+        let
+          fixupScriptText = ''
             substituteInPlace cmdstanpy/model.py \
               --replace 'cmd = [make]' \
               'cmd = ["${pkgs.cmdstan}/bin/stan"]'
+          '';
+          isWheel = old.src.isWheel or false;
+        in
+        {
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.cmdstan ];
+          patchPhase = lib.optionalString (!isWheel) fixupScriptText;
+          postFixup = lib.optionalString isWheel ''
+            cd $out/${final.python.sitePackages}
+            ${fixupScriptText}
           '';
           CMDSTAN = "${pkgs.cmdstan}";
         }

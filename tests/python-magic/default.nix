@@ -16,7 +16,7 @@ let
   wheelEnv = mkEnv true;
   srcEnv = mkEnv false;
 in
-runCommand "python-magic" { } ''
+runCommand "python-magic-test" { } ''
   set -euo pipefail
   ${wheelEnv}/bin/python -c 'import magic' > $out
   ${srcEnv}/bin/python -c 'import magic' >> $out
