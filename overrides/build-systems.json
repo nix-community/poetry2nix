@@ -26238,9 +26238,6 @@
   "vivisect": [
     "setuptools"
   ],
-  "vllm-nccl-cu12": [
-    "setuptools"
-  ],
   "vmprof": [
     "setuptools"
   ],

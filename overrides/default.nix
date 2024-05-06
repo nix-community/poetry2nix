@@ -3998,28 +3998,14 @@ lib.composeManyExtensions [
       pydantic = prev.pydantic.overridePythonAttrs
         (old: { buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxcrypt ]; });
 
-      vllm-nccl-cu12 = prev.vllm-nccl-cu12.overridePythonAttrs (_:
+      vllm = prev.vllm.overridePythonAttrs (old: {
         # vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to
         # the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix,
         # so we do it ourselves
+        #
         # See https://github.com/vllm-project/vllm/issues/4224
-        let
-          soVersion = "2.18.1";
-          soName = "libnccl.so.${soVersion}";
-          libncclSO = pkgs.fetchurl {
-            url = "https://github.com/vllm-project/vllm-nccl/releases/download/v0.1.0/cu12-${soName}";
-            hash = "sha256-AFUDtiuf5Ga2svYLoq0dqkVxGW/8uCo9d6PHdb/NWsg=";
-          };
-        in
-        {
-          preBuild = ''
-            export HOME="$(mktemp -d)"
-            mkdir -p "$HOME/.config/vllm/nccl/cu12"
-            cp "${libncclSO}" "$HOME/.config/vllm/nccl/cu12/${soName}"
-          '';
-        });
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [final.vllm-nccl-cu12];
 
-      vllm = prev.vllm.overridePythonAttrs (old: {
         autoPatchelfIgnoreMissingDeps = true;
       } // lib.optionalAttrs (!(old.src.isWheel or false)) rec {
         CUDA_HOME = pkgs.symlinkJoin {
