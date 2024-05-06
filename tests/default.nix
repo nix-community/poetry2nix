@@ -76,7 +76,14 @@ in
   tzlocal = callTest ./tzlocal { };
   jake = callTest ./jake { };
 
-  ml-stack = callTest ./ml-stack { };
+  # newer versions of torchvision are built against newer
+  # versions of the osx sdk, so for ml-stack, we have an "old"
+  # test that ensures we can still build on osx < 10.13 SDK version
+  # while:
+  #
+  # 1. the nix community finishes up work on darwinSDKVersion
+  # 2. GitHub figures out its aarch64-darwin story
+  ml-stack-old = callTest ./ml-stack-old { };
 
   dependency-groups = callTest ./dependency-groups { };
 
@@ -150,6 +157,8 @@ in
   pyzmq = callTest ./pyzmq { };
   git-subdirectory-hook = callTest ./git-subdirectory-hook { };
   pandas = callTest ./pandas { };
+  python-magic = callTest ./python-magic { };
+  cmdstanpy = callTest ./cmdstanpy { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
@@ -181,6 +190,7 @@ in
   # aarch64-darwin
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
+  ml-stack = callTest ./ml-stack { };
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_64-linux
   pyqt6 = callTest ./pyqt6 { };
@@ -201,6 +211,7 @@ in
   pytest-randomly = callTest ./pytest-randomly { };
   fetched-projectdir = callTest ./fetched-projectdir { };
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
+  # x86_86-linux
   pendulum = callTest ./pendulum { };
   tensorflow = callTest ./tensorflow { };
   # Test deadlocks on darwin and fails to start at all with aarch64-linux,
