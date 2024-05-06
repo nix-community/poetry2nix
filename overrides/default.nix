@@ -881,11 +881,11 @@ lib.composeManyExtensions [
 
       fastapi = prev.fastapi.overridePythonAttrs (old: {
         # fastapi 0.111 depends on fastapi-cli, which depends on fastapi, resulting in infinite recursion
-        propagatedBuildInputs = builtins.filter (e: e.pname != "fastapi-cli") old.propagatedBuildInputs;
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.fastapi-cli ];
       });
 
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
-        buildInputs = old.buildInputs ++ [ pkgs.gmp.dev ];
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev ];
       });
 
       fastparquet = prev.fastparquet.overridePythonAttrs (
@@ -3556,8 +3556,7 @@ lib.composeManyExtensions [
       # Circular dependency between triton and torch (see https://github.com/openai/triton/issues/1374)
       # You can remove this once triton publishes a new stable build and torch takes it.
       triton = prev.triton.overridePythonAttrs (old: {
-        propagatedBuildInputs = (builtins.filter (e: e.pname != "torch") old.propagatedBuildInputs) ++ [
-
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.torch ] ++ [
           # Used in https://github.com/openai/triton/blob/3f8d91bb17f6e7bc33dc995ae0860db89d351c7b/python/triton/common/build.py#L10
           final.setuptools
         ];
@@ -3981,13 +3980,30 @@ lib.composeManyExtensions [
       pydantic = prev.pydantic.overridePythonAttrs
         (old: { buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxcrypt ]; });
 
-      vllm = prev.vllm.overridePythonAttrs (old: {
-        autoPatchelfIgnoreMissingDeps = true;
-
-        # Filter out vllm-nccl-cu12 because vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix.
+      vllm-nccl-cu12 = prev.vllm-nccl-cu12.overridePythonAttrs (_:
+        # vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to
+        # the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix,
+        # so we do it ourselves
         # Set VLLM_NCCL_SO_PATH at runtime to specify the nccl so instead.
         # See https://github.com/vllm-project/vllm/issues/4224
-        propagatedBuildInputs = builtins.filter (e: e.pname != "vllm-nccl-cu12") old.propagatedBuildInputs;
+        let
+          soVersion = "2.18.1";
+          soName = "libnccl.so.${soVersion}";
+          libncclSO = pkgs.fetchurl {
+            url = "https://github.com/vllm-project/vllm-nccl/releases/download/v0.1.0/cu12-${soName}";
+            hash = "sha256-AFUDtiuf5Ga2svYLoq0dqkVxGW/8uCo9d6PHdb/NWsg=";
+          };
+        in
+        {
+          preBuild = ''
+            export HOME="$(mktemp -d)"
+            mkdir -p "$HOME/.config/vllm/nccl/cu12"
+            cp "${libncclSO}" "$HOME/.config/vllm/nccl/cu12/${soName}"
+          '';
+        });
+
+      vllm = prev.vllm.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = true;
       } // lib.optionalAttrs (!(old.src.isWheel or false)) rec {
         CUDA_HOME = pkgs.symlinkJoin {
           name = "vllm-cuda-home";
@@ -4001,7 +4017,7 @@ lib.composeManyExtensions [
             pkgs.cudaPackages.cuda_cudart
           ];
         };
-        nativeBuildInputs = old.nativeBuildInputs ++ [
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
           pkgs.which
         ];
         LD_LIBRARY_PATH = "${CUDA_HOME}/lib";
