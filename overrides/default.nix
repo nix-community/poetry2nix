@@ -2881,11 +2881,19 @@ lib.composeManyExtensions [
         }
       );
 
-      python-magic = prev.python-magic.overridePythonAttrs (
-        old: {
-          postPatch = ''
+      python-magic = prev.python-magic.overridePythonAttrs (old:
+        let
+          fixupScriptText = ''
             substituteInPlace magic/loader.py \
               --replace "'libmagic.so.1'" "'${lib.getLib pkgs.file}/lib/libmagic.so.1'"
+          '';
+          isWheel = old.src.isWheel or false;
+        in
+        {
+          postPatch = lib.optionalString (!isWheel) fixupScriptText;
+          postFixup = lib.optionalString isWheel ''
+            cd $out/${final.python.sitePackages}
+            ${fixupScriptText}
           '';
           pythonImportsCheck = old.pythonImportsCheck or [ ] ++ [ "magic" ];
         }
