@@ -3556,7 +3556,7 @@ lib.composeManyExtensions [
       # Circular dependency between triton and torch (see https://github.com/openai/triton/issues/1374)
       # You can remove this once triton publishes a new stable build and torch takes it.
       triton = prev.triton.overridePythonAttrs (old: {
-        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.torch ] ++ [
+        propagatedBuildInputs = (removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.torch ]) ++ [
           # Used in https://github.com/openai/triton/blob/3f8d91bb17f6e7bc33dc995ae0860db89d351c7b/python/triton/common/build.py#L10
           final.setuptools
         ];
