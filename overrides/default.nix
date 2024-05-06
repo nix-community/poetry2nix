@@ -3984,7 +3984,6 @@ lib.composeManyExtensions [
         # vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to
         # the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix,
         # so we do it ourselves
-        # Set VLLM_NCCL_SO_PATH at runtime to specify the nccl so instead.
         # See https://github.com/vllm-project/vllm/issues/4224
         let
           soVersion = "2.18.1";
