@@ -893,6 +893,13 @@ lib.composeManyExtensions [
         propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
       });
 
+      fastapi-cli = prev.fastapi-cli.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          # remove the dependency cycle
+          propagatedBuildInputs = builtins.filter (p: p.pname != "fastapi") old.propagatedBuildInputs;
+        }
+      );
+
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev ];
       });
@@ -1968,6 +1975,7 @@ lib.composeManyExtensions [
       (
         let
           githubHash = {
+            "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
             "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
             "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
             "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
