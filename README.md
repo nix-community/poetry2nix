@@ -148,7 +148,7 @@ Creates a Python application using the Python interpreter specified based on the
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
 - **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ ]`).
-- **checkGroups**: Which Poetry 1.2.0+ dependency groups to run unit tests (_default_: `[  "dev" ]`).
+- **checkGroups**: Which Poetry 1.2.0+ dependency groups to install (independently of **groups**) to run unit tests (_default_: `[ "dev" ]`).
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
 Other attributes are passed through to `buildPythonApplication`.
@@ -206,7 +206,7 @@ Creates an environment that provides a Python interpreter along with all depende
 - **extraPackages**: A function taking a Python package set and returning a list of extra packages to include in the environment. This is intended for packages deliberately not added to `pyproject.toml` that you still want to include. An example of such a package may be `pip`. (_default:_ `(ps: [ ])`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
 - **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ "dev" ]`).
-- **checkGroups**: Which Poetry 1.2.0+ dependency groups to run unit tests (_default_: `[  "dev" ]`).
+- **checkGroups**: Which Poetry 1.2.0+ dependency groups to install (independently of **groups**) to run unit tests (_default_: `[ "dev" ]`).
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
 #### Example
@@ -278,7 +278,7 @@ Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poet
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode (_default:_ `{}`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
 - **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ ]`).
-- **checkGroups**: Which Poetry 1.2.0+ dependency groups to run unit tests (_default_: `[  "dev" ]`).
+- **checkGroups**: Which Poetry 1.2.0+ dependency groups to install (independently of **groups**) to run unit tests (_default_: `[ "dev" ]`).
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
 #### Example
