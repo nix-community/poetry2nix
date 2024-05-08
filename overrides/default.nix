@@ -896,7 +896,7 @@ lib.composeManyExtensions [
       fastapi-cli = prev.fastapi-cli.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           # remove the dependency cycle
-          propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or []) [ self.fastapi ];
+          propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or []) [ final.fastapi ];
         }
       );
 
