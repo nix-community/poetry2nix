@@ -24,13 +24,15 @@ let
   knownBuildSystems = lib.importJSON ./known-build-systems.json;
   nixpkgsBuildSystems = lib.subtractLists [ "poetry" "poetry-core" ] knownBuildSystems;
 
+  checkGroupsDefault = [ "dev" ];
+
   mkInputAttrs =
     { py
     , pyProject
     , attrs
     , includeBuildSystem ? true
     , groups ? [ ]
-    , checkGroups ? [ "dev" ]
+    , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]  # * means all extras, otherwise include the dependencies for a given extra
     }:
     let
@@ -144,7 +146,7 @@ lib.makeScope pkgs.newScope (self: {
     , editablePackageSources ? { }
     , pyProject ? readTOML pyproject
     , groups ? [ ]
-    , checkGroups ? [ "dev" ]
+    , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]
     }:
     let
@@ -311,7 +313,7 @@ lib.makeScope pkgs.newScope (self: {
     , editablePackageSources ? { }
     , extraPackages ? _ps: [ ]
     , groups ? [ "dev" ]
-    , checkGroups ? [ "dev" ]
+    , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]
     }:
     let
@@ -377,7 +379,7 @@ lib.makeScope pkgs.newScope (self: {
     , pwd ? projectDir
     , preferWheels ? false
     , groups ? [ ]
-    , checkGroups ? [ "dev" ]
+    , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]
     , ...
     }@attrs:
