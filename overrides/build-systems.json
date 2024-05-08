@@ -18123,8 +18123,15 @@
     "setuptools"
   ],
   "pyproj": [
-    "cython",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "cython_0",
+      "until": "3.6.1"
+    },
+    {
+      "buildSystem": "cython",
+      "from": "3.6.1"
+    }
   ],
   "pyproject-api": [
     "hatch-vcs",
