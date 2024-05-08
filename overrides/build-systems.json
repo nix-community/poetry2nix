@@ -1426,6 +1426,9 @@
   "asyncinotify": [
     "flit-core"
   ],
+  "asyncio": [
+    "setuptools"
+  ],
   "asyncio-dgram": [
     "setuptools"
   ],
