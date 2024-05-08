@@ -75,6 +75,7 @@ in
   sqlalchemy2 = callTest ./sqlalchemy2 { };
   tzlocal = callTest ./tzlocal { };
   jake = callTest ./jake { };
+  pyproj = callTest ./pyproj { };
 
   # newer versions of torchvision are built against newer
   # versions of the osx sdk, so for ml-stack, we have an "old"
