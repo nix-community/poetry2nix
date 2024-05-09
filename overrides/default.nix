@@ -68,11 +68,12 @@ let
           }
       );
 
+  notNull = x: !(builtins.isNull x);
   removePackagesByName = packages: packagesToRemove:
     let
-      namesToRemove = map lib.getName packagesToRemove;
+      namesToRemove = map lib.getName (lib.filter notNull packagesToRemove);
     in
-    lib.filter (x: x != null && !(builtins.elem (lib.getName x) namesToRemove)) packages;
+    lib.filter (x: !(builtins.elem (lib.getName x) namesToRemove)) packages;
 
 in
 lib.composeManyExtensions [
