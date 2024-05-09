@@ -7,11 +7,11 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 bitsandbytes = "^0.43.0"
-torch = "2.1.2"
-vllm = "0.3.3"
+torch = "^2.2.1"
+vllm = "^0.4.2"
 
 # See https://docs.vllm.ai/en/latest/quantization/auto_awq.html
-autoawq = "^0.2.4"
+autoawq = "^0.2.5"
 
 [build-system]
 requires = ["poetry-core"]

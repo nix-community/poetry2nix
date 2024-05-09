@@ -888,8 +888,13 @@ lib.composeManyExtensions [
         }
       );
 
+      fastapi = prev.fastapi.overridePythonAttrs (old: {
+        # fastapi 0.111 depends on fastapi-cli, which depends on fastapi, resulting in infinite recursion
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
+      });
+
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
-        buildInputs = old.buildInputs ++ [ pkgs.gmp.dev ];
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev ];
       });
 
       fastparquet = prev.fastparquet.overridePythonAttrs (
@@ -3571,7 +3576,10 @@ lib.composeManyExtensions [
       # Circular dependency between triton and torch (see https://github.com/openai/triton/issues/1374)
       # You can remove this once triton publishes a new stable build and torch takes it.
       triton = prev.triton.overridePythonAttrs (old: {
-        propagatedBuildInputs = builtins.filter (e: e.pname != "torch") old.propagatedBuildInputs;
+        propagatedBuildInputs = (removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.torch ]) ++ [
+          # Used in https://github.com/openai/triton/blob/3f8d91bb17f6e7bc33dc995ae0860db89d351c7b/python/triton/common/build.py#L10
+          final.setuptools
+        ];
         pipInstallFlags = [ "--no-deps" ];
       });
 
@@ -3993,6 +4001,12 @@ lib.composeManyExtensions [
         (old: { buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxcrypt ]; });
 
       vllm = prev.vllm.overridePythonAttrs (old: {
+        # vllm-nccl-cu12 will try to download NCCL 2.18.1 from the internet to
+        # the ~/.config/vllm/nccl/cu12 directory, which is not allowed in Nix.
+        #
+        # See https://github.com/vllm-project/vllm/issues/4224
+        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) (lib.optionals (final ? vllm-nccl-cu12) [ final.vllm-nccl-cu12 ]);
+
         autoPatchelfIgnoreMissingDeps = true;
       } // lib.optionalAttrs (!(old.src.isWheel or false)) rec {
         CUDA_HOME = pkgs.symlinkJoin {
@@ -4007,7 +4021,7 @@ lib.composeManyExtensions [
             pkgs.cudaPackages.cuda_cudart
           ];
         };
-        nativeBuildInputs = old.nativeBuildInputs ++ [
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
           pkgs.which
         ];
         LD_LIBRARY_PATH = "${CUDA_HOME}/lib";

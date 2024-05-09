@@ -10,6 +10,5 @@ let
 in
 runCommand "vllm-wheel" { } ''
   export HF_HOME="$(mktemp -d)"
-
   ${env}/bin/python -c 'import vllm; print(vllm.__version__)' > $out
 ''
