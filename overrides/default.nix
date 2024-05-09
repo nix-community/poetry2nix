@@ -2366,8 +2366,12 @@ lib.composeManyExtensions [
       );
 
       pygobject = prev.pygobject.overridePythonAttrs (
-        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+        old:
+        let
+          isWheel = old.src.isWheel or false;
+        in
+        {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ lib.optionals (!isWheel) [
             pkg-config
             pkgs.meson
             pkgs.ninja
@@ -2384,7 +2388,7 @@ lib.composeManyExtensions [
             final.pycairo
           ];
 
-          postConfigure = ''
+          postConfigure = lib.optionalString (!isWheel) ''
             cd ..
           '';
         }
@@ -3353,7 +3357,6 @@ lib.composeManyExtensions [
       scikit-learn = prev.scikit-learn.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            final.cython
             pkgs.gfortran
           ] ++ lib.optionals stdenv.cc.isClang [
             pkgs.llvmPackages.openmp
@@ -3370,7 +3373,12 @@ lib.composeManyExtensions [
       );
 
       secp256k1 = prev.secp256k1.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config pkgs.autoconf pkgs.automake pkgs.libtool ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+          pkg-config
+          pkgs.autoconf
+          pkgs.automake
+          pkgs.libtool
+        ];
         buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
         doCheck = false;
         # Local setuptools versions like "x.y.post0" confuse an internal check
@@ -3471,7 +3479,7 @@ lib.composeManyExtensions [
           buildInputs = old.buildInputs or [ ] ++ [ final.pywavelets ];
           HDF5_DIR = lib.getDev pkgs.hdf5;
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
-          propagatedBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.hdf5 final.numpy final.numexpr ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.hdf5 final.numpy final.numexpr ];
         }
       );
 
@@ -3491,7 +3499,7 @@ lib.composeManyExtensions [
             final.absl-py
           ];
           HDF5_DIR = "${pkgs.hdf5}";
-          propagatedBuildInputs = old.nativeBuildInputs or [ ] ++ [
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
             pkgs.hdf5
             final.google-auth-oauthlib
             final.tensorboard-plugin-wit
@@ -3606,11 +3614,8 @@ lib.composeManyExtensions [
       );
 
       vispy = prev.vispy.overrideAttrs (
-        old: {
+        _: {
           inherit (pkgs.python3.pkgs.vispy) patches;
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            final.setuptools-scm
-          ];
         }
       );
 
@@ -3801,13 +3806,6 @@ lib.composeManyExtensions [
           '';
         }
       );
-
-      minimal-snowplow-tracker = prev.minimal-snowplow-tracker.overridePythonAttrs
-        (
-          old: {
-            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ prev.setuptools ];
-          }
-        );
 
       # nixpkgs has setuptools_scm 4.1.2
       # but newrelic has a seemingly unnecessary version constraint for <4

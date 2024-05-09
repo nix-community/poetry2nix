@@ -1168,15 +1168,15 @@
   "argon2-cffi": [
     {
       "buildSystem": "flit-core",
-      "from": "21.2.0"
-    },
-    {
-      "buildSystem": "flit-core",
       "until": "23.1.0"
     },
     {
       "buildSystem": "setuptools",
       "until": "23.1.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "21.2.0"
     },
     {
       "buildSystem": "hatch-fancy-pypi-readme",
@@ -11880,6 +11880,9 @@
     "setuptools"
   ],
   "minikerberos": [
+    "setuptools"
+  ],
+  "minimal-snowplow-tracker": [
     "setuptools"
   ],
   "minimock": [
