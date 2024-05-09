@@ -6,8 +6,6 @@ let
     poetrylock = ./poetry.lock;
   };
 in
-runCommand "fastapi-test"
-{ } ''
-  ${env}/bin/python -c 'import fastapi'
-  touch $out
+runCommand "fastapi-test" { } ''
+  ${env}/bin/python -c 'import fastapi; print(fastapi.__version__)' > $out
 ''
