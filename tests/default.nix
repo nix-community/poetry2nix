@@ -67,6 +67,7 @@ in
   use-url-wheel = callTest ./use-url-wheel { };
   returns = callTest ./returns { };
   option = callTest ./option { };
+  fastapi = callTest ./fastapi { };
   fastapi-utils = callTest ./fastapi-utils { };
   awscli = callTest ./awscli { };
   assorted-pkgs = callTest ./assorted-pkgs { };

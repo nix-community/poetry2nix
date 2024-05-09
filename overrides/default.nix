@@ -68,9 +68,10 @@ let
           }
       );
 
+  notNull = x: !(builtins.isNull x);
   removePackagesByName = packages: packagesToRemove:
     let
-      namesToRemove = map lib.getName packagesToRemove;
+      namesToRemove = map lib.getName (lib.filter notNull packagesToRemove);
     in
     lib.filter (x: !(builtins.elem (lib.getName x) namesToRemove)) packages;
 
@@ -890,7 +891,9 @@ lib.composeManyExtensions [
 
       fastapi = prev.fastapi.overridePythonAttrs (old: {
         # fastapi 0.111 depends on fastapi-cli, which depends on fastapi, resulting in infinite recursion
-        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
+        propagatedBuildInputs = removePackagesByName
+          (old.propagatedBuildInputs or [ ])
+          (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
       });
 
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
@@ -1968,6 +1971,7 @@ lib.composeManyExtensions [
       (
         let
           githubHash = {
+            "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
             "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
             "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
             "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";

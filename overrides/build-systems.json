@@ -6693,12 +6693,28 @@
     "setuptools-scm"
   ],
   "fastapi": [
-    "flit",
-    "hatchling",
-    "setuptools"
+    {
+      "buildSystem": "flit",
+      "until": "0.110.3"
+    },
+    {
+      "buildSystem": "hatchling",
+      "until": "0.110.3"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "0.110.3"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "0.110.3"
+    }
   ],
   "fastapi-camelcase": [
     "setuptools"
+  ],
+  "fastapi-cli": [
+    "pdm-backend"
   ],
   "fastapi-csrf-protect": [
     "poetry-core"
@@ -6716,6 +6732,9 @@
   ],
   "fastapi-sessions": [
     "setuptools"
+  ],
+  "fastapi-slim": [
+    "pdm-backend"
   ],
   "fastapi-sso": [
     "poetry",
@@ -9872,7 +9891,14 @@
     "setuptools"
   ],
   "jinja2": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.1.4"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "3.1.4"
+    }
   ],
   "jinja2-ansible-filters": [
     "setuptools"
@@ -24448,8 +24474,18 @@
     "setuptools"
   ],
   "typer": [
-    "flit-core",
-    "setuptools"
+    {
+      "buildSystem": "flit-core",
+      "until": "0.11.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "0.11.0"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "0.11.0"
+    }
   ],
   "types-aioboto3": [
     "setuptools"

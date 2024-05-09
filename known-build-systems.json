@@ -6,6 +6,7 @@
   "hatch-vcs",
   "hatchling",
   "pbr",
+  "pdm-backend",
   "poetry-core",
   "setuptools",
   "setuptools-scm"
