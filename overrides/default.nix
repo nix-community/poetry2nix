@@ -412,7 +412,7 @@ lib.composeManyExtensions [
         }
       );
 
-      cattrs = drv.overridePythonAttrs (
+      cattrs = prev.cattrs.overridePythonAttrs (
         old: lib.optionalAttrs (old.version == "1.10.0") {
           # 1.10.0 contains a pyproject.toml that requires a pre-release Poetry
           # We can avoid using Poetry and use the generated setup.py
