@@ -264,9 +264,7 @@ lib.composeManyExtensions [
 
       av = prev.av.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            pkg-config
-          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.ffmpeg_4 ];
         }
       );
@@ -338,7 +336,7 @@ lib.composeManyExtensions [
 
       awscrt = prev.awscrt.overridePythonAttrs (
         old: {
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs or [ ];
           dontUseCmakeConfigure = true;
         }
       );
@@ -666,7 +664,7 @@ lib.composeManyExtensions [
 
       cysystemd = prev.cysystemd.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.systemd ];
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
       });
 
       daphne = prev.daphne.overridePythonAttrs (_old: {
@@ -1066,7 +1064,7 @@ lib.composeManyExtensions [
               nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
               buildInputs =
                 old.buildInputs or [ ]
-                ++ [ pkgs.hdf5 pkgs.pkg-config ]
+                ++ [ pkgs.hdf5 pkg-config ]
                 ++ lib.optionals mpiSupport [ mpi ]
               ;
               propagatedBuildInputs =
@@ -1309,7 +1307,7 @@ lib.composeManyExtensions [
         else prev.jsondiff;
 
       jsonslicer = prev.jsonslicer.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.yajl ];
       });
 
@@ -1762,7 +1760,7 @@ lib.composeManyExtensions [
 
       mysqlclient = prev.mysqlclient.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config pkgs.libmysqlclient ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config pkgs.libmysqlclient ];
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.libmysqlclient ];
         }
       );
@@ -2709,7 +2707,7 @@ lib.composeManyExtensions [
                 final.dbus-python
               ];
               nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-                pkgs.pkg-config
+                pkg-config
                 final.pyqt6-sip
                 final.sip
                 final.pyqt-builder
@@ -3402,7 +3400,7 @@ lib.composeManyExtensions [
       );
 
       secp256k1 = prev.secp256k1.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config pkgs.autoconf pkgs.automake pkgs.libtool ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config pkgs.autoconf pkgs.automake pkgs.libtool ];
         buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
         doCheck = false;
         # Local setuptools versions like "x.y.post0" confuse an internal check
@@ -3495,7 +3493,7 @@ lib.composeManyExtensions [
 
       systemd-python = prev.systemd-python.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.systemd ];
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.pkg-config ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
       });
 
       tables = prev.tables.overridePythonAttrs (
