@@ -412,19 +412,15 @@ lib.composeManyExtensions [
         }
       );
 
-      cattrs =
-        let
-          drv = prev.cattrs;
-        in
-        if drv.version == "1.10.0" then
-          drv.overridePythonAttrs
-            (old: {
-              # 1.10.0 contains a pyproject.toml that requires a pre-release Poetry
-              # We can avoid using Poetry and use the generated setup.py
-              preConfigure = old.preConfigure or "" + ''
-                rm pyproject.toml
-              '';
-            }) else drv;
+      cattrs = drv.overridePythonAttrs (
+        old: lib.optionalAttrs (old.version == "1.10.0") {
+          # 1.10.0 contains a pyproject.toml that requires a pre-release Poetry
+          # We can avoid using Poetry and use the generated setup.py
+          preConfigure = old.preConfigure or "" + ''
+            rm pyproject.toml
+          '';
+        }
+      );
 
       ccxt = prev.ccxt.overridePythonAttrs (_old: {
         preBuild = ''
@@ -699,24 +695,17 @@ lib.composeManyExtensions [
           substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
         '';
 
-        configureFlags = (old.configureFlags or [ ]) ++ [
+        configureFlags = old.configureFlags or [ ] ++ [
           "PYTHON_VERSION=${lib.versions.major final.python.version}"
         ];
 
-        preConfigure = lib.concatStringsSep "\n" [
-          (old.preConfigure or "")
-          (if (lib.versionAtLeast stdenv.hostPlatform.darwinMinVersion "11" && stdenv.isDarwin) then ''
-            MACOSX_DEPLOYMENT_TARGET=10.16
-          '' else "")
-        ];
+        preConfigure = old.preConfigure or "" + lib.optionalString
+          (lib.versionAtLeast stdenv.hostPlatform.darwinMinVersion "11" && stdenv.isDarwin)
+          "MACOSX_DEPLOYMENT_TARGET=10.16";
 
-        preBuild = (old.preBuild or "") + ''
-          make distclean
-        '';
+        preBuild = old.preBuild or "" + "make distclean";
 
-        preInstall = (old.preInstall or "") + ''
-          mkdir -p $out/${final.python.sitePackages}
-        '';
+        preInstall = old.preInstall or "" + "mkdir -p $out/${final.python.sitePackages}";
 
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.dbus pkgs.dbus-glib ]
@@ -731,7 +720,7 @@ lib.composeManyExtensions [
 
       ddtrace = prev.ddtrace.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++
-          (lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ]);
+          lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.IOKit ];
       });
 
       deepspeed = prev.deepspeed.overridePythonAttrs (old: rec {
@@ -1619,24 +1608,18 @@ lib.composeManyExtensions [
         }
       );
 
-      molecule =
-        if lib.versionOlder prev.molecule.version "3.0.0" then
-          (prev.molecule.overridePythonAttrs (
-            old: {
-              patches = (old.patches or [ ]) ++ [
-                # Fix build with more recent setuptools versions
-                (pkgs.fetchpatch {
-                  url = "https://github.com/ansible-community/molecule/commit/c9fee498646a702c77b5aecf6497cff324acd056.patch";
-                  sha256 = "1g1n45izdz0a3c9akgxx14zhdw6c3dkb48j8pq64n82fa6ndl1b7";
-                  excludes = [ "pyproject.toml" ];
-                })
-              ];
-              buildInputs = old.buildInputs or [ ] ++ [ final.setuptools final.setuptools-scm ];
-            }
-          )) else
-          prev.molecule.overridePythonAttrs (old: {
-            buildInputs = old.buildInputs or [ ] ++ [ final.setuptools final.setuptools-scm ];
-          });
+      molecule = prev.molecule.overridePythonAttrs (
+        old: lib.optionalAttrs (lib.versionOlder old.version "3.0.0") {
+          patches = old.patches or [ ] ++ [
+            # Fix build with more recent setuptools versions
+            (pkgs.fetchpatch {
+              url = "https://github.com/ansible-community/molecule/commit/c9fee498646a702c77b5aecf6497cff324acd056.patch";
+              sha256 = "1g1n45izdz0a3c9akgxx14zhdw6c3dkb48j8pq64n82fa6ndl1b7";
+              excludes = [ "pyproject.toml" ];
+            })
+          ];
+        }
+      );
 
       msgpack = prev.msgpack.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
@@ -1958,50 +1941,51 @@ lib.composeManyExtensions [
         }
       );
 
-      orjson = prev.orjson.overridePythonAttrs (old: if old.src.isWheel or false then { } else
-      (
-        let
-          githubHash = {
-            "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
-            "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
-            "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
-            "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
-            "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
-            "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
-            "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
-            "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
-            "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
-            "3.9.10" = "sha256-MkcuayNDt7/GcswXoFTvzuaZzhQEQV+V7OfKqgJwVIQ=";
-            "3.8.3" = "sha256-4rBXb4+eAaRfbl2PWZL4I01F0GvbSNqBVtU4L/sXrVc=";
-            "3.8.4" = "sha256-XQBiE8hmLC/AIRt0eJri/ilPHUEYiOxd0onRBQsx+pM=";
-            "3.8.5" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
-            "3.8.6" = "sha256-LwLuMcnAubO7U1/KSe6tHaSP9+bi6gDfvGobixzL2gM=";
-            "3.8.7" = "sha256-9nBgMcAfG4DTlv41gwQImwyhYm06QeiE/G4ObcLb7wU=";
-            "3.8.8" = "sha256-pRB4QhxJh4JCDWWyp0BH25x8MRn+WieQo/dvB1mQR40=";
-            "3.8.9" = "sha256-0/yvXXj+z2jBEAGxO4BxMnx1zqUoultYSYfSkKs+hKY=";
-          }.${old.version} or lib.fakeHash;
-          # we can count on this repo's root to have Cargo.lock
+      orjson = prev.orjson.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) (
+          let
+            githubHash = {
+              "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
+              "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
+              "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
+              "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
+              "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
+              "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
+              "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
+              "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
+              "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
+              "3.9.10" = "sha256-MkcuayNDt7/GcswXoFTvzuaZzhQEQV+V7OfKqgJwVIQ=";
+              "3.8.3" = "sha256-4rBXb4+eAaRfbl2PWZL4I01F0GvbSNqBVtU4L/sXrVc=";
+              "3.8.4" = "sha256-XQBiE8hmLC/AIRt0eJri/ilPHUEYiOxd0onRBQsx+pM=";
+              "3.8.5" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+              "3.8.6" = "sha256-LwLuMcnAubO7U1/KSe6tHaSP9+bi6gDfvGobixzL2gM=";
+              "3.8.7" = "sha256-9nBgMcAfG4DTlv41gwQImwyhYm06QeiE/G4ObcLb7wU=";
+              "3.8.8" = "sha256-pRB4QhxJh4JCDWWyp0BH25x8MRn+WieQo/dvB1mQR40=";
+              "3.8.9" = "sha256-0/yvXXj+z2jBEAGxO4BxMnx1zqUoultYSYfSkKs+hKY=";
+            }.${old.version} or lib.fakeHash;
+            # we can count on this repo's root to have Cargo.lock
 
-          src = pkgs.fetchFromGitHub {
-            owner = "ijl";
-            repo = "orjson";
-            rev = old.version;
-            sha256 = githubHash;
-          };
+            src = pkgs.fetchFromGitHub {
+              owner = "ijl";
+              repo = "orjson";
+              rev = old.version;
+              sha256 = githubHash;
+            };
 
-        in
-        {
-          inherit src;
-          cargoDeps = pkgs.rustPlatform.importCargoLock {
-            lockFile = "${src.out}/Cargo.lock";
-          };
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
-            pkgs.rustPlatform.maturinBuildHook # orjson is based on maturin
-          ];
-          buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [ pkgs.libiconv ];
-        }
-      ));
+          in
+          {
+            inherit src;
+            cargoDeps = pkgs.rustPlatform.importCargoLock {
+              lockFile = "${src.out}/Cargo.lock";
+            };
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+              pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
+              pkgs.rustPlatform.maturinBuildHook # orjson is based on maturin
+            ];
+            buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [ pkgs.libiconv ];
+          }
+        )
+      );
 
       osqp = prev.osqp.overridePythonAttrs (
         old: {
@@ -2115,12 +2099,8 @@ lib.composeManyExtensions [
 
       pillow-heif = prev.pillow-heif.overridePythonAttrs (
         old: {
-          buildInputs = with pkgs; old.buildInputs or [ ] ++ [
-            libheif
-          ];
-          nativeBuildInputs = with pkgs; old.nativeBuildInputs or [ ] ++ [
-            pkg-config
-          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libheif ];
         }
       );
 
@@ -2227,61 +2207,56 @@ lib.composeManyExtensions [
         }
       );
 
-      pyarrow =
-        if (!prev.pyarrow.src.isWheel or false) && lib.versionAtLeast prev.pyarrow.version "0.16.0" then
-          prev.pyarrow.overridePythonAttrs
-            (
-              old:
-              let
-                parseMinor = drv: lib.concatStringsSep "." (lib.take 2 (lib.splitVersion drv.version));
+      pyarrow = prev.pyarrow.overridePythonAttrs (
+        old: lib.optionalAttrs ((!old.src.isWheel or false) && lib.versionAtLeast old.version "0.16.0")
+          (
+            let
+              # Starting with nixpkgs revision f149c7030a7, pyarrow takes "python3" as an argument
+              # instead of "python". Below we inspect function arguments to maintain compatibilitiy.
+              _arrow-cpp = pkgs.arrow-cpp.override (
+                builtins.intersectAttrs
+                  (lib.functionArgs pkgs.arrow-cpp.override)
+                  { inherit (final) python; python3 = final.python; }
+              );
 
-                # Starting with nixpkgs revision f149c7030a7, pyarrow takes "python3" as an argument
-                # instead of "python". Below we inspect function arguments to maintain compatibilitiy.
-                _arrow-cpp = pkgs.arrow-cpp.override (
-                  builtins.intersectAttrs
-                    (lib.functionArgs pkgs.arrow-cpp.override)
-                    { inherit (final) python; python3 = final.python; }
-                );
+              ARROW_HOME = _arrow-cpp;
+              arrowCppVersion = lib.versions.majorMinor _arrow-cpp;
+              pyArrowVersion = lib.versions.majorMinor prev.pyarrow;
+              errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
+            in
+            lib.throwIf (arrowCppVersion != pyArrowVersion) errorMessage {
+              nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+                pkg-config
+                pkgs.cmake
+              ];
 
-                ARROW_HOME = _arrow-cpp;
-                arrowCppVersion = parseMinor _arrow-cpp;
-                pyArrowVersion = parseMinor prev.pyarrow;
-                errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
-              in
-              if arrowCppVersion != pyArrowVersion then throw errorMessage else {
+              buildInputs = old.buildInputs or [ ] ++ [
+                _arrow-cpp
+              ];
 
-                nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-                  pkg-config
-                  pkgs.cmake
-                ];
+              preBuild = ''
+                export PYARROW_PARALLEL=$NIX_BUILD_CORES
+              '';
 
-                buildInputs = old.buildInputs or [ ] ++ [
-                  _arrow-cpp
-                ];
+              PARQUET_HOME = _arrow-cpp;
+              inherit ARROW_HOME;
 
-                preBuild = ''
-                  export PYARROW_PARALLEL=$NIX_BUILD_CORES
-                '';
+              PYARROW_BUILD_TYPE = "release";
+              PYARROW_WITH_FLIGHT = if _arrow-cpp.enableFlight then 1 else 0;
+              PYARROW_WITH_DATASET = 1;
+              PYARROW_WITH_PARQUET = 1;
+              PYARROW_CMAKE_OPTIONS = [
+                "-DCMAKE_INSTALL_RPATH=${ARROW_HOME}/lib"
 
-                PARQUET_HOME = _arrow-cpp;
-                inherit ARROW_HOME;
+                # This doesn't use setup hook to call cmake so we need to workaround #54606
+                # ourselves
+                "-DCMAKE_POLICY_DEFAULT_CMP0025=NEW"
+              ];
 
-                PYARROW_BUILD_TYPE = "release";
-                PYARROW_WITH_FLIGHT = if _arrow-cpp.enableFlight then 1 else 0;
-                PYARROW_WITH_DATASET = 1;
-                PYARROW_WITH_PARQUET = 1;
-                PYARROW_CMAKE_OPTIONS = [
-                  "-DCMAKE_INSTALL_RPATH=${ARROW_HOME}/lib"
-
-                  # This doesn't use setup hook to call cmake so we need to workaround #54606
-                  # ourselves
-                  "-DCMAKE_POLICY_DEFAULT_CMP0025=NEW"
-                ];
-
-                dontUseCmakeConfigure = true;
-              }
-            ) else
-          prev.pyarrow;
+              dontUseCmakeConfigure = true;
+            }
+          )
+      );
 
       pycairo = prev.pycairo.overridePythonAttrs (
         old: {
@@ -3289,8 +3264,7 @@ lib.composeManyExtensions [
           });
 
       scipy = prev.scipy.overridePythonAttrs (
-        old:
-        if old.format != "wheel" then {
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++
             [ pkgs.gfortran ] ++
             lib.optionals (lib.versionAtLeast prev.scipy.version "1.7.0") [ final.pythran ] ++
@@ -3316,7 +3290,7 @@ lib.composeManyExtensions [
               --replace 'setuptools<=51.0.0' 'setuptools'
             sed -i pyproject.toml -e 's/numpy==[0-9]\+\.[0-9]\+\.[0-9]\+;/numpy;/g'
           '';
-        } else old
+        }
       );
 
       scikit-build-core = prev.scikit-build-core.overridePythonAttrs (
