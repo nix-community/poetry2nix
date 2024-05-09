@@ -896,11 +896,6 @@ lib.composeManyExtensions [
           (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
       });
 
-      fastapi-cli = prev.fastapi-cli.overridePythonAttrs (old: {
-        # remove the dependency cycle
-        propagatedBuildInputs = removePackagesByName (old.propagatedBuildInputs or [ ]) [ final.fastapi ];
-      });
-
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev ];
       });
