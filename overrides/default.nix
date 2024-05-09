@@ -279,15 +279,6 @@ lib.composeManyExtensions [
         }
       );
 
-      argon2-cffi =
-        if (lib.versionAtLeast prev.argon2-cffi.version "21.2.0") then
-          addBuildSystem'
-            {
-              inherit final;
-              drv = prev.argon2-cffi;
-              attr = "flit-core";
-            } else prev.argon2-cffi;
-
       autoawq-kernels = prev.autoawq-kernels.overridePythonAttrs (_attrs: {
         autoPatchelfIgnoreMissingDeps = true;
       });
@@ -829,15 +820,11 @@ lib.composeManyExtensions [
       );
 
       # Setuptools >= 60 broke build_py_2to3
-      docutils =
-        if lib.versionOlder prev.docutils.version "0.16" && lib.versionAtLeast prev.setuptools.version "60" then
-          (
-            prev.docutils.overridePythonAttrs (
-              _old: {
-                SETUPTOOLS_USE_DISTUTILS = "stdlib";
-              }
-            )
-          ) else prev.docutils;
+      docutils = prev.docutils.overridePythonAttrs (
+        _: lib.optionalAttrs (lib.versionOlder prev.docutils.version "0.16" && lib.versionAtLeast prev.setuptools.version "60") {
+          SETUPTOOLS_USE_DISTUTILS = "stdlib";
+        }
+      );
 
       duckdb = prev.duckdb.overridePythonAttrs (old: {
         postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
@@ -1053,35 +1040,31 @@ lib.composeManyExtensions [
       );
 
       h5py = prev.h5py.overridePythonAttrs (
-        old:
-        if old.format != "wheel" then
-          (
-            let
-              inherit (pkgs.hdf5) mpi;
-              inherit (pkgs.hdf5) mpiSupport;
-            in
-            {
-              nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
-              buildInputs =
-                old.buildInputs or [ ]
-                ++ [ pkgs.hdf5 pkg-config ]
-                ++ lib.optionals mpiSupport [ mpi ]
-              ;
-              propagatedBuildInputs =
-                old.propagatedBuildInputs or [ ]
-                ++ lib.optionals mpiSupport [ final.mpi4py pkgs.openssh ]
-              ;
-              preBuild = if mpiSupport then "export CC=${mpi}/bin/mpicc" else "";
-              HDF5_DIR = "${pkgs.hdf5}";
-              HDF5_MPI = if mpiSupport then "ON" else "OFF";
-              # avoid strict pinning of numpy
-              postPatch = ''
-                substituteInPlace setup.py \
-                  --replace "numpy ==" "numpy >="
-              '';
-              pythonImportsCheck = [ "h5py" ];
-            }
-          ) else old
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) (
+          let
+            inherit (pkgs.hdf5) mpi mpiSupport;
+          in
+          {
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
+            buildInputs =
+              old.buildInputs or [ ]
+              ++ [ pkgs.hdf5 pkg-config ]
+              ++ lib.optionals mpiSupport [ mpi ]
+            ;
+            propagatedBuildInputs =
+              old.propagatedBuildInputs or [ ]
+              ++ lib.optionals mpiSupport [ final.mpi4py pkgs.openssh ]
+            ;
+            preBuild = if mpiSupport then "export CC=${mpi}/bin/mpicc" else "";
+            HDF5_DIR = "${pkgs.hdf5}";
+            HDF5_MPI = if mpiSupport then "ON" else "OFF";
+            # avoid strict pinning of numpy
+            postPatch = ''
+              substituteInPlace setup.py --replace "numpy ==" "numpy >="
+            '';
+            pythonImportsCheck = [ "h5py" ];
+          }
+        )
       );
 
       hid = prev.hid.overridePythonAttrs (
@@ -1102,9 +1085,7 @@ lib.composeManyExtensions [
 
       hidapi = prev.hidapi.overridePythonAttrs (
         old: {
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
-            pkgs.libusb1
-          ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.libusb1 ];
           postPatch = lib.optionalString stdenv.isLinux ''
             libusb=${pkgs.libusb1.dev}/include/libusb-1.0
             test -d $libusb || { echo "ERROR: $libusb doesn't exist, please update/fix this build expression."; exit 1; }
@@ -1144,7 +1125,7 @@ lib.composeManyExtensions [
 
       igraph = prev.igraph.overridePythonAttrs (
         old: {
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs or [ ];
           dontUseCmakeConfigure = true;
         }
       );
@@ -1279,10 +1260,10 @@ lib.composeManyExtensions [
         }
       );
 
-      jq = prev.jq.overridePythonAttrs (attrs: {
-        buildInputs = [ pkgs.jq ];
-        propagatedBuildInputs = [ final.certifi final.requests ];
-        patches = lib.optionals (lib.versionOlder attrs.version "1.2.3") [
+      jq = prev.jq.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.jq ];
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.certifi final.requests ];
+        patches = lib.optionals (lib.versionOlder old.version "1.2.3") [
           (pkgs.fetchpatch {
             url = "https://raw.githubusercontent.com/NixOS/nixpkgs/088da8735f6620b60d724aa7db742607ea216087/pkgs/development/python-modules/jq/jq-py-setup.patch";
             sha256 = "sha256-MYvX3S1YGe0QsUtExtOtULvp++AdVrv+Fid4Jh1xewQ=";
@@ -1290,44 +1271,35 @@ lib.composeManyExtensions [
         ];
       });
 
-      jsondiff =
-        if lib.versionOlder prev.jsondiff.version "2.0.0"
-        then
-          prev.jsondiff.overridePythonAttrs
-            (
-              old: {
-                preBuild = lib.optionalString (!(old.src.isWheel or false)) (
-                  (old.preBuild or "") + ''
-                    substituteInPlace setup.py \
-                      --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
-                  ''
-                );
-              }
-            )
-        else prev.jsondiff;
+      jsondiff = prev.jsondiff.overridePythonAttrs (
+        old: lib.optionalAttrs (lib.versionOlder old.version "2.0.0" && !(old.src.isWheel or false)) {
+          preBuild = (old.preBuild or "") + ''
+            substituteInPlace setup.py --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
+          '';
+        }
+      );
 
       jsonslicer = prev.jsonslicer.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.yajl ];
       });
 
-      jsonschema =
-        if lib.versionAtLeast prev.jsonschema.version "4.0.0"
-        then
-          prev.jsonschema.overridePythonAttrs
-            (old: {
-              propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.importlib-resources ];
-              postPatch = old.postPatch or "" + lib.optionalString (!(old.src.isWheel or false) && (lib.versionAtLeast prev.jsonschema.version "4.18.0")) ''
-                sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
-              '';
-            })
-        else prev.jsonschema;
+      jsonschema = prev.jsonschema.overridePythonAttrs
+        (old: lib.optionalAttrs (lib.versionAtLeast old.version "4.0.0") {
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.importlib-resources ];
+          postPatch = old.postPatch or "" + lib.optionalString
+            (!(old.src.isWheel or false) && lib.versionAtLeast old.version "4.18.0") ''
+            sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+          '';
+        });
 
-      jsonschema-specifications = prev.jsonschema-specifications.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-        postPatch = old.postPatch or "" + ''
-          sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
-        '';
-      });
+      jsonschema-specifications = prev.jsonschema-specifications.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          postPatch = old.postPatch or "" + ''
+            sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
+          '';
+        }
+      );
 
       jupyter = prev.jupyter.overridePythonAttrs (
         _old: {
@@ -1479,16 +1451,15 @@ lib.composeManyExtensions [
         }
       );
 
-      lsassy =
-        if prev.lsassy.version == "3.1.1" then
-          prev.lsassy.overridePythonAttrs
-            (old: {
-              # pyproject.toml contains a constraint `rich = "^10.6.0"` which is not replicated in setup.py
-              # hence pypi misses it and poetry pins rich to 11.0.0
-              preConfigure = (old.preConfigure or "") + ''
-                rm pyproject.toml
-              '';
-            }) else prev.lsassy;
+      lsassy = prev.lsassy.overridePythonAttrs (
+        old: lib.optionalAttrs (old.version == "3.1.1") {
+          # pyproject.toml contains a constraint `rich = "^10.6.0"` which is not replicated in setup.py
+          # hence pypi misses it and poetry pins rich to 11.0.0
+          preConfigure = (old.preConfigure or "") + ''
+            rm pyproject.toml
+          '';
+        }
+      );
 
       lxml = prev.lxml.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
@@ -1833,20 +1804,19 @@ lib.composeManyExtensions [
         }
       );
 
-      notebook =
-        if (lib.versionAtLeast prev.notebook.version "7.0.0") then
-          prev.notebook.overridePythonAttrs
-            (old: {
-              buildInputs = old.buildInputs or [ ] ++ [
-                prev.hatchling
-                prev.hatch-jupyter-builder
-              ];
-              # notebook requires jlpm which is in jupyterlab
-              # https://github.com/jupyterlab/jupyterlab/blob/main/jupyterlab/jlpmapp.py
-              nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-                prev.jupyterlab
-              ];
-            }) else prev.notebook;
+      notebook = prev.notebook.overridePythonAttrs (
+        old: lib.optionalAttrs (lib.versionAtLeast old.version "7.0.0") {
+          buildInputs = old.buildInputs or [ ] ++ [
+            prev.hatchling
+            prev.hatch-jupyter-builder
+          ];
+          # notebook requires jlpm which is in jupyterlab
+          # https://github.com/jupyterlab/jupyterlab/blob/main/jupyterlab/jlpmapp.py
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            prev.jupyterlab
+          ];
+        }
+      );
 
       nvidia-cudnn-cu11 = prev.nvidia-cudnn-cu11.overridePythonAttrs (attrs: {
         propagatedBuildInputs = attrs.propagatedBuildInputs or [ ] ++ [
