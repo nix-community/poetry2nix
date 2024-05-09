@@ -628,7 +628,7 @@ lib.composeManyExtensions [
             old: {
               nativeBuildInputs = old.nativeBuildInputs or [ ]
                 ++ lib.optionals (lib.versionAtLeast old.version "3.4") [ final.setuptools-rust ]
-                ++ lib.optional (!final.isPyPy) pyBuildPackages.cffi
+                ++ lib.optionals (!final.isPyPy) [ pyBuildPackages.cffi ]
                 ++ lib.optionals (lib.versionAtLeast old.version "3.5" && !isWheel) [ pkgs.rustPlatform.cargoSetupHook pkgs.cargo pkgs.rustc ]
                 ++ [ pkg-config ]
               ;
@@ -733,7 +733,7 @@ lib.composeManyExtensions [
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.dbus pkgs.dbus-glib ]
           # My guess why it's sometimes trying to -lncurses.
           # It seems not to retain the dependency anyway.
-          ++ lib.optional (! final.python ? modules) pkgs.ncurses;
+          ++ lib.optionals (! final.python ? modules) [ pkgs.ncurses ];
       });
 
       dcli = prev.dcli.overridePythonAttrs (old: {
@@ -1067,7 +1067,7 @@ lib.composeManyExtensions [
               buildInputs =
                 old.buildInputs or [ ]
                 ++ [ pkgs.hdf5 pkgs.pkg-config ]
-                ++ lib.optional mpiSupport mpi
+                ++ lib.optionals mpiSupport [ mpi ]
               ;
               propagatedBuildInputs =
                 old.propagatedBuildInputs or [ ]
@@ -1211,7 +1211,8 @@ lib.composeManyExtensions [
       # importlib-metadata has an incomplete dependency specification
       importlib-metadata = prev.importlib-metadata.overridePythonAttrs (
         old: {
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ lib.optional final.python.isPy2 final.pathlib2;
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ]
+            ++ lib.optionals final.python.isPy2 [ final.pathlib2 ];
         }
       );
 
@@ -1732,8 +1733,7 @@ lib.composeManyExtensions [
             final.types-typed-ast
             final.types-setuptools
           ]
-          ++ lib.optional (lib.strings.versionAtLeast old.version "0.990") final.types-psutil
-          ;
+          ++ lib.optionals (lib.versionAtLeast old.version "0.990") [ final.types-psutil ];
 
           # when testing reduce optimisation level to drastically reduce build time
           # (default is 3)
@@ -2031,7 +2031,7 @@ lib.composeManyExtensions [
             pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
             pkgs.rustPlatform.maturinBuildHook # orjson is based on maturin
           ];
-          buildInputs = old.buildInputs or [ ] ++ lib.optional pkgs.stdenv.isDarwin pkgs.libiconv;
+          buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [ pkgs.libiconv ];
         }
       ));
 
@@ -2045,13 +2045,13 @@ lib.composeManyExtensions [
 
       pandas = prev.pandas.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
-        buildInputs = old.buildInputs or [ ] ++ lib.optional stdenv.isDarwin pkgs.libcxx;
+        buildInputs = old.buildInputs or [ ] ++ lib.optionals stdenv.isDarwin [ pkgs.libcxx ];
 
         dontUseMesonConfigure = true;
 
         # Doesn't work with -Werror,-Wunused-command-line-argument
         # https://github.com/NixOS/nixpkgs/issues/39687
-        hardeningDisable = lib.optional stdenv.cc.isClang "strictoverflow";
+        hardeningDisable = lib.optionals stdenv.cc.isClang [ "strictoverflow" ];
 
         # For OSX, we need to add a dependency on libcxx, which provides
         # `complex.h` and other libraries that pandas depends on to build.
@@ -2109,8 +2109,8 @@ lib.composeManyExtensions [
         {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.sqlite ];
           propagatedBuildInputs = old.propagatedBuildInputs or [ ]
-            ++ lib.optional withPostgres final.psycopg2
-            ++ lib.optional withMysql final.mysql-connector;
+            ++ lib.optionals withPostgres [ final.psycopg2 ]
+            ++ lib.optionals withMysql [ final.mysql-connector ];
         }
       );
 
@@ -2133,7 +2133,7 @@ lib.composeManyExtensions [
             ++ [ freetype libjpeg zlib libtiff libxcrypt libwebp tcl lcms2 ]
             ++ lib.optionals (lib.versionAtLeast old.version "7.1.0") [ xorg.libxcb ]
             ++ lib.optionals final.isPyPy [ tk xorg.libX11 ];
-          preConfigure = lib.optional (old.format != "wheel") preConfigure;
+          preConfigure = lib.optionals (old.format != "wheel") [ preConfigure ];
 
           # https://github.com/nix-community/poetry2nix/issues/1139
           patches = (old.patches or [ ]) ++ pkgs.lib.optionals (!(old.src.isWheel or false) && old.version == "9.5.0") [
@@ -2218,7 +2218,7 @@ lib.composeManyExtensions [
       psycopg2 = prev.psycopg2.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ]
-            ++ lib.optional stdenv.isDarwin pkgs.openssl;
+            ++ lib.optionals stdenv.isDarwin [ pkgs.openssl ];
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.postgresql ];
         }
       );
@@ -2226,7 +2226,7 @@ lib.composeManyExtensions [
       psycopg2-binary = prev.psycopg2-binary.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ]
-            ++ lib.optional stdenv.isDarwin pkgs.openssl;
+            ++ lib.optionals stdenv.isDarwin [ pkgs.openssl ];
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.postgresql ];
         }
       );
@@ -2234,7 +2234,7 @@ lib.composeManyExtensions [
       psycopg2cffi = prev.psycopg2cffi.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ]
-            ++ lib.optional stdenv.isDarwin pkgs.openssl;
+            ++ lib.optionals stdenv.isDarwin [ pkgs.openssl ];
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.postgresql ];
         }
       );
@@ -3333,7 +3333,7 @@ lib.composeManyExtensions [
           '' + lib.optionalString (lib.versionOlder prev.scipy.version "1.11.1") ''
             sed -i '0,/from numpy.distutils.core/s//import setuptools;from numpy.distutils.core/' setup.py
           '';
-          preBuild = lib.optional (lib.versionOlder prev.scipy.version "1.9.0") ''
+          preBuild = lib.optionalString (lib.versionOlder prev.scipy.version "1.9.0") ''
             ln -s ${final.numpy.cfg} site.cfg
           '';
           postPatch = ''
@@ -3816,7 +3816,7 @@ lib.composeManyExtensions [
       watchdog = prev.watchdog.overrideAttrs (
         old: {
           buildInputs = old.buildInputs or [ ]
-            ++ lib.optional pkgs.stdenv.isDarwin pkgs.darwin.apple_sdk.frameworks.CoreServices;
+            ++ lib.optionals pkgs.stdenv.isDarwin [ pkgs.darwin.apple_sdk.frameworks.CoreServices ];
         }
       );
 
@@ -3953,7 +3953,7 @@ lib.composeManyExtensions [
 
       wcwidth = prev.wcwidth.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++
-          lib.optional final.isPy27 (final.backports-functools-lru-cache or final.backports_functools_lru_cache)
+          lib.optionals final.isPy27 [ (final.backports-functools-lru-cache or final.backports_functools_lru_cache) ]
         ;
       });
 
