@@ -1570,7 +1570,7 @@ lib.composeManyExtensions [
             pkgs.freetype
             qhull
           ]
-            ++ lib.optionals enableGtk3 [ pkgs.cairo final.pycairo pkgs.gtk3 pkgs.gobject-introspection final.pygobject3 ]
+            ++ lib.optionals enableGtk3 [ pkgs.cairo pkgs.librsvg final.pycairo pkgs.gtk3 pkgs.gobject-introspection final.pygobject3 ]
             ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk final.tkinter pkgs.libX11 ]
             ++ lib.optionals enableQt [ final.pyqt5 ]
           ;
