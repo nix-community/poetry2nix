@@ -1609,10 +1609,13 @@ lib.composeManyExtensions [
               sed -i '/final.tcl_tk_cache = None/s|None|${tcl_tk_cache}|' setupext.py
             '' + lib.optionalString (stdenv.isLinux && interactive) ''
               # fix paths to libraries in dlopen calls (headless detection)
-              substituteInPlace src/_c_internal_utils.c \
-                --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
-                --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
+              if test -d src; then
+                substituteInPlace src/_c_internal_utils.c \
+                  --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
+                  --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
+              fi
             ''
+            # avoid matplotlib trying to download dependencies
             + lib.optionalString mpl39
               ''
                 patchShebangs .
