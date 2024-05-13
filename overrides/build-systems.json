@@ -6328,6 +6328,15 @@
   "enocean": [
     "setuptools"
   ],
+  "enochecker-cli": [
+    "setuptools"
+  ],
+  "enochecker-core": [
+    "setuptools"
+  ],
+  "enochecker-test": [
+    "setuptools"
+  ],
   "enrich": [
     "setuptools",
     "setuptools-scm"
