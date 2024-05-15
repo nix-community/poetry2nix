@@ -1221,6 +1221,12 @@ lib.composeManyExtensions [
         }
       );
 
+      itsdangerous = prev.itsdangerous.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [ final.flit-core ];
+        }
+      );
+
       jaraco-functools = prev.jaraco-functools.overridePythonAttrs (
         old: {
           # required for the extra "toml" dependency in setuptools_scm[toml]
