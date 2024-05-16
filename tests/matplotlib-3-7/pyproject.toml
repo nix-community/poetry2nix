@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-matplotlib = "*"
+matplotlib = "~3.7"
 
 [build-system]
 requires = ["poetry-core>=1.1"]
