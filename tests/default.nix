@@ -128,7 +128,7 @@ in
   missing-iswheel = callTest ./missing-iswheel { };
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
-  matplotlib-post-3-7 = callTest ./matplotlib-post-3-7 { };
+  matplotlib-3-7 = callTest ./matplotlib-3-7 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
   virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };
@@ -180,7 +180,7 @@ in
   # linux-only API (AIO)
   aiopath = callTest ./aiopath { };
   # doesn't compile on darwin
-  matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
+  matplotlib-3-6 = callTest ./matplotlib-3-6 { };
   # the version of scipy used here doesn't build from source on darwin
   scipy1_9 = callTest ./scipy1_9 { };
 } // lib.optionalAttrs (!stdenv.isAarch64) {

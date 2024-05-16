@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "matplotlib-post-3-7"
+name = "matplotlib-3-7"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
