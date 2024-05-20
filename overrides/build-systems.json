@@ -2836,6 +2836,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "bootstrap-flask": [
+    "setuptools"
+  ],
   "borb": [
     "setuptools"
   ],
@@ -7177,6 +7180,12 @@
   "flask-gravatar": [
     "setuptools"
   ],
+  "flask-hashids": [
+    "setuptools"
+  ],
+  "flask-htmx": [
+    "poetry"
+  ],
   "flask-httpauth": [
     "setuptools"
   ],
@@ -7240,6 +7249,9 @@
   "flask-reverse-proxy-fix": [
     "setuptools"
   ],
+  "flask-rq2": [
+    "setuptools"
+  ],
   "flask-script": [
     "setuptools"
   ],
@@ -7257,6 +7269,9 @@
     "setuptools"
   ],
   "flask-silk": [
+    "setuptools"
+  ],
+  "flask-sitemap": [
     "setuptools"
   ],
   "flask-sock": [
@@ -9556,6 +9571,9 @@
   "interruptingcow": [
     "setuptools"
   ],
+  "intervals": [
+    "setuptools"
+  ],
   "intervaltree": [
     "setuptools"
   ],
@@ -9741,6 +9759,7 @@
     "setuptools-scm"
   ],
   "itsdangerous": [
+    "flit-core",
     "setuptools"
   ],
   "itunespy": [
@@ -9890,6 +9909,9 @@
   ],
   "jieba": [
     "setuptools"
+  ],
+  "jinja-partials": [
+    "hatchling"
   ],
   "jinja2": [
     {
@@ -18922,6 +18944,9 @@
   "pytest-aioresponses": [
     "poetry"
   ],
+  "pytest-alembic": [
+    "poetry"
+  ],
   "pytest-annotate": [
     "setuptools"
   ],
@@ -26801,7 +26826,11 @@
     "setuptools"
   ],
   "wtforms": [
+    "babel",
     "hatchling",
+    "setuptools"
+  ],
+  "wtforms-alchemy": [
     "setuptools"
   ],
   "wtforms-bootstrap5": [
