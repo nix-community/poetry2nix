@@ -11486,7 +11486,10 @@
   "matplotlib": [
     "oldest-supported-numpy",
     "setuptools",
-    "setuptools-scm",
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "3.5.0"
+    },
     {
       "buildSystem": "meson-python",
       "from": "3.9.0"
