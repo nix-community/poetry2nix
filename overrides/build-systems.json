@@ -14309,6 +14309,10 @@
     {
       "buildSystem": "hatchling",
       "from": "1.0.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "1.15.0"
     }
   ],
   "openai-triton": [
