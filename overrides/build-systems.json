@@ -22103,6 +22103,9 @@
   "simpful": [
     "setuptools"
   ],
+  "simple-crypt": [
+    "setuptools"
+  ],
   "simple-di": [
     "setuptools"
   ],
