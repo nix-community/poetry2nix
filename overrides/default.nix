@@ -1559,7 +1559,7 @@ lib.composeManyExtensions [
             final.pybind11
           ];
 
-          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
             final.certifi
             pkgs.libpng
             pkgs.freetype
@@ -1572,7 +1572,9 @@ lib.composeManyExtensions [
 
           dontUseMesonConfigure = mpl39;
 
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            pkg-config
+          ];
 
           mesonFlags = lib.optionals mpl39 [
             "-Dsystem-freetype=true"
@@ -1612,7 +1614,6 @@ lib.composeManyExtensions [
               system_freetype=true
               system_qhull=true" > mplsetup.cfg
             '';
-
         }
       );
 
