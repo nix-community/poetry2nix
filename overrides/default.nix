@@ -293,6 +293,11 @@ lib.composeManyExtensions [
         autoPatchelfIgnoreMissingDeps = true;
       });
 
+      avro-python3 = prev.avro-python3.overridePythonAttrs (attrs: {
+        nativeBuildInputs = attrs.nativeBuildInputs or [ ]
+          ++ [ final.isort final.pycodestyle ];
+      });
+
       aws-cdk-asset-node-proxy-agent-v6 = prev.aws-cdk-asset-node-proxy-agent-v6.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
