@@ -11450,6 +11450,9 @@
   "marshmallow-enum": [
     "setuptools"
   ],
+  "marshmallow-objects": [
+    "setuptools"
+  ],
   "marshmallow-oneofschema": [
     "flit-core",
     "setuptools"
