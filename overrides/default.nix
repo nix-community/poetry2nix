@@ -1544,6 +1544,7 @@ lib.composeManyExtensions [
           inherit (pkgs) tk tcl wayland qhull;
           inherit (pkgs.xorg) libX11;
           inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
+          mpl39 = lib.versionAtLeast prev.matplotlib.version "3.9.0";
         in
         {
           XDG_RUNTIME_DIR = "/tmp";
@@ -1569,10 +1570,15 @@ lib.composeManyExtensions [
             ++ lib.optionals enableQt [ final.pyqt5 ]
           ;
 
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-            pkg-config
-          ] ++ lib.optionals (lib.versionAtLeast prev.matplotlib.version "3.5.0") [
-            final.setuptools-scm
+          dontUseMesonConfigure = mpl39;
+
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
+
+          mesonFlags = lib.optionals mpl39 [
+            "-Dsystem-freetype=true"
+            "-Dsystem-qhull=true"
+            # broken for linux in matplotlib 3.9.0
+            "-Db_lto=false"
           ];
 
           # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
