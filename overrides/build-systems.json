@@ -15409,6 +15409,9 @@
   "pgcli": [
     "setuptools"
   ],
+  "pgeocode": [
+    "setuptools"
+  ],
   "pglast": [
     "setuptools"
   ],
