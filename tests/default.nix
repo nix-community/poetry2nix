@@ -130,6 +130,7 @@ in
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
   matplotlib-3-7 = callTest ./matplotlib-3-7 { };
+  matplotlib-3-9 = callTest ./matplotlib-3-9 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
   virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };
