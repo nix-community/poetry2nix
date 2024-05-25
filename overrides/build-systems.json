@@ -3886,6 +3886,7 @@
     "setuptools"
   ],
   "color-operations": [
+    "cython_0",
     "setuptools"
   ],
   "colorama": [
