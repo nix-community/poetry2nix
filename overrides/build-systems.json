@@ -4815,7 +4815,11 @@
     "setuptools"
   ],
   "decli": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "poetry-core",
+      "from": "0.6.2"
+    }
   ],
   "decopatch": [
     "setuptools",
