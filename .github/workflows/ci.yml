@@ -9,7 +9,6 @@ on:
 
 concurrency:
   group: ${{ github.repository }}-${{ github.workflow }}
-  cancel-in-progress: true
 
 jobs:
   nix-matrix:
