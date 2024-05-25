@@ -15076,6 +15076,9 @@
   "parse": [
     "setuptools"
   ],
+  "parse-accept-language": [
+    "setuptools"
+  ],
   "parse-type": [
     "setuptools"
   ],
