@@ -21391,6 +21391,9 @@
   "s3-credentials": [
     "setuptools"
   ],
+  "s3-pit-restore": [
+    "setuptools"
+  ],
   "s3cmd": [
     "setuptools"
   ],
