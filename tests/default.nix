@@ -162,6 +162,7 @@ in
   pandas = callTest ./pandas { };
   python-magic = callTest ./python-magic { };
   cmdstanpy = callTest ./cmdstanpy { };
+  avro-python3 = callTest ./avro-python3 { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
