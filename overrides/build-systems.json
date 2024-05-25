@@ -18262,6 +18262,9 @@
   "pyquery": [
     "setuptools"
   ],
+  "pyquerystring": [
+    "setuptools"
+  ],
   "pyquil": [
     "poetry-core",
     "setuptools"
