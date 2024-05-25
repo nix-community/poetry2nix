@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 ndg-httpsclient = "0.5.1"
+cryptography = "42.0.7"
 
 
 [build-system]
