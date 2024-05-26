@@ -105,7 +105,7 @@ lib.composeManyExtensions [
   (final: prev:
     let
       inherit (final.python) stdenv;
-      inherit (pkgs.buildPackages) pkg-config;
+      inherit (pkgs.buildPackages) pkg-config cmake swig jdk gfortran meson ninja autoconf automake libtool;
       pyBuildPackages = (final.python.pythonOnBuildForHost or final.python.pythonForBuild).pkgs;
 
       selectQt5 = version:
@@ -327,7 +327,7 @@ lib.composeManyExtensions [
 
       awscrt = prev.awscrt.overridePythonAttrs (
         old: {
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs or [ ];
+          nativeBuildInputs = [ cmake ] ++ old.nativeBuildInputs or [ ];
           dontUseCmakeConfigure = true;
         }
       );
@@ -927,7 +927,7 @@ lib.composeManyExtensions [
 
       gdstk = prev.gdstk.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ final.setuptools pkgs.zlib pkgs.qhull ];
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.cmake ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ cmake ];
         dontUseCmakeConfigure = true;
         # gdstk ships with its own FindQhull.cmake, but that isn't
         # included in the python release -- fix
@@ -1114,7 +1114,7 @@ lib.composeManyExtensions [
 
       igraph = prev.igraph.overridePythonAttrs (
         old: {
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs or [ ];
+          nativeBuildInputs = [ cmake ] ++ old.nativeBuildInputs or [ ];
           dontUseCmakeConfigure = true;
         }
       );
@@ -1376,7 +1376,7 @@ lib.composeManyExtensions [
 
       lightgbm = prev.lightgbm.overridePythonAttrs (
         old: {
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          nativeBuildInputs = [ cmake ] ++ old.nativeBuildInputs or [ ];
           dontUseCmakeConfigure = true;
           postConfigure = ''
             export HOME=$(mktemp -d)
@@ -1389,7 +1389,7 @@ lib.composeManyExtensions [
           buildInputs = with pkgs; lib.optionals stdenv.isDarwin [
             darwin.apple_sdk.frameworks.Accelerate
           ];
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs or [ ];
+          nativeBuildInputs = [ cmake ] ++ old.nativeBuildInputs or [ ];
           preBuild = ''
             cd "$OLDPWD"
           '';
@@ -1462,7 +1462,7 @@ lib.composeManyExtensions [
 
       m2crypto = prev.m2crypto.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.swig ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ swig ];
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.openssl ];
         }
       );
@@ -1771,7 +1771,7 @@ lib.composeManyExtensions [
               "setuptools"
             else
               old.format or null;
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.gfortran ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gfortran ];
           buildInputs = old.buildInputs or [ ] ++ [ blas ];
           enableParallelBuilding = true;
           preBuild = ''
@@ -1827,7 +1827,7 @@ lib.composeManyExtensions [
 
       omegaconf = prev.omegaconf.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.jdk ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ jdk ];
         }
       );
 
@@ -1899,7 +1899,7 @@ lib.composeManyExtensions [
           # Can't use cmakeFlags because cmake is called by setup.py
           CMAKE_ARGS = lib.optionalString stdenv.isDarwin "-DWITH_OPENCL=OFF";
 
-          nativeBuildInputs = [ pkgs.cmake ] ++ old.nativeBuildInputs;
+          nativeBuildInputs = [ cmake ] ++ old.nativeBuildInputs;
           buildInputs = [
             pkgs.ninja
           ] ++ lib.optionals stdenv.isDarwin (with pkgs.darwin.apple_sdk.frameworks; [
@@ -1989,7 +1989,7 @@ lib.composeManyExtensions [
 
       osqp = prev.osqp.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.cmake ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ cmake ];
           dontUseCmakeConfigure = true;
         }
       );
@@ -2225,10 +2225,7 @@ lib.composeManyExtensions [
               errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
             in
             lib.throwIf (arrowCppVersion != pyArrowVersion) errorMessage {
-              nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-                pkg-config
-                pkgs.cmake
-              ];
+              nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config cmake ];
 
               buildInputs = old.buildInputs or [ ] ++ [
                 _arrow-cpp
@@ -2260,13 +2257,9 @@ lib.composeManyExtensions [
 
       pycairo = prev.pycairo.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            pkg-config
-          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
 
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
-            pkgs.cairo
-          ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.cairo ];
         }
       );
 
@@ -2293,11 +2286,7 @@ lib.composeManyExtensions [
 
       pygame = prev.pygame.overridePythonAttrs (
         _old: rec {
-          nativeBuildInputs = [
-            pkg-config
-            pkgs.SDL
-          ];
-
+          nativeBuildInputs = [ pkg-config pkgs.SDL ];
           buildInputs = [
             pkgs.SDL
             pkgs.SDL_image
@@ -2348,8 +2337,8 @@ lib.composeManyExtensions [
         {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ lib.optionals (!isWheel) [
             pkg-config
-            pkgs.meson
-            pkgs.ninja
+            meson
+            ninja
             pkgs.gobject-introspection
             final.meson-python
           ];
@@ -2426,11 +2415,8 @@ lib.composeManyExtensions [
       });
 
       pynput = prev.pynput.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ]
-          ++ [ final.sphinx ];
-
-        propagatedBuildInputs = old.propagatedBuildInputs or [ ]
-          ++ [ final.setuptools-lint ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ final.sphinx ];
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools-lint ];
       });
 
       pymssql = prev.pymssql.overridePythonAttrs (old: {
@@ -2481,7 +2467,7 @@ lib.composeManyExtensions [
       });
 
       pyrfr = prev.pyrfr.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.swig ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ swig ];
       });
 
       pyscard = prev.pyscard.overridePythonAttrs (old:
@@ -2506,9 +2492,7 @@ lib.composeManyExtensions [
           );
           NIX_CFLAGS_COMPILE = lib.optionalString (! withApplePCSC)
             "-I ${lib.getDev pcsclite}/include/PCSC";
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            pkgs.swig
-          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ swig ];
         }
       );
 
@@ -2550,9 +2534,7 @@ lib.composeManyExtensions [
 
       python-bugzilla = prev.python-bugzilla.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            final.docutils
-          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ final.docutils ];
         }
       );
 
@@ -3266,7 +3248,7 @@ lib.composeManyExtensions [
       scipy = prev.scipy.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++
-            [ pkgs.gfortran ] ++
+            [ gfortran ] ++
             lib.optionals (lib.versionAtLeast prev.scipy.version "1.7.0") [ final.pythran ] ++
             lib.optionals (lib.versionAtLeast prev.scipy.version "1.9.0") [ final.meson-python pkg-config ];
           dontUseMesonConfigure = true;
@@ -3331,7 +3313,7 @@ lib.composeManyExtensions [
       scikit-learn = prev.scikit-learn.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            pkgs.gfortran
+            gfortran
           ] ++ lib.optionals stdenv.cc.isClang [
             pkgs.llvmPackages.openmp
           ] ++ lib.optionals stdenv.isLinux [
@@ -3349,9 +3331,9 @@ lib.composeManyExtensions [
       secp256k1 = prev.secp256k1.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
           pkg-config
-          pkgs.autoconf
-          pkgs.automake
-          pkgs.libtool
+          autoconf
+          automake
+          libtool
         ];
         buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
         doCheck = false;
@@ -3719,7 +3701,7 @@ lib.composeManyExtensions [
           dontUseCmakeConfigure = true;
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
             pkg-config
-            pkgs.cmake
+            cmake
             pkgs.gperftools
           ];
           buildInputs = old.buildInputs or [ ] ++ [
