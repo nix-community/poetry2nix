@@ -8,8 +8,7 @@ on:
       - "master"
 
 concurrency:
-  group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
-  cancel-in-progress: true
+  group: ${{ github.repository }}-${{ github.workflow }}
 
 jobs:
   nix-matrix:
@@ -40,7 +39,7 @@ jobs:
       - uses: cachix/cachix-action@v14
         with:
           name: poetry2nix
-          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+          authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
       - run: nix build -L ".#${{ matrix.attr }}" --keep-going
 
   nix-build-shell:
@@ -57,7 +56,7 @@ jobs:
       - uses: cachix/cachix-action@v14
         with:
           name: poetry2nix
-          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+          authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
       - name: compute system from nixpkgs
         run: |
           echo "NIXPKGS_SYSTEM=$(nix eval --raw 'nixpkgs#system')" >> "$GITHUB_ENV"
@@ -79,7 +78,7 @@ jobs:
       - uses: cachix/cachix-action@v14
         with:
           name: poetry2nix
-          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+          authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
       - run: nix flake show --all-systems
 
   test-template:
@@ -96,7 +95,7 @@ jobs:
       - uses: cachix/cachix-action@v14
         with:
           name: poetry2nix
-          signingKey: "VhaWuN3IyJVpWg+aZvTocVB+W8ziZKKRGLKR53Pkld3YRZxYOUfXZf0fvqF+LkqVW0eA60trVd5vsqNONpX9Hw=="
+          authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
 
       - name: create flake template test directory
         run: echo "TESTDIR=$(mktemp -d)" >> "$GITHUB_ENV"

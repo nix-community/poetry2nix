@@ -58,6 +58,7 @@ in
   blinker-1_6_2 = callTest ./blinker-1_6_2 { };
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
+  color-operations = callTest ./color-operations { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   mailchimp3 = callTest ./mailchimp3 { };
   markupsafe2 = callTest ./markupsafe2 { };
@@ -128,7 +129,8 @@ in
   missing-iswheel = callTest ./missing-iswheel { };
   wheel-wheel = callTest ./wheel-wheel { };
   fancycompleter-wheel = callTest ./fancycompleter-wheel { };
-  matplotlib-post-3-7 = callTest ./matplotlib-post-3-7 { };
+  matplotlib-3-7 = callTest ./matplotlib-3-7 { };
+  matplotlib-3-9 = callTest ./matplotlib-3-9 { };
   rfc3986-validator = callTest ./rfc3986-validator { };
   virtualenv-pre-20-18 = callTest ./virtualenv-pre-20-18 { };
   virtualenv-post-20-18 = callTest ./virtualenv-post-20-18 { };
@@ -161,6 +163,7 @@ in
   pandas = callTest ./pandas { };
   python-magic = callTest ./python-magic { };
   cmdstanpy = callTest ./cmdstanpy { };
+  avro-python3 = callTest ./avro-python3 { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
@@ -168,7 +171,6 @@ in
 
   # Fails because of missing inputs on darwin
   text-generation-webui = callTest ./text-generation-webui { };
-  vllm-wheel = callTest ./vllm-wheel { };
 
   # Cross tests fail on darwin for some strange reason:
   # ERROR: MarkupSafe-2.0.1-cp39-cp39-linux_aarch64.whl is not a supported wheel on this platform.
@@ -180,7 +182,7 @@ in
   # linux-only API (AIO)
   aiopath = callTest ./aiopath { };
   # doesn't compile on darwin
-  matplotlib-pre-3-7 = callTest ./matplotlib-pre-3-7 { };
+  matplotlib-3-6 = callTest ./matplotlib-3-6 { };
   # the version of scipy used here doesn't build from source on darwin
   scipy1_9 = callTest ./scipy1_9 { };
 } // lib.optionalAttrs (!stdenv.isAarch64) {
@@ -196,6 +198,7 @@ in
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_64-linux
   pyqt6 = callTest ./pyqt6 { };
+  vllm-wheel = callTest ./vllm-wheel { };
 } // lib.optionalAttrs (!(stdenv.isLinux && stdenv.isAarch64)) {
   # x86_64-linux
   # {x86_64,aarch64}-darwin

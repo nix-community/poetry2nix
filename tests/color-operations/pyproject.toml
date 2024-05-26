@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test_color_operations"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.8" # Based on https://pypi.org/project/color-operations/
+color-operations = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

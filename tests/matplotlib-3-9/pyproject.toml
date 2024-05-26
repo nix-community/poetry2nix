@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "matplotlib-pre-3-7"
+name = "matplotlib-3-9"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-matplotlib = "<3.7"
+matplotlib = "~3.9"
 
 [build-system]
 requires = ["poetry-core>=1.1"]
