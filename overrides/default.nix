@@ -1550,6 +1550,7 @@ lib.composeManyExtensions [
           inherit (pkgs.xorg) libX11;
           inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
           mpl39 = lib.versionAtLeast prev.matplotlib.version "3.9.0";
+          isSrc = !(old.src.isWheel or false);
         in
         {
           XDG_RUNTIME_DIR = "/tmp";
@@ -1572,58 +1573,56 @@ lib.composeManyExtensions [
           ]
             ++ lib.optionals enableGtk3 [ pkgs.cairo pkgs.librsvg final.pycairo pkgs.gtk3 pkgs.gobject-introspection final.pygobject3 ]
             ++ lib.optionals enableTk [ pkgs.tcl pkgs.tk final.tkinter pkgs.libX11 ]
-            ++ lib.optionals enableQt [ final.pyqt5 ]
-          ;
+            ++ lib.optionals enableQt [ final.pyqt5 ];
 
-          dontUseMesonConfigure = mpl39;
+          dontUseMesonConfigure = isSrc && mpl39;
 
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-            pkg-config
-          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
 
-          mesonFlags = lib.optionals mpl39 [
+          mesonFlags = lib.optionals (isSrc && mpl39) [
             "-Dsystem-freetype=true"
             "-Dsystem-qhull=true"
             # broken for linux in matplotlib 3.9.0
             "-Db_lto=false"
           ];
 
-          # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
-          hardeningDisable = if stdenv.isDarwin then [ "strictoverflow" ] else [ ];
+          # Clang doesn't understand -fno-strict-overflow, and matplotlib
+          # builds with -Werror
+          hardeningDisable = lib.optionals stdenv.isDarwin [ "strictoverflow" ];
 
           passthru = old.passthru or { } // passthru;
 
           MPLSETUPCFG = pkgs.writeText "mplsetup.cfg" (lib.generators.toINI { } passthru.config);
 
-          # Matplotlib tries to find Tcl/Tk by opening a Tk window and asking the
-          # corresponding interpreter object for its library paths. This fails if
-          # `$DISPLAY` is not set. The fallback option assumes that Tcl/Tk are both
-          # installed under the same path which is not true in Nix.
-          # With the following patch we just hard-code these paths into the install
-          # script.
+          # Matplotlib tries to find Tcl/Tk by opening a Tk window and asking
+          # the corresponding interpreter object for its library paths. This
+          # fails if `$DISPLAY` is not set. The fallback option assumes that
+          # Tcl/Tk are both installed under the same path which is not true in
+          # Nix. With the following patch we just hard-code these paths into
+          # the install script.
           postPatch =
             let
               tcl_tk_cache = ''"${tk}/lib", "${tcl}/lib", "${lib.strings.substring 0 3 tk.version}"'';
             in
-            lib.optionalString enableTk ''
-              sed -i '/final.tcl_tk_cache = None/s|None|${tcl_tk_cache}|' setupext.py
-            '' + lib.optionalString (stdenv.isLinux && interactive && !(old.src.isWheel or false)) ''
-              # fix paths to libraries in dlopen calls (headless detection)
-              substituteInPlace src/_c_internal_utils.c \
-                --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
-                --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
-            ''
-            # avoid matplotlib trying to download dependencies
-            + lib.optionalString mpl39
+            lib.optionalString isSrc (
+              lib.optionalString enableTk ''
+                sed -i '/final.tcl_tk_cache = None/s|None|${tcl_tk_cache}|' setupext.py
+              '' + lib.optionalString (stdenv.isLinux && interactive) ''
+                # fix paths to libraries in dlopen calls (headless detection)
+                substituteInPlace src/_c_internal_utils.c \
+                  --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
+                  --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
               ''
-                patchShebangs .
+              + lib.optionalString mpl39 ''patchShebangs .''
+              # avoid matplotlib trying to download dependencies
+              + lib.optionalString (!mpl39) ''
+                {
+                  echo '[libs]'
+                  echo 'system_freetype = true'
+                  echo 'system_qhull = true'
+                } > mplsetup.cfg
               ''
-            # avoid matplotlib trying to download dependencies
-            + ''
-              echo "[libs]
-              system_freetype=true
-              system_qhull=true" > mplsetup.cfg
-            '';
+            );
         }
       );
 
