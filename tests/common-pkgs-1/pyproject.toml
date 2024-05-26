@@ -5,7 +5,7 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
 urllib3 = "^1.25.7"
 six = "^1.13.0"
 botocore = "^1.13.28"
@@ -23,7 +23,7 @@ colorama = "^0.4.1"
 pytz = "^2019.3"
 simplejson = "^3.17.0"
 boto3 = "^1.10.28"
-wheel = "^0.42"
+wheel = "^0.43"
 numpy = "^1.17.4"
 protobuf = "^3.11.0"
 markupsafe = "^1.1.1"
