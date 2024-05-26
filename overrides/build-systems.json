@@ -24253,6 +24253,9 @@
   "transformers": [
     "setuptools"
   ],
+  "transformers-stream-generator": [
+    "setuptools"
+  ],
   "transforms3d": [
     "setuptools"
   ],
