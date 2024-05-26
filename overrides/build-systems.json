@@ -2836,6 +2836,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "bootstrap-flask": [
+    "setuptools"
+  ],
   "borb": [
     "setuptools"
   ],
@@ -3886,6 +3889,7 @@
     "setuptools"
   ],
   "color-operations": [
+    "cython_0",
     "setuptools"
   ],
   "colorama": [
@@ -7185,6 +7189,12 @@
   "flask-gravatar": [
     "setuptools"
   ],
+  "flask-hashids": [
+    "setuptools"
+  ],
+  "flask-htmx": [
+    "poetry"
+  ],
   "flask-httpauth": [
     "setuptools"
   ],
@@ -7248,6 +7258,9 @@
   "flask-reverse-proxy-fix": [
     "setuptools"
   ],
+  "flask-rq2": [
+    "setuptools"
+  ],
   "flask-script": [
     "setuptools"
   ],
@@ -7265,6 +7278,9 @@
     "setuptools"
   ],
   "flask-silk": [
+    "setuptools"
+  ],
+  "flask-sitemap": [
     "setuptools"
   ],
   "flask-sock": [
@@ -9564,6 +9580,9 @@
   "interruptingcow": [
     "setuptools"
   ],
+  "intervals": [
+    "setuptools"
+  ],
   "intervaltree": [
     "setuptools"
   ],
@@ -9749,6 +9768,7 @@
     "setuptools-scm"
   ],
   "itsdangerous": [
+    "flit-core",
     "setuptools"
   ],
   "itunespy": [
@@ -9898,6 +9918,9 @@
   ],
   "jieba": [
     "setuptools"
+  ],
+  "jinja-partials": [
+    "hatchling"
   ],
   "jinja2": [
     {
@@ -11458,6 +11481,9 @@
   "marshmallow-enum": [
     "setuptools"
   ],
+  "marshmallow-objects": [
+    "setuptools"
+  ],
   "marshmallow-oneofschema": [
     "flit-core",
     "setuptools"
@@ -11494,7 +11520,14 @@
   "matplotlib": [
     "oldest-supported-numpy",
     "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "setuptools-scm",
+      "from": "3.5.0"
+    },
+    {
+      "buildSystem": "meson-python",
+      "from": "3.9.0"
+    }
   ],
   "matplotlib-inline": [
     "setuptools"
@@ -14317,6 +14350,10 @@
     {
       "buildSystem": "hatchling",
       "from": "1.0.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "1.15.0"
     }
   ],
   "openai-triton": [
@@ -15081,6 +15118,9 @@
   "parse": [
     "setuptools"
   ],
+  "parse-accept-language": [
+    "setuptools"
+  ],
   "parse-type": [
     "setuptools"
   ],
@@ -15409,6 +15449,9 @@
     "setuptools"
   ],
   "pgcli": [
+    "setuptools"
+  ],
+  "pgeocode": [
     "setuptools"
   ],
   "pglast": [
@@ -18261,6 +18304,9 @@
   "pyquery": [
     "setuptools"
   ],
+  "pyquerystring": [
+    "setuptools"
+  ],
   "pyquil": [
     "poetry-core",
     "setuptools"
@@ -18905,6 +18951,9 @@
     "setuptools-scm"
   ],
   "pytest-aioresponses": [
+    "poetry"
+  ],
+  "pytest-alembic": [
     "poetry"
   ],
   "pytest-annotate": [
@@ -21387,6 +21436,9 @@
   "s3-credentials": [
     "setuptools"
   ],
+  "s3-pit-restore": [
+    "setuptools"
+  ],
   "s3cmd": [
     "setuptools"
   ],
@@ -22094,6 +22146,9 @@
     "setuptools"
   ],
   "simpful": [
+    "setuptools"
+  ],
+  "simple-crypt": [
     "setuptools"
   ],
   "simple-di": [
@@ -26780,7 +26835,11 @@
     "setuptools"
   ],
   "wtforms": [
+    "babel",
     "hatchling",
+    "setuptools"
+  ],
+  "wtforms-alchemy": [
     "setuptools"
   ],
   "wtforms-bootstrap5": [

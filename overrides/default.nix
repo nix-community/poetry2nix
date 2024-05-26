@@ -293,6 +293,11 @@ lib.composeManyExtensions [
         autoPatchelfIgnoreMissingDeps = true;
       });
 
+      avro-python3 = prev.avro-python3.overridePythonAttrs (attrs: {
+        nativeBuildInputs = attrs.nativeBuildInputs or [ ]
+          ++ [ final.isort final.pycodestyle ];
+      });
+
       aws-cdk-asset-node-proxy-agent-v6 = prev.aws-cdk-asset-node-proxy-agent-v6.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
@@ -351,6 +356,7 @@ lib.composeManyExtensions [
             "4.0.1" = "sha256-lDWX69YENZFMu7pyBmavUZaalGvFqbHSHfkwkzmDQaY=";
             "4.1.1" = "sha256-QYg1+DsZEdXB74vuS4SFvV0n5GXkuwHkOS9j1ogSTjA=";
             "4.1.2" = "sha256-fTD1AKvyeni5ukYjK53gueKLey+rcIUjW/0R289xeb0=";
+            "4.1.3" = "sha256-Uag1pUuis5lpnus2p5UrMLa4HP7VQLhKxR5TEMfpK0s=";
           }.${version} or (
             lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -603,6 +609,8 @@ lib.composeManyExtensions [
             "42.0.3" = "sha256-QBZLGXdQz2WIBlAJM+yBk1QgmfF4b3G0Y1I5lZmAmtU=";
             "42.0.4" = "sha256-qaXQiF1xZvv4sNIiR2cb5TfD7oNiYdvUwcm37nh2P2M=";
             "42.0.5" = "sha256-Pw3ftpcDMfZr/w6US5fnnyPVsFSB9+BuIKazDocYjTU=";
+            "42.0.6" = "sha256-q1nCn82wVfADPMYX2LCq7CpIIbMvFkqsXRYfhzGyvSg=";
+            "42.0.7" = "sha256-wAup/0sI8gYVsxr/vtcA+tNkBT8wxmp68FPbOuro1E4=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -1539,6 +1547,7 @@ lib.composeManyExtensions [
           inherit (pkgs) tk tcl wayland qhull;
           inherit (pkgs.xorg) libX11;
           inherit (pkgs.darwin.apple_sdk.frameworks) Cocoa;
+          mpl39 = lib.versionAtLeast prev.matplotlib.version "3.9.0";
         in
         {
           XDG_RUNTIME_DIR = "/tmp";
@@ -1553,7 +1562,7 @@ lib.composeManyExtensions [
             final.pybind11
           ];
 
-          propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
             final.certifi
             pkgs.libpng
             pkgs.freetype
@@ -1564,10 +1573,17 @@ lib.composeManyExtensions [
             ++ lib.optionals enableQt [ final.pyqt5 ]
           ;
 
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+          dontUseMesonConfigure = mpl39;
+
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
             pkg-config
-          ] ++ lib.optionals (lib.versionAtLeast prev.matplotlib.version "3.5.0") [
-            final.setuptools-scm
+          ];
+
+          mesonFlags = lib.optionals mpl39 [
+            "-Dsystem-freetype=true"
+            "-Dsystem-qhull=true"
+            # broken for linux in matplotlib 3.9.0
+            "-Db_lto=false"
           ];
 
           # Clang doesn't understand -fno-strict-overflow, and matplotlib builds with -Werror
@@ -1594,14 +1610,17 @@ lib.composeManyExtensions [
               substituteInPlace src/_c_internal_utils.c \
                 --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
                 --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
-            '' +
-            # avoid matplotlib trying to download dependencies
             ''
+            + lib.optionalString mpl39
+              ''
+                patchShebangs .
+              ''
+            # avoid matplotlib trying to download dependencies
+            + ''
               echo "[libs]
               system_freetype=true
               system_qhull=true" > mplsetup.cfg
             '';
-
         }
       );
 
@@ -3177,6 +3196,7 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.4.4" = "sha256-ViXKGcuDla428mI2Am67gtOxfia5VfR+ry2qyczXO/I=";
             "0.4.3" = "sha256-kduKKaCeqwSnCOPPNlNI6413OAvYkEGM2o4wOMqLZmc=";
             "0.4.2" = "sha256-AnAJi0srzwxU/22Uy+OjaSBdAEjCXH99J7VDvI03HDU=";
             "0.4.1" = "sha256-VTFwuNoqh0RLk0AHTPWEwrja0/aErmUlz82MnCc58jA=";
@@ -3236,6 +3256,7 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.4.4" = "sha256-K0iSCJNQ71/VfDL4LfqNHTqTfaVT/43zXhR5Kg80KvU=";
             "0.4.3" = "sha256-/ZjZjcYWdJH9NuKKohNxSYLG3Vdq2RylnCMHHr+5MtY=";
             "0.4.2" = "sha256-KpB5xHPuk5qb2yDHfe9U95qNMgW0PHX9RJcOOkKREsY=";
             "0.4.1" = "sha256-H2ULx1UXkRmCyC7fky394Q8z3HZaNbwF7IqAidY6/Ac=";

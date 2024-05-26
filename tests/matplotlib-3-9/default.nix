@@ -4,7 +4,7 @@ let
     projectDir = ./.;
   };
 in
-runCommand "matplotlib-pre-3-7-test" { } ''
+runCommand "matplotlib-3-9-test" { } ''
   ${env}/bin/python -c 'import matplotlib'
   touch $out
 ''
