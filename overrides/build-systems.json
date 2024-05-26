@@ -11450,6 +11450,9 @@
   "marshmallow-enum": [
     "setuptools"
   ],
+  "marshmallow-objects": [
+    "setuptools"
+  ],
   "marshmallow-oneofschema": [
     "flit-core",
     "setuptools"
@@ -15084,6 +15087,9 @@
   "parse": [
     "setuptools"
   ],
+  "parse-accept-language": [
+    "setuptools"
+  ],
   "parse-type": [
     "setuptools"
   ],
@@ -15412,6 +15418,9 @@
     "setuptools"
   ],
   "pgcli": [
+    "setuptools"
+  ],
+  "pgeocode": [
     "setuptools"
   ],
   "pglast": [
@@ -18262,6 +18271,9 @@
     "setuptools"
   ],
   "pyquery": [
+    "setuptools"
+  ],
+  "pyquerystring": [
     "setuptools"
   ],
   "pyquil": [
@@ -21390,6 +21402,9 @@
   "s3-credentials": [
     "setuptools"
   ],
+  "s3-pit-restore": [
+    "setuptools"
+  ],
   "s3cmd": [
     "setuptools"
   ],
@@ -22097,6 +22112,9 @@
     "setuptools"
   ],
   "simpful": [
+    "setuptools"
+  ],
+  "simple-crypt": [
     "setuptools"
   ],
   "simple-di": [
