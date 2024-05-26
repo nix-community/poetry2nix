@@ -3256,6 +3256,7 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.4.4" = "sha256-K0iSCJNQ71/VfDL4LfqNHTqTfaVT/43zXhR5Kg80KvU=";
             "0.4.3" = "sha256-/ZjZjcYWdJH9NuKKohNxSYLG3Vdq2RylnCMHHr+5MtY=";
             "0.4.2" = "sha256-KpB5xHPuk5qb2yDHfe9U95qNMgW0PHX9RJcOOkKREsY=";
             "0.4.1" = "sha256-H2ULx1UXkRmCyC7fky394Q8z3HZaNbwF7IqAidY6/Ac=";
