@@ -1692,7 +1692,7 @@ lib.composeManyExtensions [
               { }
               {
                 mpi = {
-                  mpicc = "${pkgs.mpi.outPath}/bin/mpicc";
+                  mpicc = "${pkgs.mpi.dev}/bin/mpicc";
                 };
               };
           };
