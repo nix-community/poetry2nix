@@ -1175,6 +1175,10 @@
       "until": "23.1.0"
     },
     {
+      "buildSystem": "flit-core",
+      "from": "21.2.0"
+    },
+    {
       "buildSystem": "hatch-fancy-pypi-readme",
       "from": "23.1.0"
     },
@@ -11876,6 +11880,9 @@
     "setuptools"
   ],
   "minikerberos": [
+    "setuptools"
+  ],
+  "minimal-snowplow-tracker": [
     "setuptools"
   ],
   "minimock": [
