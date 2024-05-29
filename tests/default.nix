@@ -165,6 +165,7 @@ in
   cmdstanpy = callTest ./cmdstanpy { };
   avro-python3 = callTest ./avro-python3 { };
   mpi4py-test = callTest ./mpi4py-test { };
+  ckzg = callTest ./ckzg { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
