@@ -3599,6 +3599,9 @@
   "ckcc-protocol": [
     "setuptools"
   ],
+  "ckzg": [
+    "setuptools"
+  ],
   "clarifai": [
     "setuptools"
   ],
