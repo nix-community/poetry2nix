@@ -139,11 +139,14 @@ jobs:
     needs: collect
     name: "Release"
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: write
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
       - name: "Generate tag"
         id: tag
-        run: echo tag=$(./tools/auto_version.py) >> "$GITHUB_OUTPUT"
+        run: echo "tag=$(./tools/auto_version.py)" >> "$GITHUB_OUTPUT"
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
