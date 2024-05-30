@@ -1046,6 +1046,9 @@
     "cython",
     "setuptools"
   ],
+  "apache-flink-libraries": [
+    "setuptools"
+  ],
   "apache-libcloud": [
     "setuptools"
   ],
