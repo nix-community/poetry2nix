@@ -1043,7 +1043,7 @@
     "flit-core"
   ],
   "apache-beam": [
-    "cython",
+    "cython_0",
     "setuptools"
   ],
   "apache-flink-libraries": [
