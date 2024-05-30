@@ -198,6 +198,7 @@ in
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
   ml-stack = callTest ./ml-stack { };
+  flink = callTest ./flink { };
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_64-linux
   pyqt6 = callTest ./pyqt6 { };

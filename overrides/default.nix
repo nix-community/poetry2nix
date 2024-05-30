@@ -269,6 +269,15 @@ lib.composeManyExtensions [
         }
       );
 
+      apache-flink-libraries = prev.apache-flink-libraries.overridePythonAttrs (_old: {
+        # apache-flink and apache-flink-libraries both install version.py into the
+        # pyflink output derivation, which is invalid: whichever gets installed
+        # last will be used
+        postInstall = ''
+          rm $out/${final.python.sitePackages}/pyflink/{README.txt,version.py,__pycache__/version.*.pyc}
+        '';
+      });
+
       apsw = prev.apsw.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
