@@ -3506,6 +3506,12 @@ lib.composeManyExtensions [
         }
       );
 
+      thrift = prev.thrift.overridePythonAttrs (old: {
+        postPatch = old.postPatch or "" + lib.optionalString (final.pythonAtLeast "3.12") ''
+          substituteInPlace setup.cfg --replace 'optimize = 1' 'optimize = 0'
+        '';
+      });
+
       tinycss2 = prev.tinycss2.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
