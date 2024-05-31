@@ -3336,9 +3336,12 @@ lib.composeManyExtensions [
           ];
 
           enableParallelBuilding = true;
+
           postPatch = ''
-            substituteInPlace pyproject.toml \
-              --replace 'setuptools<60.0' 'setuptools'
+            patchShebangs .
+            # patchShebangs doesn't seem to like #!/usr but accepts #! /usr ¯\_(ツ)_/¯
+            substituteInPlace sklearn/_build_utils/version.py --replace "/usr/bin/env python" "${final.python}/bin/python"
+            substituteInPlace pyproject.toml --replace 'setuptools<60.0' 'setuptools'
           '';
         }
       );

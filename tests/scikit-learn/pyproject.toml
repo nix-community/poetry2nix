@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "scikit-learn-test"
+version = "0.1.0"
+description = ""
+authors = ["You <me@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+scikit-learn = "^1.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
