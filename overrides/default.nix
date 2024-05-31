@@ -3337,11 +3337,13 @@ lib.composeManyExtensions [
 
           enableParallelBuilding = true;
 
-          postPatch = ''
+          postPatch = old.postPatch or "" + ''
             patchShebangs .
-            # patchShebangs doesn't seem to like #!/usr but accepts #! /usr ¯\_(ツ)_/¯
-            substituteInPlace sklearn/_build_utils/version.py --replace "/usr/bin/env python" "${final.python}/bin/python"
             substituteInPlace pyproject.toml --replace 'setuptools<60.0' 'setuptools'
+          ''
+            # patchShebangs doesn't seem to like #!/usr but accepts #! /usr ¯\_(ツ)_/¯
+            + lib.optionalString (lib.versionAtLeast old.version "1.5") ''
+            substituteInPlace sklearn/_build_utils/version.py --replace "#!/usr/bin/env python" "#!${final.python}/bin/python"
           '';
         }
       );
