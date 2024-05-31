@@ -21672,6 +21672,10 @@
     {
       "buildSystem": "cython",
       "from": "1.4.1"
+    },
+    {
+      "buildSystem": "meson-python",
+      "from": "1.5.0"
     }
   ],
   "scikit-learn-extra": [

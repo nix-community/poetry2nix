@@ -167,6 +167,7 @@ in
   mpi4py-test = callTest ./mpi4py-test { };
   ckzg = callTest ./ckzg { };
   thrift = callTest ./thrift { };
+  scikit-learn = callTest ./scikit-learn { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
