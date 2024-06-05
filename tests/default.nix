@@ -148,6 +148,7 @@ in
   plyvel = callTest ./plyvel { };
   awsume = callTest ./awsume { };
   gobject-introspection = callTest ./gobject-introspection { };
+  pydantic-1 = callTest ./pydantic-1 { };
   python-versions-or = callTest ./python-versions-or { };
   python-markers = callTest ./python-markers { };
   orjson-test = callTest ./orjson-test { };

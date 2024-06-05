@@ -16897,7 +16897,7 @@
   ],
   "pydantic": [
     {
-      "buildSystem": "cython",
+      "buildSystem": "cython_0",
       "until": "2.0.0"
     },
     {

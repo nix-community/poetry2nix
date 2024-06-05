@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "pydantic-1-test"
+version = "0.1.0"
+description = ""
+authors = ["You <me@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+pydantic = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
