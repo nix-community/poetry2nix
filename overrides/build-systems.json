@@ -15357,7 +15357,7 @@
     "setuptools"
   ],
   "peewee": [
-    "cython",
+    "cython_0",
     "setuptools"
   ],
   "peewee-migrate": [
