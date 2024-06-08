@@ -3236,11 +3236,13 @@ lib.composeManyExtensions [
             };
 
             cargoDeps = let hash = getCargoHash prev.ruff.version; in
-              if hash == null then
+              if (hash == null || builtins.isAttrs hash) then
                 pkgs.rustPlatform.importCargoLock
-                  {
-                    lockFile = "${src.out}/Cargo.lock";
-                  } else
+                  (
+                    {
+                      lockFile = "${src.out}/Cargo.lock";
+                    } // (if hash == null then { } else hash)
+                  ) else
                 pkgs.rustPlatform.fetchCargoTarball {
                   name = "ruff-${old.version}-cargo-deps";
                   inherit src hash;
