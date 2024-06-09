@@ -3499,6 +3499,7 @@ lib.composeManyExtensions [
       );
 
       tensorflow = prev.tensorflow.overridePythonAttrs (
+        # keep in sync with tensorflow-macos below
         _old: {
           postInstall = ''
             rm $out/bin/tensorboard
@@ -3507,8 +3508,15 @@ lib.composeManyExtensions [
       );
 
       tensorflow-macos = prev.tensorflow-macos.overridePythonAttrs (
+        # Alternative tensorflow community package for MacOS only.
+        # We don't want to create an implicit dependency on the normal tensorflow package,
+        # because some versions don't exist for MacOS, especially ARM Macs.
+        # 
+        # So keep pre and post-processing (if needed) in sync with tensorflow above manually here.
         _old: {
-          inherit (final.tensorflow) postInstall;
+          postInstall = ''
+            rm $out/bin/tensorboard
+          '';
         }
       );
 
