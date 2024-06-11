@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "use-url-src"
+version = "0.1.0"
+description = "asserts that .tar.gz via .url works"
+authors = [
+    "tyberius prime <tyberius_prime@coonabibba.de>"
+]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = {url = "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"}
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
