@@ -214,7 +214,7 @@ pythonPackages.callPackage
                   sha256 = fileInfo.hash;
                 }
             else if isUrl then
-              builtins.fetchTarball
+              builtins.fetchurl
                 {
                   inherit (source) url;
                   sha256 = fileInfo.hash;
