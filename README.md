@@ -106,7 +106,7 @@ to merge `poetry2nix` into your `pkgs` and access it as `pkgs.poetry2nix`.
 Just replace the three lines `pkgs = ...`, `inherit ...` and `myPythonApp = ...` above with:
 
 ```nix
-pkgs = nixpkgs.legacyPackages.${system}.extend poetry2nix.overlay;
+pkgs = nixpkgs.legacyPackages.${system}.extend poetry2nix.overlays.default;
 myPythonApp = pkgs.poetry2nix.mkPoetryApplication { projectDir = self; };
 ```
 
