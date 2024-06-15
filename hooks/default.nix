@@ -1,6 +1,19 @@
 { python, stdenv, makeSetupHook, pkgs, lib }:
 let
-  pythonOnBuildForHost = python.pythonOnBuildForHost or python.pythonForBuild;
+  pythonOnBuildForHost = (
+    python.pythonOnBuildForHost or python.pythonForBuild
+  ).override {
+    packageOverrides = final: prev: {
+      hatch-vcs = prev.hatch-vcs.overrideAttrs (old: {
+        disabledTests = old.disabledTests or [ ] ++ lib.optionals (final.pythonOlder "3.11") [
+          "test_root"
+          "test_basic"
+          "test_metadata"
+        ];
+      });
+    };
+  };
+
   inherit (pythonOnBuildForHost.pkgs) callPackage;
   pythonInterpreter = pythonOnBuildForHost.interpreter;
   pythonSitePackages = python.sitePackages;
