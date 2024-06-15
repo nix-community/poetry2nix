@@ -13,7 +13,7 @@ let
     cp -r ${rawProjectDir}/* $out
     sed \
       -i $out/pyproject.toml \
-      -e 's/poetry>=0\.12/poetry-core/g' \
+      -e 's/poetry>=0\.12/poetry-core>=1/g' \
       -e 's/poetry\.masonry/poetry.core.masonry/g'
   '';
 in
