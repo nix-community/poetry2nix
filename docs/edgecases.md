@@ -262,7 +262,7 @@ like
     # NOTE: your mileage may vary, if you use other flake frameworks like flake-utils
     # or flake-parts, you should have `pkgs` or `pkgs'`
     pkgs = import nixpkgs {system = "your-system";};
-    pkgs_overriden = pkgs.appendOverlays [poetry2nix.overlay];
+    pkgs_overriden = pkgs.appendOverlays [ poetry2nix.overlays.default ];
   in {
     packages = pkgs_overriden.poetry2nix.mkPoetryApplication {
       projectDir = ./.;
