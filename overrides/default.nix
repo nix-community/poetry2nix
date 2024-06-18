@@ -1960,6 +1960,8 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) (
           let
             githubHash = {
+              "3.10.5" = "sha256-Q2zi3mNgCFrg7Ucana0+lmR9C9kkuUidEJj8GneR2W4=";
+              "3.10.4" = "sha256-iSTEPgtmT99RSWbrNdWQvw0u/NUsQgNq2cUnNLwvWa4=";
               "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
               "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
               "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
