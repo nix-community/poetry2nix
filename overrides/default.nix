@@ -3143,6 +3143,7 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.4.9" = "sha256-40ZXD52d/kZNkSZ64H/s/OiiU99IiblGfYa4KmU8xD4=";
             "0.4.8" = "sha256-XuAJ65R80+IntWBGikG1cxAH8Tr3mnwQvSxeKFQj2ac=";
             "0.4.7" = "sha256-1WQQpIdGFWEq6HzFFA5qRC3wnqtUvdzC/6VIkDY1pZI=";
             "0.4.6" = "sha256-ECFBciJjVmz8yvZci6dV4L3o4objkbU5HwB2qy0Mqv4=";
@@ -3207,6 +3208,14 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.4.9" = {
+              # https://raw.githubusercontent.com/astral-sh/ruff/v0.4.9/Cargo.lock
+              lockFile = ./ruff/0.4.9-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "salsa-2022-0.1.0" = "sha256-mt+X1hO+5ZrCAgy6N4aArnixJ9GjY/KwM0uIMUSrDsg=";
+              };
+            };
             "0.4.8" = {
               # https://github.com/astral-sh/ruff/blob/v0.4.8/Cargo.lock
               lockFile = ./ruff/0.4.8-Cargo.lock;
