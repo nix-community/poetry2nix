@@ -170,6 +170,8 @@ in
   ckzg = callTest ./ckzg { };
   thrift = callTest ./thrift { };
   scikit-learn = callTest ./scikit-learn { };
+  soundfile-wheel = callTest ./soundfile-wheel { };
+  soundfile = callTest ./soundfile { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };

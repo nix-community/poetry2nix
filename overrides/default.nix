@@ -3472,12 +3472,23 @@ lib.composeManyExtensions [
 
       });
 
-      soundfile = prev.soundfile.overridePythonAttrs (_old: {
-        postPatch = ''
-          substituteInPlace soundfile.py \
-            --replace "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${sharedLibExt}'"
-        '';
-      });
+      soundfile =
+        let
+          patch = ''
+            substituteInPlace soundfile.py \
+              --replace "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${sharedLibExt}'"
+          '';
+        in
+        prev.soundfile.overridePythonAttrs (old: {
+          postInstall = pkgs.lib.optionalString (old.src.isWheel or false) ''
+            pushd "$out/${final.python.sitePackages}"
+            ${patch}
+            popd
+          '';
+          postPatch = pkgs.lib.optionalString (!(old.src.isWheel or false)) ''
+            ${patch}
+          '';
+        });
 
       sqlmodel = prev.sqlmodel.overridePythonAttrs (old: {
         # sqlmodel's pyproject.toml lists version = "0" that it changes during a build phase
