@@ -3143,6 +3143,10 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.4.8" = "sha256-XuAJ65R80+IntWBGikG1cxAH8Tr3mnwQvSxeKFQj2ac=";
+            "0.4.7" = "sha256-1WQQpIdGFWEq6HzFFA5qRC3wnqtUvdzC/6VIkDY1pZI=";
+            "0.4.6" = "sha256-ECFBciJjVmz8yvZci6dV4L3o4objkbU5HwB2qy0Mqv4=";
+            "0.4.5" = "sha256-+8JKzKKWPQEanU2mh8p5sRjnoU6DawTQQi43qRXVXIg=";
             "0.4.4" = "sha256-ViXKGcuDla428mI2Am67gtOxfia5VfR+ry2qyczXO/I=";
             "0.4.3" = "sha256-kduKKaCeqwSnCOPPNlNI6413OAvYkEGM2o4wOMqLZmc=";
             "0.4.2" = "sha256-AnAJi0srzwxU/22Uy+OjaSBdAEjCXH99J7VDvI03HDU=";
@@ -3203,6 +3207,34 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.4.8" = {
+              # https://github.com/astral-sh/ruff/blob/v0.4.8/Cargo.lock
+              lockFile = ./ruff/0.4.8-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+              };
+            };
+            "0.4.7" = {
+              # https://github.com/astral-sh/ruff/blob/v0.4.7/Cargo.lock
+              lockFile = ./ruff/0.4.7-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+              };
+            };
+            "0.4.6" = {
+              # https://github.com/astral-sh/ruff/blob/v0.4.6/Cargo.lock
+              lockFile = ./ruff/0.4.6-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+              };
+            };
+            "0.4.5" = {
+              # https://github.com/astral-sh/ruff/blob/v0.4.5/Cargo.lock
+              lockFile = ./ruff/0.4.5-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+              };
+            };
             "0.4.4" = "sha256-K0iSCJNQ71/VfDL4LfqNHTqTfaVT/43zXhR5Kg80KvU=";
             "0.4.3" = "sha256-/ZjZjcYWdJH9NuKKohNxSYLG3Vdq2RylnCMHHr+5MtY=";
             "0.4.2" = "sha256-KpB5xHPuk5qb2yDHfe9U95qNMgW0PHX9RJcOOkKREsY=";
@@ -3236,11 +3268,13 @@ lib.composeManyExtensions [
             };
 
             cargoDeps = let hash = getCargoHash prev.ruff.version; in
-              if hash == null then
+              if (hash == null || builtins.isAttrs hash) then
                 pkgs.rustPlatform.importCargoLock
-                  {
-                    lockFile = "${src.out}/Cargo.lock";
-                  } else
+                  (
+                    {
+                      lockFile = "${src.out}/Cargo.lock";
+                    } // (if hash == null then { } else hash)
+                  ) else
                 pkgs.rustPlatform.fetchCargoTarball {
                   name = "ruff-${old.version}-cargo-deps";
                   inherit src hash;
