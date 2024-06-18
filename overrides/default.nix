@@ -1960,23 +1960,25 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) (
           let
             githubHash = {
+              "3.10.5" = "sha256-Q2zi3mNgCFrg7Ucana0+lmR9C9kkuUidEJj8GneR2W4=";
+              "3.10.4" = "sha256-iSTEPgtmT99RSWbrNdWQvw0u/NUsQgNq2cUnNLwvWa4=";
               "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
-              "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
-              "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
-              "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
-              "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
-              "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
-              "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
-              "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
-              "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
               "3.9.10" = "sha256-MkcuayNDt7/GcswXoFTvzuaZzhQEQV+V7OfKqgJwVIQ=";
-              "3.8.3" = "sha256-4rBXb4+eAaRfbl2PWZL4I01F0GvbSNqBVtU4L/sXrVc=";
-              "3.8.4" = "sha256-XQBiE8hmLC/AIRt0eJri/ilPHUEYiOxd0onRBQsx+pM=";
-              "3.8.5" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
-              "3.8.6" = "sha256-LwLuMcnAubO7U1/KSe6tHaSP9+bi6gDfvGobixzL2gM=";
-              "3.8.7" = "sha256-9nBgMcAfG4DTlv41gwQImwyhYm06QeiE/G4ObcLb7wU=";
-              "3.8.8" = "sha256-pRB4QhxJh4JCDWWyp0BH25x8MRn+WieQo/dvB1mQR40=";
+              "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
+              "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
+              "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
+              "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
+              "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
+              "3.8.12" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
+              "3.8.11" = "sha256-TFoagWUtd/nJceNaptgPp4aTR/tBCmxpiZIVJwOlia4=";
+              "3.8.10" = "sha256-XhOJAsF9HbyyKMU9o/f9Zl3+qYozk8tVQU8bkbXGAZs=";
               "3.8.9" = "sha256-0/yvXXj+z2jBEAGxO4BxMnx1zqUoultYSYfSkKs+hKY=";
+              "3.8.8" = "sha256-pRB4QhxJh4JCDWWyp0BH25x8MRn+WieQo/dvB1mQR40=";
+              "3.8.7" = "sha256-9nBgMcAfG4DTlv41gwQImwyhYm06QeiE/G4ObcLb7wU=";
+              "3.8.6" = "sha256-LwLuMcnAubO7U1/KSe6tHaSP9+bi6gDfvGobixzL2gM=";
+              "3.8.5" = "sha256-RG2i8QuWu2/j5jeUp6iZzVw+ciJIzQI88rLxRy6knDg=";
+              "3.8.4" = "sha256-XQBiE8hmLC/AIRt0eJri/ilPHUEYiOxd0onRBQsx+pM=";
+              "3.8.3" = "sha256-4rBXb4+eAaRfbl2PWZL4I01F0GvbSNqBVtU4L/sXrVc=";
             }.${old.version} or lib.fakeHash;
             # we can count on this repo's root to have Cargo.lock
 

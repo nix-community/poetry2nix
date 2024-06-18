@@ -38,7 +38,6 @@ pkgs.linkFarm "orjson-test" (builtins.map
           python = python310;
           pyproject = ./pyproject.toml;
           poetrylock = ./. + "/poetry_${dep}_${version}.lock";
-          # src = lib.cleanSource ./.;
           preferWheels = false;
         };
       in
