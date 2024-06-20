@@ -68,7 +68,7 @@ pythonPackages.callPackage
 
       buildSystemPkgs =
         let
-          pyProjectPath = (localDepPath + "/pyproject.toml")(localDepPath + "/pyproject.toml");
+          pyProjectPath = localDepPath + "/pyproject.toml";
           pyProject = poetryLib.readTOML pyProjectPath;
         in
         if builtins.pathExists pyProjectPath then
@@ -193,11 +193,11 @@ pythonPackages.callPackage
         hooks.removeGitDependenciesHook
         hooks.removeWheelUrlDependenciesHook
         hooks.pipBuildHook
-      ];
+      ]
+      ++ lib.optional missing_pypproject_toml [pythonPackages.setuptools];
 
       buildInputs = lib.optional isLocked (getManyLinuxDeps fileInfo.name).pkg
-      ++ lib.optional isDirectory buildSystemPkgs
-      ++ lib.optional missing_pypproject_toml [pythonPackages.setuptools];
+      ++ lib.optional isDirectory buildSystemPkgs;
 
       propagatedBuildInputs =
         let
