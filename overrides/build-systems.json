@@ -14162,6 +14162,10 @@
     {
       "buildSystem": "cython",
       "from": "1.26.0"
+    },
+    {
+      "buildSystem": "meson-python",
+      "from": "2.0.0"
     }
   ],
   "numpy-financial": [
