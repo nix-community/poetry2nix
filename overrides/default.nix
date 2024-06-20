@@ -1783,7 +1783,10 @@ lib.composeManyExtensions [
           # fails to build with format=pyproject and setuptools >= 65
           format =
             if ((old.format or null) == "poetry2nix") then
-              "setuptools"
+              (if lib.versionAtLeast prev.numpy.version "2.0.0" then
+                 "pyproject"
+               else "setuptools"
+            )
             else
               old.format or null;
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gfortran ];
