@@ -3856,11 +3856,13 @@ lib.composeManyExtensions [
       # manually specify its version.
       pyee = prev.pyee.overrideAttrs (
         old: {
-          postPatch = old.postPatch or "" + ''
+          postPatch = old.postPatch or "" +
+          (lib.optionalString (lib.versionOlder old.version "10.0.0")
+          ''
             sed -i setup.py \
               -e '/setup_requires/,/],/d' \
               -e 's/vcversioner={},/version="${old.version}",/'
-          '';
+          '');
         }
       );
 
