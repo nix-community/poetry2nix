@@ -196,6 +196,10 @@
   "aioruuvigateway": [
     "hatchling"
   ],
+  "aioshutil": [
+    "setuptools_scm",
+    "setuptools-scm"
+  ],
   "aiosmtplib": [
     "poetry-core"
   ],
@@ -326,6 +330,9 @@
   "apple-weatherkit": [
     "poetry-core"
   ],
+  "apscheduler": [
+    "setuptools-scm"
+  ],
   "archspec": [
     "poetry-core"
   ],
@@ -398,6 +405,9 @@
   "async-tkinter-loop": [
     "poetry-core"
   ],
+  "asyncclick": [
+    "setuptools-scm"
+  ],
   "asyncinotify": [
     "flit-core"
   ],
@@ -459,6 +469,9 @@
   "autoflake": [
     "hatchling"
   ],
+  "automat": [
+    "setuptools-scm"
+  ],
   "autoslot": [
     "flit-core"
   ],
@@ -506,6 +519,12 @@
   ],
   "backports-strenum": [
     "poetry-core"
+  ],
+  "backports-weakref": [
+    "setuptools-scm"
+  ],
+  "bagit": [
+    "setuptools-scm"
   ],
   "bandit": [
     "pbr"
@@ -837,6 +856,9 @@
   "cloudpickle": [
     "flit-core"
   ],
+  "cloup": [
+    "setuptools-scm"
+  ],
   "cmake": [
     "flit-core"
   ],
@@ -1002,6 +1024,9 @@
   "cytoolz": [
     "cython"
   ],
+  "daphne": [
+    "setuptools-scm"
+  ],
   "daqp": [
     "cython_0"
   ],
@@ -1085,6 +1110,9 @@
   "debtcollector": [
     "pbr"
   ],
+  "decopatch": [
+    "setuptools-scm"
+  ],
   "deep-translator": [
     "poetry-core"
   ],
@@ -1108,6 +1136,9 @@
   ],
   "dict2xml": [
     "hatchling"
+  ],
+  "dictdiffer": [
+    "setuptools-scm"
   ],
   "dictpath": [
     "poetry-core"
@@ -1155,6 +1186,9 @@
   "django-bootstrap5": [
     "hatchling"
   ],
+  "django-configurations": [
+    "setuptools-scm"
+  ],
   "django-context-decorator": [
     "flit-core"
   ],
@@ -1183,6 +1217,9 @@
   "django-js-asset": [
     "hatchling"
   ],
+  "django-model-utils": [
+    "setuptools-scm"
+  ],
   "django-ninja": [
     "flit-core"
   ],
@@ -1206,6 +1243,12 @@
   ],
   "django-types": [
     "poetry-core"
+  ],
+  "django-widget-tweaks": [
+    "setuptools-scm"
+  ],
+  "djangorestframework-simplejwt": [
+    "setuptools-scm"
   ],
   "djangorestframework-types": [
     "poetry"
@@ -1911,7 +1954,8 @@
     "hatchling"
   ],
   "hmmlearn": [
-    "cython"
+    "cython",
+    "setuptools-scm"
   ],
   "home-assistant-bluetooth": [
     "cython",
@@ -1937,6 +1981,9 @@
   "html5lib": [
     "flit-core"
   ],
+  "html5tagger": [
+    "setuptools-scm"
+  ],
   "htseq": [
     "cython"
   ],
@@ -1956,6 +2003,9 @@
       "buildSystem": "hatchling",
       "from": "0.18.0"
     }
+  ],
+  "httpsig": [
+    "setuptools-scm"
   ],
   "httpx": [
     {
@@ -2394,6 +2444,9 @@
   "keyring-pass": [
     "poetry-core"
   ],
+  "keyrings-google-artifactregistry-auth": [
+    "setuptools-scm"
+  ],
   "keystoneauth1": [
     "pbr"
   ],
@@ -2406,11 +2459,17 @@
   "kivy": [
     "cython_0"
   ],
+  "kiwisolver": [
+    "setuptools-scm"
+  ],
   "kml2geojson": [
     "poetry-core"
   ],
   "kneed": [
     "hatchling"
+  ],
+  "kopf": [
+    "setuptools-scm"
   ],
   "kraken-common": [
     "poetry"
@@ -2701,6 +2760,9 @@
   "maison": [
     "poetry-core"
   ],
+  "makefun": [
+    "setuptools-scm"
+  ],
   "manage-fastapi": [
     "poetry"
   ],
@@ -2733,6 +2795,9 @@
   ],
   "marisa-trie": [
     "cython"
+  ],
+  "markdown-include": [
+    "setuptools-scm"
   ],
   "markdown-it-py": [
     "flit-core"
@@ -2969,6 +3034,9 @@
       "buildSystem": "flit-core",
       "from": "3.2.0"
     }
+  ],
+  "moreorless": [
+    "setuptools-scm"
   ],
   "motioneye-client": [
     "poetry-core"
@@ -3698,6 +3766,9 @@
   "pcapy-ng": [
     "cython"
   ],
+  "pdbpp": [
+    "setuptools-scm"
+  ],
   "peewee": [
     "cython_0"
   ],
@@ -3779,6 +3850,9 @@
   ],
   "playwrightcapture": [
     "poetry-core"
+  ],
+  "pluggy": [
+    "setuptools-scm"
   ],
   "plum-dispatch": [
     "hatch-vcs",
@@ -3885,6 +3959,9 @@
   ],
   "protoletariat": [
     "poetry-core"
+  ],
+  "proxy-py": [
+    "setuptools-scm"
   ],
   "psd-tools": [
     "cython"
@@ -4078,6 +4155,9 @@
   "pyenphase": [
     "poetry-core"
   ],
+  "pyerfa": [
+    "packaging"
+  ],
   "pyfftw": [
     "cython_0"
   ],
@@ -4217,8 +4297,14 @@
   "pymdown-extensions": [
     "hatchling"
   ],
+  "pymediainfo": [
+    "setuptools-scm"
+  ],
   "pymfy": [
     "poetry-core"
+  ],
+  "pymilvus": [
+    "setuptools-scm"
   ],
   "pymongo-inmemory": [
     "poetry-core"
@@ -4231,6 +4317,9 @@
   ],
   "pymyq": [
     "poetry-core"
+  ],
+  "pynetbox": [
+    "setuptools-scm"
   ],
   "pyngo": [
     "hatchling"
@@ -4434,6 +4523,9 @@
   "pysolcast": [
     "poetry-core"
   ],
+  "pysolr": [
+    "setuptools-scm"
+  ],
   "pyspcwebgw": [
     "poetry-core"
   ],
@@ -4472,6 +4564,9 @@
   "pytest-bdd": [
     "poetry-core"
   ],
+  "pytest-cases": [
+    "setuptools-scm"
+  ],
   "pytest-celery": [
     "flit-core"
   ],
@@ -4480,6 +4575,12 @@
   ],
   "pytest-cid": [
     "flit-core"
+  ],
+  "pytest-console-scripts": [
+    "setuptools-scm"
+  ],
+  "pytest-datadir": [
+    "setuptools-scm"
   ],
   "pytest-env": [
     "hatch-vcs",
@@ -4533,11 +4634,17 @@
   "pytest-profiling": [
     "setuptools-git"
   ],
+  "pytest-qt": [
+    "setuptools-scm"
+  ],
   "pytest-raisin": [
     "flit"
   ],
   "pytest-recording": [
     "hatchling"
+  ],
+  "pytest-regressions": [
+    "setuptools-scm"
   ],
   "pytest-repeat": [
     "hatch-vcs",
@@ -4575,6 +4682,9 @@
   ],
   "python-ctags3": [
     "cython"
+  ],
+  "python-dateutil": [
+    "setuptools-scm"
   ],
   "python-djvulibre": [
     "cython"
@@ -4714,6 +4824,9 @@
   ],
   "pyvera": [
     "poetry-core"
+  ],
+  "pyvista": [
+    "setuptools-scm"
   ],
   "pyviz-comms": [
     "hatch-jupyter-builder",
@@ -5042,7 +5155,8 @@
     "poetry-core"
   ],
   "sanic": [
-    "poetry-core"
+    "poetry-core",
+    "setuptools-scm"
   ],
   "sarif-om": [
     "pbr"
@@ -5150,6 +5264,9 @@
       "buildSystem": "cython",
       "from": "1.12.0"
     }
+  ],
+  "scooby": [
+    "setuptools-scm"
   ],
   "screeninfo": [
     "poetry-core"
@@ -5319,11 +5436,15 @@
   "sonora": [
     "poetry-core"
   ],
+  "sorl-thumbnail": [
+    "setuptools-scm"
+  ],
   "soupsieve": [
     "hatchling"
   ],
   "soxr": [
-    "cython"
+    "cython",
+    "setuptools-scm"
   ],
   "spacy": [
     "cython_0"
@@ -5641,6 +5762,9 @@
   "tenacity": [
     "pbr"
   ],
+  "tensorboardx": [
+    "setuptools-scm"
+  ],
   "termcolor": [
     "hatch-vcs",
     "hatchling"
@@ -5672,6 +5796,9 @@
   "testpath": [
     "flit",
     "flit-core"
+  ],
+  "testrail-api": [
+    "setuptools-scm"
   ],
   "testrepository": [
     "pbr"
@@ -5760,6 +5887,9 @@
   "tinydb": [
     "poetry-core"
   ],
+  "tldextract": [
+    "setuptools-scm"
+  ],
   "todoist-api-python": [
     "poetry-core"
   ],
@@ -5812,6 +5942,9 @@
   ],
   "traceback2": [
     "pbr"
+  ],
+  "tracerite": [
+    "setuptools-scm"
   ],
   "trailrunner": [
     "flit-core"
@@ -6059,6 +6192,9 @@
   "warlock": [
     "poetry-core"
   ],
+  "wavedrom": [
+    "setuptools-scm"
+  ],
   "wcmatch": [
     "hatchling"
   ],
@@ -6168,6 +6304,9 @@
   ],
   "xpath-expressions": [
     "poetry-core"
+  ],
+  "xtcocotools": [
+    "cython_0"
   ],
   "yalexs-ble": [
     "poetry-core"
