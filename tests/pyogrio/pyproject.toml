@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test-pyogrio"
+version = "0.1.0"
+description = "Test of pyogrio"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyogrio = "^0.9.0"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

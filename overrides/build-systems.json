@@ -18037,6 +18037,10 @@
   "pyogg": [
     "setuptools"
   ],
+  "pyogrio": [
+    "cython",
+    "setuptools"
+  ],
   "pyombi": [
     "setuptools"
   ],

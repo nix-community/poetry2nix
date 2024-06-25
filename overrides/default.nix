@@ -1784,9 +1784,9 @@ lib.composeManyExtensions [
           format =
             if ((old.format or null) == "poetry2nix") then
               (if lib.versionAtLeast prev.numpy.version "2.0.0" then
-                 "pyproject"
-               else "setuptools"
-            )
+                "pyproject"
+              else "setuptools"
+              )
             else
               old.format or null;
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gfortran ];
@@ -2460,6 +2460,10 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      pyogrio = prev.pyogrio.overridePythonAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ final.versioneer gdal ];
+      });
 
       pyopencl = prev.pyopencl.overridePythonAttrs (
         old: {
@@ -3857,12 +3861,12 @@ lib.composeManyExtensions [
       pyee = prev.pyee.overrideAttrs (
         old: {
           postPatch = old.postPatch or "" +
-          (lib.optionalString (lib.versionOlder old.version "10.0.0")
-          ''
-            sed -i setup.py \
-              -e '/setup_requires/,/],/d' \
-              -e 's/vcversioner={},/version="${old.version}",/'
-          '');
+            (lib.optionalString (lib.versionOlder old.version "10.0.0")
+              ''
+                sed -i setup.py \
+                  -e '/setup_requires/,/],/d' \
+                  -e 's/vcversioner={},/version="${old.version}",/'
+              '');
         }
       );
 
