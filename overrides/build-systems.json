@@ -10649,6 +10649,9 @@
   "launchdarkly-eventsource": [
     "poetry-core"
   ],
+  "launchdarkly-server-sdk": [
+    "poetry-core"
+  ],
   "launchpadlib": [
     "setuptools"
   ],
