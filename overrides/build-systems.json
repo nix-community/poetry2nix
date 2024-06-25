@@ -11,8 +11,12 @@
   "acquire": [
     "setuptools-scm"
   ],
-  "adafruit-io": [
+  "acryl-sqlglot": [
     "setuptools-scm"
+  ],
+  "adafruit-io": [
+    "setuptools-scm",
+    "hachling"
   ],
   "adafruit-platformdetect": [
     "setuptools-scm"
@@ -27,7 +31,8 @@
     "poetry-core"
   ],
   "adlfs": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "aesara": [
     "cython",
@@ -176,7 +181,8 @@
     "poetry-core"
   ],
   "aiomqtt": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "aiomultiprocess": [
     "flit-core"
@@ -185,7 +191,8 @@
     "poetry-core"
   ],
   "aiomysensors": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "aiomysql": [
     "setuptools-scm"
@@ -244,6 +251,9 @@
   "aioshutil": [
     "setuptools_scm",
     "setuptools-scm"
+  ],
+  "aiosmtpd": [
+    "hachling"
   ],
   "aiosmtplib": [
     "poetry-core"
@@ -358,18 +368,23 @@
     "setuptools-scm"
   ],
   "ansible-navigator": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
   ],
   "ansible-pylibssh": [
     "cython",
     "setuptools-scm"
   ],
   "ansible-runner": [
-    "pbr"
+    "pbr",
+    "flit-core"
   ],
   "anthropic": [
     "hatchling",
     "poetry-core"
+  ],
+  "antsibull-changelog": [
+    "flit-core"
   ],
   "anyascii": [
     {
@@ -384,16 +399,24 @@
   "anyio": [
     "setuptools-scm"
   ],
+  "anyscale": [
+    "setuptools-scm"
+  ],
   "anysqlite": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "anytree": [
     "poetry-core"
   ],
   "anywidget": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "aocd-example-parser": [
+    "flit-core"
+  ],
+  "apache-airflow-backport-providers-amazon": [
     "flit-core"
   ],
   "apache-beam": [
@@ -551,7 +574,8 @@
     "flit-core"
   ],
   "asyncio-mqtt": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "asyncmy": [
     "cython",
@@ -573,7 +597,8 @@
     "cython"
   ],
   "atpublic": [
-    "pdm-pep517"
+    "pdm-pep517",
+    "hachling"
   ],
   "attrs": [
     {
@@ -613,6 +638,15 @@
   ],
   "authcaptureproxy": [
     "poetry-core"
+  ],
+  "authheaders": [
+    "flit-core"
+  ],
+  "autodoc-pydantic": [
+    "flit-core"
+  ],
+  "autodocsumm": [
+    "flit-core"
   ],
   "autoflake": [
     "hatchling"
@@ -659,14 +693,29 @@
   "awswrangler": [
     "poetry-core"
   ],
+  "awxkit": [
+    "setuptools-scm"
+  ],
   "ax": [
     "setuptools-scm"
   ],
   "axisregistry": [
     "setuptools-scm"
   ],
+  "az-cli": [
+    "setuptools-scm"
+  ],
   "azure-cli": [
     "setuptools-scm"
+  ],
+  "azure-functions-durable": [
+    "setuptools-scm"
+  ],
+  "b2": [
+    "flit-core"
+  ],
+  "b2luigi": [
+    "flit-core"
   ],
   "b2sdk": [
     "setuptools-scm"
@@ -707,6 +756,9 @@
   ],
   "bagit": [
     "setuptools-scm"
+  ],
+  "bagpy": [
+    "flit-core"
   ],
   "bandit": [
     "pbr"
@@ -753,7 +805,8 @@
   ],
   "bentoml": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "betterproto": [
     "poetry-core"
@@ -767,8 +820,14 @@
   "bindep": [
     "pbr"
   ],
+  "bip-utils": [
+    "hachling"
+  ],
   "bite-parser": [
     "poetry-core"
+  ],
+  "bitsandbytes": [
+    "hachling"
   ],
   "black": [
     {
@@ -842,8 +901,14 @@
   "bluetooth-sensor-state-data": [
     "poetry-core"
   ],
+  "blurb": [
+    "flit-core"
+  ],
   "blurhash-python": [
     "setuptools-scm"
+  ],
+  "bme680": [
+    "hachling"
   ],
   "bolt11": [
     "poetry"
@@ -869,14 +934,21 @@
   "bottombar": [
     "flit-core"
   ],
+  "bowler": [
+    "flit-core"
+  ],
   "bqscales": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "bracex": [
     "hatchling"
   ],
   "branca": [
     "setuptools-scm"
+  ],
+  "breathe": [
+    "flit-core"
   ],
   "breezy": [
     "cython"
@@ -902,6 +974,9 @@
       "buildSystem": "flit-core",
       "from": "0.10.0"
     }
+  ],
+  "buildbot": [
+    "hachling"
   ],
   "buildcatrust": [
     "flit-core"
@@ -971,6 +1046,9 @@
     "cython_0"
   ],
   "castepxbin": [
+    "flit-core"
+  ],
+  "catkin-pkg": [
     "flit-core"
   ],
   "catppuccin": [
@@ -1057,7 +1135,8 @@
     "poetry-core"
   ],
   "chromadb": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "circus": [
     "flit-core"
@@ -1109,7 +1188,14 @@
     "poetry-core"
   ],
   "clize": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
+  ],
+  "cloud-tpu-diagnostics": [
+    "flit-core"
+  ],
+  "cloudflare": [
+    "hachling"
   ],
   "cloudflare-dyndns": [
     "poetry-core"
@@ -1147,18 +1233,31 @@
   "cocotb": [
     "setuptools-scm"
   ],
+  "codetiming": [
+    "flit-core"
+  ],
   "coffea": [
     "hatch-vcs",
     "hatchling"
   ],
   "cohere": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
+  ],
+  "coincurve": [
+    "hachling"
   ],
   "coinmetrics-api-client": [
     "poetry-core"
   ],
   "colander": [
     "babel"
+  ],
+  "colcon-common-extensions": [
+    "flit-core"
+  ],
+  "colcon-ros": [
+    "flit-core"
   ],
   "collections-extended": [
     "poetry-core"
@@ -1182,7 +1281,8 @@
     "flit-core"
   ],
   "colorhash": [
-    "poetry"
+    "poetry",
+    "hachling"
   ],
   "colout": [
     "setuptools-scm"
@@ -1202,6 +1302,9 @@
   "compreffor": [
     "cython",
     "setuptools-scm"
+  ],
+  "compressai": [
+    "hachling"
   ],
   "concurrent-log-handler": [
     "hatchling"
@@ -1272,6 +1375,9 @@
   "cosmpy": [
     "poetry-core"
   ],
+  "cotyledon": [
+    "setuptools-scm"
+  ],
   "cppy": [
     "setuptools-scm"
   ],
@@ -1315,6 +1421,9 @@
   "cruft": [
     "poetry-core"
   ],
+  "cryptolyzer": [
+    "hachling"
+  ],
   "cssselect2": [
     "flit",
     "flit-core"
@@ -1337,6 +1446,9 @@
   ],
   "cx-freeze": [
     "setuptools-scm"
+  ],
+  "cyberdrop-dl": [
+    "flit-core"
   ],
   "cyclonedx-bom": [
     "poetry-core"
@@ -1388,14 +1500,20 @@
     {
       "buildSystem": "tomli",
       "from": "2023.4.0"
-    }
+    },
+    "hachling"
   ],
   "dask-awkward": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
+  ],
+  "dask-gateway": [
+    "hachling"
   ],
   "dask-glm": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dask-histogram": [
     "hatch-vcs",
@@ -1423,11 +1541,17 @@
   "datadog": [
     "hatchling"
   ],
+  "datadog-api-client": [
+    "setuptools-scm"
+  ],
   "dataprep-ml": [
     "poetry-core"
   ],
   "datargs": [
     "poetry"
+  ],
+  "datashader": [
+    "hachling"
   ],
   "dateutil": [
     "setuptools-scm"
@@ -1441,6 +1565,9 @@
   "dbglib": [
     "poetry-core"
   ],
+  "dbt-artifacts-parser": [
+    "flit-core"
+  ],
   "dbt-semantic-interfaces": [
     "hatchling"
   ],
@@ -1449,10 +1576,15 @@
     "poetry-core"
   ],
   "dctorch": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "ddtrace": [
-    "cython"
+    "cython",
+    "hachling"
+  ],
+  "ddtrace-graphql": [
+    "hachling"
   ],
   "deal": [
     "flit-core"
@@ -1477,6 +1609,9 @@
   ],
   "deepmerge": [
     "setuptools-scm"
+  ],
+  "deepwave": [
+    "hachling"
   ],
   "deezer-python": [
     "poetry-core"
@@ -1632,6 +1767,9 @@
   "dissect-xfs": [
     "setuptools-scm"
   ],
+  "dist-meta": [
+    "flit-core"
+  ],
   "distributed": [
     {
       "buildSystem": "versioneer",
@@ -1705,6 +1843,9 @@
   "django-hijack": [
     "setuptools-scm"
   ],
+  "django-hosts": [
+    "setuptools-scm"
+  ],
   "django-js-asset": [
     "hatchling"
   ],
@@ -1714,8 +1855,14 @@
   "django-model-utils": [
     "setuptools-scm"
   ],
+  "django-mptt": [
+    "hachling"
+  ],
   "django-ninja": [
     "flit-core"
+  ],
+  "django-notifications-hq": [
+    "setuptools-scm"
   ],
   "django-otp": [
     "hatchling"
@@ -1732,6 +1879,9 @@
   "django-q": [
     "poetry-core"
   ],
+  "django-recurrence": [
+    "setuptools-scm"
+  ],
   "django-scim2": [
     "poetry-core"
   ],
@@ -1742,6 +1892,10 @@
     "setuptools-scm"
   ],
   "django-simple-history": [
+    "setuptools-scm",
+    "hachling"
+  ],
+  "django-smart-selects": [
     "setuptools-scm"
   ],
   "django-timezone-field": [
@@ -1770,6 +1924,12 @@
   ],
   "djlint": [
     "poetry"
+  ],
+  "djoser": [
+    "setuptools-scm"
+  ],
+  "dkimpy": [
+    "flit-core"
   ],
   "dlinfo": [
     "setuptools-scm"
@@ -1803,6 +1963,9 @@
   "dnspythonchia": [
     "setuptools-scm"
   ],
+  "doc-warden": [
+    "flit-core"
+  ],
   "doc8": [
     "pbr",
     "setuptools-scm"
@@ -1814,13 +1977,23 @@
     }
   ],
   "docker": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
+  ],
+  "dockerspawner": [
+    "hachling"
   ],
   "docstring-parser": [
     "poetry-core"
   ],
+  "docutils": [
+    "flit-core"
+  ],
   "docx2python": [
     "poetry-core"
+  ],
+  "dom-toml": [
+    "flit-core"
   ],
   "dotty-dict": [
     "poetry-core",
@@ -1831,6 +2004,9 @@
   ],
   "dploot": [
     "poetry-core"
+  ],
+  "drf-standardized-errors": [
+    "flit-core"
   ],
   "drf-yasg": [
     "setuptools-scm"
@@ -1864,37 +2040,46 @@
     "poetry-core"
   ],
   "dvc": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-azure": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-data": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-gdrive": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-gs": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-hdfs": [
     "setuptools-scm"
   ],
   "dvc-http": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-objects": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-render": [
     "setuptools-scm"
   ],
   "dvc-s3": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-ssh": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "dvc-studio-client": [
     "setuptools-scm"
@@ -1904,6 +2089,9 @@
   ],
   "dvclive": [
     "setuptools-scm"
+  ],
+  "dwdwfsapi": [
+    "hachling"
   ],
   "dynd": [
     "cython"
@@ -1997,6 +2185,9 @@
   "enumatch": [
     "poetry"
   ],
+  "envier": [
+    "hachling"
+  ],
   "environs": [
     "flit-core"
   ],
@@ -2008,6 +2199,9 @@
   ],
   "es-client": [
     "hatchling"
+  ],
+  "esbonio": [
+    "flit-core"
   ],
   "essentials-openapi": [
     "hatchling"
@@ -2035,6 +2229,9 @@
     "flit-core",
     "flit-scm"
   ],
+  "exchange-calendars": [
+    "flit-core"
+  ],
   "execnet": [
     "hatch-vcs",
     "hatchling",
@@ -2042,6 +2239,9 @@
   ],
   "executing": [
     "setuptools-scm"
+  ],
+  "exhale": [
+    "flit-core"
   ],
   "exitcode": [
     "poetry-core"
@@ -2058,8 +2258,12 @@
   "f90nml": [
     "setuptools-scm"
   ],
+  "fairscale": [
+    "hachling"
+  ],
   "fairseq": [
-    "cython"
+    "cython",
+    "hachling"
   ],
   "fakeredis": [
     "poetry-core"
@@ -2132,6 +2336,9 @@
   "faster-fifo": [
     "cython"
   ],
+  "faster-whisper": [
+    "hachling"
+  ],
   "fastparquet": [
     "cython",
     "setuptools-scm"
@@ -2141,6 +2348,9 @@
   ],
   "faust-cchardet": [
     "cython"
+  ],
+  "ffcv": [
+    "hachling"
   ],
   "fhconfparser": [
     "poetry-core"
@@ -2198,17 +2408,35 @@
   "fireflyalgorithm": [
     "poetry-core"
   ],
+  "fissix": [
+    "flit-core"
+  ],
   "fivem-api": [
     "setuptools-scm"
   ],
   "fixtures": [
     "pbr"
   ],
+  "flake8-builtins": [
+    "hachling"
+  ],
   "flake8-debugger": [
     "poetry-core"
   ],
+  "flake8-deprecated": [
+    "hachling"
+  ],
+  "flake8-executable": [
+    "setuptools-scm"
+  ],
   "flake8-length": [
     "flit-core"
+  ],
+  "flake8-pep3101": [
+    "hachling"
+  ],
+  "flake8-plone-hasattr": [
+    "hachling"
   ],
   "flake8-plugin-utils": [
     "poetry"
@@ -2216,8 +2444,14 @@
   "flake8-print": [
     "poetry-core"
   ],
+  "flake8-pylint": [
+    "flit-core"
+  ],
   "flake8-pytest-style": [
     "poetry-core"
+  ],
+  "flake8-rst-docstrings": [
+    "flit-core"
   ],
   "flask": [
     {
@@ -2235,11 +2469,17 @@
   "flask-compress": [
     "setuptools-scm"
   ],
+  "flask-dance": [
+    "flit-core"
+  ],
   "flask-dramatiq": [
     "poetry-core"
   ],
   "flask-htmx": [
     "poetry"
+  ],
+  "flask-mail": [
+    "flit-core"
   ],
   "flask-mailman": [
     "poetry-core"
@@ -2255,6 +2495,9 @@
   ],
   "flask-rq2": [
     "setuptools-scm"
+  ],
+  "flask-security": [
+    "flit-core"
   ],
   "flask-session": [
     "flit-core"
@@ -2290,6 +2533,7 @@
     "poetry-core"
   ],
   "flit": [
+    "flit-core",
     "flit-core"
   ],
   "flit-scm": [
@@ -2301,6 +2545,18 @@
   ],
   "fluent-logger": [
     "hatchling"
+  ],
+  "flufl-bounce": [
+    "hachling"
+  ],
+  "flufl-i18n": [
+    "hachling"
+  ],
+  "flufl-lock": [
+    "hachling"
+  ],
+  "flynt": [
+    "hachling"
   ],
   "fnv-hash-fast": [
     "cython",
@@ -2357,8 +2613,15 @@
       "from": "1.4.1"
     }
   ],
-  "fsspec-xrootd": [
+  "fs-gcsfs": [
     "setuptools-scm"
+  ],
+  "fsspec": [
+    "hachling"
+  ],
+  "fsspec-xrootd": [
+    "setuptools-scm",
+    "hachling"
   ],
   "ftfy": [
     "poetry",
@@ -2372,6 +2635,7 @@
     "poetry-core"
   ],
   "furo": [
+    "flit-core",
     "flit-core"
   ],
   "futurist": [
@@ -2385,6 +2649,9 @@
   ],
   "galois": [
     "setuptools-scm"
+  ],
+  "gamma-pytools": [
+    "flit-core"
   ],
   "gaphas": [
     "poetry-core"
@@ -2404,14 +2671,21 @@
   "gcloud-aio-storage": [
     "poetry-core"
   ],
+  "gcsfs": [
+    "hachling"
+  ],
   "gdb-pt-dump": [
     "poetry-core"
   ],
   "gdown": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "gemfileparser2": [
+    "setuptools-scm"
+  ],
+  "genbadge": [
     "setuptools-scm"
   ],
   "generic": [
@@ -2429,8 +2703,14 @@
   "geocachingapi": [
     "setuptools-scm"
   ],
+  "geohash2": [
+    "flit-core"
+  ],
   "geoip2": [
     "setuptools-scm"
+  ],
+  "geojson-pydantic": [
+    "flit-core"
   ],
   "getjump": [
     "poetry-core"
@@ -2442,6 +2722,9 @@
     "setuptools-scm"
   ],
   "gfsubsets": [
+    "setuptools-scm"
+  ],
+  "ghostscript": [
     "setuptools-scm"
   ],
   "gidgethub": [
@@ -2466,7 +2749,8 @@
     "hatchling"
   ],
   "githubkit": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "gitlab-lint": [
     "poetry-core"
@@ -2514,8 +2798,15 @@
   "glean-sdk": [
     "setuptools-scm"
   ],
-  "glueviz": [
+  "globus-compute-endpoint": [
+    "flit-core"
+  ],
+  "glpk": [
     "setuptools-scm"
+  ],
+  "glueviz": [
+    "setuptools-scm",
+    "hachling"
   ],
   "glyphsets": [
     "setuptools-scm"
@@ -2531,6 +2822,9 @@
   ],
   "google-i18n-address": [
     "hatchling"
+  ],
+  "google-oauth2-tool": [
+    "setuptools-scm"
   ],
   "gotailwind": [
     "poetry-core"
@@ -2562,21 +2856,27 @@
   "gpytorch": [
     "setuptools-scm"
   ],
+  "grad-cam": [
+    "hachling"
+  ],
   "gradient-utils": [
     "poetry-core"
   ],
   "gradio": [
     "hatch-fancy-pypi-readme",
     "hatch-requirements-txt",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "gradio-client": [
     "hatch-fancy-pypi-readme",
     "hatch-requirements-txt",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "gradio-pdf": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "graphlib-backport": [
     "poetry-core"
@@ -2586,6 +2886,12 @@
   ],
   "graphql-relay": [
     "poetry-core"
+  ],
+  "graphtage": [
+    "flit-core"
+  ],
+  "great-expectations": [
+    "setuptools-scm"
   ],
   "gridnet": [
     "poetry-core"
@@ -2648,6 +2954,9 @@
   "hacking": [
     "pbr"
   ],
+  "handy-archives": [
+    "flit-core"
+  ],
   "hashids": [
     "flit-core"
   ],
@@ -2696,8 +3005,12 @@
   "hidapi": [
     "cython_0"
   ],
+  "hieroglyph": [
+    "flit-core"
+  ],
   "hishel": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "hist": [
     "hatch-vcs",
@@ -2789,6 +3102,12 @@
   "httpx-sse": [
     "setuptools-scm"
   ],
+  "httsleep": [
+    "setuptools-scm"
+  ],
+  "huggingface-hub": [
+    "hachling"
+  ],
   "human-readable": [
     "hatch-vcs",
     "hatchling"
@@ -2840,7 +3159,8 @@
     "poetry-core"
   ],
   "hypothesis-graphql": [
-    "poetry"
+    "poetry",
+    "hachling"
   ],
   "i3ipc": [
     "setuptools-scm"
@@ -2873,11 +3193,15 @@
   "idna": [
     "flit-core"
   ],
+  "image-match": [
+    "hachling"
+  ],
   "imagecodecs-lite": [
     "cython"
   ],
   "imagededup": [
-    "cython"
+    "cython",
+    "hachling"
   ],
   "imia": [
     "poetry-core"
@@ -2954,7 +3278,8 @@
     "poetry-core"
   ],
   "intake": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "intellifire4py": [
     "poetry-core"
@@ -2978,11 +3303,18 @@
   "ipykernel": [
     "hatchling"
   ],
+  "ipympl": [
+    "hachling"
+  ],
   "ipyniivue": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "ipyparallel": [
     "hatchling"
+  ],
+  "ipython-autotime": [
+    "setuptools-scm"
   ],
   "irc": [
     "setuptools-scm"
@@ -3001,6 +3333,9 @@
   ],
   "iterative-telemetry": [
     "setuptools-scm"
+  ],
+  "iterfzf": [
+    "flit-core"
   ],
   "itsdangerous": [
     "flit-core"
@@ -3024,7 +3359,8 @@
     "setuptools-scm"
   ],
   "jaraco-email": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "jaraco-functools": [
     "setuptools-scm"
@@ -3036,7 +3372,8 @@
     "setuptools-scm"
   ],
   "jaraco-net": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "jaraco-stream": [
     "setuptools-scm"
@@ -3157,7 +3494,8 @@
     "hatchling"
   ],
   "jupyter-book": [
-    "flit-core"
+    "flit-core",
+    "hachling"
   ],
   "jupyter-cache": [
     "flit-core"
@@ -3166,7 +3504,8 @@
     "hatchling"
   ],
   "jupyter-collaboration": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "jupyter-console": [
     {
@@ -3194,6 +3533,9 @@
   "jupyter-packaging": [
     "hatchling"
   ],
+  "jupyter-repo2docker": [
+    "hachling"
+  ],
   "jupyter-server": [
     "hatchling",
     {
@@ -3218,7 +3560,8 @@
     "hatchling"
   ],
   "jupyter-sphinx": [
-    "hatchling"
+    "hatchling",
+    "flit-core"
   ],
   "jupyter-ydoc": [
     {
@@ -3248,11 +3591,13 @@
     }
   ],
   "jupyterlab-code-formatter": [
-    "jupyter-packaging"
+    "jupyter-packaging",
+    "hachling"
   ],
   "jupyterlab-git": [
     "hatchling",
-    "jupyter-packaging"
+    "jupyter-packaging",
+    "hachling"
   ],
   "jupyterlab-pygments": [
     "hatch-jupyter-builder",
@@ -3430,6 +3775,9 @@
   "libnacl": [
     "poetry-core"
   ],
+  "libpurecool": [
+    "hachling"
+  ],
   "libretranslate": [
     "hatchling"
   ],
@@ -3445,6 +3793,9 @@
   "licensecheck": [
     "poetry-core"
   ],
+  "lightning": [
+    "hachling"
+  ],
   "line-profiler": [
     "cython"
   ],
@@ -3452,7 +3803,8 @@
     "poetry-core"
   ],
   "linear-operator": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "linecache2": [
     "pbr"
@@ -3475,7 +3827,8 @@
     "scikit-build"
   ],
   "llama-index": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-agent-openai": [
     "poetry-core"
@@ -3490,7 +3843,8 @@
     "poetry-core"
   ],
   "llama-index-embeddings-google": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-embeddings-huggingface": [
     "poetry-core"
@@ -3502,13 +3856,15 @@
     "poetry-core"
   ],
   "llama-index-graph-stores-nebula": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-graph-stores-neo4j": [
     "poetry-core"
   ],
   "llama-index-graph-stores-neptune": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-indices-managed-llama-cloud": [
     "poetry-core"
@@ -3526,22 +3882,26 @@
     "poetry-core"
   ],
   "llama-index-multi-modal-llms-openai": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-program-openai": [
     "poetry-core"
   ],
   "llama-index-question-gen-openai": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-readers-database": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-readers-file": [
     "poetry-core"
   ],
   "llama-index-readers-json": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-readers-llama-parse": [
     "poetry-core"
@@ -3550,7 +3910,8 @@
     "poetry-core"
   ],
   "llama-index-readers-twitter": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "llama-index-readers-txtai": [
     "poetry-core"
@@ -3600,6 +3961,12 @@
   "logging-journald": [
     "poetry-core"
   ],
+  "logzio-python-handler": [
+    "setuptools-scm"
+  ],
+  "lookml": [
+    "setuptools-scm"
+  ],
   "looseversion": [
     "hatchling"
   ],
@@ -3618,6 +3985,9 @@
   "luftdaten": [
     "poetry-core"
   ],
+  "luigi": [
+    "flit-core"
+  ],
   "lupa": [
     "cython"
   ],
@@ -3635,6 +4005,9 @@
     "pkgconfig",
     "setuptools-scm"
   ],
+  "m2r2": [
+    "flit-core"
+  ],
   "maestral": [
     "pbr"
   ],
@@ -3642,7 +4015,8 @@
     "hatchling"
   ],
   "magicgui": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "magika": [
     "poetry-core"
@@ -3773,6 +4147,9 @@
     "flit-core",
     "setuptools-scm"
   ],
+  "mecab-ko": [
+    "setuptools-scm"
+  ],
   "mecab-python3": [
     "setuptools-scm"
   ],
@@ -3790,6 +4167,12 @@
   ],
   "mergedb": [
     "setuptools-scm"
+  ],
+  "mesa": [
+    "hachling"
+  ],
+  "meson-python": [
+    "flit-core"
   ],
   "metakernel": [
     "hatchling"
@@ -3833,6 +4216,9 @@
   "migra": [
     "poetry-core"
   ],
+  "mike": [
+    "hachling"
+  ],
   "mindsdb-evaluator": [
     "poetry-core"
   ],
@@ -3846,19 +4232,41 @@
     {
       "buildSystem": "hatchling",
       "from": "1.4.1"
-    }
+    },
+    "hachling"
+  ],
+  "mkdocs-autolinks-plugin": [
+    "hachling"
   ],
   "mkdocs-autorefs": [
     "pdm-backend",
     "pdm-pep517",
-    "poetry"
+    "poetry",
+    "hachling"
   ],
   "mkdocs-awesome-pages-plugin": [
-    "poetry"
+    "poetry",
+    "hachling"
+  ],
+  "mkdocs-drawio-exporter": [
+    "hachling"
+  ],
+  "mkdocs-exclude": [
+    "hachling"
+  ],
+  "mkdocs-exclude-search": [
+    "hachling"
   ],
   "mkdocs-gen-files": [
     "hatchling",
-    "poetry"
+    "poetry",
+    "hachling"
+  ],
+  "mkdocs-git-authors-plugin": [
+    "hachling"
+  ],
+  "mkdocs-git-revision-date-localized-plugin": [
+    "hachling"
   ],
   "mkdocs-gitlab": [
     "poetry"
@@ -3866,10 +4274,15 @@
   "mkdocs-jupyter": [
     "hatchling",
     "ipython-genutils",
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "mkdocs-literate-nav": [
-    "poetry"
+    "poetry",
+    "hachling"
+  ],
+  "mkdocs-macros-plugin": [
+    "hachling"
   ],
   "mkdocs-material": [
     {
@@ -3883,7 +4296,8 @@
     {
       "buildSystem": "hatchling",
       "from": "8.5.3"
-    }
+    },
+    "hachling"
   ],
   "mkdocs-material-extensions": [
     {
@@ -3891,11 +4305,27 @@
       "from": "1.1"
     }
   ],
+  "mkdocs-redirects": [
+    "hachling"
+  ],
+  "mkdocs-rss-plugin": [
+    "hachling"
+  ],
+  "mkdocs-simple-hooks": [
+    "hachling"
+  ],
+  "mkdocs-table-reader-plugin": [
+    "hachling"
+  ],
   "mkdocstrings": [
-    "pdm-pep517"
+    "pdm-pep517",
+    "hachling"
   ],
   "mkl-service": [
     "cython"
+  ],
+  "ml-goodput-measurement": [
+    "flit-core"
   ],
   "mne-python": [
     "setuptools-scm"
@@ -3928,11 +4358,17 @@
   "model-bakery": [
     "hatchling"
   ],
+  "moderngl-window": [
+    "flit-core"
+  ],
   "molecule": [
     "setuptools-scm"
   ],
   "molecule-plugins": [
     "setuptools-scm"
+  ],
+  "monai": [
+    "hachling"
   ],
   "mongomock": [
     "pbr"
@@ -4009,6 +4445,9 @@
   "msprime": [
     "setuptools-scm"
   ],
+  "mujoco": [
+    "hachling"
+  ],
   "multiset": [
     "setuptools-scm"
   ],
@@ -4031,16 +4470,19 @@
     "flit-core"
   ],
   "myst-nb": [
+    "flit-core",
     "flit-core"
   ],
   "myst-parser": [
+    "flit-core",
     "flit-core"
   ],
   "name-that-hash": [
     "poetry-core"
   ],
   "napari": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "napari-console": [
     "setuptools-scm"
@@ -4080,7 +4522,8 @@
   ],
   "nbdime": [
     "hatchling",
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "nbformat": [
     {
@@ -4101,6 +4544,9 @@
       "from": "5.6.0"
     }
   ],
+  "nbsphinx": [
+    "flit-core"
+  ],
   "nbtlib": [
     "poetry-core"
   ],
@@ -4111,7 +4557,8 @@
     "cython"
   ],
   "neoteroi-mkdocs": [
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "nest": [
     "cython"
@@ -4147,6 +4594,9 @@
     "cython"
   ],
   "newick": [
+    "setuptools-scm"
+  ],
+  "newrelic-telemetry-sdk": [
     "setuptools-scm"
   ],
   "newversion": [
@@ -4241,7 +4691,8 @@
     "setuptools-scm"
   ],
   "notus-scanner": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "nox": [
     "hatchling"
@@ -4279,6 +4730,9 @@
   "numpy-stl": [
     "cython"
   ],
+  "numpydoc": [
+    "flit-core"
+  ],
   "nutils": [
     "flit-core"
   ],
@@ -4295,13 +4749,17 @@
     "poetry-core"
   ],
   "ocifs": [
-    "flit-core"
+    "flit-core",
+    "hachling"
   ],
   "ocrmypdf": [
     "setuptools-scm"
   ],
   "odata-query": [
     "poetry-core"
+  ],
+  "odoo-test-helper": [
+    "setuptools-scm"
   ],
   "odp-amsterdam": [
     "poetry-core"
@@ -4314,6 +4772,12 @@
   ],
   "omnikinverter": [
     "poetry-core"
+  ],
+  "onlykey-solo-python": [
+    "flit-core"
+  ],
+  "open-clip-torch": [
+    "hachling"
   ],
   "open-interpreter": [
     "poetry-core"
@@ -4369,11 +4833,13 @@
   ],
   "openllm-client": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "openllm-core": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "openmm": [
     "cython"
@@ -4383,6 +4849,9 @@
   ],
   "openpaperwork-gtk": [
     "setuptools-scm"
+  ],
+  "opensearch-logger": [
+    "flit-core"
   ],
   "openstackdocstheme": [
     "pbr"
@@ -4572,6 +5041,12 @@
       "from": "1.13.0"
     }
   ],
+  "opentelemetry-resourcedetector-docker": [
+    "setuptools-scm"
+  ],
+  "opentelemetry-resourcedetector-kubernetes": [
+    "setuptools-scm"
+  ],
   "opentelemetry-sdk": [
     {
       "buildSystem": "setuptools",
@@ -4608,6 +5083,9 @@
   "opentsne": [
     "cython"
   ],
+  "openupgradelib": [
+    "setuptools-scm"
+  ],
   "openvino": [
     "cython"
   ],
@@ -4624,7 +5102,8 @@
     "poetry-core"
   ],
   "orange3": [
-    "cython"
+    "cython",
+    "flit-core"
   ],
   "orbax-checkpoint": [
     "flit-core"
@@ -4678,7 +5157,8 @@
     "setuptools-scm"
   ],
   "ossfs": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "ossindex-lib": [
     "poetry-core"
@@ -4715,8 +5195,14 @@
   "paddle-client": [
     "poetry"
   ],
+  "paho-mqtt": [
+    "hachling"
+  ],
   "palace": [
     "cython_0"
+  ],
+  "pallets-sphinx-themes": [
+    "flit-core"
   ],
   "pandas": [
     "meson-python",
@@ -4734,8 +5220,14 @@
       "from": "2.2.0"
     }
   ],
+  "pandas-market-calendars": [
+    "flit-core"
+  ],
   "pandas-stubs": [
     "poetry-core"
+  ],
+  "panns-inference": [
+    "setuptools-scm"
   ],
   "paperwork-backend": [
     "setuptools-scm"
@@ -4758,7 +5250,8 @@
     "setuptools-scm"
   ],
   "parsedmarc": [
-    "hatchling"
+    "hatchling",
+    "flit-core"
   ],
   "parsita": [
     "poetry"
@@ -4770,6 +5263,9 @@
   ],
   "pastel": [
     "poetry-core"
+  ],
+  "patchelf": [
+    "setuptools-scm"
   ],
   "path": [
     "setuptools-scm"
@@ -4814,9 +5310,13 @@
   "pegen": [
     "setuptools-scm"
   ],
+  "pelican": [
+    "flit-core"
+  ],
   "pem": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "pendulum": [
     "poetry-core"
@@ -4846,6 +5346,12 @@
   "pfzy": [
     "poetry-core"
   ],
+  "pg8000": [
+    "hachling"
+  ],
+  "piccolo-theme": [
+    "flit-core"
+  ],
   "pick": [
     "poetry-core"
   ],
@@ -4867,7 +5373,8 @@
     "poetry-core"
   ],
   "pins": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "pint": [
     "setuptools-scm"
@@ -4887,6 +5394,12 @@
   "pip-tools": [
     "setuptools-scm"
   ],
+  "pip-upgrader": [
+    "setuptools-scm"
+  ],
+  "pip-with-requires-python": [
+    "flit-core"
+  ],
   "pipdeptree": [
     "hatch-vcs",
     "hatchling"
@@ -4900,7 +5413,8 @@
   ],
   "pixel-font-builder": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "hachling"
   ],
   "pixelmatch": [
     "poetry-core"
@@ -4969,10 +5483,12 @@
     "poetry"
   ],
   "polyfactory": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "pomegranate": [
-    "cython"
+    "cython",
+    "hachling"
   ],
   "pontos": [
     "poetry-core"
@@ -5037,11 +5553,29 @@
   "progressbar2": [
     "setuptools-scm"
   ],
+  "prometheus-async": [
+    "flit-core"
+  ],
   "prometheus-fastapi-instrumentator": [
     "poetry"
   ],
   "prometrix": [
     "poetry-core"
+  ],
+  "promptflow": [
+    "flit-core"
+  ],
+  "promptflow-azure": [
+    "flit-core"
+  ],
+  "promptflow-core": [
+    "flit-core"
+  ],
+  "promptflow-devkit": [
+    "flit-core"
+  ],
+  "promptflow-tools": [
+    "flit-core"
   ],
   "prompthub-py": [
     "poetry-core"
@@ -5051,6 +5585,9 @@
   ],
   "protoletariat": [
     "poetry-core"
+  ],
+  "prowler": [
+    "flit-core"
   ],
   "proxy-py": [
     "setuptools-scm"
@@ -5157,7 +5694,8 @@
   ],
   "pyathena": [
     "hatchling",
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "pyatmo": [
     "setuptools-scm"
@@ -5177,8 +5715,14 @@
   "pybravia": [
     "poetry-core"
   ],
+  "pybreaker": [
+    "flit-core"
+  ],
   "pybrowsers": [
     "poetry-core"
+  ],
+  "pybtex-docutils": [
+    "flit-core"
   ],
   "pycangjie": [
     "cython"
@@ -5248,6 +5792,9 @@
   "pydantic-yaml-0": [
     "setuptools-scm"
   ],
+  "pydata-sphinx-theme": [
+    "flit-core"
+  ],
   "pydexcom": [
     "setuptools-scm"
   ],
@@ -5279,6 +5826,9 @@
   "pydrive2": [
     "setuptools-scm"
   ],
+  "pyduke-energy": [
+    "hachling"
+  ],
   "pydy": [
     "cython"
   ],
@@ -5290,6 +5840,9 @@
   ],
   "pyecoforest": [
     "poetry-core"
+  ],
+  "pyeconet": [
+    "hachling"
   ],
   "pyee": [
     "setuptools-scm"
@@ -5305,9 +5858,15 @@
   "pyenphase": [
     "poetry-core"
   ],
+  "pyephember": [
+    "hachling"
+  ],
   "pyerfa": [
     "packaging",
     "setuptools-scm"
+  ],
+  "pyezviz": [
+    "hachling"
   ],
   "pyfaidx": [
     "setuptools-scm"
@@ -5332,6 +5891,9 @@
   ],
   "pygithub": [
     "setuptools-scm"
+  ],
+  "pyglet": [
+    "flit-core"
   ],
   "pygls": [
     "poetry",
@@ -5466,6 +6028,9 @@
   "pyln-proto": [
     "poetry"
   ],
+  "pyluach": [
+    "flit-core"
+  ],
   "pylutron-caseta": [
     "hatchling"
   ],
@@ -5507,6 +6072,9 @@
   ],
   "pynixutil": [
     "poetry"
+  ],
+  "pynput-robocorp-fork": [
+    "setuptools-scm"
   ],
   "pynuki": [
     "poetry-core"
@@ -5572,6 +6140,9 @@
   "pypitoken": [
     "poetry-core"
   ],
+  "pyplugs": [
+    "flit-core"
+  ],
   "pypoolstation": [
     "poetry-core"
   ],
@@ -5601,8 +6172,14 @@
   "pyproject-hooks": [
     "flit-core"
   ],
+  "pyproject-metadata": [
+    "flit-core"
+  ],
   "pypsrp": [
     "poetry-core"
+  ],
+  "pypyp": [
+    "flit-core"
   ],
   "pyqtdarktheme": [
     "poetry-core"
@@ -5626,14 +6203,24 @@
     "cython",
     "setuptools-scm"
   ],
+  "pyrender": [
+    "flit-core"
+  ],
   "pyrevolve": [
     "cython_0"
   ],
   "pyrmvtransport": [
     "flit"
   ],
+  "pyrofork": [
+    "setuptools-scm"
+  ],
   "pyroma": [
+    "flit-core",
     "flit-core"
+  ],
+  "pyrtf3": [
+    "setuptools-scm"
   ],
   "pysam": [
     "cython"
@@ -5714,6 +6301,9 @@
   "pyslurm": [
     "cython"
   ],
+  "pysmappee": [
+    "hachling"
+  ],
   "pysmart": [
     "setuptools-scm"
   ],
@@ -5774,6 +6364,9 @@
   ],
   "pystray": [
     "setuptools-scm"
+  ],
+  "pysychonaut": [
+    "hachling"
   ],
   "pytaglib": [
     "cython"
@@ -5838,7 +6431,8 @@
     "setuptools-scm"
   ],
   "pytest-celery": [
-    "flit-core"
+    "flit-core",
+    "hachling"
   ],
   "pytest-check": [
     "flit-core"
@@ -5847,6 +6441,9 @@
     "flit-core"
   ],
   "pytest-console-scripts": [
+    "setuptools-scm"
+  ],
+  "pytest-cpp": [
     "setuptools-scm"
   ],
   "pytest-datadir": [
@@ -5932,7 +6529,8 @@
     "setuptools-scm"
   ],
   "pytest-notebook": [
-    "flit-core"
+    "flit-core",
+    "hachling"
   ],
   "pytest-openfiles": [
     "setuptools-scm"
@@ -5969,6 +6567,15 @@
     "hatchling",
     "setuptools-scm"
   ],
+  "pytest-reporter": [
+    "setuptools-scm"
+  ],
+  "pytest-reporter-html1": [
+    "flit-core"
+  ],
+  "pytest-reportlog": [
+    "setuptools-scm"
+  ],
   "pytest-runner": [
     "setuptools-scm"
   ],
@@ -5978,6 +6585,9 @@
   "pytest-services": [
     "setuptools-scm"
   ],
+  "pytest-skip-slow": [
+    "flit-core"
+  ],
   "pytest-snapshot": [
     "setuptools-scm"
   ],
@@ -5986,6 +6596,9 @@
   ],
   "pytest-spec": [
     "poetry-core"
+  ],
+  "pytest-steps": [
+    "setuptools-scm"
   ],
   "pytest-subtests": [
     "setuptools-scm"
@@ -5998,6 +6611,9 @@
   ],
   "pytest-textual-snapshot": [
     "poetry-core"
+  ],
+  "pytest-wake": [
+    "setuptools-scm"
   ],
   "pytest-xdist": [
     "setuptools-scm"
@@ -6027,13 +6643,17 @@
     "pbr"
   ],
   "python-creole": [
-    "poetry-core"
+    "poetry-core",
+    "flit-core"
   ],
   "python-csxcad": [
     "cython"
   ],
   "python-ctags3": [
     "cython"
+  ],
+  "python-daemon": [
+    "flit-core"
   ],
   "python-dateutil": [
     "setuptools-scm"
@@ -6163,6 +6783,9 @@
   "python-vagrant": [
     "setuptools-scm"
   ],
+  "python-xlib": [
+    "setuptools-scm"
+  ],
   "python-xz": [
     "setuptools-scm"
   ],
@@ -6183,6 +6806,12 @@
   ],
   "pytoolconfig": [
     "pdm-pep517"
+  ],
+  "pytorch-lightning": [
+    "hachling"
+  ],
+  "pytorch-msssim": [
+    "hachling"
   ],
   "pytraccar": [
     "poetry-core"
@@ -6264,7 +6893,8 @@
     "flit-core"
   ],
   "pyyaml-include": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "pyzmq": [
     "cython",
@@ -6365,7 +6995,8 @@
     "setuptools-scm"
   ],
   "raincloudy": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "rapidfuzz": [
     "cmake",
@@ -6402,8 +7033,14 @@
   "readmdict": [
     "poetry-core"
   ],
+  "readme": [
+    "flit-core"
+  ],
   "readstats": [
     "cython"
+  ],
+  "recommonmark": [
+    "flit-core"
   ],
   "recordlinkage": [
     "setuptools-scm"
@@ -6441,7 +7078,8 @@
   ],
   "reproject": [
     "cython",
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "reqif": [
     "hatchling",
@@ -6477,6 +7115,12 @@
   "resampy": [
     "cython"
   ],
+  "restinstance": [
+    "flit-core"
+  ],
+  "restructuredtext-lint": [
+    "flit-core"
+  ],
   "retry": [
     "pbr"
   ],
@@ -6501,7 +7145,8 @@
     "flit-core"
   ],
   "rich-pixels": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
   ],
   "ring-doorbell": [
     "poetry-core"
@@ -6518,6 +7163,9 @@
   ],
   "ripser": [
     "cython"
+  ],
+  "rising": [
+    "hachling"
   ],
   "rkm-codes": [
     "flit-core"
@@ -6537,6 +7185,12 @@
   "rnginline": [
     "poetry-core"
   ],
+  "robotframework-appiumlibrary": [
+    "flit-core"
+  ],
+  "robotframework-datadriver": [
+    "flit-core"
+  ],
   "rokuecp": [
     "poetry-core"
   ],
@@ -6545,6 +7199,12 @@
   ],
   "roonapi": [
     "poetry-core"
+  ],
+  "rospkg": [
+    "flit-core"
+  ],
+  "rotary-embedding-torch": [
+    "hachling"
   ],
   "rpmfile": [
     "setuptools-scm"
@@ -6565,15 +7225,18 @@
     "flit-core"
   ],
   "rst2pdf": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
   ],
   "rstcheck": [
     "poetry-core",
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
   ],
   "rstcheck-core": [
     "poetry-core",
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
   ],
   "rstr": [
     "setuptools-scm"
@@ -6602,12 +7265,21 @@
   "rxv": [
     "setuptools-scm"
   ],
+  "s3fs": [
+    "hachling"
+  ],
   "safeeyes": [
     "setuptools-scm"
   ],
   "safety-schemas": [
     "hatchling",
     "poetry-core"
+  ],
+  "sagemaker": [
+    "hachling"
+  ],
+  "salmon-mail": [
+    "flit-core"
   ],
   "salt-pepper": [
     "setuptools-scm"
@@ -6625,6 +7297,9 @@
   "sanic-auth": [
     "setuptools-scm"
   ],
+  "sanic-cors": [
+    "setuptools-scm"
+  ],
   "sapi-python-client": [
     "setuptools-scm"
   ],
@@ -6633,6 +7308,9 @@
   ],
   "sat-search": [
     "pytest-runner"
+  ],
+  "savepagenow": [
+    "setuptools-scm"
   ],
   "scalene": [
     "cython",
@@ -6645,7 +7323,9 @@
     "poetry-core"
   ],
   "schemathesis": [
-    "hatchling"
+    "hatchling",
+    "hachling",
+    "setuptools-scm"
   ],
   "schwifty": [
     "hatch-vcs",
@@ -6750,6 +7430,12 @@
   "scooby": [
     "setuptools-scm"
   ],
+  "scooch": [
+    "flit-core"
+  ],
+  "scramp": [
+    "hachling"
+  ],
   "scrap-engine": [
     "setuptools-scm"
   ],
@@ -6849,6 +7535,9 @@
   "setuptools-rust": [
     "setuptools-scm"
   ],
+  "setuptools-scm-git-archive": [
+    "setuptools-scm"
+  ],
   "seventeentrack": [
     "poetry-core"
   ],
@@ -6903,6 +7592,7 @@
     "setuptools-scm"
   ],
   "sigstore": [
+    "flit-core",
     "flit-core"
   ],
   "sigstore-protobuf-specs": [
@@ -6926,9 +7616,15 @@
   "single-version": [
     "poetry-core"
   ],
+  "singledispatchmethod": [
+    "setuptools-scm"
+  ],
   "skia-pathops": [
     "cython",
     "setuptools-scm"
+  ],
+  "sklearndf": [
+    "flit-core"
   ],
   "skodaconnect": [
     "flit-core",
@@ -6942,6 +7638,12 @@
   ],
   "slowapi": [
     "poetry-core"
+  ],
+  "smartsheet-python-sdk": [
+    "setuptools-scm"
+  ],
+  "smtpdfix": [
+    "hachling"
   ],
   "snakemake-executor-plugin-cluster-generic": [
     "poetry-core"
@@ -6969,6 +7671,9 @@
   ],
   "snowflake-connector-python": [
     "cython"
+  ],
+  "snowflake-sqlalchemy": [
+    "hachling"
   ],
   "snscrape": [
     "setuptools-scm"
@@ -7001,6 +7706,9 @@
   "spacy-pkuseg": [
     "cython"
   ],
+  "spacy-transformers": [
+    "hachling"
+  ],
   "sparqlslurper": [
     "pbr"
   ],
@@ -7021,72 +7729,150 @@
   ],
   "sphinx": [
     "cython",
+    "flit-core",
+    "flit-core"
+  ],
+  "sphinx-argparse": [
+    "flit-core"
+  ],
+  "sphinx-autoapi": [
     "flit-core"
   ],
   "sphinx-autobuild": [
+    "flit-core",
     "flit-core"
   ],
   "sphinx-autodoc-typehints": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "flit-core"
   ],
   "sphinx-automodapi": [
     "cython",
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
+  ],
+  "sphinx-basic-ng": [
+    "flit-core"
+  ],
+  "sphinx-book-theme": [
+    "hachling"
+  ],
+  "sphinx-click": [
+    "flit-core"
+  ],
+  "sphinx-comments": [
+    "flit-core"
+  ],
+  "sphinx-copybutton": [
+    "flit-core"
   ],
   "sphinx-design": [
+    "flit-core",
     "flit-core"
   ],
   "sphinx-external-toc": [
+    "flit-core",
+    "flit-core"
+  ],
+  "sphinx-gallery": [
     "flit-core"
   ],
   "sphinx-hoverxref": [
     "flit-core"
   ],
   "sphinx-inline-tabs": [
+    "flit-core",
+    "flit-core"
+  ],
+  "sphinx-intl": [
     "flit-core"
   ],
   "sphinx-jinja": [
-    "pbr"
+    "pbr",
+    "flit-core"
   ],
   "sphinx-jquery": [
     "flit-core"
   ],
   "sphinx-jupyterbook-latex": [
+    "flit-core",
+    "flit-core"
+  ],
+  "sphinx-markdown-builder": [
+    "flit-core"
+  ],
+  "sphinx-markdown-parser": [
+    "flit-core"
+  ],
+  "sphinx-material": [
     "flit-core"
   ],
   "sphinx-mdinclude": [
+    "flit-core",
+    "flit-core"
+  ],
+  "sphinx-multitoc-numbering": [
+    "flit-core"
+  ],
+  "sphinx-needs": [
     "flit-core"
   ],
   "sphinx-notfound-page": [
+    "flit-core",
     "flit-core"
   ],
   "sphinx-prompt": [
-    "poetry-core"
+    "poetry-core",
+    "flit-core"
   ],
   "sphinx-pytest": [
     "flit-core"
   ],
+  "sphinx-reredirects": [
+    "flit-core"
+  ],
+  "sphinx-sitemap": [
+    "flit-core"
+  ],
+  "sphinx-tabs": [
+    "flit-core"
+  ],
   "sphinx-thebe": [
     "hatch-vcs",
-    "hatchling"
+    "hatchling",
+    "flit-core"
+  ],
+  "sphinx-togglebutton": [
+    "flit-core"
   ],
   "sphinxcontrib-apidoc": [
-    "pbr"
+    "pbr",
+    "flit-core"
   ],
   "sphinxcontrib-applehelp": [
     "flit-core"
   ],
+  "sphinxcontrib-bibtex": [
+    "flit-core"
+  ],
   "sphinxcontrib-confluencebuilder": [
+    "flit-core",
     "flit-core"
   ],
   "sphinxcontrib-devhelp": [
+    "flit-core"
+  ],
+  "sphinxcontrib-drawio": [
     "flit-core"
   ],
   "sphinxcontrib-fulltoc": [
     "pbr"
   ],
   "sphinxcontrib-htmlhelp": [
+    "flit-core"
+  ],
+  "sphinxcontrib-httpdomain": [
     "flit-core"
   ],
   "sphinxcontrib-jquery": [
@@ -7097,10 +7883,18 @@
     {
       "buildSystem": "flit-core",
       "from": "3.0.0"
-    }
+    },
+    "flit-core"
   ],
   "sphinxcontrib-openapi": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
+  ],
+  "sphinxcontrib-plantuml": [
+    "flit-core"
+  ],
+  "sphinxcontrib-programoutput": [
+    "flit-core"
   ],
   "sphinxcontrib-qthelp": [
     "flit-core"
@@ -7110,19 +7904,28 @@
   ],
   "sphinxcontrib-spelling": [
     "pbr",
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
+  ],
+  "sphinxcontrib-svg2pdfconverter": [
+    "flit-core"
   ],
   "sphinxcontrib-wavedrom": [
     "setuptools-scm"
   ],
   "sphinxcontrib-websupport": [
+    "flit-core",
     "flit-core"
   ],
   "sphinxcontrib-youtube": [
     "flit-core"
   ],
+  "sphinxemoji": [
+    "flit-core"
+  ],
   "sphinxext-opengraph": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "flit-core"
   ],
   "spiderpy": [
     "poetry-core"
@@ -7177,12 +7980,25 @@
     "pbr",
     "setuptools-scm"
   ],
+  "ssh-mitm": [
+    "hachling"
+  ],
+  "sshconf": [
+    "flit-core"
+  ],
   "sshfs": [
+    "setuptools-scm",
+    "hachling"
+  ],
+  "ssm-parameter-store": [
     "setuptools-scm"
   ],
   "stack-data": [
     "cython",
     "setuptools-scm"
+  ],
+  "stanza": [
+    "hachling"
   ],
   "starlette": [
     "hatchling"
@@ -7198,6 +8014,9 @@
   ],
   "staticjinja": [
     "poetry-core"
+  ],
+  "statistics": [
+    "flit-core"
   ],
   "statmake": [
     "poetry-core"
@@ -7240,6 +8059,9 @@
   "streaming-form-data": [
     "cython"
   ],
+  "stringly": [
+    "flit-core"
+  ],
   "stringparser": [
     "setuptools-scm"
   ],
@@ -7251,6 +8073,9 @@
   ],
   "structlog-sentry": [
     "poetry-core"
+  ],
+  "submitit": [
+    "flit-core"
   ],
   "subprocess-tee": [
     "setuptools-scm"
@@ -7270,8 +8095,12 @@
   "sunpy": [
     "setuptools-scm"
   ],
+  "supermorecado": [
+    "flit-core"
+  ],
   "superqt": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "surepy": [
     "poetry-core"
@@ -7287,6 +8116,9 @@
   ],
   "swagger-ui-bundle": [
     "poetry-core"
+  ],
+  "swapper": [
+    "setuptools-scm"
   ],
   "swift": [
     "pbr"
@@ -7364,6 +8196,12 @@
   "taskw-ng": [
     "poetry-core"
   ],
+  "tavern": [
+    "flit-core"
+  ],
+  "taxi": [
+    "flit-core"
+  ],
   "tbm-utils": [
     "poetry-core"
   ],
@@ -7395,6 +8233,9 @@
   "tensorboardx": [
     "setuptools-scm"
   ],
+  "tensordict": [
+    "hachling"
+  ],
   "termcolor": [
     "hatch-vcs",
     "hatchling"
@@ -7420,8 +8261,15 @@
   "tesserocr": [
     "cython"
   ],
+  "test-tube": [
+    "hachling"
+  ],
   "testcontainers": [
-    "poetry-core"
+    "poetry-core",
+    "hachling"
+  ],
+  "testing-postgresql": [
+    "hachling"
   ],
   "testpath": [
     "flit",
@@ -7431,7 +8279,8 @@
     "setuptools-scm"
   ],
   "testrepository": [
-    "pbr"
+    "pbr",
+    "hachling"
   ],
   "testresources": [
     "pbr"
@@ -7443,6 +8292,9 @@
     "hatch-vcs",
     "hatchling",
     "pbr"
+  ],
+  "textblob": [
+    "flit-core"
   ],
   "textnets": [
     "cython",
@@ -7550,6 +8402,9 @@
   "toggl-cli": [
     "pbr"
   ],
+  "tokenizers": [
+    "hachling"
+  ],
   "tokentrim": [
     "poetry-core"
   ],
@@ -7583,6 +8438,27 @@
   ],
   "tomlkit": [
     "poetry-core"
+  ],
+  "torch-audiomentations": [
+    "hachling"
+  ],
+  "torch-pitch-shift": [
+    "hachling"
+  ],
+  "torchgpipe": [
+    "hachling"
+  ],
+  "torchmetrics": [
+    "hachling"
+  ],
+  "torchrl": [
+    "hachling"
+  ],
+  "torchsde": [
+    "hachling"
+  ],
+  "torchvision": [
+    "hachling"
   ],
   "tortoise-orm": [
     "poetry-core"
@@ -7626,6 +8502,9 @@
   "transmission-rpc": [
     "poetry-core"
   ],
+  "trectools": [
+    "hachling"
+  ],
   "treeo": [
     "poetry-core"
   ],
@@ -7661,6 +8540,12 @@
   ],
   "tusker": [
     "poetry"
+  ],
+  "tuya-device-sharing-sdk": [
+    "hachling"
+  ],
+  "tuya-iot-py-sdk": [
+    "hachling"
   ],
   "twentemilieu": [
     "poetry-core"
@@ -7794,7 +8679,8 @@
     "setuptools-scm"
   ],
   "universal-pathlib": [
-    "setuptools-scm"
+    "setuptools-scm",
+    "hachling"
   ],
   "unpaddedbase64": [
     "poetry-core"
@@ -7825,6 +8711,9 @@
       "buildSystem": "hatchling",
       "from": "2.0.2"
     }
+  ],
+  "urllib3-secure-extra": [
+    "flit-core"
   ],
   "urwid": [
     "setuptools-scm"
@@ -7945,6 +8834,9 @@
     "hatchling",
     "setuptools-scm"
   ],
+  "wemake-python-styleguide": [
+    "flit-core"
+  ],
   "werkzeug": [
     {
       "buildSystem": "setuptools",
@@ -7983,6 +8875,9 @@
   "wikipedia2vec": [
     "cython"
   ],
+  "wikitextparser": [
+    "flit-core"
+  ],
   "willow": [
     {
       "buildSystem": "setuptools",
@@ -8012,6 +8907,9 @@
   "wordfreq": [
     "poetry-core",
     "setuptools-scm"
+  ],
+  "workalendar": [
+    "flit-core"
   ],
   "wtforms": [
     "babel",
@@ -8106,6 +9004,9 @@
   ],
   "yoda": [
     "cython"
+  ],
+  "yolink-api": [
+    "hachling"
   ],
   "youtokentome": [
     "cython"
