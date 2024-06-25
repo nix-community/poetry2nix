@@ -16454,6 +16454,9 @@
   "py-lru-cache": [
     "setuptools"
   ],
+  "py-moneyed": [
+    "setuptools"
+  ],
   "py-multiaddr": [
     "setuptools"
   ],
