@@ -9777,6 +9777,9 @@
   "iterative-telemetry": [
     "setuptools-scm"
   ],
+  "iterpy": [
+    "setuptools"
+  ],
   "itsdangerous": [
     "flit-core",
     "setuptools"
