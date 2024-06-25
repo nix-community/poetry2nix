@@ -110,82 +110,7 @@ pythonPackages.callPackage
       format = if isWheelUrl then "wheel" else if isDirectory || isGit || isUrl then "pyproject" else fileInfo.format;
 
       hooks = python.pkgs.callPackage ./hooks { };
-    in
-    buildPythonPackage {
-      inherit pname version;
 
-      # Circumvent output separation (https://github.com/NixOS/nixpkgs/pull/190487)
-      format = if format == "pyproject" then "poetry2nix" else format;
-
-      doCheck = false; # We never get development deps
-
-      # Stripping pre-built wheels lead to `ELF load command address/offset not properly aligned`
-      dontStrip = format == "wheel";
-
-      nativeBuildInputs = [
-        hooks.poetry2nixFixupHook
-      ]
-      ++ lib.optional (!pythonPackages.isPy27) hooks.poetry2nixPythonRequiresPatchHook
-      ++ lib.optional (isLocked && (getManyLinuxDeps fileInfo.name).str != null) autoPatchelfHook
-      ++ lib.optionals (format == "wheel") [
-        pythonPackages.wheelUnpackHook
-        pythonPackages.pypaInstallHook
-      ]
-      ++ lib.optionals (format == "pyproject") [
-        hooks.removePathDependenciesHook
-        hooks.removeGitDependenciesHook
-        hooks.removeWheelUrlDependenciesHook
-        hooks.pipBuildHook
-      ];
-
-      buildInputs = lib.optional isLocked (getManyLinuxDeps fileInfo.name).pkg
-        ++ lib.optional isDirectory buildSystemPkgs;
-
-      propagatedBuildInputs =
-        let
-          deps = lib.filterAttrs
-            (_: v: v)
-            (
-              lib.mapAttrs
-                (
-                  _: v:
-                    let
-                      constraints = v.python or "";
-                      pep508Markers = v.markers or "";
-                    in
-                    (poetryLib.checkPythonVersions pyVersion constraints) && (if pep508Markers == "" then true else
-                    (pyproject-nix.lib.pep508.evalMarkers
-                      (pep508Env // {
-                        extra = {
-                          # All extras are always enabled
-                          type = "extra";
-                          value = lib.attrNames extras;
-                        };
-                      })
-                      (pyproject-nix.lib.pep508.parseMarkers pep508Markers)))
-                )
-                dependencies
-            );
-          depAttrs = lib.attrNames deps;
-        in
-        builtins.map (n: pythonPackages.${normalizePackageName n}) depAttrs;
-
-      inherit pos;
-
-      meta = {
-        broken = ! poetryLib.checkPythonVersions pyVersion python-versions;
-        license = [ ];
-        inherit (python.meta) platforms;
-      };
-
-      passthru = {
-        inherit args;
-        preferWheel = preferWheel';
-      };
-
-      # We need to retrieve kind from the interpreter and the filename of the package
-      # Interpreters should declare what wheel types they're compatible with (python type + ABI)
-      # Here we can then choose a file based on that info.
       src =
         let
           srcRoot =
@@ -241,6 +166,85 @@ pythonPackages.callPackage
           srcRoot + "/${source.subdirectory}"
         else
           srcRoot;
+        missing_pypproject_toml = ! builtins.pathExists "${src}/pyproject.toml";
+    in
+    buildPythonPackage {
+      inherit pname version;
+
+      # Circumvent output separation (https://github.com/NixOS/nixpkgs/pull/190487)
+      format = if format == "pyproject" then "poetry2nix" else format;
+
+      doCheck = false; # We never get development deps
+
+      # Stripping pre-built wheels lead to `ELF load command address/offset not properly aligned`
+      dontStrip = format == "wheel";
+
+      nativeBuildInputs = [
+        hooks.poetry2nixFixupHook
+      ]
+      ++ lib.optional (!pythonPackages.isPy27) hooks.poetry2nixPythonRequiresPatchHook
+      ++ lib.optional (isLocked && (getManyLinuxDeps fileInfo.name).str != null) autoPatchelfHook
+      ++ lib.optionals (format == "wheel") [
+        pythonPackages.wheelUnpackHook
+        pythonPackages.pypaInstallHook
+      ]
+      ++ lib.optionals (format == "pyproject") [
+        hooks.removePathDependenciesHook
+        hooks.removeGitDependenciesHook
+        hooks.removeWheelUrlDependenciesHook
+        hooks.pipBuildHook
+      ]
+      ++ lib.optional missing_pypproject_toml [pythonPackages.setuptools];
+
+      buildInputs = lib.optional isLocked (getManyLinuxDeps fileInfo.name).pkg
+      ++ lib.optional isDirectory buildSystemPkgs;
+
+      propagatedBuildInputs =
+        let
+          deps = lib.filterAttrs
+            (_: v: v)
+            (
+              lib.mapAttrs
+                (
+                  _: v:
+                    let
+                      constraints = v.python or "";
+                      pep508Markers = v.markers or "";
+                    in
+                    (poetryLib.checkPythonVersions pyVersion constraints) && (if pep508Markers == "" then true else
+                    (pyproject-nix.lib.pep508.evalMarkers
+                      (pep508Env // {
+                        extra = {
+                          # All extras are always enabled
+                          type = "extra";
+                          value = lib.attrNames extras;
+                        };
+                      })
+                      (pyproject-nix.lib.pep508.parseMarkers pep508Markers)))
+                )
+                dependencies
+            );
+          depAttrs = lib.attrNames deps;
+        in
+        builtins.map (n: pythonPackages.${normalizePackageName n}) depAttrs;
+
+      inherit pos;
+
+      meta = {
+        broken = ! poetryLib.checkPythonVersions pyVersion python-versions;
+        license = [ ];
+        inherit (python.meta) platforms;
+      };
+
+      passthru = {
+        inherit args;
+        preferWheel = preferWheel';
+      };
+
+      # We need to retrieve kind from the interpreter and the filename of the package
+      # Interpreters should declare what wheel types they're compatible with (python type + ABI)
+      # Here we can then choose a file based on that info.
+      inherit src;
     }
   )
 { }
