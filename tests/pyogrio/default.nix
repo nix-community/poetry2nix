@@ -1,7 +1,7 @@
-{ poetry2nix, python3, runCommand }:
+{ poetry2nix, python310, runCommand }:
 let
   mkEnv = preferWheel: poetry2nix.mkPoetryEnv {
-    python = python3;
+    python = python310;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     overrides = poetry2nix.overrides.withDefaults (

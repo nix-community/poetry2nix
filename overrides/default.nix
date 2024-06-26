@@ -2462,7 +2462,9 @@ lib.composeManyExtensions [
       );
 
       pyogrio = prev.pyogrio.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ final.versioneer gdal ];
+        nativeBuildInputs = old.nativeBuildInputs or [ ]
+          ++ [ final.versioneer gdal ]
+          ++ lib.optionals (final.pythonOlder "3.11") [ final.tomli ];
       });
 
       pyopencl = prev.pyopencl.overridePythonAttrs (
