@@ -133,7 +133,7 @@
 
       apps = {
         poetry = {
-          # https://nixos.wiki/wiki/Flakes
+          # https://wiki.nixos.org/wiki/Flakes
           type = "app";
           program = pkgs.poetry;
         };
