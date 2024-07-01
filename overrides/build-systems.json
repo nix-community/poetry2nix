@@ -9777,6 +9777,9 @@
   "iterative-telemetry": [
     "setuptools-scm"
   ],
+  "iterpy": [
+    "setuptools"
+  ],
   "itsdangerous": [
     "flit-core",
     "setuptools"
@@ -10642,6 +10645,12 @@
   ],
   "latexify-py": [
     "hatchling"
+  ],
+  "launchdarkly-eventsource": [
+    "poetry-core"
+  ],
+  "launchdarkly-server-sdk": [
+    "poetry-core"
   ],
   "launchpadlib": [
     "setuptools"
@@ -16446,6 +16455,9 @@
     "cython_0"
   ],
   "py-lru-cache": [
+    "setuptools"
+  ],
+  "py-moneyed": [
     "setuptools"
   ],
   "py-multiaddr": [
