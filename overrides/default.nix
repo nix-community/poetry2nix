@@ -76,6 +76,65 @@ let
     in
     lib.filter (x: !(builtins.elem (lib.getName x) namesToRemove)) packages;
 
+  # default rust + maturin handling
+  extractCargoLock = src:
+    pkgs.runCommand "extract-cargolock-${src.name}" {} ''
+      mkdir $out
+      tar xf ${src}
+      CARGO_LOCK_PATH=`find . -name "Cargo.lock" -print -quit`
+      if [ -z "$CARGO_LOCK_PATH" ]; then
+        echo "Cargo.lock not found in ${src}"
+        exit 1
+      fi
+      cp $CARGO_LOCK_PATH "$out"
+    '';
+
+
+  standardMaturin = {
+    outputHashes ? {},
+    furtherArgs ? {},
+    maturinHook ? pkgs.rustPlatform.maturinBuildHook,
+  }: old:
+    lib.optionalAttrs (!(old.src.isWheel or false)) (
+      {
+        cargoDeps = pkgs.rustPlatform.importCargoLock {
+          lockFile = "${extractCargoLock old.src}/Cargo.lock";
+          outputHashes = outputHashes;
+        };
+        nativeBuildInputs =
+          (old.nativeBuildInputs or [])
+          ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            maturinHook
+          ];
+      }
+      // furtherArgs
+    );
+  offlineMaturinHook = pkgs.callPackage ({pkgsHostTarget}:
+    pkgs.makeSetupHook {
+      name = "offline-maturin-build-hook.sh";
+      propagatedBuildInputs = [
+        pkgsHostTarget.maturin
+        pkgsHostTarget.cargo
+        pkgsHostTarget.rustc
+      ];
+      substitutions = {
+        inherit (pkgs.rust.envVars) rustTargetPlatformSpec setEnv;
+      };
+    }
+    ./offline-maturin-build-hook.sh) {};
+
+  offlineMaturin = args:
+  # for those cases where maturin/cargo says
+  # "Cargo.lock needs to be updated but --frozen was passed to prevent this"
+  # and we want to pass in --offline instead.
+  # (I suppose that happens when the rust/cargo version isn't 
+  # quite what the upstream author used, and given this Cargo.toml and 
+  # whatever is available 'offline' leads to a (noop) change in Cargo.lock))
+    standardMaturin (args
+      // {
+        maturinHook = offlineMaturinHook;
+      });
 in
 lib.composeManyExtensions [
   # NixOps
@@ -3319,7 +3378,7 @@ lib.composeManyExtensions [
             ];
             nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
               pkgs.rustPlatform.cargoSetupHook
-              pkgs.rustPlatform.maturinBuildHook
+                  offlineMaturinHook
             ];
           });
 
@@ -4103,6 +4162,13 @@ lib.composeManyExtensions [
       y-py = prev.y-py.override {
         preferWheel = true;
       };
+        cramjam =
+          prev.cramjam.overridePythonAttrs (offlineMaturin {
+            });
+        safetensors = prev.safetensors.override {
+          # no Cargo.lock.
+          preferWheel = true;
+        };
     }
   )
   # The following are dependencies of torch >= 2.0.0.
