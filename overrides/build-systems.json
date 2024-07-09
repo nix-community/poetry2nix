@@ -9900,7 +9900,6 @@
     "setuptools-scm"
   ],
   "pyzmq": [
-    "cmake",
     "cython",
     "packaging",
     {
@@ -9913,6 +9912,10 @@
     },
     {
       "buildSystem": "scikit-build-core",
+      "from": "26.0.0"
+    },
+	{
+      "buildSystem": "cmake",
       "from": "26.0.0"
     }
   ],
