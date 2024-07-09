@@ -3885,12 +3885,6 @@ lib.composeManyExtensions [
           }
         );
 
-        ckzg = prev.ckzg.overridePythonAttrs (old: {
-          postPatch = old.postPatch or lib.optionalString stdenv.cc.isGNU ''
-            substituteInPlace src/Makefile --replace 'CC = clang' 'CC = gcc'
-          '';
-        });
-
         scikit-learn = prev.scikit-learn.overridePythonAttrs (
           old:
           lib.optionalAttrs (!(old.src.isWheel or false)) {
