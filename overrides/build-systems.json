@@ -6869,7 +6869,6 @@
     "setuptools-scm"
   ],
   "numpy": [
-    "cython",
     {
       "buildSystem": "cython_0",
       "until": "1.26.0"
