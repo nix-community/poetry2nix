@@ -383,7 +383,7 @@ in
         #   "pubgrub-0.2.1" = "sha256-6tr+HATYSn1A1uVJwmz40S4yLDOJlX8vEokOOtdFG0M=";
         # });
 
-        adapt-parser = prev.adapt-parser.overridePythonAttrs (old: {
+        adapt-parser = prev.adapt-parser.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail "required('requirements.txt')" "['six']"
           '';
@@ -524,7 +524,7 @@ in
           '';
         });
 
-        asciichartpy = prev.asciichartpy.overridePythonAttrs (old: {
+        asciichartpy = prev.asciichartpy.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail "README.md" "README.rst"
           '';
@@ -546,13 +546,13 @@ in
           autoPatchelfIgnoreMissingDeps = true;
         });
 
-        autocommand = prev.autocommand.overridePythonAttrs (old: {
+        autocommand = prev.autocommand.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace pyproject.toml --replace "requires-python" "license={ text = 'LGPLv3' } # requires-python"
           '';
         });
 
-        autofaker = prev.autofaker.overridePythonAttrs (old: {
+        autofaker = prev.autofaker.overridePythonAttrs (_old: {
           postPatch = ''
             mkdir docs
             touch docs/pypi.md
@@ -580,7 +580,7 @@ in
             ++ [final.isort final.pycodestyle];
         });
 
-        awkward-cpp = prev.awkward-cpp.overridePythonAttrs (old: {
+        awkward-cpp = prev.awkward-cpp.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
         });
 
@@ -694,7 +694,7 @@ in
               }
           );
 
-        beautifulsoup4 = prev.beautifulsoup4.overridePythonAttrs (old: {
+        beautifulsoup4 = prev.beautifulsoup4.overridePythonAttrs (_old: {
           postPatch = ''
             if [ -f setup.py ]; then
               substituteInPlace setup.py --replace-quiet "use_2to3=True," ""
@@ -861,7 +861,7 @@ in
           }
         );
 
-        cmlibs-maths = prev.cmlibs-maths.overridePythonAttrs (old: {
+        cmlibs-maths = prev.cmlibs-maths.overridePythonAttrs (_old: {
           meta.priority = 2; # remove collision with cmlib-utils
         });
 
@@ -948,7 +948,7 @@ in
         });
 
         coreforecast = prev.coreforecast.overridePythonAttrs (
-          old: {
+          _old: {
             dontUseCmakeConfigure = true;
           }
         );
@@ -1077,7 +1077,7 @@ in
               )
             );
 
-        ctransformers = prev.ctransformers.overridePythonAttrs (old: {
+        ctransformers = prev.ctransformers.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
         });
 
@@ -1097,7 +1097,7 @@ in
           buildInputs = old.buildInputs or [] ++ [blas pkgs.suitesparse];
         });
 
-        cwlformat = prev.cwlformat.overridePythonAttrs (old: {
+        cwlformat = prev.cwlformat.overridePythonAttrs (_old: {
           postPatch = ''
             touch Readme.md
           '';
@@ -1151,7 +1151,7 @@ in
           buildInputs = old.buildInputs or [] ++ [final.setuptools];
         });
 
-        datatile = prev.datatile.overridePythonAttrs (old: {
+        datatile = prev.datatile.overridePythonAttrs (_old: {
           preBuild = ''
             mkdir -p requirements
               touch requirements/dev.txt
@@ -1164,11 +1164,11 @@ in
           '';
         });
 
-        dbt-adapters = prev.dbt-adapters.overridePythonAttrs (old: {
+        dbt-adapters = prev.dbt-adapters.overridePythonAttrs (_old: {
           meta.priority = 2; # remove collision with dbt-postgres
         });
 
-        dbt-core = prev.dbt-core.overridePythonAttrs (old: {
+        dbt-core = prev.dbt-core.overridePythonAttrs (_old: {
           meta.priority = 1; # remove collision with airflow-dbt-python
         });
 
@@ -1359,7 +1359,7 @@ in
           then null
           else prev.enum34;
 
-        embedly = prev.embedly.overridePythonAttrs (old: {
+        embedly = prev.embedly.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail "use_2to3=True," ""
           '';
@@ -1676,7 +1676,7 @@ in
             )
         );
 
-        hexdump = prev.hexdump.overridePythonAttrs (old: {
+        hexdump = prev.hexdump.overridePythonAttrs (_old: {
           # we detect the wrong 'source directory'
           # it's an unusual package layout
           preBuild = ''
@@ -1818,7 +1818,7 @@ in
         # importlib-metadata has an incomplete dependency specification
 
         iminuit = prev.iminuit.overridePythonAttrs (
-          old: {
+          _old: {
             dontUseCmakeConfigure = true;
           }
         );
@@ -1855,7 +1855,7 @@ in
           }
         );
 
-        islpy = prev.islpy.overridePythonAttrs (old: {
+        islpy = prev.islpy.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
         });
 
@@ -2082,7 +2082,7 @@ in
           propagatedBuildInputs = [pkgs.libvirt];
         });
 
-        license-expression = prev.license-expression.overridePythonAttrs (old: {
+        license-expression = prev.license-expression.overridePythonAttrs (_old: {
           dontConfigure = true;
         });
 
@@ -2461,7 +2461,7 @@ in
             }
         );
 
-        mtcnn = prev.mtcnn.overridePythonAttrs (old: {
+        mtcnn = prev.mtcnn.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail ", setuptools" ""
           '';
@@ -2868,13 +2868,13 @@ in
 
         opencv-python-headless = prev.opencv-python-headless.overridePythonAttrs final._opencv-python-override;
 
-        openerp-process = prev.openerp-process.overridePythonAttrs (old: {
+        openerp-process = prev.openerp-process.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace http.py --replace-fail "0700" "0o700"
           '';
         });
 
-        openerp-web = prev.openerp-web.overridePythonAttrs (old: {
+        openerp-web = prev.openerp-web.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace http.py --replace-fail "0700" "0o700"
           '';
@@ -2929,7 +2929,7 @@ in
 
         ormsgpack = prev.ormsgpack.overridePythonAttrs (standardMaturin {});
 
-        oscrypto = prev.oscrypto.overridePythonAttrs (old: {
+        oscrypto = prev.oscrypto.overridePythonAttrs (_old: {
           patches = builtins.elemAt pkgs.python3Packages.oscrypto.patches 0; # that's ./support-openssl-3.0.10.patch
           postPatch = ''
             for file in oscrypto/_openssl/_lib{crypto,ssl}_c{ffi,types}.py; do
@@ -3408,7 +3408,7 @@ in
             ];
         });
 
-        pyfunceble = prev.pyfunceble.overridePythonAttrs (old: {
+        pyfunceble = prev.pyfunceble.overridePythonAttrs (_old: {
           meta.priority = 2; # remove collision with pyfuncble-dev
         });
 
@@ -3648,7 +3648,7 @@ in
             ];
         });
 
-        pypolyagamma = prev.pypolyagamma.overridePythonAttrs (old: {
+        pypolyagamma = prev.pypolyagamma.overridePythonAttrs (_old: {
           preBuild = ''
             mkdir deps/gsl -p
             cd deps/gsl && tar xf ${pkgs.gsl.src}
@@ -4317,7 +4317,7 @@ in
           '';
         });
 
-        qdldl = prev.qdldl.overridePythonAttrs (old: {
+        qdldl = prev.qdldl.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
         });
 
@@ -4510,6 +4510,11 @@ in
         ruff = let
           getOutputHashes = version:
             {
+              "0.5.1" = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "salsa-0.18.0" = "sha256-gcaAsrrJXrWOIHUnfBwwuTBG1Mb+lUEmIxSGIVLhXaM=";
+              };
+
               "0.5.0" = {
                 "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
                 "salsa-0.18.0" = "sha256-keVEmSwV1Su1RlOTaIu253FZidk279qA+rXcCeuOggc=";
@@ -5150,7 +5155,7 @@ in
           }
         );
 
-        traceml = prev.traceml.overridePythonAttrs (old: {
+        traceml = prev.traceml.overridePythonAttrs (_old: {
           preBuild = ''
             mkdir -p requirements
               touch requirements/dev.txt
@@ -5186,7 +5191,7 @@ in
             ];
         });
 
-        trytond = prev.trytond.overridePythonAttrs (old: {
+        trytond = prev.trytond.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail "use_2to3=True," ""
           '';
@@ -5206,7 +5211,7 @@ in
           }
         );
 
-        ultimate-hosts-blacklist-helpers = prev.ultimate-hosts-blacklist-helpers.overridePythonAttrs (old: {
+        ultimate-hosts-blacklist-helpers = prev.ultimate-hosts-blacklist-helpers.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail "install_requires=_get_requirements()" "install_requires=[]"
           '';
@@ -5240,7 +5245,7 @@ in
           }
         );
 
-        vhacdx = prev.vhacdx.overridePythonAttrs (old: let
+        vhacdx = prev.vhacdx.overridePythonAttrs (_old: let
           vhacd = pkgs.fetchFromGitHub {
             owner = "kmammou";
             repo = "v-hacd";
@@ -5444,7 +5449,7 @@ in
               }
             );
 
-        weconnect = prev.weconnect.overridePythonAttrs (old: {
+        weconnect = prev.weconnect.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace setup.py --replace-fail "(HERE / \"requirements.txt\").read_text()" "\"\"" \
             --replace-fail '(HERE / "image_extra_requirements.txt").read_text()' "\"\"" \
@@ -5522,7 +5527,7 @@ in
           autoPatchelfIgnoreMissingDeps = true;
         });
 
-        xgbost = prev.xgbost.overridePythonAttrs (old: {
+        xgbost = prev.xgbost.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
         });
 
