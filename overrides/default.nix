@@ -383,11 +383,12 @@ in
         #   "pubgrub-0.2.1" = "sha256-6tr+HATYSn1A1uVJwmz40S4yLDOJlX8vEokOOtdFG0M=";
         # });
 
-        adapt-parser = prev.adapt-parser.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "required('requirements.txt')" "['six']"
-          '';
-        });
+        adapt-parser = prev.adapt-parser.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "required('requirements.txt')" "['six']"
+            '';
+          });
 
         adblock = prev.adblock.overridePythonAttrs (standardMaturin {});
 
@@ -408,11 +409,12 @@ in
             ];
         });
 
-        aioeafm = prev.aioeafm.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        aioeafm = prev.aioeafm.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         aiohttp-swagger3 = prev.aiohttp-swagger3.overridePythonAttrs (
           old: {
@@ -429,11 +431,12 @@ in
           buildInputs = old.buildInputs or [] ++ [pkgs.openssl];
         });
 
-        aiosmtplib = prev.aiosmtplib.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        aiosmtplib = prev.aiosmtplib.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         ansible = prev.ansible.overridePythonAttrs (
           old: {
@@ -518,23 +521,26 @@ in
           }
         );
 
-        arsenic = prev.arsenic.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        arsenic = prev.arsenic.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
-        asciichartpy = prev.asciichartpy.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "README.md" "README.rst"
-          '';
-        });
+        asciichartpy = prev.asciichartpy.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "README.md" "README.rst"
+            '';
+          });
 
-        astral = prev.astral.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        astral = prev.astral.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         astroid = prev.astroid.overridePythonAttrs (
           old: {
@@ -546,11 +552,12 @@ in
           autoPatchelfIgnoreMissingDeps = true;
         });
 
-        autocommand = prev.autocommand.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "requires-python" "license={ text = 'LGPLv3' } # requires-python"
-          '';
-        });
+        autocommand = prev.autocommand.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "requires-python" "license={ text = 'LGPLv3' } # requires-python"
+            '';
+          });
 
         autofaker = prev.autofaker.overridePythonAttrs (_old: {
           postPatch = ''
@@ -643,11 +650,12 @@ in
           '';
         });
 
-        backoff = prev.backoff.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        backoff = prev.backoff.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         base2048 = prev.base2048.overridePythonAttrs (standardMaturin {});
 
@@ -694,13 +702,14 @@ in
               }
           );
 
-        beautifulsoup4 = prev.beautifulsoup4.overridePythonAttrs (_old: {
-          postPatch = ''
-            if [ -f setup.py ]; then
-              substituteInPlace setup.py --replace-quiet "use_2to3=True," ""
-            fi
-          '';
-        });
+        beautifulsoup4 = prev.beautifulsoup4.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              if [ -f setup.py ]; then
+                substituteInPlace setup.py --replace-quiet "use_2to3=True," ""
+              fi
+            '';
+          });
 
         bitsandbytes = prev.bitsandbytes.overridePythonAttrs (_attrs: {
           autoPatchelfIgnoreMissingDeps = true;
@@ -714,12 +723,13 @@ in
 
         blake3 = prev.blake3.overridePythonAttrs (standardMaturin {});
 
-        bm25 = prev.bm25.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "from version import get_version" "" \
-               --replace-fail "version=get_version()" "version='${old.version}'"
-          '';
-        });
+        bm25 = prev.bm25.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "from version import get_version" "" \
+                 --replace-fail "version=get_version()" "version='${old.version}'"
+            '';
+          });
 
         borgbackup = prev.borgbackup.overridePythonAttrs (
           old: {
@@ -787,11 +797,12 @@ in
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
         });
 
-        celery-singleton = prev.celery-singleton.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        celery-singleton = prev.celery-singleton.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         cerberus = prev.cerberus.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
@@ -804,26 +815,29 @@ in
           };
         });
 
-        ckzg = prev.ckzg.overridePythonAttrs (old: {
-          postPatch = old.postPatch or lib.optionalString stdenv.cc.isGNU ''
-            substituteInPlace src/Makefile --replace 'CC = clang' 'CC = gcc'
-          '';
-        });
+        ckzg = prev.ckzg.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = old.postPatch or lib.optionalString stdenv.cc.isGNU ''
+              substituteInPlace src/Makefile --replace 'CC = clang' 'CC = gcc'
+            '';
+          });
 
         clarabel = prev.clarabel.overridePythonAttrs (standardMaturin {});
 
-        class-doc = prev.class-doc.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        class-doc = prev.class-doc.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
-        click-spinner = prev.click-spinner.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
-              --replace "cmdclass=versioneer.get_cmdclass()," ""
-          '';
-        });
+        click-spinner = prev.click-spinner.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
+                --replace "cmdclass=versioneer.get_cmdclass()," ""
+            '';
+          });
 
         cloudflare = prev.cloudflare.overridePythonAttrs (
           old:
@@ -834,11 +848,12 @@ in
             }
         );
 
-        cloudflare-dyndns = prev.cloudflare-dyndns.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        cloudflare-dyndns = prev.cloudflare-dyndns.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         clvm-rs = prev.clvm-rs.overridePythonAttrs (standardMaturin {});
 
@@ -1085,11 +1100,12 @@ in
           autoPatchelfIgnoreMissingDeps = true;
         });
 
-        custom-inherit = prev.custom-inherit.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "versioneer.get_version()" "\"${old.version}\"" \
-          '';
-        });
+        custom-inherit = prev.custom-inherit.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "versioneer.get_version()" "\"${old.version}\"" \
+            '';
+          });
 
         cvxopt = prev.cvxopt.overridePythonAttrs (old: let
           blas = old.passthru.args.blas or pkgs.openblasCompat;
@@ -1103,14 +1119,15 @@ in
           '';
         });
 
-        cyclonedx-python-lib = prev.cyclonedx-python-lib.overridePythonAttrs (old: {
-          propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
-          postPatch = ''
-            if [ -f setup.py ]; then
-              substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
-            fi
-          '';
-        });
+        cyclonedx-python-lib = prev.cyclonedx-python-lib.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
+            postPatch = ''
+              if [ -f setup.py ]; then
+                substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+              fi
+            '';
+          });
 
         cysystemd = prev.cysystemd.overridePythonAttrs (old: {
           buildInputs = old.buildInputs or [] ++ [pkgs.systemd];
@@ -1127,14 +1144,15 @@ in
         # https://github.com/tqdm/tqdm/blob/67130a23646ae672836b971e1086b6ae4c77d930/pyproject.toml#L2
         # is not translated correctly to a nix dependency.
 
-        daphne = prev.daphne.overridePythonAttrs (_old: {
-          postPatch = ''
-            # sometimes setup.py doesn't exist
-            if [ -f setup.py ]; then
-              substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
-            fi
-          '';
-        });
+        daphne = prev.daphne.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              # sometimes setup.py doesn't exist
+              if [ -f setup.py ]; then
+                substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+              fi
+            '';
+          });
 
         darts = prev.darts.override {
           preferWheel = true;
@@ -1144,12 +1162,13 @@ in
           sourceRoot = ".";
         });
 
-        datadog-lambda = prev.datadog-lambda.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace "setuptools==" "setuptools>="
-          '';
-          buildInputs = old.buildInputs or [] ++ [final.setuptools];
-        });
+        datadog-lambda = prev.datadog-lambda.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace "setuptools==" "setuptools>="
+            '';
+            buildInputs = old.buildInputs or [] ++ [final.setuptools];
+          });
 
         datatile = prev.datatile.overridePythonAttrs (_old: {
           preBuild = ''
@@ -1158,11 +1177,12 @@ in
           '';
         });
 
-        db-contrib-tool = prev.db-contrib-tool.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        db-contrib-tool = prev.db-contrib-tool.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         dbt-adapters = prev.dbt-adapters.overridePythonAttrs (_old: {
           meta.priority = 2; # remove collision with dbt-postgres
@@ -1183,49 +1203,51 @@ in
           );
 
         dbus-python = prev.dbus-python.overridePythonAttrs (old:
-          {
-            outputs = ["out" "dev"];
-            nativeBuildInputs =
-              old.nativeBuildInputs
-              or []
-              ++ lib.optionals (lib.versionAtLeast old.version "1.3") [pkgs.dbus];
-          }
-          // lib.optionalAttrs (lib.versionOlder old.version "1.3") {
-            postPatch =
-              old.postPatch
-              or ""
-              + ''
-                substituteInPlace ./configure --replace /usr/bin/file ${pkgs.file}/bin/file
-                substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
-              '';
+          lib.optionalAttrs (!(old.src.isWheel or false)) (
+            {
+              outputs = ["out" "dev"];
+              nativeBuildInputs =
+                old.nativeBuildInputs
+                or []
+                ++ lib.optionals (lib.versionAtLeast old.version "1.3") [pkgs.dbus];
+            }
+            // lib.optionalAttrs (lib.versionOlder old.version "1.3") {
+              postPatch =
+                old.postPatch
+                or ""
+                + ''
+                  substituteInPlace ./configure --replace /usr/bin/file ${pkgs.file}/bin/file
+                  substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
+                '';
 
-            configureFlags =
-              old.configureFlags
-              or []
-              ++ [
-                "PYTHON_VERSION=${lib.versions.major final.python.version}"
-              ];
+              configureFlags =
+                old.configureFlags
+                or []
+                ++ [
+                  "PYTHON_VERSION=${lib.versions.major final.python.version}"
+                ];
 
-            preConfigure =
-              old.preConfigure
-              or ""
-              + lib.optionalString
-              (lib.versionAtLeast stdenv.hostPlatform.darwinMinVersion "11" && stdenv.isDarwin)
-              "MACOSX_DEPLOYMENT_TARGET=10.16";
+              preConfigure =
+                old.preConfigure
+                or ""
+                + lib.optionalString
+                (lib.versionAtLeast stdenv.hostPlatform.darwinMinVersion "11" && stdenv.isDarwin)
+                "MACOSX_DEPLOYMENT_TARGET=10.16";
 
-            preBuild = old.preBuild or "" + "make distclean";
+              preBuild = old.preBuild or "" + "make distclean";
 
-            preInstall = old.preInstall or "" + "mkdir -p $out/${final.python.sitePackages}";
+              preInstall = old.preInstall or "" + "mkdir -p $out/${final.python.sitePackages}";
 
-            nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkg-config];
-            buildInputs =
-              old.buildInputs
-              or []
-              ++ [pkgs.dbus pkgs.dbus-glib]
-              # My guess why it's sometimes trying to -lncurses.
-              # It seems not to retain the dependency anyway.
-              ++ lib.optionals (! final.python ? modules) [pkgs.ncurses];
-          });
+              nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkg-config];
+              buildInputs =
+                old.buildInputs
+                or []
+                ++ [pkgs.dbus pkgs.dbus-glib]
+                # My guess why it's sometimes trying to -lncurses.
+                # It seems not to retain the dependency anyway.
+                ++ lib.optionals (! final.python ? modules) [pkgs.ncurses];
+            }
+          ));
 
         dcli = prev.dcli.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
@@ -1359,11 +1381,12 @@ in
           then null
           else prev.enum34;
 
-        embedly = prev.embedly.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "use_2to3=True," ""
-          '';
-        });
+        embedly = prev.embedly.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "use_2to3=True," ""
+            '';
+          });
 
         endesive = prev.endesive.overridePythonAttrs (old: {
           buildInputs = old.buildInputs or [] ++ [pkgs.openssl];
@@ -1374,35 +1397,39 @@ in
           dontUseCmakeConfigure = true;
         });
 
-        eth-hash = prev.eth-hash.overridePythonAttrs {
-          preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
-          '';
-        };
+        eth-hash = prev.eth-hash.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            preConfigure = ''
+              substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            '';
+          });
 
-        eth-keyfile = prev.eth-keyfile.overridePythonAttrs (old: {
-          preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
-          '';
+        eth-keyfile = prev.eth-keyfile.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            preConfigure = ''
+              substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            '';
 
-          propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
-        });
+            propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
+          });
 
-        eth-keys = prev.eth-keys.overridePythonAttrs {
-          preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
-          '';
-        };
+        eth-keys = prev.eth-keys.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            preConfigure = ''
+              substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            '';
+          });
 
         # FIXME: this is a workaround for https://github.com/nix-community/poetry2nix/issues/1161
 
         eth-utils = prev.eth-utils.override {preferWheel = true;};
 
-        evdev = prev.evdev.overridePythonAttrs (_old: {
-          preConfigure = ''
-            substituteInPlace setup.py --replace /usr/include/linux ${pkgs.linuxHeaders}/include/linux
-          '';
-        });
+        evdev = prev.evdev.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            preConfigure = ''
+              substituteInPlace setup.py --replace /usr/include/linux ${pkgs.linuxHeaders}/include/linux
+            '';
+          });
 
         faker = prev.faker.overridePythonAttrs (
           old: {
@@ -1452,14 +1479,15 @@ in
           }
         );
 
-        file-magic = prev.file-magic.overridePythonAttrs (_: {
-          postPatch = ''
-            substituteInPlace magic.py \
-              --replace \
-              "find_library('magic')" \
-              "'${pkgs.file}/lib/libmagic${sharedLibExt}'"
-          '';
-        });
+        file-magic = prev.file-magic.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace magic.py \
+                --replace \
+                "find_library('magic')" \
+                "'${pkgs.file}/lib/libmagic${sharedLibExt}'"
+            '';
+          });
 
         fiona = prev.fiona.overridePythonAttrs (
           old: {
@@ -1474,11 +1502,12 @@ in
           }
         );
 
-        flask-dramatiq = prev.flask-dramatiq.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        flask-dramatiq = prev.flask-dramatiq.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         flatbuffers = prev.flatbuffers.overrideAttrs (old: {
           VERSION = old.version;
@@ -1489,7 +1518,7 @@ in
             nativeBuildInputs = old.nativeBuildInputs or [] ++ [gdal];
             preBuild =
               (old.preBuild or "")
-              + ''
+              + lib.optionalString (!(old.src.isWheel or false)) ''
                 substituteInPlace setup.cfg \
                   --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
               '';
@@ -1595,11 +1624,12 @@ in
             }
           ));
 
-        graphlib-backport = prev.graphlib-backport.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        graphlib-backport = prev.graphlib-backport.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         grimp = prev.grimp.overridePythonAttrs (standardMaturin {
           furtherArgs = {
@@ -1635,7 +1665,7 @@ in
           old: {
             preBuild =
               (old.preBuild or "")
-              + ''
+              + lib.optionalString (!(old.src.isWheel or false)) ''
                 substituteInPlace h3/h3.py \
                   --replace "'{}/{}'.format(_dirname, libh3_path)" '"${pkgs.h3}/lib/libh3${sharedLibExt}"'
               '';
@@ -1731,22 +1761,24 @@ in
           }
         );
 
-        html2image = prev.html2image.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        html2image = prev.html2image.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         httplib2 = prev.httplib2.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.pyparsing];
         });
 
-        icecream = prev.icecream.overridePythonAttrs (_old: {
+        icecream = prev.icecream.overridePythonAttrs (old:
           #  # ERROR: Could not find a version that satisfies the requirement executing>=0.3.1 (from icecream) (from versions: none)
-          postPatch = ''
-            substituteInPlace setup.py --replace 'executing>=0.3.1' 'executing'
-          '';
-        });
+            lib.optionalAttrs (!(old.src.isWheel or false)) {
+              postPatch = ''
+                substituteInPlace setup.py --replace 'executing>=0.3.1' 'executing'
+              '';
+            });
 
         igraph = prev.igraph.overridePythonAttrs (
           old: {
@@ -1756,63 +1788,64 @@ in
         );
 
         imagecodecs = prev.imagecodecs.overridePythonAttrs (
-          old: {
-            patchPhase = ''
-              substituteInPlace setup.py \
-                --replace "/usr/include/openjpeg-2.3" \
-                          "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}
-              substituteInPlace setup.py \
-                --replace "/usr/include/jxrlib" \
-                          "$out/include/libjxr"
-              substituteInPlace imagecodecs/_zopfli.c \
-                --replace '"zopfli/zopfli.h"' \
-                          '<zopfli.h>'
-              substituteInPlace imagecodecs/_zopfli.c \
-                --replace '"zopfli/zlib_container.h"' \
-                          '<zlib_container.h>'
-              substituteInPlace imagecodecs/_zopfli.c \
-                --replace '"zopfli/gzip_container.h"' \
-                          '<gzip_container.h>'
-            '';
+          old:
+            lib.optionalAttrs (!(old.src.isWheel or false)) {
+              patchPhase = ''
+                substituteInPlace setup.py \
+                  --replace "/usr/include/openjpeg-2.3" \
+                            "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}
+                substituteInPlace setup.py \
+                  --replace "/usr/include/jxrlib" \
+                            "$out/include/libjxr"
+                substituteInPlace imagecodecs/_zopfli.c \
+                  --replace '"zopfli/zopfli.h"' \
+                            '<zopfli.h>'
+                substituteInPlace imagecodecs/_zopfli.c \
+                  --replace '"zopfli/zlib_container.h"' \
+                            '<zlib_container.h>'
+                substituteInPlace imagecodecs/_zopfli.c \
+                  --replace '"zopfli/gzip_container.h"' \
+                            '<gzip_container.h>'
+              '';
 
-            preBuild = ''
-              mkdir -p $out/include/libjxr
-              ln -s ${pkgs.jxrlib}/include/libjxr/**/* $out/include/libjxr
+              preBuild = ''
+                mkdir -p $out/include/libjxr
+                ln -s ${pkgs.jxrlib}/include/libjxr/**/* $out/include/libjxr
 
-            '';
+              '';
 
-            buildInputs =
-              old.buildInputs
-              or []
-              ++ [
-                # Commented out packages are declared required, but not actually
-                # needed to build. They are not yet packaged for nixpkgs.
-                # bitshuffle
-                pkgs.brotli
-                # brunsli
-                pkgs.bzip2
-                pkgs.c-blosc
-                # charls
-                pkgs.giflib
-                pkgs.jxrlib
-                pkgs.lcms
-                pkgs.libaec
-                pkgs.libaec
-                pkgs.libjpeg_turbo
-                # liblzf
-                # liblzma
-                pkgs.libpng
-                pkgs.libtiff
-                pkgs.libwebp
-                pkgs.lz4
-                pkgs.openjpeg
-                pkgs.snappy
-                # zfp
-                pkgs.zopfli
-                pkgs.zstd
-                pkgs.zlib
-              ];
-          }
+              buildInputs =
+                old.buildInputs
+                or []
+                ++ [
+                  # Commented out packages are declared required, but not actually
+                  # needed to build. They are not yet packaged for nixpkgs.
+                  # bitshuffle
+                  pkgs.brotli
+                  # brunsli
+                  pkgs.bzip2
+                  pkgs.c-blosc
+                  # charls
+                  pkgs.giflib
+                  pkgs.jxrlib
+                  pkgs.lcms
+                  pkgs.libaec
+                  pkgs.libaec
+                  pkgs.libjpeg_turbo
+                  # liblzf
+                  # liblzma
+                  pkgs.libpng
+                  pkgs.libtiff
+                  pkgs.libwebp
+                  pkgs.lz4
+                  pkgs.openjpeg
+                  pkgs.snappy
+                  # zfp
+                  pkgs.zopfli
+                  pkgs.zstd
+                  pkgs.zlib
+                ];
+            }
         );
 
         # importlib-metadata has an incomplete dependency specification
@@ -1935,7 +1968,7 @@ in
             lib.optionalAttrs (lib.versionOlder old.version "2.0.0" && !(old.src.isWheel or false)) {
               preBuild =
                 (old.preBuild or "")
-                + ''
+                + lib.optionalString (!(old.src.isWheel or false)) ''
                   substituteInPlace setup.py --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
                 '';
             }
@@ -2042,11 +2075,12 @@ in
 
         kornia-rs = prev.kornia-rs.overridePythonAttrs (standardMaturin {});
 
-        kserve = prev.kserve.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        kserve = prev.kserve.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         kurbopy = prev.kurbopy.overridePythonAttrs (standardMaturin {});
 
@@ -2064,7 +2098,7 @@ in
         libarchive = prev.libarchive.overridePythonAttrs (old: {
           buildInputs = old.buildInputs or [] ++ [final.setuptools];
 
-          postPatch = ''
+          postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
             substituteInPlace libarchive/library.py --replace \
               "_FILEPATH = find_and_load_library()" "_FILEPATH = '${pkgs.libarchive.lib}/lib/libarchive${sharedLibExt}'"
           '';
@@ -2461,11 +2495,12 @@ in
             }
         );
 
-        mtcnn = prev.mtcnn.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail ", setuptools" ""
-          '';
-        });
+        mtcnn = prev.mtcnn.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail ", setuptools" ""
+            '';
+          });
 
         multiaddr = prev.multiaddr.overridePythonAttrs (
           old: {
@@ -2549,11 +2584,12 @@ in
           }
         );
 
-        nats-python = prev.nats-python.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        nats-python = prev.nats-python.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         # nixpkgs has setuptools_scm 4.1.2
         # but newrelic has a seemingly unnecessary version constraint for <4
@@ -2591,11 +2627,12 @@ in
             '';
           });
 
-        nbtlib = prev.nbtlib.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        nbtlib = prev.nbtlib.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         netcdf4 = prev.netcdf4.overridePythonAttrs (
           old: {
@@ -2621,11 +2658,12 @@ in
 
         netifaces2 = prev.netifaces2.overridePythonAttrs (standardMaturin {});
 
-        netmiko = prev.netmiko.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        netmiko = prev.netmiko.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         newrelic = prev.newrelic.overridePythonAttrs (
           old: {
@@ -2868,23 +2906,26 @@ in
 
         opencv-python-headless = prev.opencv-python-headless.overridePythonAttrs final._opencv-python-override;
 
-        openerp-process = prev.openerp-process.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace http.py --replace-fail "0700" "0o700"
-          '';
-        });
+        openerp-process = prev.openerp-process.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace http.py --replace-fail "0700" "0o700"
+            '';
+          });
 
-        openerp-web = prev.openerp-web.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace http.py --replace-fail "0700" "0o700"
-          '';
-        });
+        openerp-web = prev.openerp-web.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace http.py --replace-fail "0700" "0o700"
+            '';
+          });
 
-        openevsewifi = prev.openevsewifi.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        openevsewifi = prev.openevsewifi.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         openexr = prev.openexr.overridePythonAttrs (
           old: {
@@ -2910,12 +2951,13 @@ in
           }
         );
 
-        opt-einsum = prev.opt-einsum.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
-              --replace "cmdclass=versioneer.get_cmdclass()," ""
-          '';
-        });
+        opt-einsum = prev.opt-einsum.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
+                --replace "cmdclass=versioneer.get_cmdclass()," ""
+            '';
+          });
 
         optree = prev.optree.overridePythonAttrs {
           dontUseCmakeConfigure = true;
@@ -2929,16 +2971,17 @@ in
 
         ormsgpack = prev.ormsgpack.overridePythonAttrs (standardMaturin {});
 
-        oscrypto = prev.oscrypto.overridePythonAttrs (_old: {
-          patches = builtins.elemAt pkgs.python3Packages.oscrypto.patches 0; # that's ./support-openssl-3.0.10.patch
-          postPatch = ''
-            for file in oscrypto/_openssl/_lib{crypto,ssl}_c{ffi,types}.py; do
-              substituteInPlace $file \
-                --replace "get_library('crypto', 'libcrypto.dylib', '42')" "'${pkgs.openssl.out}/lib/libcrypto${stdenv.hostPlatform.extensions.sharedLibrary}'" \
-                --replace "get_library('ssl', 'libssl', '44')" "'${pkgs.openssl.out}/lib/libssl${stdenv.hostPlatform.extensions.sharedLibrary}'"
-            done
-          '';
-        });
+        oscrypto = prev.oscrypto.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            patches = builtins.elemAt pkgs.python3Packages.oscrypto.patches 0; # that's ./support-openssl-3.0.10.patch
+            postPatch = ''
+              for file in oscrypto/_openssl/_lib{crypto,ssl}_c{ffi,types}.py; do
+                substituteInPlace $file \
+                  --replace "get_library('crypto', 'libcrypto.dylib', '42')" "'${pkgs.openssl.out}/lib/libcrypto${stdenv.hostPlatform.extensions.sharedLibrary}'" \
+                  --replace "get_library('ssl', 'libssl', '44')" "'${pkgs.openssl.out}/lib/libssl${stdenv.hostPlatform.extensions.sharedLibrary}'"
+              done
+            '';
+          });
 
         osqp = prev.osqp.overridePythonAttrs (
           old: {
@@ -3109,7 +3152,7 @@ in
 
           dontUseCmakeConfigure = true;
 
-          postPatch = ''
+          postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
             substituteInPlace pyproject.toml \
               --replace-fail '"conan~=2.0.16",' "" \
               --replace-fail '"pybind11~=2.11.1",' '"pybind11",'
@@ -3244,7 +3287,7 @@ in
 
         py-solc-x = prev.py-solc-x.overridePythonAttrs (
           old: {
-            preConfigure = ''
+            preConfigure = lib.optionalString (!(old.src.isWheel or false)) ''
               substituteInPlace setup.py --replace \'setuptools-markdown\' ""
             '';
             propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.requests final.semantic-version];
@@ -3253,11 +3296,12 @@ in
 
         py-sr25519-bindings = prev.py-sr25519-bindings.overridePythonAttrs (standardMaturin {});
 
-        pyarr = prev.pyarr.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pyarr = prev.pyarr.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         pyarrow = prev.pyarrow.overridePythonAttrs (
           old:
@@ -3367,23 +3411,25 @@ in
           preferWheel = true;
         };
 
-        pyddq = prev.pyddq.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "pyscaffold>=2.5a0,<2.6a0" "pyscaffold"
-          '';
-          propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.six];
-        });
+        pyddq = prev.pyddq.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "pyscaffold>=2.5a0,<2.6a0" "pyscaffold"
+            '';
+            propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.six];
+          });
 
         # "cmlibs.utils" = prev."cmlibs.utils".overridePythonAttrs (old: {
         #   nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkgs.libxml2.dev];
         #   buildInputs= (old.buildInputs or []) ++ [pkgs.libxml2 pkgs.liblzma];
         # });
 
-        pydicom-seg = prev.pydicom-seg.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pydicom-seg = prev.pydicom-seg.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         pyee = prev.pyee.overrideAttrs (
           old:
@@ -3532,19 +3578,20 @@ in
         });
 
         pymediainfo = prev.pymediainfo.overridePythonAttrs (
-          old: {
-            postPatch =
-              (old.postPatch or "")
-              + ''
-                substituteInPlace pymediainfo/__init__.py \
-                  --replace "libmediainfo.0.dylib" \
-                            "${pkgs.libmediainfo}/lib/libmediainfo.0${sharedLibExt}" \
-                  --replace "libmediainfo.dylib" \
-                            "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}" \
-                  --replace "libmediainfo.so.0" \
-                            "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}.0"
-              '';
-          }
+          old:
+            lib.optionalAttrs (!(old.src.isWheel or false)) {
+              postPatch =
+                (old.postPatch or "")
+                + ''
+                  substituteInPlace pymediainfo/__init__.py \
+                    --replace "libmediainfo.0.dylib" \
+                              "${pkgs.libmediainfo}/lib/libmediainfo.0${sharedLibExt}" \
+                    --replace "libmediainfo.dylib" \
+                              "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}" \
+                    --replace "libmediainfo.so.0" \
+                              "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}.0"
+                '';
+            }
         );
 
         pymssql = prev.pymssql.overridePythonAttrs (old: {
@@ -3816,11 +3863,12 @@ in
             ];
         });
 
-        pyrad = prev.pyrad.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pyrad = prev.pyrad.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         pyrealsense2 = prev.pyrealsense2.overridePythonAttrs (old: {
           buildInputs = old.buildInputs or [] ++ [pkgs.libusb1.out];
@@ -3942,15 +3990,16 @@ in
               ];
           });
 
-        pysnow = prev.pysnow.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pysnow = prev.pysnow.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         pysqlite = prev.pysqlite.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [pkgs.sqlite];
-          patchPhase = ''
+          patchPhase = lib.optionalString (!(old.src.isWheel or false)) ''
             substituteInPlace "setup.cfg"                                     \
                     --replace "/usr/local/include" "${pkgs.sqlite.dev}/include"   \
                     --replace "/usr/local/lib" "${pkgs.sqlite.out}/lib"
@@ -4020,28 +4069,31 @@ in
         );
 
         pytest-django = prev.pytest-django.overridePythonAttrs (
-          _old: {
-            postPatch = ''
-              # sometimes setup.py doesn't exist
-              if [ -f setup.py ]; then
-                substituteInPlace setup.py --replace "'pytest>=3.6'," ""
-                substituteInPlace setup.py --replace "'pytest>=3.6'" ""
-              fi
-            '';
-          }
+          old:
+            lib.optionalAttrs (!(old.src.isWheel or false)) {
+              postPatch = ''
+                # sometimes setup.py doesn't exist
+                if [ -f setup.py ]; then
+                  substituteInPlace setup.py --replace "'pytest>=3.6'," ""
+                  substituteInPlace setup.py --replace "'pytest>=3.6'" ""
+                fi
+              '';
+            }
         );
 
-        pytest-golden = prev.pytest-golden.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pytest-golden = prev.pytest-golden.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
-        pytest-mockservers = prev.pytest-mockservers.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pytest-mockservers = prev.pytest-mockservers.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         pytest-mypy = prev.pytest-mypy.overridePythonAttrs (
           old:
@@ -4094,11 +4146,12 @@ in
 
         pytest-runner = prev.pytest-runner or prev.pytestrunner;
 
-        pytest-spec = prev.pytest-spec.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        pytest-spec = prev.pytest-spec.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         pytest-splinter = prev.pytest-splinter.overrideAttrs (old: {
           postInstall =
@@ -4123,11 +4176,12 @@ in
 
         python-calamine = prev.python-calamine.overridePythonAttrs (standardMaturin {});
 
-        python-creole = prev.python-creole.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        python-creole = prev.python-creole.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         python-gammu = prev.python-gammu.overridePythonAttrs (old: {
           nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkgs.pkg-config];
@@ -4314,11 +4368,12 @@ in
           }
         );
 
-        qcs-api-client = prev.qcs-api-client.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        qcs-api-client = prev.qcs-api-client.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         qdldl = prev.qdldl.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
@@ -4344,17 +4399,19 @@ in
           nativeBuildInputs = old.nativeBuildInputs or [] ++ [gdal];
         });
 
-        re-data = prev.re-data.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        re-data = prev.re-data.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
-        readmdict = prev.readmdict.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        readmdict = prev.readmdict.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         recommonmark = prev.recommonmark.overridePythonAttrs (
           old: {
@@ -4362,12 +4419,13 @@ in
           }
         );
 
-        reference-handler = prev.reference-handler.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
-              --replace "cmdclass=versioneer.get_cmdclass()," ""
-          '';
-        });
+        reference-handler = prev.reference-handler.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
+                --replace "cmdclass=versioneer.get_cmdclass()," ""
+            '';
+          });
 
         referencing = prev.referencing.overridePythonAttrs (old:
           lib.optionalAttrs (!(old.src.isWheel or false)) {
@@ -4398,12 +4456,13 @@ in
             ];
         });
 
-        rfc7464 = prev.rfc7464.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "versioneer.get_version()" "\"${old.version}\"" \
-              --replace-fail "cmdclass=versioneer.get_cmdclass()," ""
-          '';
-        });
+        rfc7464 = prev.rfc7464.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "versioneer.get_version()" "\"${old.version}\"" \
+                --replace-fail "cmdclass=versioneer.get_cmdclass()," ""
+            '';
+          });
 
         rich = prev.rich.overridePythonAttrs (
           old: {
@@ -4413,11 +4472,12 @@ in
 
         rjieba = prev.rjieba.overridePythonAttrs (standardMaturin {});
 
-        rlp = prev.rlp.overridePythonAttrs {
-          preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
-          '';
-        };
+        rlp = prev.rlp.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            preConfigure = ''
+              substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            '';
+          });
 
         rmfuse = prev.rmfuse.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
@@ -4599,11 +4659,12 @@ in
             });
 
         scaleapi = prev.scaleapi.overridePythonAttrs (
-          _old: {
-            postPatch = ''
-              substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
-            '';
-          }
+          old:
+            lib.optionalAttrs (!(old.src.isWheel or false)) {
+              postPatch = ''
+                substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
+              '';
+            }
         );
 
         scikit-build-core = prev.scikit-build-core.overridePythonAttrs (
@@ -4679,11 +4740,12 @@ in
           }
         );
 
-        scim2-filter-parser = prev.scim2-filter-parser.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        scim2-filter-parser = prev.scim2-filter-parser.overridePythonAttrs (old:
+          lib.optionalAttrs (!(old.src.isWheel or false)) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         scipy = prev.scipy.overridePythonAttrs (
           old:
@@ -4743,7 +4805,7 @@ in
           buildInputs = old.buildInputs or [] ++ [final.pytest-runner];
           doCheck = false;
           # Local setuptools versions like "x.y.post0" confuse an internal check
-          postPatch = ''
+          postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
             substituteInPlace setup.py \
               --replace 'setuptools_version.' '"${final.setuptools.version}".' \
               --replace 'pytest-runner==' 'pytest-runner>='
@@ -4841,11 +4903,12 @@ in
           # Make fetching/installing external binaries no-ops
           preConfigure = let
             fakeCommand = "type('FakeCommand', (Command,), {'initialize_options': lambda self: None, 'finalize_options': lambda self: None, 'run': lambda self: None})";
-          in ''
-            substituteInPlace setup.py \
-              --replace "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
-              --replace "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
-          '';
+          in
+            lib.optionalString (!(old.src.isWheel or false)) ''
+              substituteInPlace setup.py \
+                --replace "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
+                --replace "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
+            '';
 
           propagatedUserEnvPkgs =
             (old.propagatedUserEnvPkgs or [])
@@ -4924,20 +4987,21 @@ in
         sqlmodel = prev.sqlmodel.overridePythonAttrs (old: {
           # sqlmodel's pyproject.toml lists version = "0" that it changes during a build phase
           # If this isn't fixed, it gets a vague "ERROR: No matching distribution for sqlmodel..." error
-          patchPhase = builtins.concatStringsSep "\n" [
+          patchPhase = lib.optionalString (!(old.src.isWheel or false)) (builtins.concatStringsSep "\n" [
             (old.patchPhase or "")
             ''
               substituteInPlace "pyproject.toml" --replace 'version = "0"' 'version = "${old.version}"'
             ''
-          ];
+          ]);
         });
 
-        strenum = prev.strenum.overridePythonAttrs (old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
-              --replace "cmdclass=versioneer.get_cmdclass()," ""
-          '';
-        });
+        strenum = prev.strenum.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace setup.py --replace "versioneer.get_version()" "\"${old.version}\"" \
+                --replace "cmdclass=versioneer.get_cmdclass()," ""
+            '';
+          });
 
         sudachipy = prev.sudachipy.override {
           # no Cargo.lock.
@@ -4967,11 +5031,12 @@ in
           dontUseCmakeConfigure = true;
         });
 
-        synologydsm-api = prev.synologydsm-api.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        synologydsm-api = prev.synologydsm-api.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         systemd-python = prev.systemd-python.overridePythonAttrs (old: {
           buildInputs = old.buildInputs or [] ++ [pkgs.systemd];
@@ -5056,11 +5121,12 @@ in
         );
 
         tensorpack = prev.tensorpack.overridePythonAttrs (
-          _old: {
-            postPatch = ''
-              substituteInPlace setup.cfg --replace "# will call find_packages()" ""
-            '';
-          }
+          old:
+            lib.optionalAttrs (!old.src.isWheel or false) {
+              postPatch = ''
+                substituteInPlace setup.cfg --replace "# will call find_packages()" ""
+              '';
+            }
         );
 
         tensorstore = prev.tensorstore.override {
@@ -5068,14 +5134,15 @@ in
           preferWheel = true;
         };
 
-        thrift = prev.thrift.overridePythonAttrs (old: {
-          postPatch =
-            old.postPatch
-            or ""
-            + lib.optionalString (final.pythonAtLeast "3.12") ''
-              substituteInPlace setup.cfg --replace 'optimize = 1' 'optimize = 0'
-            '';
-        });
+        thrift = prev.thrift.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch =
+              old.postPatch
+              or ""
+              + lib.optionalString (final.pythonAtLeast "3.12") ''
+                substituteInPlace setup.cfg --replace 'optimize = 1' 'optimize = 0'
+              '';
+          });
 
         tiktoken = prev.tiktoken.overridePythonAttrs (standardMaturin {
           furtherArgs = let
@@ -5092,11 +5159,12 @@ in
           };
         });
 
-        timing-asgi = prev.timing-asgi.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        timing-asgi = prev.timing-asgi.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         tinycss2 = prev.tinycss2.overridePythonAttrs (
           old: {
@@ -5194,11 +5262,12 @@ in
             ];
         });
 
-        trytond = prev.trytond.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "use_2to3=True," ""
-          '';
-        });
+        trytond = prev.trytond.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "use_2to3=True," ""
+            '';
+          });
 
         tsdownsample = prev.tsdownsample.overridePythonAttrs (standardMaturin {});
 
@@ -5214,11 +5283,12 @@ in
           }
         );
 
-        ultimate-hosts-blacklist-helpers = prev.ultimate-hosts-blacklist-helpers.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "install_requires=_get_requirements()" "install_requires=[]"
-          '';
-        });
+        ultimate-hosts-blacklist-helpers = prev.ultimate-hosts-blacklist-helpers.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "install_requires=_get_requirements()" "install_requires=[]"
+            '';
+          });
 
         urwidtrees = prev.urwidtrees.overridePythonAttrs (
           old: {
@@ -5420,11 +5490,12 @@ in
           }
         );
 
-        web3 = prev.web3.overridePythonAttrs {
-          preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
-          '';
-        };
+        web3 = prev.web3.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            preConfigure = ''
+              substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            '';
+          });
 
         weblate-language-data = prev.weblate-language-data.overridePythonAttrs (
           old: {
@@ -5452,14 +5523,15 @@ in
               }
             );
 
-        weconnect = prev.weconnect.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace setup.py --replace-fail "(HERE / \"requirements.txt\").read_text()" "\"\"" \
-            --replace-fail '(HERE / "image_extra_requirements.txt").read_text()' "\"\"" \
-            --replace-fail '(HERE / "setup_requirements.txt").read_text()' "\"\"" \
-            --replace-fail '(HERE / "test_requirements.txt").read_text()' "\"\""
-          '';
-        });
+        weconnect = prev.weconnect.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace setup.py --replace-fail "(HERE / \"requirements.txt\").read_text()" "\"\"" \
+              --replace-fail '(HERE / "image_extra_requirements.txt").read_text()' "\"\"" \
+              --replace-fail '(HERE / "setup_requirements.txt").read_text()' "\"\"" \
+              --replace-fail '(HERE / "test_requirements.txt").read_text()' "\"\""
+            '';
+          });
 
         whylogs-sketching = prev.whylogs-sketching.overridePythonAttrs (_old: {
           dontUseCmakeConfigure = true;
@@ -5520,11 +5592,12 @@ in
           '';
         });
 
-        xarray-dataclasses = prev.xarray-dataclasses.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        xarray-dataclasses = prev.xarray-dataclasses.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         xformers = prev.xformers.overridePythonAttrs (_attrs: {
           autoPatchelfIgnoreMissingDeps = true;
@@ -5534,11 +5607,12 @@ in
           dontUseCmakeConfigure = true;
         });
 
-        xpath-expressions = prev.xpath-expressions.overridePythonAttrs (_old: {
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
-          '';
-        });
+        xpath-expressions = prev.xpath-expressions.overridePythonAttrs (old:
+          lib.optionalAttrs (!old.src.isWheel or false) {
+            postPatch = ''
+              substituteInPlace pyproject.toml --replace "poetry.masonry.api" "poetry.core.masonry.api"
+            '';
+          });
 
         y-py = prev.y-py.override {
           preferWheel = true;
