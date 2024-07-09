@@ -3046,12 +3046,15 @@ in
           }
         );
 
-        pendulum = prev.pendulum.overridePythonAttrs (standardMaturin {
-          furtherArgs = {
-            cargoRoot = "rust";
-            buildAndTestSubdir = "rust";
-          };
-        });
+        pendulum = prev.pendulum.overridePythonAttrs (
+          old:
+            lib.attrsets.optionalAttrs
+            (lib.versionAtLeast old.version "3.0")
+            {
+              nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkg-config];
+              buildInputs = old.buildInputs or [] ++ [pkgs.tzdata];
+            }
+        );
 
         phik = prev.phik.overridePythonAttrs (old: {
           nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkgs.cmake pkgs.ninja];

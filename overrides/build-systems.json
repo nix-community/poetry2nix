@@ -7758,8 +7758,15 @@
     "hatchling"
   ],
   "pendulum": [
-    "maturin",
-    "poetry-core"
+    "poetry-core",
+    {
+      "buildSystem": "cython",
+      "until": "3.0.0"
+    },
+    {
+      "buildSystem": "maturin",
+      "from": "3.0.0"
+    }
   ],
   "pentapy": [
     "cython"
@@ -9914,7 +9921,7 @@
       "buildSystem": "scikit-build-core",
       "from": "26.0.0"
     },
-	{
+    {
       "buildSystem": "cmake",
       "from": "26.0.0"
     }
