@@ -4764,6 +4764,12 @@ in
               setupPyBuildFlags = ["--fcompiler='gnu95'"];
               enableParallelBuilding = true;
               buildInputs = old.buildInputs or [] ++ [final.numpy.blas];
+              prePatch = (old.prePatch or "") + lib.optionalString
+                (stdenv.isDarwin && (lib.versionAtLeast old.version "1.14.0"))
+                ''
+                  substituteInPlace scipy/meson.build \
+                    --replace "'xcrun'" "'${pkgs.buildPackages.xcbuild}/bin/xcrun'"
+                '';
               preConfigure =
                 ''
                   export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
