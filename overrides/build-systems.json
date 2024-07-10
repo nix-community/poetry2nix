@@ -10665,7 +10665,6 @@
     "poetry-core"
   ],
   "scipy": [
-    "cython",
     "pybind11",
     "pythran",
     "wheel",
