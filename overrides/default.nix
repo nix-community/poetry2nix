@@ -4582,7 +4582,10 @@ in
                 "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
                 "salsa-0.18.0" = "sha256-keVEmSwV1Su1RlOTaIu253FZidk279qA+rXcCeuOggc=";
               };
-
+              "0.4.10" = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "salsa-2022-0.1.0" = "sha256-mt+X1hO+5ZrCAgy6N4aArnixJ9GjY/KwM0uIMUSrDsg=";
+              };
               "0.4.9" = {
                 "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
                 "salsa-2022-0.1.0" = "sha256-mt+X1hO+5ZrCAgy6N4aArnixJ9GjY/KwM0uIMUSrDsg=";
