@@ -10481,6 +10481,9 @@
   "s3fs": [
     "hatchling"
   ],
+  "s3transfer": [
+	  "setuptools"
+  ],
   "safeeyes": [
     "setuptools-scm"
   ],
