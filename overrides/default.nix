@@ -2451,7 +2451,7 @@ lib.composeManyExtensions [
         });
 
         poethepoet = prev.poethepoet.overrideAttrs (old: {
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.poetry ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ prev.poetry ];
         });
 
         pkgutil-resolve-name = prev.pkgutil-resolve-name.overridePythonAttrs (
