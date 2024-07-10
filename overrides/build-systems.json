@@ -589,6 +589,9 @@
   "apple-weatherkit": [
     "poetry-core"
   ],
+  "apprise": [
+    "babel"
+  ],
   "apscheduler": [
     "setuptools-scm"
   ],
