@@ -8153,6 +8153,9 @@
   "psd-tools": [
     "cython"
   ],
+  "psycopg": [
+    "setuptools"
+  ],
   "psycopg-c": [
     "cython"
   ],
@@ -9918,11 +9921,11 @@
       "until": "26.0.0"
     },
     {
-      "buildSystem": "scikit-build-core",
+      "buildSystem": "cmake",
       "from": "26.0.0"
     },
     {
-      "buildSystem": "cmake",
+      "buildSystem": "scikit-build-core",
       "from": "26.0.0"
     }
   ],
@@ -10482,7 +10485,7 @@
     "hatchling"
   ],
   "s3transfer": [
-	  "setuptools"
+    "setuptools"
   ],
   "safeeyes": [
     "setuptools-scm"
