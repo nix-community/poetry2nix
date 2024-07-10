@@ -3692,6 +3692,9 @@
   "flatten-dict": [
     "poetry-core"
   ],
+  "flattentool": [
+    "babel"
+  ],
   "flax": [
     "setuptools-scm"
   ],
@@ -5537,6 +5540,9 @@
   "lhapdf": [
     "cython"
   ],
+  "libcove": [
+    "babel"
+  ],
   "libcst": [
     "setuptools-rust",
     "setuptools-scm"
@@ -6537,6 +6543,7 @@
     "poetry"
   ],
   "nb-cli": [
+    "babel",
     "pdm-backend"
   ],
   "nbclassic": [
