@@ -7628,6 +7628,10 @@
   "fusepy": [
     "setuptools"
   ],
+  "fusesoc": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "future": [
     "setuptools"
   ],
