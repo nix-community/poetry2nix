@@ -14299,6 +14299,9 @@
   "ofxtools": [
     "setuptools"
   ],
+  "okonomiyaki": [
+    "setuptools"
+  ],
   "olefile": [
     "setuptools"
   ],
