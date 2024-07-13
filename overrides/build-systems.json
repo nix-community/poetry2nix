@@ -27362,6 +27362,9 @@
   "zimports": [
     "setuptools"
   ],
+  "zipfile2": [
+    "setuptools"
+  ],
   "zipp": [
     "setuptools",
     "setuptools-scm",
