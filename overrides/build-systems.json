@@ -10168,6 +10168,9 @@
     "hatch-vcs",
     "hatchling"
   ],
+  "jsonschema2md": [
+    "poetry-core"
+  ],
   "jsonstreams": [
     "setuptools"
   ],
