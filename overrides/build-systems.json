@@ -22248,6 +22248,9 @@
   "simplepush": [
     "setuptools"
   ],
+  "simplesat": [
+    "setuptools"
+  ],
   "simplesqlite": [
     "setuptools"
   ],
