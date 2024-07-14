@@ -1963,6 +1963,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) (
           let
             githubHash = {
+              "3.10.6" = "sha256-K3wCzwaGOsaiCm2LW4Oc4XOnp6agrdTxCxqEIMq0fuU=";
               "3.10.5" = "sha256-Q2zi3mNgCFrg7Ucana0+lmR9C9kkuUidEJj8GneR2W4=";
               "3.10.4" = "sha256-iSTEPgtmT99RSWbrNdWQvw0u/NUsQgNq2cUnNLwvWa4=";
               "3.10.3" = "sha256-bK6wA8P/IXEbiuJAx7psd0nUUKjR1jX4scFfJr1MBAk=";
@@ -3155,6 +3156,8 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.5.1" = "sha256-2tW/p9A7jpQg8ZmSF7KRuN6kBNKK1cfjnS9KlvnCpQA=";
+            "0.5.0" = "sha256-OjMoa247om4DLPZ6u0XPMd5L+LYlVzHL39plCCr/fYE=";
             "0.4.10" = "sha256-FRBuvXtnbxRWoI0f8SM0U0Z5TRyX5Tbgq3d34Oh2bG4=";
             "0.4.9" = "sha256-40ZXD52d/kZNkSZ64H/s/OiiU99IiblGfYa4KmU8xD4=";
             "0.4.8" = "sha256-XuAJ65R80+IntWBGikG1cxAH8Tr3mnwQvSxeKFQj2ac=";
@@ -3221,6 +3224,22 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.5.1" = {
+              # https://raw.githubusercontent.com/astral-sh/ruff/0.5.1/Cargo.lock
+              lockFile = ./ruff/0.5.1-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "salsa-0.18.0" = "sha256-gcaAsrrJXrWOIHUnfBwwuTBG1Mb+lUEmIxSGIVLhXaM=";
+              };
+            };
+            "0.5.0" = {
+              # https://raw.githubusercontent.com/astral-sh/ruff/0.5.0/Cargo.lock
+              lockFile = ./ruff/0.5.0-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                "salsa-0.18.0" = "sha256-keVEmSwV1Su1RlOTaIu253FZidk279qA+rXcCeuOggc=";
+              };
+            };
             "0.4.10" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/v0.4.10/Cargo.lock
               lockFile = ./ruff/0.4.10-Cargo.lock;
@@ -3293,7 +3312,7 @@ lib.composeManyExtensions [
             src = pkgs.fetchFromGitHub {
               owner = "astral-sh";
               repo = "ruff";
-              rev = "v${old.version}";
+              rev = if (lib.versionOlder old.version "0.5.0") then "v${old.version}" else old.version;
               inherit sha256;
             };
 
