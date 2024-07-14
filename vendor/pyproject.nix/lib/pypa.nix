@@ -118,16 +118,6 @@ lib.fix (self: {
     in
     if m != null then filter isString m else null;
 
-  /* Regex match an egg file name, returning a list of match groups. Returns null if no match.
-
-     Type: matchEggFileName :: string -> [ string ]
-  */
-  matchEggFileName = name:
-    let
-      m = match "([^-]+)-([^-]+)-(.+)\\.egg" name;
-    in
-    if m != null then filter isString m else null;
-
   /* Check whether string is a wheel file or not.
 
      Type: isWheelFileName :: string -> bool
@@ -332,10 +322,10 @@ lib.fix (self: {
 
   /* Select compatible wheels from a list and return them in priority order.
 
-     Type: selectWheels :: derivation -> [ AttrSet ] -> [ AttrSet ]
+     Type: selectWheels :: AttrSet -> derivation -> [ AttrSet ] -> [ AttrSet ]
 
      Example:
-     # selectWheels pkgs.python3 [ (pypa.parseWheelFileName "Pillow-9.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl") ]
+     # selectWheels (lib.systems.elaborate "x86_64-linux") [ (pypa.parseWheelFileName "Pillow-9.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl") ]
      [ (pypa.parseWheelFileName "Pillow-9.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl") ]
   */
   selectWheels =
@@ -345,43 +335,52 @@ lib.fix (self: {
     python:
     # List of files as parsed by parseWheelFileName
     files:
-    let
-      # Get sorting/filter criteria fields
-      withSortedTags = map
-        (file:
-          let
-            abiCompatible = self.isABITagCompatible python file.abiTag;
+    if ! lib.isAttrs platform
+    then
+      throw ''
+        SelectWheel was called with wrong type for its first argument 'platform'.
+        Pass only elaborated platforms.
+        Example:
+          `lib.systems.elaborate "x86_64-linux"`
+      ''
+    else
+      let
+        # Get sorting/filter criteria fields
+        withSortedTags = map
+          (file:
+            let
+              abiCompatible = self.isABITagCompatible python file.abiTag;
 
-            # Filter only compatible tags
-            languageTags = filter (self.isPythonTagCompatible python) file.languageTags;
-            # Extract the tag as a number. E.g. "37" is `toInt "37"` and "none"/"any" is 0
-            languageTags' = map (tag: if tag == "none" then 0 else toInt tag.version) languageTags;
+              # Filter only compatible tags
+              languageTags = filter (self.isPythonTagCompatible python) file.languageTags;
+              # Extract the tag as a number. E.g. "37" is `toInt "37"` and "none"/"any" is 0
+              languageTags' = map (tag: if tag == "none" then 0 else toInt tag.version) languageTags;
 
-          in
-          {
-            bestLanguageTag = head (sort (x: y: x > y) languageTags');
-            compatible = abiCompatible && length languageTags > 0 && lib.any (self.isPlatformTagCompatible platform python.stdenv.cc.libc) file.platformTags;
-            inherit file;
-          })
-        files;
+            in
+            {
+              bestLanguageTag = head (sort (x: y: x > y) languageTags');
+              compatible = abiCompatible && length languageTags > 0 && lib.any (self.isPlatformTagCompatible platform python.stdenv.cc.libc) file.platformTags;
+              inherit file;
+            })
+          files;
 
-      # Only consider files compatible with this interpreter
-      compatibleFiles = filter (file: file.compatible) withSortedTags;
+        # Only consider files compatible with this interpreter
+        compatibleFiles = filter (file: file.compatible) withSortedTags;
 
-      # Sort files based on their tags
-      sorted = sort
-        (
-          x: y:
-            x.file.distribution > y.file.distribution
-            || x.file.version > y.file.version
-            || (x.file.buildTag != null && (y.file.buildTag == null || x.file.buildTag > y.file.buildTag))
-            || x.bestLanguageTag > y.bestLanguageTag
-        )
-        compatibleFiles;
+        # Sort files based on their tags
+        sorted = sort
+          (
+            x: y:
+              x.file.distribution > y.file.distribution
+              || x.file.version > y.file.version
+              || (x.file.buildTag != null && (y.file.buildTag == null || x.file.buildTag > y.file.buildTag))
+              || x.bestLanguageTag > y.bestLanguageTag
+          )
+          compatibleFiles;
 
-    in
-    # Strip away temporary sorting metadata
-    map (file': file'.file) sorted
+      in
+      # Strip away temporary sorting metadata
+      map (file': file'.file) sorted
   ;
 
 })

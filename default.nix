@@ -3,7 +3,7 @@
 }:
 let
 
-  pyproject-nix = import ./vendor/pyproject.nix { inherit pkgs lib; };
+  pyproject-nix = import ./vendor/pyproject.nix { inherit lib; };
 
   poetryLib = import ./lib.nix { inherit lib pkgs pyproject-nix; inherit (pkgs) stdenv; };
   inherit (poetryLib) readTOML;
@@ -252,6 +252,8 @@ lib.makeScope pkgs.newScope (self: {
                     inherit lib python poetryLib pep508Env pyVersion;
                     inherit pyproject-nix;
                   };
+
+                  inherit (final.callPackage ./fetchers { inherit pyproject-nix; }) fetchFromPypi;
 
                   __toPluginAble = toPluginAble final;
                 }

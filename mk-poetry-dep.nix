@@ -6,6 +6,8 @@
 , pep508Env
 , pyVersion
 , pyproject-nix
+, fetchPypiLegacy
+, fetchFromPypi
 }:
 { name
 , version
@@ -224,14 +226,14 @@ pythonPackages.callPackage
             else if isFile then
               localDepPath
             else if isLegacy then
-              pyproject-nix.fetchers.fetchFromLegacy
+              fetchPypiLegacy
                 {
                   pname = name;
                   inherit (fileInfo) file hash;
                   inherit (source) url;
                 }
             else
-              pyproject-nix.fetchers.fetchFromPypi {
+              fetchFromPypi {
                 pname = name;
                 inherit (fileInfo) file hash;
                 inherit version;
