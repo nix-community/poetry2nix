@@ -491,7 +491,8 @@ fix (self:
   mkEnviron = python:
     let
       inherit (python) stdenv;
-      targetMachine = pep599.manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name} or null;
+      inherit (stdenv) targetPlatform;
+      impl = python.passthru.implementation;
     in
     mapAttrs
       parseValueVersionDynamic
@@ -503,11 +504,10 @@ fix (self:
           if stdenv.isLinux then "linux"
           else if stdenv.isDarwin then "darwin"
           else throw "Unsupported platform";
-        platform_machine = targetMachine;
+        platform_machine =
+          if targetPlatform.isDarwin then targetPlatform.darwinArch
+          else pep599.manyLinuxTargetMachines.${targetPlatform.parsed.cpu.name} or targetPlatform.parsed.cpu.name;
         platform_python_implementation =
-          let
-            impl = python.passthru.implementation;
-          in
           if impl == "cpython" then "CPython"
           else if impl == "pypy" then "PyPy"
           else throw "Unsupported implementation ${impl}";
