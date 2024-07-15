@@ -2124,6 +2124,48 @@ lib.composeManyExtensions [
         }
       );
 
+      pendulum = prev.pendulum.overridePythonAttrs (
+        old: (
+          # NOTE: Versions <3.0.0 is pure Python and is not PEP-517 compliant,
+          #       which means they can not be built using recent Poetry versions.
+          if lib.versionOlder old.version "3"
+          then prev.pendulum
+          else
+            let
+              githubHash = {
+                "3.0.0" = "sha256-v0kp8dklvDeC7zdTDOpIbpuj13aGub+oCaYz2ytkEpI=";
+              }.${old.version} or lib.fakeHash;
+
+              src = pkgs.fetchFromGitHub {
+                owner = "sdispater";
+                repo = "pendulum";
+                rev = old.version;
+                sha256 = githubHash;
+              };
+            in
+              lib.optionalAttrs (!old.src.isWheel or false) (
+                rec {
+                  cargoRoot = "rust";
+                  # NOTE: rustPlatform.importCargoLock would require prePatch on Cargo.lock
+                  #       since that file has its version value set to "3.0.0-beta-1"
+                  #       instead of the "3.0.0" used in the Python pyproject.toml, and
+                  #       this would cause an integrity check error when building.
+                  cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+                    src = "${src.out}/${cargoRoot}";
+                    sha256 = "sha256-6cL3GXtGnmD/nruOykBRqNwXnB74sr9EEFFT0fXamp0=";
+                  };
+                  nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+                    pkgs.rustPlatform.cargoSetupHook
+                    pkgs.rustPlatform.maturinBuildHook
+                  ];
+                  buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
+                    pkgs.libiconv
+                  ];
+                }
+              )
+        )
+      );
+
       pikepdf = prev.pikepdf.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.qpdf final.pybind11 ];
