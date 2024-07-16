@@ -2131,21 +2131,19 @@ lib.composeManyExtensions [
           if lib.versionOlder old.version "3"
           then { }
           else
-            lib.optionalAttrs (!old.src.isWheel or false) (
-              {
-                cargoRoot = "rust";
-                cargoDeps = pkgs.rustPlatform.importCargoLock {
-                  lockFile = ./pendulum/3.0.0-Cargo.lock;
-                };
-                nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
-                  pkgs.rustPlatform.cargoSetupHook
-                  pkgs.rustPlatform.maturinBuildHook
-                ];
-                buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
-                  pkgs.libiconv
-                ];
-              }
-            )
+            lib.optionalAttrs (!old.src.isWheel or false) {
+              cargoRoot = "rust";
+              cargoDeps = pkgs.rustPlatform.importCargoLock {
+                lockFile = ./pendulum/3.0.0-Cargo.lock;
+              };
+              nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+                pkgs.rustPlatform.cargoSetupHook
+                pkgs.rustPlatform.maturinBuildHook
+              ];
+              buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
+                pkgs.libiconv
+              ];
+            }
         )
       );
 
