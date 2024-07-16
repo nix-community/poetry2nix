@@ -2131,28 +2131,11 @@ lib.composeManyExtensions [
           if lib.versionOlder old.version "3"
           then { }
           else
-            let
-              githubHash = {
-                "3.0.0" = "sha256-v0kp8dklvDeC7zdTDOpIbpuj13aGub+oCaYz2ytkEpI=";
-              }.${old.version} or lib.fakeHash;
-
-              src = pkgs.fetchFromGitHub {
-                owner = "sdispater";
-                repo = "pendulum";
-                rev = old.version;
-                sha256 = githubHash;
-              };
-            in
             lib.optionalAttrs (!old.src.isWheel or false) (
-              rec {
+              {
                 cargoRoot = "rust";
-                # NOTE: rustPlatform.importCargoLock would require prePatch on Cargo.lock
-                #       since that file has its version value set to "3.0.0-beta-1"
-                #       instead of the "3.0.0" used in the Python pyproject.toml, and
-                #       this would cause an integrity check error when building.
-                cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
-                  src = "${src.out}/${cargoRoot}";
-                  sha256 = "sha256-nhQM7QChMay/EQuAO9PSRguXq13Mfwkk5bNTn/8Fzlc=";
+                cargoDeps = pkgs.rustPlatform.importCargoLock {
+                  lockFile = ./pendulum/3.0.0-Cargo.lock;
                 };
                 nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
                   pkgs.rustPlatform.cargoSetupHook
