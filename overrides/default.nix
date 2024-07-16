@@ -2152,7 +2152,7 @@ lib.composeManyExtensions [
                 #       this would cause an integrity check error when building.
                 cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
                   src = "${src.out}/${cargoRoot}";
-                  sha256 = "sha256-6cL3GXtGnmD/nruOykBRqNwXnB74sr9EEFFT0fXamp0=";
+                  sha256 = "sha256-nhQM7QChMay/EQuAO9PSRguXq13Mfwkk5bNTn/8Fzlc=";
                 };
                 nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
                   pkgs.rustPlatform.cargoSetupHook
