@@ -2129,7 +2129,7 @@ lib.composeManyExtensions [
           # NOTE: Versions <3.0.0 is pure Python and is not PEP-517 compliant,
           #       which means they can not be built using recent Poetry versions.
           if lib.versionOlder old.version "3"
-          then prev.pendulum
+          then {}
           else
             let
               githubHash = {
