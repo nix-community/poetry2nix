@@ -15917,7 +15917,14 @@
     "setuptools"
   ],
   "polyfactory": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.10.0"
+    }
   ],
   "polyline": [
     "setuptools"
