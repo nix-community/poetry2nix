@@ -11030,6 +11030,9 @@
   "litellm": [
     "poetry-core"
   ],
+  "litestar": [
+    "hatchling"
+  ],
   "littleutils": [
     "setuptools"
   ],
