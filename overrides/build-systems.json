@@ -23398,8 +23398,8 @@
     "setuptools-scm"
   ],
   "svcs": [
-    "hatchling",
-    "hatch-fancy-pypi-readme"
+    "hatch-fancy-pypi-readme",
+    "hatchling"
   ],
   "svg-path": [
     "setuptools"
