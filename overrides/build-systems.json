@@ -5059,6 +5059,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "dishka": [
+    "setuptools"
+  ],
   "disjoint-set": [
     "poetry"
   ],
