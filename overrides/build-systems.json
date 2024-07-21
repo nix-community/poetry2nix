@@ -11033,6 +11033,9 @@
   "litestar": [
     "hatchling"
   ],
+  "litestar-svcs": [
+    "pdm-backend"
+  ],
   "littleutils": [
     "setuptools"
   ],
