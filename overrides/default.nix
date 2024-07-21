@@ -3092,6 +3092,29 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
       });
 
+      fast-query-parsers =
+        let
+          getCargoHash = version: {
+            "1.0.3" = "sha256-aYGhtGWJ/IkgSHfZnzFui25VIvM4L17NyrW8caAi3nk=";
+          }.${version} or (
+            lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
+          );
+        in
+        prev.fast-query-parsers.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
+          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            inherit (old) src;
+            name = "${old.pname}-${old.version}";
+            hash = getCargoHash old.version;
+          };
+          buildInputs = old.buildInputs or [ ] ++ lib.optionals stdenv.isDarwin [
+            pkgs.libiconv
+          ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+        });
+
       rpds-py =
         let
           getCargoHash = version: {
