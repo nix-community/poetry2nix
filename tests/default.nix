@@ -71,6 +71,7 @@ in
   option = callTest ./option { };
   fastapi = callTest ./fastapi { };
   fastapi-utils = callTest ./fastapi-utils { };
+  litestar = callTest ./litestar { };
   awscli = callTest ./awscli { };
   assorted-pkgs = callTest ./assorted-pkgs { };
   watchfiles = callTest ./watchfiles { };
