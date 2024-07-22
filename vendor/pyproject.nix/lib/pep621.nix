@@ -1,10 +1,10 @@
-{ lib, pep440, pep508, pep518, ... }:
+{ lib, pep440, pep508, pep518, pypa, ... }:
 let
   inherit (builtins) mapAttrs foldl' split filter elem;
   inherit (lib) isString filterAttrs fix;
 
   splitAttrPath = path: filter isString (split "\\." path);
-  getAttrPath = path: lib.getAttrFromPath (splitAttrPath path);
+  getAttrPath = path: lib.attrByPath (splitAttrPath path) { };
 
 in
 fix (self: {
@@ -65,13 +65,15 @@ fix (self: {
   */
   getDependenciesNames =
     let
-      getNames = map (dep: dep.name);
+      normalize = pypa.normalizePackageName;
+      getNames = map (dep: normalize dep.name);
     in
     dependencies: {
       dependencies = getNames dependencies.dependencies;
       extras = mapAttrs (_: getNames) dependencies.extras;
       build-systems = getNames dependencies.build-systems;
     };
+
   /* Filter dependencies not relevant for this environment.
 
      Type: filterDependenciesByEnviron :: AttrSet -> AttrSet -> AttrSet

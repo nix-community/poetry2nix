@@ -1,22 +1,23 @@
 { lib, ... }:
 let
-  inherit (builtins) split filter match length elemAt head foldl' fromJSON typeOf;
-  inherit (lib) fix isString toInt toLower sublist;
+  inherit (builtins) split filter match length elemAt head fromJSON typeOf compareVersions;
+  inherit (lib) fix isString toInt sublist findFirst;
   inherit (import ./util.nix { inherit lib; }) splitComma;
 
-  filterNull = filter (x: x != null);
-  filterEmpty = filter (x: length x > 0);
-  filterEmptyStr = filter (s: s != "");
-
   # A version of lib.toInt that supports leading zeroes
-  toIntRelease = s:
+  toIntRelease =
     let
-      n = fromJSON (head (match "0?([[:digit:]]+)" s));
+      matchDigit = match "0?([[:digit:]]+)";
     in
-    assert typeOf n == "int"; n;
+    s:
+    if s == "*" then s
+    else
+      let
+        n = fromJSON (head (matchDigit s));
+      in
+      assert typeOf n == "int"; n;
 
-  # Return a list elem at index with a default value if it doesn't exist
-  optionalElem = list: idx: default: if length list >= idx + 1 then elemAt list idx else default;
+  emptyVersion = { dev = null; epoch = 0; local = null; post = null; pre = null; release = [ ]; };
 
   # We consider some words to be alternate spellings of other words and
   # in those cases we want to normalize the spellings to our preferred
@@ -31,37 +32,16 @@ let
     r = "post";
     "-" = "post";
   };
-
-  # Parse a release (pre/post/whatever) attrset from split tokens
-  parseReleaseSuffix = patterns: tokens:
-    let
-      matches = map
-        (x:
-          let
-            type = toLower (elemAt x 0);
-            value = elemAt x 1;
-          in
-          {
-            type = normalizedReleaseTypes.${type} or type;
-            value = if value != "" then toInt value else 0;
-          })
-        (filterNull (map (match "[0-9]*(${patterns})([0-9]*)") tokens));
-    in
-    assert length matches <= 1; optionalElem matches 0 null;
-
-  parsePre = parseReleaseSuffix "a|b|c|rc|alpha|beta|pre|preview";
-  parsePost = parseReleaseSuffix "post|rev|r|\-";
-  parseDev = parseReleaseSuffix "dev";
-  parseLocal = parseReleaseSuffix "\\+";
+  normalizedReleaseType = type: normalizedReleaseTypes.${type} or type;
 
   # Compare the release fields from the parsed version
   compareRelease = offset: ra: rb:
-    let
-      x = elemAt ra offset;
-      y = elemAt rb offset;
-    in
     if length ra == offset || length rb == offset then 0 else
     (
+      let
+        x = elemAt ra offset;
+        y = elemAt rb offset;
+      in
       if x == "*" || y == "*" then 0 # Wildcards are always considered equal
       else
         (
@@ -117,16 +97,54 @@ fix (self: {
   */
   parseVersion = version:
     let
-      tokens = filter isString (split "\\." version);
+      # Split input into (_, epoch, release, modifiers)
+      tokens = match "(([0-9]+)!)?([^-\+a-zA-Z]+)(.*)" version;
+      tokenAt = elemAt tokens;
+
+      # Segments
+      epochSegment = tokenAt 1;
+      releaseSegment = tokenAt 2;
+      modifierLocalSegment = tokenAt 3;
+
+      # Split modifier/local segment
+      mLocalAt = elemAt (match "([^\\+]*)\\+?(.*)" modifierLocalSegment);
+      modifiersSegment = mLocalAt 0;
+      local = mLocalAt 1;
+
+      # Parse each post345/dev1 string into attrset
+      modifiers =
+        map
+          (mod:
+            let
+              # Split post345 into ["post" "345"]
+              m = match "-?([^0-9]+)([0-9]+)" mod;
+              mAt = elemAt m;
+            in
+            assert m != null; {
+              type = normalizedReleaseType (mAt 0);
+              value = toIntRelease (mAt 1);
+            })
+          (filter (s: isString s && s != "") (split "\\." modifiersSegment));
+
     in
-    {
+    if version == "" then emptyVersion
+    else {
       # Return epoch defaulting to 0
-      epoch = toInt (optionalElem (map head (filterNull (map (match "[0-9]+!([0-9]+)") tokens))) 0 "0");
-      release = map (t: (x: if x == "*" then x else toIntRelease x) (head t)) (filterEmpty (map (t: filterEmptyStr (match "([\\*0-9]*).*" t)) tokens));
-      pre = parsePre tokens;
-      post = parsePost tokens;
-      dev = parseDev tokens;
-      local = parseLocal tokens;
+      epoch =
+        if epochSegment != null then toInt epochSegment
+        else 0;
+
+      # Parse release segments delimited by dots into list of ints
+      release = map toIntRelease (filter (s: isString s && s != "") (split "\\." releaseSegment));
+
+      # Find modifiers in modifiers list
+      pre = findFirst (mod: mod.type == "rc" || mod.type == "b" || mod.type == "a") null modifiers;
+      post = findFirst (mod: mod.type == "post") null modifiers;
+      dev = findFirst (mod: mod.type == "dev") null modifiers;
+
+      # Local releases needs to be treated specially.
+      # The value isn't just a straight up number, but an arbitrary string.
+      local = if local != "" then local else null;
     };
 
   /* Parse a version conditional.
@@ -210,53 +228,47 @@ fix (self: {
        # compareVersions (parseVersion "3.0.0") (parseVersion "3.0.0")
        0
   */
-  compareVersions = a: b: foldl' (acc: comp: if acc != 0 then acc else comp) 0 [
-    # mixing dev/pre/post like:
-    # 1.0b2.post345.dev456
-    # 1.0b2.post345
-    # is valid and we need to consider them all.
+  compareVersions =
+    a:
+    b:
+    let
+      releaseComp = compareRelease 0 a.release b.release;
+      preComp = compareVersionModifier a.pre b.pre;
+      devComp = compareVersionModifier a.dev b.dev;
+      postComp = compareVersionModifier a.post b.post;
+      localComp = compareVersions a.local b.local;
+    in
+    if a.epoch > b.epoch then 1
+    else if a.epoch < b.epoch then -1
 
     # Compare release field
-    (compareRelease 0 a.release b.release)
+    else if releaseComp != 0 then releaseComp
 
     # Compare pre release
-    (
-      if a.pre != null && b.pre != null then compareVersionModifier a.pre b.pre
-      else if a.pre != null then -1
-      else if b.pre != null then 1
-      else 0
-    )
+    else if a.pre != null && b.pre != null && preComp != 0 then preComp
+    else if a.pre != null && b.pre == null then -1
+    else if b.pre != null && a.pre == null then 1
 
     # Compare dev release
-    (
-      if a.dev != null && b.dev != null then compareVersionModifier a.dev b.dev
-      else if a.dev != null then -1
-      else if b.dev != null then 1
-      else 0
-    )
+    else if a.dev != null && b.dev != null && devComp != 0 then devComp
+    else if a.dev != null && b.dev == null then -1
+    else if b.dev != null && a.dev == null then 1
 
     # Compare post release
-    (
-      if a.post != null && b.post != null then compareVersionModifier a.post b.post
-      else if a.post != null then 1
-      else if b.post != null then -1
-      else 0
-    )
-
-    # Compare epoch
-    (
-      if a.epoch == b.epoch then 0
-      else if a.epoch > b.epoch then 1
-      else -1
-    )
+    else if a.post != null && b.post != null && postComp != 0 then postComp
+    else if a.post != null && b.post == null then 1
+    else if b.post != null && a.post == null then -1
 
     # Compare local
-    (
-      if a.local != null && b.local != null then compareVersionModifier a.local b.local
-      else if b.local != null then -1
-      else 0
-    )
-  ];
+    # HACK: Local are arbitrary strings.
+    # We do a best estimate by comparing local as versions using builtins.compareVersions.
+    # This is strictly not correct but it's better than no handling..
+    else if a.local != null && b.local != null && localComp != 0 then localComp
+    else if a.local != null && b.local == null then 1
+    else if b.local != null && a.local == null then -1
+
+    # Equal
+    else 0;
 
   /* Map comparison operators as strings to a comparator function.
 
@@ -275,17 +287,22 @@ fix (self: {
        true
   */
   comparators = {
-    "~=" = a: b: (
-      # Local version identifiers are NOT permitted in this version specifier.
-      assert a.local == null && b.local == null;
-      self.comparators.">=" a b && self.comparators."==" a (b // {
-        release = sublist 0 ((length b.release) - 1) b.release;
-        # If a pre-release, post-release or developmental release is named in a compatible release clause as V.N.suffix, then the suffix is ignored when determining the required prefix match.
-        pre = null;
-        post = null;
-        dev = null;
-      })
-    );
+    "~=" =
+      let
+        gte = self.comparators.">=";
+        eq = self.comparators."==";
+      in
+      a: b: (
+        # Local version identifiers are NOT permitted in this version specifier.
+        assert a.local == null && b.local == null;
+        gte a b && eq a (b // {
+          release = sublist 0 ((length b.release) - 1) b.release;
+          # If a pre-release, post-release or developmental release is named in a compatible release clause as V.N.suffix, then the suffix is ignored when determining the required prefix match.
+          pre = null;
+          post = null;
+          dev = null;
+        })
+      );
     "==" = a: b: self.compareVersions a b == 0;
     "!=" = a: b: self.compareVersions a b != 0;
     "<=" = a: b: self.compareVersions a b <= 0;

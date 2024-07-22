@@ -2366,6 +2366,14 @@
         "documentation": {}
     },
     {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Dict",
         "importPath": "typing",
         "description": "typing",
@@ -2383,14 +2391,6 @@
     },
     {
         "label": "Set",
-        "importPath": "typing",
-        "description": "typing",
-        "isExtraImport": true,
-        "detail": "typing",
-        "documentation": {}
-    },
-    {
-        "label": "Optional",
         "importPath": "typing",
         "description": "typing",
         "isExtraImport": true,
@@ -17810,6 +17810,204 @@
         "documentation": {}
     },
     {
+        "label": "Pep503",
+        "kind": 6,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "class Pep503(HTMLParser):\n    def __init__(self) -> None:\n        super().__init__()\n        self.sources: dict[str, str] = {}\n        self.url: Optional[str] = None\n        self.name: Optional[str] = None\n    def handle_data(self, data: str) -> None:\n        if self.url is not None:\n            self.name = data\n    def handle_starttag(self, tag: str, attrs: list[tuple[str, Optional[str]]]) -> None:",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "url = sys.argv[1]\npackage_name = sys.argv[2]\nindex_url = url + \"/\" + package_name + \"/\"\npackage_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "package_name",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "package_name = sys.argv[2]\nindex_url = url + \"/\" + package_name + \"/\"\npackage_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc\n    # Strip port number if present",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "index_url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "index_url = url + \"/\" + package_name + \"/\"\npackage_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc\n    # Strip port number if present\n    if \":\" in host:",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "package_filename",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "package_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc\n    # Strip port number if present\n    if \":\" in host:\n        host = host.split(\":\")[0]",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "context",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "context = ssl.create_default_context()\ncontext.check_hostname = False\ncontext.verify_mode = ssl.CERT_NONE\n# Extract out username/password from index_url, if present.\nparsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "context.check_hostname",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "context.check_hostname = False\ncontext.verify_mode = ssl.CERT_NONE\n# Extract out username/password from index_url, if present.\nparsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "context.verify_mode",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "context.verify_mode = ssl.CERT_NONE\n# Extract out username/password from index_url, if present.\nparsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "parsed_url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "parsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\n        \"utf-8\"\n    )",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "username",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "username = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\n        \"utf-8\"\n    )\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "password",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "password = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\n        \"utf-8\"\n    )\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "index_url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "index_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\n        \"utf-8\"\n    )\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nindex = response.read()",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "req",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "req = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\n        \"utf-8\"\n    )\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nindex = response.read()\nparser = Pep503()",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "response = urllib.request.urlopen(req, context=context)\nindex = response.read()\nparser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:\n    print(\n        \"The file %s has not be found in the index %s\" % (package_filename, index_url)\n    )\n    exit(1)\npackage_file = open(package_filename, \"wb\")",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "index = response.read()\nparser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:\n    print(\n        \"The file %s has not be found in the index %s\" % (package_filename, index_url)\n    )\n    exit(1)\npackage_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "parser",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "parser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:\n    print(\n        \"The file %s has not be found in the index %s\" % (package_filename, index_url)\n    )\n    exit(1)\npackage_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.\nindicated_url = urlparse(parser.sources[package_filename])",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "package_file",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "package_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.\nindicated_url = urlparse(parser.sources[package_filename])\nif indicated_url.netloc == \"\":\n    parsed_url = urlparse(index_url)\n    if indicated_url.path.startswith(\"/\"):\n        # An absolute path within the index's domain.\n        path = parser.sources[package_filename]\n    else:\n        # A relative path.",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "indicated_url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "indicated_url = urlparse(parser.sources[package_filename])\nif indicated_url.netloc == \"\":\n    parsed_url = urlparse(index_url)\n    if indicated_url.path.startswith(\"/\"):\n        # An absolute path within the index's domain.\n        path = parser.sources[package_filename]\n    else:\n        # A relative path.\n        path = parsed_url.path + \"/\" + parser.sources[package_filename]\n    package_url = urlunparse(",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "parsed_url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "parsed_url = urlparse(package_url)\nreal_package_url = urlunparse(\n    (\n        parsed_url.scheme,\n        parsed_url.netloc,\n        normpath(parsed_url.path),\n        parsed_url.params,\n        parsed_url.query,\n        parsed_url.fragment,\n    )",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "real_package_url",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "real_package_url = urlunparse(\n    (\n        parsed_url.scheme,\n        parsed_url.netloc,\n        normpath(parsed_url.path),\n        parsed_url.params,\n        parsed_url.query,\n        parsed_url.fragment,\n    )\n)",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "req",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "req = urllib.request.Request(real_package_url)\nif username and password:\n    req.add_unredirected_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nwith response as r:\n    shutil.copyfileobj(r, package_file)",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "fetchers.fetch-from-legacy",
+        "description": "fetchers.fetch-from-legacy",
+        "peekOfCode": "response = urllib.request.urlopen(req, context=context)\nwith response as r:\n    shutil.copyfileobj(r, package_file)",
+        "detail": "fetchers.fetch-from-legacy",
+        "documentation": {}
+    },
+    {
         "label": "main",
         "kind": 2,
         "importPath": "hooks.pyproject-without-special-deps",
@@ -17987,204 +18185,6 @@
         "description": "tools.find-build-systems",
         "peekOfCode": "BLOCKLIST = {\"poetry\", \"poetry-core\"}\ndef merge_systems(s):\n    simple = {i for i in s if isinstance(i, str)}\n    complex = [i for i in s if isinstance(i, dict)]\n    complex_names = {i[\"buildSystem\"] for i in complex}\n    new_simple = simple - complex_names\n    return complex + sorted(list(new_simple))\ndef merge(prev_content, new_content):\n    content = {}\n    for attr, systems in chain(prev_content.items(), new_content.items()):",
         "detail": "tools.find-build-systems",
-        "documentation": {}
-    },
-    {
-        "label": "Pep503",
-        "kind": 6,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "class Pep503(HTMLParser):\n    def __init__(self) -> None:\n        super().__init__()\n        self.sources: dict[str, str] = {}\n        self.url: Optional[str] = None\n        self.name: Optional[str] = None\n    def handle_data(self, data: str) -> None:\n        if self.url is not None:\n            self.name = data\n    def handle_starttag(self, tag: str, attrs: list[tuple[str, Optional[str]]]) -> None:",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "url = sys.argv[1]\npackage_name = sys.argv[2]\nindex_url = url + \"/\" + package_name + \"/\"\npackage_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "package_name",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "package_name = sys.argv[2]\nindex_url = url + \"/\" + package_name + \"/\"\npackage_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc\n    # Strip port number if present",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "index_url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "index_url = url + \"/\" + package_name + \"/\"\npackage_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc\n    # Strip port number if present\n    if \":\" in host:",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "package_filename",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "package_filename = sys.argv[3]\n# Parse username and password for this host from the netrc file if given.\nusername: Optional[str] = None\npassword: Optional[str] = None\nif os.environ[\"NETRC\"]:\n    netrc_obj = netrc.netrc(os.environ[\"NETRC\"])\n    host = urlparse(index_url).netloc\n    # Strip port number if present\n    if \":\" in host:\n        host = host.split(\":\")[0]",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "context",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "context = ssl.create_default_context()\ncontext.check_hostname = False\ncontext.verify_mode = ssl.CERT_NONE\n# Extract out username/password from index_url, if present.\nparsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "context.check_hostname",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "context.check_hostname = False\ncontext.verify_mode = ssl.CERT_NONE\n# Extract out username/password from index_url, if present.\nparsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "context.verify_mode",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "context.verify_mode = ssl.CERT_NONE\n# Extract out username/password from index_url, if present.\nparsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\"utf-8\")",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "parsed_url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "parsed_url = urlparse(index_url)\nusername = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\"utf-8\")\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "username",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "username = parsed_url.username or username\npassword = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\"utf-8\")\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nindex = response.read()",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "password",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "password = parsed_url.password or password\nindex_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\"utf-8\")\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nindex = response.read()\nparser = Pep503()",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "index_url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "index_url = parsed_url._replace(netloc=parsed_url.netloc.rpartition(\"@\")[-1]).geturl()\nreq = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\"utf-8\")\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nindex = response.read()\nparser = Pep503()\nparser.feed(str(index, \"utf-8\"))",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "req",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "req = urllib.request.Request(index_url)\nif username and password:\n    import base64\n    password_b64 = base64.b64encode(\":\".join((username, password)).encode()).decode(\"utf-8\")\n    req.add_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nindex = response.read()\nparser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "response",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "response = urllib.request.urlopen(req, context=context)\nindex = response.read()\nparser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:\n    print(\"The file %s has not be found in the index %s\" % (package_filename, index_url))\n    exit(1)\npackage_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.\nindicated_url = urlparse(parser.sources[package_filename])",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "index",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "index = response.read()\nparser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:\n    print(\"The file %s has not be found in the index %s\" % (package_filename, index_url))\n    exit(1)\npackage_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.\nindicated_url = urlparse(parser.sources[package_filename])\nif indicated_url.netloc == \"\":",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "parser",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "parser = Pep503()\nparser.feed(str(index, \"utf-8\"))\nif package_filename not in parser.sources:\n    print(\"The file %s has not be found in the index %s\" % (package_filename, index_url))\n    exit(1)\npackage_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.\nindicated_url = urlparse(parser.sources[package_filename])\nif indicated_url.netloc == \"\":\n    parsed_url = urlparse(index_url)",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "package_file",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "package_file = open(package_filename, \"wb\")\n# Sometimes the href is a relative or absolute path within the index's domain.\nindicated_url = urlparse(parser.sources[package_filename])\nif indicated_url.netloc == \"\":\n    parsed_url = urlparse(index_url)\n    if indicated_url.path.startswith(\"/\"):\n        # An absolute path within the index's domain.\n        path = parser.sources[package_filename]\n    else:\n        # A relative path.",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "indicated_url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "indicated_url = urlparse(parser.sources[package_filename])\nif indicated_url.netloc == \"\":\n    parsed_url = urlparse(index_url)\n    if indicated_url.path.startswith(\"/\"):\n        # An absolute path within the index's domain.\n        path = parser.sources[package_filename]\n    else:\n        # A relative path.\n        path = parsed_url.path + \"/\" + parser.sources[package_filename]\n    package_url = urlunparse(",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "parsed_url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "parsed_url = urlparse(package_url)\nreal_package_url = urlunparse(\n    (\n        parsed_url.scheme,\n        parsed_url.netloc,\n        normpath(parsed_url.path),\n        parsed_url.params,\n        parsed_url.query,\n        parsed_url.fragment,\n    )",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "real_package_url",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "real_package_url = urlunparse(\n    (\n        parsed_url.scheme,\n        parsed_url.netloc,\n        normpath(parsed_url.path),\n        parsed_url.params,\n        parsed_url.query,\n        parsed_url.fragment,\n    )\n)",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "req",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "req = urllib.request.Request(real_package_url)\nif username and password:\n    req.add_unredirected_header(\"Authorization\", \"Basic {}\".format(password_b64))\nresponse = urllib.request.urlopen(req, context=context)\nwith response as r:\n    shutil.copyfileobj(r, package_file)",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "documentation": {}
-    },
-    {
-        "label": "response",
-        "kind": 5,
-        "importPath": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "description": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
-        "peekOfCode": "response = urllib.request.urlopen(req, context=context)\nwith response as r:\n    shutil.copyfileobj(r, package_file)",
-        "detail": "vendor.pyproject.nix.fetchers.fetch-from-legacy",
         "documentation": {}
     },
     {

@@ -174,6 +174,10 @@ in
       inherit (poetry) keywords;
     } // optionalAttrs (poetry ? classifiers) {
       inherit (poetry) classifiers;
+    } // optionalAttrs (poetry ? scripts) {
+      inherit (poetry) scripts;
+    } // optionalAttrs (poetry ? plugins) {
+      entry-points = poetry.plugins;
     };
   };
 
@@ -197,7 +201,7 @@ in
   */
   parseDependencies = pyproject: {
     dependencies = map parseDependency (normalizeDependendenciesToList (pyproject.tool.poetry.dependencies or { }));
-    extras = mapAttrs (_: g: map parseDependency (normalizeDependendenciesToList g.dependencies)) pyproject.tool.poetry.group or { };
+    extras = mapAttrs (_: group: map parseDependency (normalizeDependendenciesToList group.dependencies)) pyproject.tool.poetry.group or { };
     build-systems = pep518.parseBuildSystems pyproject;
   };
 
@@ -210,7 +214,7 @@ in
   */
   parseVersionCond = cond: (
     let
-      m = match "^([~[:digit:]^])(.+)$" cond;
+      m = match "^([~^])?([a-zA-Z0-9].+)$" cond;
       mAt = elemAt m;
       c = mAt 0;
       rest = mAt 1;

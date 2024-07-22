@@ -35,12 +35,15 @@ let
   );
 
   # Remove groupings ( ) from expression
-  unparen = expr':
+  unparen =
     let
-      expr = stripStr expr';
-      m = match "\\((.+)\\)" expr;
+      matchParen = match "[\t ]*\\((.+)\\)[\t ]*";
     in
-    if m != null then elemAt m 0 else expr;
+    expr:
+    let
+      m = matchParen expr;
+    in
+    if m != null then head m else expr;
 
   isMarkerVariable =
     let
@@ -62,13 +65,16 @@ let
     s: elem s markerFields;
 
   unpackValue = value:
-    let
-      # If the value is a single ticked string we can't pass it plainly to toJSON.
-      # Normalise to a double quoted.
-      singleTicked = match "^'(.+)'$" value; # TODO: Account for escaped ' in input (unescape)
-    in
     if isMarkerVariable value then value
-    else fromJSON (if singleTicked != null then "\"" + head singleTicked + "\"" else value);
+    else
+      (
+        let
+          # If the value is a single ticked string we can't pass it plainly to toJSON.
+          # Normalise to a double quoted.
+          singleTicked = match "^'(.+)'$" value; # TODO: Account for escaped ' in input (unescape)
+        in
+        fromJSON (if singleTicked != null then "\"" + head singleTicked + "\"" else value)
+      );
 
   # Comparators for simple equality
   # For versions see pep440.comparators
@@ -376,7 +382,20 @@ fix (self:
 
     in
     {
-      inherit (package) name conditions extras;
+      name =
+        if package.name != null then package.name
+        # Infer name from URL if no name was specified explicitly
+        else if tokens.url != null then
+          (
+            let
+              inherit (tokens) url;
+              mEggFragment = match ".+#egg=(.+)" url;
+            in
+            if mEggFragment != null then elemAt mEggFragment 0
+            else null
+          )
+        else null;
+      inherit (package) conditions extras;
       inherit (tokens) url;
       markers = if tokens.markerSegment == null then null else self.parseMarkers tokens.markerSegment;
     };
@@ -472,7 +491,8 @@ fix (self:
   mkEnviron = python:
     let
       inherit (python) stdenv;
-      targetMachine = pep599.manyLinuxTargetMachines.${stdenv.targetPlatform.parsed.cpu.name} or null;
+      inherit (stdenv) targetPlatform;
+      impl = python.passthru.implementation;
     in
     mapAttrs
       parseValueVersionDynamic
@@ -484,11 +504,10 @@ fix (self:
           if stdenv.isLinux then "linux"
           else if stdenv.isDarwin then "darwin"
           else throw "Unsupported platform";
-        platform_machine = targetMachine;
+        platform_machine =
+          if targetPlatform.isDarwin then targetPlatform.darwinArch
+          else pep599.manyLinuxTargetMachines.${targetPlatform.parsed.cpu.name} or targetPlatform.parsed.cpu.name;
         platform_python_implementation =
-          let
-            impl = python.passthru.implementation;
-          in
           if impl == "cpython" then "CPython"
           else if impl == "pypy" then "PyPy"
           else throw "Unsupported implementation ${impl}";

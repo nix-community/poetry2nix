@@ -35,4 +35,4 @@ if __name__ == "__main__":
             continue
         shutil.copy(f"{store_path}/lib/{filename}", f"pyproject.nix/lib/{filename}")
 
-    shutil.copytree(f"{store_path}/fetchers", "pyproject.nix/fetchers")
+    # shutil.copytree(f"{store_path}/fetchers", "pyproject.nix/fetchers")

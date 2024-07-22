@@ -1,15 +1,14 @@
-{ curl
-, jq
+{ pkgs
 , lib
-, python3
-, runCommand
 , stdenvNoCC
+, pyproject-nix
 }:
 let
-  inherit (builtins) substring filter head nixPath elemAt;
+  inherit (builtins) substring elemAt;
   inherit (lib) toLower;
 
-  pyproject = import ../lib { inherit lib; };
+  inherit (pyproject-nix.lib.pypa) matchWheelFileName;
+  inherit (pyproject-nix.lib.eggs) matchEggFileName;
 
   # Predict URL from the PyPI index.
   # Args:
@@ -25,8 +24,8 @@ let
       file
     }:
     let
-      matchedWheel = pyproject.pypa.matchWheelFileName file;
-      matchedEgg = pyproject.pypa.matchEggFileName file;
+      matchedWheel = matchWheelFileName file;
+      matchedEgg = matchEggFileName file;
       kind =
         if matchedWheel != null then "wheel"
         else if matchedEgg != null then elemAt matchedEgg 2
@@ -63,8 +62,8 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
     stdenvNoCC.mkDerivation {
       name = file;
       nativeBuildInputs = [
-        curl
-        jq
+        pkgs.curl
+        pkgs.jq
       ];
       isWheel = lib.strings.hasSuffix "whl" file;
       system = "builtin";
@@ -88,43 +87,4 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
         urls = [ predictedURL ]; # retain compatibility with nixpkgs' fetchurl
       };
     };
-
-  /*
-    Fetch from the PyPI legacy API.
-
-    Some repositories (such as Devpi) expose the Pypi legacy API (https://warehouse.pypa.io/api-reference/legacy.html).
-
-    Type: fetchFromLegacy :: AttrSet -> derivation
-    */
-  fetchFromLegacy =
-    {
-      # package name
-      pname
-    , # URL to package index
-      url
-    , # filename including extension
-      file
-    , # SRI hash
-      hash
-    ,
-    }:
-    let
-      pathParts = filter ({ prefix, path }: "NETRC" == prefix) nixPath; # deadnix: skip
-      netrc_file =
-        if (pathParts != [ ])
-        then (head pathParts).path
-        else "";
-    in
-    runCommand file
-      ({
-        nativeBuildInputs = [ python3 ];
-        impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ (lib.optional lib.inPureEvalMode "NETRC");
-        outputHashMode = "flat";
-        outputHashAlgo = "sha256";
-        outputHash = hash;
-        passthru.isWheel = lib.strings.hasSuffix "whl" file;
-      } // lib.optionalAttrs (!lib.inPureEvalMode) { NETRC = netrc_file; }) ''
-      python ${./fetch-from-legacy.py} ${url} ${pname} ${file}
-      mv ${file} $out
-    '';
 }

@@ -1,5 +1,6 @@
 { lib
 , pep508
+, pep440
 , pep621
 , ...
 }:
@@ -37,7 +38,8 @@ in
       python
     , # Python extras (optionals) to enable
       extras ? [ ]
-    ,
+    , # Extra withPackages function
+      extraPackages ? _ps: [ ]
     }:
     let
       filteredDeps = pep621.filterDependencies {
@@ -48,7 +50,13 @@ in
       namedDeps = pep621.getDependenciesNames filteredDeps;
       flatDeps = namedDeps.dependencies ++ flatten (attrValues namedDeps.extras) ++ namedDeps.build-systems;
     in
-    ps: map (dep: ps.${dep}) flatDeps;
+    ps:
+    let
+      buildSystems' =
+        if namedDeps.build-systems != [ ] then [ ]
+        else [ ps.setuptools ps.wheel ];
+    in
+    map (dep: ps.${dep}) flatDeps ++ extraPackages ps ++ buildSystems';
 
   /*
     Renders a project as an argument that can be passed to buildPythonPackage/buildPythonApplication.
@@ -70,7 +78,8 @@ in
       python
     , # Python extras (optionals) to enable
       extras ? [ ]
-    , # Map a Python extras group name to a Nix attribute set.
+    , # Map a Python extras group name to a Nix attribute set like:
+      # { dev = "checkInputs"; }
       # This is intended to be used with optionals such as test dependencies that you might
       # want to add to checkInputs instead of propagatedBuildInputs
       extrasAttrMappings ? { }
@@ -84,6 +93,10 @@ in
         environ = pep508.mkEnviron python;
         inherit extras;
       };
+
+      pythonVersion = pep440.parseVersion python.version;
+
+      pythonPackages = python.pkgs;
 
       namedDeps = pep621.getDependenciesNames filteredDeps;
 
@@ -104,13 +117,13 @@ in
           inherit (project') description;
         } //
         # Optional license
-        optionalAttrs (project'.license ? text) (
+        optionalAttrs (lib.hasAttrByPath [ "license" "text" ] project') (
           assert !(project'.license ? file); {
             # From PEP-621:
             # "The text key has a string value which is the license of the project whose meaning is that of the License field from the core metadata.
             # These keys are mutually exclusive, so a tool MUST raise an error if the metadata specifies both keys."
             # Hence the assert above.
-            license = licensesBySpdxId.${project'.license.text};
+            license = licensesBySpdxId.${project'.license.text} or project'.license.text;
           }
         ) //
         # Only set mainProgram if we only have one script, otherwise it's ambigious which one is main
@@ -135,13 +148,23 @@ in
       ({
         propagatedBuildInputs = map (dep: python.pkgs.${dep}) namedDeps.dependencies;
         inherit format meta;
+        passthru = {
+          optional-dependencies = lib.mapAttrs (_group: deps: map (dep: python.pkgs.${dep.name}) deps) project.dependencies.extras;
+        };
       } // optionalAttrs (format != "wheel") {
-        nativeBuildInputs = map (dep: python.pkgs.${dep}) namedDeps.build-systems;
+        nativeBuildInputs =
+          if namedDeps.build-systems != [ ] then map (dep: pythonPackages.${dep}) namedDeps.build-systems
+          else [ pythonPackages.setuptools pythonPackages.wheel ];
       } // optionalAttrs (pyproject.project ? name) {
         pname = pyproject.project.name;
+      } // optionalAttrs (project.projectRoot != null) {
+        src = project.projectRoot;
       }
       // optionalAttrs (pyproject.project ? version) {
         inherit (pyproject.project) version;
+      }
+      // optionalAttrs (project.requires-python != null) {
+        disabled = ! lib.all (spec: pep440.comparators.${spec.op} pythonVersion spec.version) project.requires-python;
       })
       (attrNames namedDeps.extras);
 }
