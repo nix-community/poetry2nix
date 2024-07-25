@@ -23001,7 +23001,7 @@
     "setuptools"
   ],
   "sqlmodel": [
-    "poetry-core"
+    "pdm-backend"
   ],
   "sqlobject": [
     "setuptools"
