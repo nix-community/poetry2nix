@@ -6636,6 +6636,9 @@
   "ezdxf": [
     "setuptools"
   ],
+  "ezgiphy": [
+    "setuptools"
+  ],
   "ezyrb": [
     "setuptools"
   ],
