@@ -25757,6 +25757,9 @@
   "types-pkg-resources": [
     "setuptools"
   ],
+  "types-polib": [
+    "setuptools"
+  ],
   "types-protobuf": [
     "setuptools"
   ],
