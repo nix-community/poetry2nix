@@ -361,6 +361,7 @@ lib.composeManyExtensions [
             "4.1.1" = "sha256-QYg1+DsZEdXB74vuS4SFvV0n5GXkuwHkOS9j1ogSTjA=";
             "4.1.2" = "sha256-fTD1AKvyeni5ukYjK53gueKLey+rcIUjW/0R289xeb0=";
             "4.1.3" = "sha256-Uag1pUuis5lpnus2p5UrMLa4HP7VQLhKxR5TEMfpK0s=";
+            "4.2.0" = "sha256-dOS9A3pTwXYkzPFFNh5emxJw7pSdDyY+mNIoHdwNdmg=";
           }.${version} or (
             lib.warn "Unknown bcrypt version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -612,6 +613,7 @@ lib.composeManyExtensions [
             "42.0.6" = "sha256-q1nCn82wVfADPMYX2LCq7CpIIbMvFkqsXRYfhzGyvSg=";
             "42.0.7" = "sha256-wAup/0sI8gYVsxr/vtcA+tNkBT8wxmp68FPbOuro1E4=";
             "42.0.8" = "sha256-PgxPcFocEhnQyrsNtCN8YHiMptBmk1PUhEDQFdUR1nU=";
+            "43.0.0" = "sha256-TEQy8PrIaZshiBFTqR/OJp3e/bVM1USjcmpDYcjPJPM=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -630,6 +632,7 @@ lib.composeManyExtensions [
                 ++ lib.optionals (lib.versionAtLeast old.version "3.4") [ final.setuptools-rust ]
                 ++ lib.optionals (!final.isPyPy) [ pyBuildPackages.cffi ]
                 ++ lib.optionals (lib.versionAtLeast old.version "3.5" && !isWheel) [ pkgs.rustPlatform.cargoSetupHook pkgs.cargo pkgs.rustc ]
+                ++ lib.optionals (lib.versionAtLeast old.version "43" && !isWheel) [ pkgs.rustPlatform.maturinBuildHook ]
                 ++ [ pkg-config ]
               ;
               buildInputs = old.buildInputs or [ ]
@@ -3156,6 +3159,10 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.5.5" = "sha256-dqfK6YdAV4cdUYB8bPE9I5FduBJ90RxUA7TMvcVq6Zw=";
+            "0.5.4" = "sha256-dvvhd84T2YaNR5yu1uYcqwHjVzcWXvlXthyMBf8qZzE=";
+            "0.5.3" = "sha256-+tlE5izXD+kNVwF0nucRsLALYQnkAnCZEONPVDG6dwk=";
+            "0.5.2" = "sha256-g71RqbEoCpmCjd0CKkc++yv00ohoORDeMYAwYEHKhW4=";
             "0.5.1" = "sha256-2tW/p9A7jpQg8ZmSF7KRuN6kBNKK1cfjnS9KlvnCpQA=";
             "0.5.0" = "sha256-OjMoa247om4DLPZ6u0XPMd5L+LYlVzHL39plCCr/fYE=";
             "0.4.10" = "sha256-FRBuvXtnbxRWoI0f8SM0U0Z5TRyX5Tbgq3d34Oh2bG4=";
