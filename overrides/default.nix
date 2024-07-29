@@ -3156,6 +3156,10 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.5.5" = "sha256-dqfK6YdAV4cdUYB8bPE9I5FduBJ90RxUA7TMvcVq6Zw=";
+            "0.5.4" = "sha256-dvvhd84T2YaNR5yu1uYcqwHjVzcWXvlXthyMBf8qZzE=";
+            "0.5.3" = "sha256-+tlE5izXD+kNVwF0nucRsLALYQnkAnCZEONPVDG6dwk=";
+            "0.5.2" = "sha256-g71RqbEoCpmCjd0CKkc++yv00ohoORDeMYAwYEHKhW4=";
             "0.5.1" = "sha256-2tW/p9A7jpQg8ZmSF7KRuN6kBNKK1cfjnS9KlvnCpQA=";
             "0.5.0" = "sha256-OjMoa247om4DLPZ6u0XPMd5L+LYlVzHL39plCCr/fYE=";
             "0.4.10" = "sha256-FRBuvXtnbxRWoI0f8SM0U0Z5TRyX5Tbgq3d34Oh2bG4=";
