@@ -17835,6 +17835,9 @@
   "pymediaroom": [
     "setuptools"
   ],
+  "pymediawiki": [
+    "setuptools"
+  ],
   "pymeeus": [
     "setuptools"
   ],
@@ -25758,6 +25761,9 @@
     "setuptools"
   ],
   "types-pkg-resources": [
+    "setuptools"
+  ],
+  "types-polib": [
     "setuptools"
   ],
   "types-protobuf": [
