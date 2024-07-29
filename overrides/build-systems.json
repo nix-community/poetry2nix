@@ -8857,6 +8857,9 @@
   "hijri-converter": [
     "setuptools"
   ],
+  "hikari-lightbulb": [
+    "flit"
+  ],
   "hikvision": [
     "setuptools"
   ],
