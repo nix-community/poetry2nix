@@ -23010,7 +23010,14 @@
     "setuptools"
   ],
   "sqlmodel": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "0.0.17"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "0.0.17"
+    }
   ],
   "sqlobject": [
     "setuptools"
