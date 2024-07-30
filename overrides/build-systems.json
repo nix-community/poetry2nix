@@ -102,6 +102,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "advanced-alchemy": [
+    "hatchling"
+  ],
   "advantage-air": [
     "setuptools"
   ],
