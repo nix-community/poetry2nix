@@ -160,7 +160,7 @@ poetry2nix.mkPoetryApplication {
       second-dependency = prev.second-dependency.overridePythonAttrs
       (
         old: {
-          buildInputs = (old.buildInputs or [ ]) ++ [ prev.pdm ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ prev.pdm-backend ];
         }
       );
     });
