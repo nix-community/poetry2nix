@@ -23075,7 +23075,14 @@
     "setuptools"
   ],
   "sse-starlette": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.8.1"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "1.8.1"
+    }
   ],
   "sseclient": [
     "setuptools"
