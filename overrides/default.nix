@@ -1474,7 +1474,7 @@ lib.composeManyExtensions [
             old.nativeBuildInputs or [ ]
             ++ [ pkg-config libxml2.dev libxslt.dev ]
             ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
-          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxml2 pkgs.libxslt ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxml2 pkgs.libxslt pkgs.zlib ];
         }
       );
 
