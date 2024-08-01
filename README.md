@@ -286,7 +286,7 @@ Creates an attribute set of the shape `{ python, poetryPackages, pyProject, poet
 ```nix
 poetry2nix.mkPoetryPackages {
     projectDir = ./.;
-    python = python35;
+    python3 = python39;
 }
 ```
 
@@ -303,7 +303,7 @@ Creates a package containing the scripts from `tool.poetry.scripts` of the `pypr
 ```nix
 poetry2nix.mkPoetryScriptsPackage {
     projectDir = ./.;
-    python = python35;
+    python3 = python39;
 }
 ```
 
@@ -321,7 +321,7 @@ Creates a package containing editable sources. Changes in the specified paths wi
 ```nix
 poetry2nix.mkPoetryEditablePackage {
     projectDir = ./.;
-    python = python35;
+    python3 = python39;
     editablePackageSources = {
         my-app = ./src;
     };
