@@ -1415,6 +1415,10 @@ lib.composeManyExtensions [
         }
       );
 
+      license-expression = prev.license-expression.overridePythonAttrs (old: {
+        dontConfigure = true;
+      });
+
       llama-cpp-python = prev.llama-cpp-python.overridePythonAttrs (
         old: {
           buildInputs = with pkgs; lib.optionals stdenv.isDarwin [
@@ -3136,6 +3140,10 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      sarif-tools = prev.sarif-tools.overridePythonAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.python3.pkgs.poetry-core ];
+      });
 
       scaleapi = prev.scaleapi.overridePythonAttrs (
         _old: {
