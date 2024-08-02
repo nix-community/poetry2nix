@@ -658,15 +658,6 @@ lib.composeManyExtensions [
         autoPatchelfIgnoreMissingDeps = true;
       });
 
-      cyclonedx-python-lib = prev.cyclonedx-python-lib.overridePythonAttrs (old: {
-        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
-        postPatch = ''
-          if [ -f setup.py ]; then
-            substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
-          fi
-        '';
-      });
-
       cysystemd = prev.cysystemd.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
