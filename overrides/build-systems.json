@@ -8536,6 +8536,9 @@
   "grpc-interceptor": [
     "poetry-core"
   ],
+  "grpc-requests": [
+    "setuptools"
+  ],
   "grpcio": [
     "cython",
     "setuptools"
