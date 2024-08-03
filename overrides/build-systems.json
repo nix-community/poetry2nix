@@ -25866,6 +25866,9 @@
   "types-termcolor": [
     "setuptools"
   ],
+  "types-tgcrypto": [
+    "setuptools"
+  ],
   "types-toml": [
     "setuptools"
   ],
