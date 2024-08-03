@@ -9224,7 +9224,14 @@
     "setuptools"
   ],
   "hypothesis-graphql": [
-    "poetry"
+    {
+      "buildSystem": "poetry",
+      "until": "0.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.10.0"
+    }
   ],
   "hypothesis-jsonschema": [
     "setuptools"
