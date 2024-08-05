@@ -25756,6 +25756,9 @@
   "types-ipaddress": [
     "setuptools"
   ],
+  "types-jinja2": [
+    "setuptools"
+  ],
   "types-jsonschema": [
     "setuptools"
   ],
