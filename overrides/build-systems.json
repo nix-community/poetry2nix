@@ -25859,6 +25859,9 @@
   "types-xmltodict": [
     "setuptools"
   ],
+  "typesense": [
+    "setuptools"
+  ],
   "typesentry": [
     "setuptools"
   ],
