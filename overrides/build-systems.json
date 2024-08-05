@@ -25751,6 +25751,9 @@
   "types-enum34": [
     "setuptools"
   ],
+  "types-flask": [
+    "setuptools"
+  ],
   "types-freezegun": [
     "setuptools"
   ],
