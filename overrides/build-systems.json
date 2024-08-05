@@ -25868,6 +25868,9 @@
   "types-urllib3": [
     "setuptools"
   ],
+  "types-werkzeug": [
+    "setuptools"
+  ],
   "types-xmltodict": [
     "setuptools"
   ],
