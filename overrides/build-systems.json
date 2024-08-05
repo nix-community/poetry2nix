@@ -25782,6 +25782,9 @@
   "types-markdown": [
     "setuptools"
   ],
+  "types-markupsafe": [
+    "setuptools"
+  ],
   "types-mock": [
     "setuptools"
   ],
