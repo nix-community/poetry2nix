@@ -25787,6 +25787,9 @@
   "types-passlib": [
     "setuptools"
   ],
+  "types-peewee": [
+    "setuptools"
+  ],
   "types-pillow": [
     "setuptools"
   ],
