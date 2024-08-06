@@ -3115,6 +3115,7 @@ lib.composeManyExtensions [
             "0.18.1" = "sha256-caNEmU3K5COYa/UImE4BZYaFTc3Csi3WmnBSbFN3Yn8=";
             "0.19.0" = "sha256-H9IAg4lh7cmGaML5PuyYoe026pBNhOyvb/cf+oZcv0c=";
             "0.19.1" = "sha256-qIXdoCEVGCGUnTicZp4bUTJyGpFy9dwWY03lXUbxiHg=";
+            "0.20.0" = "sha256-5vbR2EbrAPJ8pb78tj/+r9nOWgQDT5aO/LUQI4kAGjU=";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
