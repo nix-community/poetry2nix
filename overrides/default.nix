@@ -658,15 +658,6 @@ lib.composeManyExtensions [
         autoPatchelfIgnoreMissingDeps = true;
       });
 
-      cyclonedx-python-lib = prev.cyclonedx-python-lib.overridePythonAttrs (old: {
-        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
-        postPatch = ''
-          if [ -f setup.py ]; then
-            substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
-          fi
-        '';
-      });
-
       cysystemd = prev.cysystemd.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.systemd ];
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
@@ -1402,6 +1393,10 @@ lib.composeManyExtensions [
         }
       );
 
+      license-expression = prev.license-expression.overridePythonAttrs (old: {
+        dontConfigure = true;
+      });
+
       llama-cpp-python = prev.llama-cpp-python.overridePythonAttrs (
         old: {
           buildInputs = with pkgs; lib.optionals stdenv.isDarwin [
@@ -1474,7 +1469,7 @@ lib.composeManyExtensions [
             old.nativeBuildInputs or [ ]
             ++ [ pkg-config libxml2.dev libxslt.dev ]
             ++ lib.optionals stdenv.isDarwin [ xcodebuild ];
-          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libxml2 pkgs.libxslt ];
+          buildInputs = old.buildInputs or [ ] ++ (with pkgs; [ libxml2 libxslt zlib ]);
         }
       );
 
@@ -3006,6 +3001,10 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      sarif-tools = prev.sarif-tools.overridePythonAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.python3.pkgs.poetry-core ];
+      });
 
       scaleapi = prev.scaleapi.overridePythonAttrs (
         _old: {
