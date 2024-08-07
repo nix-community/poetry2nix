@@ -102,6 +102,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "advanced-alchemy": [
+    "hatchling"
+  ],
   "advantage-air": [
     "setuptools"
   ],
@@ -5050,6 +5053,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "dishka": [
+    "setuptools"
+  ],
   "disjoint-set": [
     "poetry"
   ],
@@ -5818,7 +5824,9 @@
   ],
   "docker": [
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    "hatch-vcs",
+    "hatchling"
   ],
   "docker-py": [
     "setuptools"
@@ -6714,6 +6722,9 @@
   "farama-notifications": [
     "setuptools"
   ],
+  "fast-depends": [
+    "hatchling"
+  ],
   "fast-histogram": [
     "setuptools",
     "setuptools-scm"
@@ -6841,6 +6852,9 @@
   "fastrlock": [
     "cython",
     "setuptools"
+  ],
+  "faststream": [
+    "hatchling"
   ],
   "fasttext": [
     "setuptools"
@@ -11013,6 +11027,12 @@
   ],
   "litellm": [
     "poetry-core"
+  ],
+  "litestar": [
+    "hatchling"
+  ],
+  "litestar-svcs": [
+    "pdm-backend"
   ],
   "littleutils": [
     "setuptools"
@@ -15904,7 +15924,14 @@
     "setuptools"
   ],
   "polyfactory": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.10.0"
+    }
   ],
   "polyline": [
     "setuptools"
