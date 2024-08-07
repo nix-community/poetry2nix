@@ -90,7 +90,7 @@ lib.composeManyExtensions [
   # Add build systems
   (final: prev:
     let
-      buildSystems = lib.importJSON ./build-systems.json;
+      buildSystems = (lib.importJSON ./build-systems.json) // (lib.importJSON ./auto-build_systems.json);
     in
     lib.mapAttrs
       (attr: systems: builtins.foldl'
@@ -4171,4 +4171,6 @@ lib.composeManyExtensions [
         ln -sfn $out/${self.python.sitePackages}/nvidia/*/lib/lib*.so* $out/lib
       '';
     })))
+
+    ( import ./auto-overrides.nix {inherit pkgs lib; })
 ]
