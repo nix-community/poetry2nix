@@ -2244,8 +2244,8 @@ lib.composeManyExtensions [
               );
 
               ARROW_HOME = _arrow-cpp;
-              arrowCppVersion = lib.versions.majorMinor _arrow-cpp;
-              pyArrowVersion = lib.versions.majorMinor prev.pyarrow;
+              arrowCppVersion = lib.versions.majorMinor (_arrow-cpp.version or _arrow-cpp);
+              pyArrowVersion = lib.versions.majorMinor (prev.pyarrow.version or prev.pyarrow);
               errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
             in
             lib.throwIf (arrowCppVersion != pyArrowVersion) errorMessage {
