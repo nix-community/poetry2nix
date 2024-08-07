@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "test_pendulum_with_rust"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pendulum = "^3.0.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

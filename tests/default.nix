@@ -228,6 +228,7 @@ in
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_86-linux
   pendulum = callTest ./pendulum { };
+  pendulum-with-rust = callTest ./pendulum-with-rust { };
   tensorflow = callTest ./tensorflow { };
   # Test deadlocks on darwin and fails to start at all with aarch64-linux,
   # sandboxing issue?
