@@ -22924,6 +22924,9 @@
   "spinners": [
     "setuptools"
   ],
+  "splink": [
+    "poetry-core"
+  ],
   "splinter": [
     "setuptools"
   ],
