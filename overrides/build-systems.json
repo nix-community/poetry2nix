@@ -17898,6 +17898,9 @@
   "pymilvus": [
     "setuptools-scm"
   ],
+  "pymisp": [
+    "poetry"
+  ],
   "pymitv": [
     "setuptools"
   ],
