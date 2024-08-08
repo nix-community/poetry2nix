@@ -602,8 +602,7 @@ This is a short (11 minutes) video tutorial by [Steve Purcell](https://github.co
 
 Contributions to this project are welcome in the form of GitHub PRs. Please consider the following before creating PRs:
 
-- This project uses [nixpkgs-fmt](https://github.com/nix-community/nixpkgs-fmt) for formatting the Nix code. You can use
-`nix-shell --run "nixpkgs-fmt ."` to format everything.
+- You can use `nix fmt` to format everything and sort `overrides/build-systems.json`.
 - If you are planning to make any considerable changes, you should first present your plans in a GitHub issue so it can be discussed.
 - If you add new features please consider adding tests. You can run them locally as follows:
 
@@ -628,8 +627,6 @@ To test with a specific channel:
 ```bash
 nix-build --expr 'with import <unstable> {}; callPackage ./tests/default.nix {}'
 ```
-
-To sort `overrides/build-systems.json` according to the [`sort-build-systems` job](.github/workflows/ci.yml), patch the source with the output of the "Check format" step, like this: `nix-shell [omitted] | patch -p0`.
 
 ## Contact
 
