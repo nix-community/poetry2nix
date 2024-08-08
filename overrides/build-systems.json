@@ -941,6 +941,9 @@
   "ansible-core": [
     "setuptools"
   ],
+  "ansible-creator": [
+    "setuptools"
+  ],
   "ansible-doctor": [
     "poetry-core",
     "setuptools"
@@ -970,6 +973,9 @@
   ],
   "ansible-runner": [
     "pbr",
+    "setuptools"
+  ],
+  "ansible-sign": [
     "setuptools"
   ],
   "ansible-vault-rw": [
@@ -5864,6 +5870,7 @@
     "setuptools"
   ],
   "docutils": [
+    "flit-core",
     "setuptools"
   ],
   "docx2python": [
@@ -17891,6 +17898,9 @@
   "pymilvus": [
     "setuptools-scm"
   ],
+  "pymisp": [
+    "poetry"
+  ],
   "pymitv": [
     "setuptools"
   ],
@@ -22928,6 +22938,9 @@
     "poetry-core"
   ],
   "splinter": [
+    "setuptools"
+  ],
+  "splunk-sdk": [
     "setuptools"
   ],
   "spotipy": [
