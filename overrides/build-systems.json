@@ -22940,6 +22940,9 @@
   "splinter": [
     "setuptools"
   ],
+  "splunk-sdk": [
+    "setuptools"
+  ],
   "spotipy": [
     "setuptools"
   ],
