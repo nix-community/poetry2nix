@@ -941,6 +941,9 @@
   "ansible-core": [
     "setuptools"
   ],
+  "ansible-creator": [
+    "setuptools"
+  ],
   "ansible-doctor": [
     "poetry-core",
     "setuptools"
