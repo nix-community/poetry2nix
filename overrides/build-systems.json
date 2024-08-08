@@ -975,6 +975,9 @@
     "pbr",
     "setuptools"
   ],
+  "ansible-sign": [
+    "setuptools"
+  ],
   "ansible-vault-rw": [
     "setuptools"
   ],
