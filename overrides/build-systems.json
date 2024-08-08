@@ -5870,8 +5870,8 @@
     "setuptools"
   ],
   "docutils": [
-    "setuptools",
-    "flit-core"
+    "flit-core",
+    "setuptools"
   ],
   "docx2python": [
     "poetry-core",
