@@ -9127,9 +9127,18 @@
     "setuptools"
   ],
   "human-id": [
+    "cython",
+    "cython_0",
+    "flit",
+    "flit-core",
+    "hatch-vcs",
+    "hatchling",
+    "pbr",
+    "pdm-backend",
     "poetry-core",
-    "setuptools"
-  ],
+    "setuptools",
+    "setuptools-scm"
+    ],
   "human-readable": [
     "hatch-vcs",
     "hatchling"
