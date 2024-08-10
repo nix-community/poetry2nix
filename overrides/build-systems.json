@@ -285,6 +285,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "aiodataloader": [
+    "setuptools"
+  ],
   "aiodhcpwatcher": [
     "poetry-core"
   ],
