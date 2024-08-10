@@ -16702,6 +16702,9 @@
   "pyautogui": [
     "setuptools"
   ],
+  "pyavatar": [
+    "setuptools"
+  ],
   "pyavm": [
     "setuptools",
     "setuptools-scm"
