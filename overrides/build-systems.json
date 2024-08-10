@@ -10822,6 +10822,10 @@
     "cython_0",
     "setuptools"
   ],
+  "libgravatar": [
+    "setuptools"
+  ],
+
   "libiio": [
     "setuptools"
   ],
