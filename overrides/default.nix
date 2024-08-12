@@ -3738,6 +3738,7 @@ lib.composeManyExtensions [
         let
           # Watchfiles does not include Cargo.lock in tarball released on PyPi for versions up to 0.17.0
           getRepoHash = version: {
+            "0.23.0" = "sha256-kFScg3pkOD0gASRtfXSfwZxyW/XvW9x0zgMn0AQek4A=";
             "0.22.0" = "sha256-TtRSRgtMOqsnhdvsic3lg33xlA+r/DcYHlzewSOu/44=";
             "0.21.0" = "sha256-/qNgkPF5N8jzSV3M0YFWvQngZ4Hf4WM/GBS1LtgFbWM=";
             "0.20.0" = "sha256-eoKF6uBHgML63DrDlC1zPfDu/mAMoaevttwqHLCKh+M=";
@@ -3757,6 +3758,7 @@ lib.composeManyExtensions [
           sha256 = getRepoHash prev.watchfiles.version;
 
           getCargoHash = version: {
+            "0.23.0" = "sha256-m7XFpbujWFmDNSDydY3ec6b+AGgrfo3+TTbRN7te8bY=";
             "0.22.0" = "sha256-pl5BBOxrxvPvBJTnTqvWNFecoJwfyuAs4xZEgmg+T+w=";
             "0.21.0" = "sha256-KDm1nGeg4oDcbopedPfzalK2XO1c1ZQUZu6xhfRdQx4=";
             "0.20.0" = "sha256-ChUs7YJE1ZEIONhUUbVAW/yDYqqUR/k/k10Ce7jw8Xo=";
