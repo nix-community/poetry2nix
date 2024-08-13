@@ -941,6 +941,9 @@
   "ansible-core": [
     "setuptools"
   ],
+  "ansible-creator": [
+    "setuptools"
+  ],
   "ansible-doctor": [
     "poetry-core",
     "setuptools"
@@ -970,6 +973,9 @@
   ],
   "ansible-runner": [
     "pbr",
+    "setuptools"
+  ],
+  "ansible-sign": [
     "setuptools"
   ],
   "ansible-vault-rw": [
@@ -5864,6 +5870,7 @@
     "setuptools"
   ],
   "docutils": [
+    "flit-core",
     "setuptools"
   ],
   "docx2python": [
@@ -6634,6 +6641,9 @@
     "setuptools"
   ],
   "ezdxf": [
+    "setuptools"
+  ],
+  "ezgiphy": [
     "setuptools"
   ],
   "ezyrb": [
@@ -8533,6 +8543,9 @@
   "grpc-interceptor": [
     "poetry-core"
   ],
+  "grpc-requests": [
+    "setuptools"
+  ],
   "grpcio": [
     "cython",
     "setuptools"
@@ -8853,6 +8866,9 @@
   ],
   "hijri-converter": [
     "setuptools"
+  ],
+  "hikari-lightbulb": [
+    "flit"
   ],
   "hikvision": [
     "setuptools"
@@ -9218,7 +9234,14 @@
     "setuptools"
   ],
   "hypothesis-graphql": [
-    "poetry"
+    {
+      "buildSystem": "poetry",
+      "until": "0.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.10.0"
+    }
   ],
   "hypothesis-jsonschema": [
     "setuptools"
@@ -17832,6 +17855,9 @@
   "pymediaroom": [
     "setuptools"
   ],
+  "pymediawiki": [
+    "setuptools"
+  ],
   "pymeeus": [
     "setuptools"
   ],
@@ -17871,6 +17897,9 @@
   ],
   "pymilvus": [
     "setuptools-scm"
+  ],
+  "pymisp": [
+    "poetry"
   ],
   "pymitv": [
     "setuptools"
@@ -22905,7 +22934,13 @@
   "spinners": [
     "setuptools"
   ],
+  "splink": [
+    "poetry-core"
+  ],
   "splinter": [
+    "setuptools"
+  ],
+  "splunk-sdk": [
     "setuptools"
   ],
   "spotipy": [
@@ -23001,7 +23036,14 @@
     "setuptools"
   ],
   "sqlmodel": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "0.0.17"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "0.0.17"
+    }
   ],
   "sqlobject": [
     "setuptools"
@@ -23059,7 +23101,14 @@
     "setuptools"
   ],
   "sse-starlette": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.8.1"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "1.8.1"
+    }
   ],
   "sseclient": [
     "setuptools"
@@ -23380,6 +23429,10 @@
   "survey": [
     "setuptools",
     "setuptools-scm"
+  ],
+  "svcs": [
+    "hatch-fancy-pypi-readme",
+    "hatchling"
   ],
   "svg-path": [
     "setuptools"
@@ -25711,6 +25764,9 @@
   "types-enum34": [
     "setuptools"
   ],
+  "types-flask": [
+    "setuptools"
+  ],
   "types-freezegun": [
     "setuptools"
   ],
@@ -25726,6 +25782,9 @@
   "types-ipaddress": [
     "setuptools"
   ],
+  "types-jinja2": [
+    "setuptools"
+  ],
   "types-jsonschema": [
     "setuptools"
   ],
@@ -25734,6 +25793,9 @@
     "setuptools-scm"
   ],
   "types-markdown": [
+    "setuptools"
+  ],
+  "types-markupsafe": [
     "setuptools"
   ],
   "types-mock": [
@@ -25751,10 +25813,16 @@
   "types-passlib": [
     "setuptools"
   ],
+  "types-peewee": [
+    "setuptools"
+  ],
   "types-pillow": [
     "setuptools"
   ],
   "types-pkg-resources": [
+    "setuptools"
+  ],
+  "types-polib": [
     "setuptools"
   ],
   "types-protobuf": [
@@ -25811,6 +25879,9 @@
   "types-termcolor": [
     "setuptools"
   ],
+  "types-tgcrypto": [
+    "setuptools"
+  ],
   "types-toml": [
     "setuptools"
   ],
@@ -25826,7 +25897,13 @@
   "types-urllib3": [
     "setuptools"
   ],
+  "types-werkzeug": [
+    "setuptools"
+  ],
   "types-xmltodict": [
+    "setuptools"
+  ],
+  "typesense": [
     "setuptools"
   ],
   "typesentry": [
