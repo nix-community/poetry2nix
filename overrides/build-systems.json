@@ -2981,6 +2981,9 @@
   "brunt": [
     "setuptools"
   ],
+  "bs4": [
+    "setuptools"
+  ],
   "bsblan": [
     "poetry-core",
     "setuptools"
