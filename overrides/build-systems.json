@@ -20406,6 +20406,9 @@
     "cython",
     "setuptools"
   ],
+  "pywidevine": [
+    "poetry-core"
+  ],
   "pywilight": [
     "setuptools"
   ],
