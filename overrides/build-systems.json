@@ -21033,6 +21033,9 @@
   "requests-hawk": [
     "setuptools"
   ],
+  "requests-html": [
+    "setuptools"
+  ],
   "requests-http-signature": [
     "setuptools",
     "setuptools-scm"
