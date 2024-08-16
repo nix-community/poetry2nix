@@ -26274,6 +26274,9 @@
   "usbtmc": [
     "setuptools"
   ],
+  "user-agent": [
+    "setuptools"
+  ],
   "user-agents": [
     "setuptools"
   ],
