@@ -2384,6 +2384,10 @@ lib.composeManyExtensions [
         }
       );
 
+      pyinstaller = prev.pyinstaller.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.zlib ];
+      });
+
       pymdown-extensions = prev.pymdown-extensions.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.pyyaml ];
       });
