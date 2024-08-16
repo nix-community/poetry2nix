@@ -17926,6 +17926,9 @@
   "pymorphy2-dicts-ru": [
     "setuptools"
   ],
+  "pymp4": [
+    "poetry-core"
+  ],
   "pympler": [
     "setuptools"
   ],
