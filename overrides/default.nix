@@ -1974,6 +1974,7 @@ lib.composeManyExtensions [
               "3.9.10" = "sha256-MkcuayNDt7/GcswXoFTvzuaZzhQEQV+V7OfKqgJwVIQ=";
               "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
               "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
+              "3.9.1" = "sha256-4aMVYwsLYjA8yoKiauMHBEi2cMN6MQla4sK92gLfx3k=";
               "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
               "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
               "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
