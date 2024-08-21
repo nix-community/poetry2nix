@@ -1253,7 +1253,6 @@ lib.composeManyExtensions [
             final.pytestrunner
             final.cryptography
             final.pyjwt
-            final.setuptools-scm-git-archive
           ];
         }
       );
