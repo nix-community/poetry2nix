@@ -1647,6 +1647,11 @@ lib.composeManyExtensions [
         }
       );
 
+      msgspec = prev.msgspec.overridePythonAttrs (old: {
+        # crash during integer serialization - see https://github.com/jcrist/msgspec/issues/730
+        hardeningDisable = old.hardeningDisable or [] ++ [ "fortify" ];
+      });
+
       munch = prev.munch.overridePythonAttrs (
         old: {
           # Latest version of pypi imports pkg_resources at runtime, so setuptools is needed at runtime. :(
