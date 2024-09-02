@@ -935,7 +935,7 @@ lib.composeManyExtensions [
 
       gdal = prev.gdal.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal final.numpy ];
           preBuild = (old.preBuild or "") + ''
             substituteInPlace setup.cfg \
               --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
