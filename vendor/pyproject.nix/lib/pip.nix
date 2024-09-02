@@ -1,9 +1,18 @@
-{ lib
-, pep508
-, ...
-}:
+{ lib, pep508, ... }:
 let
-  inherit (builtins) match head tail typeOf split filter foldl' readFile dirOf hasContext unsafeDiscardStringContext;
+  inherit (builtins)
+    match
+    head
+    tail
+    typeOf
+    split
+    filter
+    foldl'
+    readFile
+    dirOf
+    hasContext
+    unsafeDiscardStringContext
+    ;
   inherit (import ./util.nix { inherit lib; }) stripStr;
 
   uncomment = l: head (match " *([^#]*).*" l);
@@ -11,13 +20,14 @@ let
 in
 lib.fix (self: {
 
-  /* Parse dependencies from requirements.txt
+  /*
+    Parse dependencies from requirements.txt
 
-     Type: parseRequirementsTxt :: AttrSet -> list
+    Type: parseRequirementsTxt :: AttrSet -> list
 
-     Example:
-     # parseRequirements ./requirements.txt
-     [ { flags = []; requirement = {}; # Returned by pep508.parseString } ]
+    Example:
+    # parseRequirements ./requirements.txt
+    [ { flags = []; requirement = {}; # Returned by pep508.parseString } ]
   */
 
   parseRequirementsTxt =
@@ -33,66 +43,78 @@ lib.fix (self: {
       # We also need to support stringly paths...
       isPath = typeOf requirements == "path" || hasContext requirements;
       path' =
-        if typeOf requirements == "path" then requirements else
-        /. + unsafeDiscardStringContext requirements;
+        if typeOf requirements == "path" then
+          requirements
+        else
+          /. + unsafeDiscardStringContext requirements;
       root = dirOf path';
 
       # Requirements without comments and no empty strings
       requirements' = if isPath then readFile path' else requirements;
-      lines' = filter (l: l != "") (map uncomment (filter (l: typeOf l == "string") (split "\n" requirements')));
+      lines' = filter (l: l != "") (
+        map uncomment (filter (l: typeOf l == "string") (split "\n" requirements'))
+      );
       # Fold line continuations
-      inherit ((foldl'
+      inherit
         (
-          acc: l':
-          let
-            m = match "(.+) *\\\\" l';
-            continue = m != null;
-            l = stripStr (
-              if continue
-              then (head m)
-              else l'
-            );
-          in
-          if continue
-          then {
-            line = acc.line ++ [ l ];
-            inherit (acc) lines;
-          }
-          else {
-            line = [ ];
-            lines = acc.lines ++ [ (acc.line ++ [ l ]) ];
-          }
+          (foldl'
+            (
+              acc: l':
+              let
+                m = match "(.+) *\\\\" l';
+                continue = m != null;
+                l = stripStr (if continue then (head m) else l');
+              in
+              if continue then
+                {
+                  line = acc.line ++ [ l ];
+                  inherit (acc) lines;
+                }
+              else
+                {
+                  line = [ ];
+                  lines = acc.lines ++ [ (acc.line ++ [ l ]) ];
+                }
+            )
+            {
+              lines = [ ];
+              line = [ ];
+            }
+            lines'
+          )
         )
-        {
-          lines = [ ];
-          line = [ ];
-        }
-        lines')) lines;
+        lines
+        ;
 
     in
-    foldl'
-      (acc: l:
+    foldl' (
+      acc: l:
       let
         m = match "-(c|r) (.+)" (head l);
       in
-      acc ++ (
+      acc
+      ++ (
         # Common case, parse string
-        if m == null
-        then [{
-          requirement = pep508.parseString (head l);
-          flags = tail l;
-        }]
+        if m == null then
+          [
+            {
+              requirement = pep508.parseString (head l);
+              flags = tail l;
+            }
+          ]
 
         # Don't support constraint files
-        else if (head m) == "c" then throw "Unsupported flag: -c"
+        else if (head m) == "c" then
+          throw "Unsupported flag: -c"
 
         # Recursive requirements.txt
         else
           (self.parseRequirementsTxt (
-            if root == null then throw "When importing recursive requirements.txt requirements needs to be passed as a path"
-            else root + "/${head (tail m)}"
+            if root == null then
+              throw "When importing recursive requirements.txt requirements needs to be passed as a path"
+            else
+              root + "/${head (tail m)}"
           ))
-      ))
-      [ ]
-      lines;
+      )
+    ) [ ] lines;
 })

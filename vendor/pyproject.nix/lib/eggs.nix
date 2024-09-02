@@ -1,6 +1,12 @@
 { lib, ... }:
 let
-  inherit (builtins) filter match elemAt compareVersions sort;
+  inherit (builtins)
+    filter
+    match
+    elemAt
+    compareVersions
+    sort
+    ;
   inherit (lib) isString;
 
   # Tag normalization documented in
@@ -16,55 +22,61 @@ let
 
 in
 lib.fix (self: {
-  /* Regex match an egg file name, returning a list of match groups. Returns null if no match.
+  /*
+    Regex match an egg file name, returning a list of match groups. Returns null if no match.
 
-     Type: matchEggFileName :: string -> [ string ]
+    Type: matchEggFileName :: string -> [ string ]
   */
-  matchEggFileName = name:
+  matchEggFileName =
+    name:
     let
       m = match "([^-]+)-([^-]+)-(.+)\\.egg" name;
     in
     if m != null then filter isString m else null;
 
-  /* Check whether string is an egg file or not.
+  /*
+    Check whether string is an egg file or not.
 
-     Type: isEggFileName :: string -> bool
+    Type: isEggFileName :: string -> bool
 
-     Example:
-     # isEggFileName "cryptography-41.0.1-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
-     false
+    Example:
+    # isEggFileName "cryptography-41.0.1-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
+    false
   */
   isEggFileName =
     # The filename string
     name: self.matchEggFileName name != null;
 
-  /* Parse an egg file name.
+  /*
+    Parse an egg file name.
 
-     Type: parsehEggFileName :: string -> AttrSet
+    Type: parsehEggFileName :: string -> AttrSet
 
-     Example:
-     # parseEggFileName
+    Example:
+    # parseEggFileName
   */
-  parseEggFileName = name:
+  parseEggFileName =
+    name:
     let
       m = self.matchEggFileName name;
-      mAt = elemAt m;
-      langM = match "([^0-9]*)(.+)" (mAt 2);
-      langAt = elemAt langM;
+      langM = match "([^0-9]*)(.+)" (elemAt m 2);
     in
-    assert m != null; {
+    assert m != null;
+    assert langM != null;
+    {
       filename = name;
-      distribution = mAt 0;
-      version = mAt 1;
+      distribution = elemAt m 0;
+      version = elemAt m 1;
       languageTag = {
-        implementation = normalizeImpl (langAt 0);
-        version = langAt 1;
+        implementation = normalizeImpl (elemAt langM 0);
+        version = elemAt langM 1;
       };
     };
 
-  /* Select compatible eggs from a list and return them in priority order.
+  /*
+    Select compatible eggs from a list and return them in priority order.
 
-     Type: selectEggs :: derivation -> [ AttrSet ] -> [ AttrSet ]
+    Type: selectEggs :: derivation -> [ AttrSet ] -> [ AttrSet ]
   */
   selectEggs =
     # Python interpreter derivation
@@ -74,13 +86,14 @@ lib.fix (self: {
     let
       inherit (python.passthru) pythonVersion implementation;
 
-      langCompatible = filter
-        (file: file.languageTag.implementation == "python" || file.languageTag.implementation == implementation)
-        files;
+      langCompatible = filter (
+        file:
+        file.languageTag.implementation == "python" || file.languageTag.implementation == implementation
+      ) files;
 
-      versionCompatible = filter
-        (file: compareVersions pythonVersion file.languageTag.version >= 0)
-        langCompatible;
+      versionCompatible = filter (
+        file: compareVersions pythonVersion file.languageTag.version >= 0
+      ) langCompatible;
 
     in
     sort (a: b: compareVersions a.languageTag.version b.languageTag.version > 0) versionCompatible;

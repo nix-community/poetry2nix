@@ -1,13 +1,14 @@
-{ lib
-, pep440
-, pep508
-, pep621
-, pypa
-, ...
+{
+  lib,
+  pep440,
+  pep508,
+  pep621,
+  pypa,
+  ...
 }:
 let
   inherit (builtins) attrValues foldl' filter;
-  inherit (lib) flatten;
+  inherit (lib) concatLists;
 
 in
 {
@@ -32,40 +33,42 @@ in
           version = "0.9.1";
         };
       }
-    */
+  */
   validateVersionConstraints =
     {
       # Project metadata as returned by `lib.project.loadPyproject`
-      project
-    , # Python derivation
-      python
-    , # Python extras (optionals) to enable
-      extras ? [ ]
-    ,
+      project,
+      # Python derivation
+      python,
+      # Python extras (optionals) to enable
+      extras ? [ ],
     }:
     let
-      filteredDeps = pep621.filterDependencies {
-        inherit (project) dependencies;
-        environ = pep508.mkEnviron python;
-        inherit extras;
-      };
-      flatDeps = filteredDeps.dependencies ++ flatten (attrValues filteredDeps.extras) ++ filteredDeps.build-systems;
+      environ = pep508.mkEnviron python;
+      filteredDeps = pep621.filterDependenciesByEnviron environ [ ] project.dependencies;
+      flatDeps =
+        filteredDeps.dependencies
+        ++ concatLists (attrValues filteredDeps.extras)
+        ++ filteredDeps.build-systems;
 
     in
-    foldl'
-      (acc: dep:
+    foldl' (
+      acc: dep:
       let
         pname = pypa.normalizePackageName dep.name;
         pversion = python.pkgs.${pname}.version;
         version = pep440.parseVersion python.pkgs.${pname}.version;
-        incompatible = filter (cond: ! pep440.comparators.${cond.op} version cond.version) dep.conditions;
+        incompatible = filter (cond: !pep440.comparators.${cond.op} version cond.version) dep.conditions;
       in
-      if incompatible == [ ] then acc else acc // {
-        ${pname} = {
-          version = pversion;
-          conditions = incompatible;
-        };
-      })
-      { }
-      flatDeps;
+      if incompatible == [ ] then
+        acc
+      else
+        acc
+        // {
+          ${pname} = {
+            version = pversion;
+            conditions = incompatible;
+          };
+        }
+    ) { } flatDeps;
 }
