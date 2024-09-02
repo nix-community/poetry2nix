@@ -31,7 +31,7 @@ let
     , pyProject
     , attrs
     , includeBuildSystem ? true
-    , groups ? [ ]
+    , groups ? [ "main" ]
     , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]  # * means all extras, otherwise include the dependencies for a given extra
     }:
@@ -82,12 +82,9 @@ let
     {
       buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
       propagatedBuildInputs = mkInput "propagatedBuildInputs" (
-        getDeps allRawDeps ++ (
-          # >=poetry-1.2.0 dependency groups
-          if pyProject.tool.poetry.group or { } != { }
-          then lib.flatten (map (g: getDeps pyProject.tool.poetry.group.${g}.dependencies) groups)
-          else [ ]
-        )
+        let
+          availableGroups = {main.dependencies = allRawDeps;} // pyProject.tool.poetry.group or { };
+        in lib.flatten (map (g: getDeps availableGroups.${g}.dependencies) groups)
       );
       nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
       checkInputs = mkInput "checkInputs" checkInputs';
@@ -145,7 +142,7 @@ lib.makeScope pkgs.newScope (self: {
       # Example: { my-app = ./src; }
     , editablePackageSources ? { }
     , pyProject ? readTOML pyproject
-    , groups ? [ ]
+    , groups ? [ "main" ]
     , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]
     }:
@@ -314,7 +311,7 @@ lib.makeScope pkgs.newScope (self: {
     , preferWheels ? false
     , editablePackageSources ? { }
     , extraPackages ? _ps: [ ]
-    , groups ? [ "dev" ]
+    , groups ? [ "main" "dev" ]
     , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]
     }:
@@ -332,13 +329,12 @@ lib.makeScope pkgs.newScope (self: {
         (pkg: editablePackageSources."${pkg}" == null)
         (builtins.attrNames editablePackageSources);
 
-      allEditablePackageSources = (getEditableDeps (pyProject.tool.poetry."dependencies" or { }))
-        // (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
+      allEditablePackageSources = (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
         // (
-        # Poetry>=1.2.0
-        if pyProject.tool.poetry.group or { } != { } then
-          builtins.foldl' (acc: g: acc // getEditableDeps pyProject.tool.poetry.group.${g}.dependencies) { } groups
-        else { }
+          let 
+            deps = pyProject.tool.poetry."dependencies" or { };
+            availableGroups = {main.dependencies = deps;} // pyProject.tool.poetry.group or { };
+          in builtins.foldl' (acc: g: acc // getEditableDeps availableGroups.${g}.dependencies) { } groups
       )
         // editablePackageSources;
 
@@ -380,7 +376,7 @@ lib.makeScope pkgs.newScope (self: {
     , python ? pkgs.python3
     , pwd ? projectDir
     , preferWheels ? false
-    , groups ? [ ]
+    , groups ? [ "main" ]
     , checkGroups ? checkGroupsDefault
     , extras ? [ "*" ]
     , ...
