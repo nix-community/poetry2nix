@@ -14007,6 +14007,9 @@
   "nmapthon2": [
     "setuptools"
   ],
+  "nmcli": [
+    "setuptools"
+  ],
   "nocasedict": [
     "setuptools"
   ],
