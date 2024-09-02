@@ -6624,6 +6624,9 @@
   "explorerscript": [
     "setuptools"
   ],
+  "expression": [
+    "poetry-core"
+  ],
   "exrex": [
     "setuptools"
   ],
