@@ -5832,8 +5832,22 @@
     }
   ],
   "docker": [
-    "setuptools",
-    "setuptools-scm"
+    {
+      "buildSystem": "hatch-vcs",
+      "from;": "7.1.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from;": "7.1.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until;": "7.1.0"
+    },
+    {
+      "buildSystem": "setuptools-scm",
+      "until;": "7.1.0"
+    }
   ],
   "docker-py": [
     "setuptools"
