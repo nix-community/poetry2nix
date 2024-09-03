@@ -935,7 +935,7 @@ lib.composeManyExtensions [
 
       gdal = prev.gdal.overridePythonAttrs (
         old: {
-          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal ];
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal final.numpy ];
           preBuild = (old.preBuild or "") + ''
             substituteInPlace setup.cfg \
               --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
@@ -1646,6 +1646,11 @@ lib.composeManyExtensions [
           '';
         }
       );
+
+      msgspec = prev.msgspec.overridePythonAttrs (old: {
+        # crash during integer serialization - see https://github.com/jcrist/msgspec/issues/730
+        hardeningDisable = old.hardeningDisable or [] ++ [ "fortify" ];
+      });
 
       munch = prev.munch.overridePythonAttrs (
         old: {
