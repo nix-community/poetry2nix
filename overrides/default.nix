@@ -1780,6 +1780,15 @@ lib.composeManyExtensions [
         }
       );
 
+      nglview = prev.nglview.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ (with final; [
+            jupyter-packaging
+            versioneer
+          ]);
+        }
+      );
+
       numpy = prev.numpy.overridePythonAttrs (
         old:
         let
