@@ -2503,10 +2503,6 @@
   "beartype": [
     "setuptools"
   ],
-  "beautifulsoup4": [
-    "hatchling",
-    "setuptools"
-  ],
   "beautifultable": [
     "setuptools"
   ],
@@ -5870,10 +5866,6 @@
     "setuptools"
   ],
   "doctest-ignore-unicode": [
-    "setuptools"
-  ],
-  "docutils": [
-    "flit-core",
     "setuptools"
   ],
   "docx2python": [

@@ -1,0 +1,32 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index 37a2b31..f774aa9 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -29,27 +29,6 @@ include = [
+ name = "orjson"
+ crate-type = ["cdylib"]
+ 
+-[package.metadata.maturin]
+-requires-python = ">=3.7"
+-classifiers = [
+-    "Development Status :: 5 - Production/Stable",
+-    "Intended Audience :: Developers",
+-    "License :: OSI Approved :: Apache Software License",
+-    "License :: OSI Approved :: MIT License",
+-    "Operating System :: MacOS",
+-    "Operating System :: Microsoft :: Windows",
+-    "Operating System :: POSIX :: Linux",
+-    "Programming Language :: Python :: 3",
+-    "Programming Language :: Python :: 3.10",
+-    "Programming Language :: Python :: 3.7",
+-    "Programming Language :: Python :: 3.8",
+-    "Programming Language :: Python :: 3.9",
+-    "Programming Language :: Python :: Implementation :: CPython",
+-    "Programming Language :: Python",
+-    "Programming Language :: Rust",
+-    "Typing :: Typed",
+-]
+-
+ [features]
+ default = []
+ 
