@@ -11653,6 +11653,7 @@
   ],
   "mcstatus": [
     "poetry-core",
+    "poetry-dynamic-versioning",
     "setuptools"
   ],
   "md-toc": [
