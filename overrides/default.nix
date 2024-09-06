@@ -1023,11 +1023,12 @@ lib.composeManyExtensions [
           }
         ));
 
-      gitpython = prev.gitpython.overridePythonAttrs (
-        old: {
-          buildInputs = old.buildInputs or [ ] ++ [ final.typing-extensions ];
-        }
-      );
+      gitpython = prev.gitpython.overridePythonAttrs {
+          postPatch = ''
+            substituteInPlace git/cmd.py \
+              --replace 'git_exec_name = "git"' 'git_exec_name = "${pkgs.gitMinimal}/bin/git"'
+          '';
+        };
 
       grpcio = prev.grpcio.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
