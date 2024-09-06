@@ -1401,6 +1401,21 @@ lib.composeManyExtensions [
         '';
       });
 
+      libcst = prev.libcst.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false))
+          {
+            cargoDeps = pkgs.rustPlatform.importCargoLock {
+              lockFile = ./libcst/${old.version}-Cargo.lock;
+            };
+            cargoRoot = "native";
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+              pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
+              pkgs.rustc
+              pkgs.cargo
+            ];
+          }
+      );
+
       libvirt-python = prev.libvirt-python.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
         propagatedBuildInputs = [ pkgs.libvirt ];
