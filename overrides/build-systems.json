@@ -1429,6 +1429,9 @@
   "async-upnp-client": [
     "setuptools"
   ],
+  "asyncache": [
+    "poetry-core"
+  ],
   "asyncclick": [
     "setuptools",
     "setuptools-scm"
