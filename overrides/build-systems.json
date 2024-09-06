@@ -11020,6 +11020,9 @@
   "libvirt-python": [
     "setuptools"
   ],
+  "lice": [
+    "setuptools"
+  ],
   "license-expression": [
     "setuptools",
     "setuptools-scm"
