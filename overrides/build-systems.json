@@ -8036,7 +8036,8 @@
     }
   ],
   "gitpython": [
-    "setuptools"
+    "setuptools",
+    "typing-extensions"
   ],
   "glad": [
     "setuptools"
