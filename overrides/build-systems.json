@@ -10816,8 +10816,7 @@
     "setuptools"
   ],
   "libcst": [
-    "setuptools",
-    "setuptools-scm"
+    "setuptools-rust"
   ],
   "libevdev": [
     "setuptools"
