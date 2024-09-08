@@ -3715,22 +3715,23 @@ lib.composeManyExtensions [
       });
 
       shellcheck-py = prev.shellcheck-py.overridePythonAttrs (old: {
-
         # Make fetching/installing external binaries no-ops
         preConfigure =
           let
             fakeCommand = "type('FakeCommand', (Command,), {'initialize_options': lambda self: None, 'finalize_options': lambda self: None, 'run': lambda self: None})";
           in
           ''
+            # remove setup.cfg since it causes remote package access
+            rm -f setup.cfg
+
             substituteInPlace setup.py \
               --replace-warn "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
               --replace-warn "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
           '';
 
-        propagatedUserEnvPkgs = (old.propagatedUserEnvPkgs or [ ]) ++ [
+        propagatedUserEnvPkgs = old.propagatedUserEnvPkgs or [ ] ++ [
           pkgs.shellcheck
         ];
-
       });
 
       soundfile =
