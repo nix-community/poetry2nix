@@ -394,7 +394,7 @@ let
     # pyself & pyprev refers to python packages
     defaultPoetryOverrides = prev.defaultPoetryOverrides.extend (pyfinal: pyprev: {
 
-      my-custom-pkg = prev.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
+      my-custom-pkg = pyprev.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
 
     });
 
@@ -421,7 +421,7 @@ let
           # pyfinal & pyprev refers to python packages
           defaultPoetryOverrides = p2nixprev.defaultPoetryOverrides.extend (pyfinal: pyprev: {
 
-            my-custom-pkg = prev.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
+            my-custom-pkg = pyprev.my-custom-pkg.overridePythonAttrs (oldAttrs: { });
 
           });
 

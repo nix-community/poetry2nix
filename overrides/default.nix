@@ -635,12 +635,7 @@ in
         copier = prev.copier.overrideAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [pkgs.git];
         });
-        ckzg = prev.ckzg.overridePythonAttrs (old: {
-          postPatch = old.postPatch or pkgs.lib.optionalString pkgs.stdenv.cc.isGNU ''
-            substituteInPlace src/Makefile --replace 'CC = clang' 'CC = gcc'
-          '';
-          buildInputs = old.nativeBuildInputs or [] ++ [final.setuptools];
-        });
+
         cryptography = let
           getCargoHash = version:
             {
@@ -674,6 +669,7 @@ in
               "42.0.7" = "sha256-wAup/0sI8gYVsxr/vtcA+tNkBT8wxmp68FPbOuro1E4=";
               "42.0.8" = "sha256-PgxPcFocEhnQyrsNtCN8YHiMptBmk1PUhEDQFdUR1nU=";
               "43.0.0" = "sha256-TEQy8PrIaZshiBFTqR/OJp3e/bVM1USjcmpDYcjPJPM=";
+              "43.0.1" = "sha256-wiAHM0ucR1X7GunZX8V0Jk2Hsi+dVdGgDKqcYjSdD7Q=";
             }
             .${version}
             or (
@@ -1059,7 +1055,7 @@ in
 
         gdal = prev.gdal.overridePythonAttrs (
           old: {
-            nativeBuildInputs = old.nativeBuildInputs or [] ++ [gdal];
+            nativeBuildInputs = old.nativeBuildInputs or [] ++ [gdal final.numpy];
             preBuild =
               (old.preBuild or "")
               + ''
@@ -1421,7 +1417,6 @@ in
                 final.pytestrunner
                 final.cryptography
                 final.pyjwt
-                final.setuptools-scm-git-archive
               ];
           }
         );
@@ -1872,6 +1867,11 @@ in
             }
         );
 
+        msgspec = prev.msgspec.overridePythonAttrs (old: {
+          # crash during integer serialization - see https://github.com/jcrist/msgspec/issues/730
+          hardeningDisable = old.hardeningDisable or [] ++ ["fortify"];
+        });
+
         munch = prev.munch.overridePythonAttrs (
           old: {
             # Latest version of pypi imports pkg_resources at runtime, so setuptools is needed at runtime. :(
@@ -2249,6 +2249,7 @@ in
                     "3.9.10" = "sha256-MkcuayNDt7/GcswXoFTvzuaZzhQEQV+V7OfKqgJwVIQ=";
                     "3.9.7" = "sha256-VkCwvksUtgvFLSMy2fHLxrpZjcWYhincSM4fX/Gwl0I=";
                     "3.9.5" = "sha256-OFtaHZa7wUrUxhM8DkaqAP3dYZJdFGrz1jOtCIGsbbY=";
+                    "3.9.1" = "sha256-4aMVYwsLYjA8yoKiauMHBEi2cMN6MQla4sK92gLfx3k=";
                     "3.9.0" = "sha256-nLRluFt6dErLJUJ4W64G9o8qLTL1IKNKVtNqpN9YUNU=";
                     "3.8.14" = "sha256-/1NcXGYOjCIVsFee7qgmCjnYPJnDEtyHMKJ5sBamhWE=";
                     "3.8.13" = "sha256-pIxhev7Ap6r0UVYeOra/YAtbjTjn72JodhdCZIbA6lU=";
@@ -2706,6 +2707,10 @@ in
             '';
           }
         );
+
+        pyinstaller = prev.pyinstaller.overridePythonAttrs (old: {
+          buildInputs = old.buildInputs or [] ++ [pkgs.zlib];
+        });
 
         pymdown-extensions = prev.pymdown-extensions.overridePythonAttrs (old: {
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.pyyaml];
@@ -3577,6 +3582,8 @@ in
           #     done' _
           getRepoHash = version:
             {
+              "0.6.1" = "sha256-/tD1TJRq+/2/KMmRHqB8ZbShoDkXG9nnBqacxXYKjbg=";
+              "0.6.0" = "sha256-s4JIqeOIxJ3NQ61fuBYYF0kSovEMcVHRExLB7kpICeg=";
               "0.5.7" = "sha256-swnh2bfmwPP1BHlnKbOtRdskMMArZgP/ErtrnXKRiC8=";
               "0.5.6" = "sha256-70EEdr6gjdE8kjgMXYzHpqCzt4E73/Gr7ksNEbLlBoA=";
               "0.5.5" = "sha256-dqfK6YdAV4cdUYB8bPE9I5FduBJ90RxUA7TMvcVq6Zw=";
@@ -3654,8 +3661,24 @@ in
 
           getCargoHash = version:
             {
+              "0.6.1" = {
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.6.1/Cargo.lock
+                lockFile = ./ruff/0.6.1-Cargo.lock;
+                outputHashes = {
+                  "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                  "salsa-0.18.0" = "sha256-Gu7YVqEDJUSzBqTeZH1xU0b3CWsWZrEvjIg7QpUaKBw=";
+                };
+              };
+              "0.6.0" = {
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.6.0/Cargo.lock
+                lockFile = ./ruff/0.6.0-Cargo.lock;
+                outputHashes = {
+                  "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                  "salsa-0.18.0" = "sha256-Gu7YVqEDJUSzBqTeZH1xU0b3CWsWZrEvjIg7QpUaKBw=";
+                };
+              };
               "0.5.7" = {
-                # https://raw.githubusercontent.com/astral-sh/ruff/0.5.6/Cargo.lock
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.5.7/Cargo.lock
                 lockFile = ./ruff/0.5.7-Cargo.lock;
                 outputHashes = {
                   "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";

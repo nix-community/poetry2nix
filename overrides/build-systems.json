@@ -2981,6 +2981,9 @@
   "brunt": [
     "setuptools"
   ],
+  "bs4": [
+    "setuptools"
+  ],
   "bsblan": [
     "poetry-core",
     "setuptools"
@@ -17923,6 +17926,9 @@
   "pymorphy2-dicts-ru": [
     "setuptools"
   ],
+  "pymp4": [
+    "poetry-core"
+  ],
   "pympler": [
     "setuptools"
   ],
@@ -20400,6 +20406,9 @@
     "cython",
     "setuptools"
   ],
+  "pywidevine": [
+    "poetry-core"
+  ],
   "pywilight": [
     "setuptools"
   ],
@@ -21022,6 +21031,9 @@
     "setuptools"
   ],
   "requests-hawk": [
+    "setuptools"
+  ],
+  "requests-html": [
     "setuptools"
   ],
   "requests-http-signature": [
@@ -26260,6 +26272,9 @@
     "setuptools"
   ],
   "usbtmc": [
+    "setuptools"
+  ],
+  "user-agent": [
     "setuptools"
   ],
   "user-agents": [
