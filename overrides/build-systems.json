@@ -18301,7 +18301,14 @@
     "flit-core"
   ],
   "pyproject-metadata": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.8.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.8.0"
+    }
   ],
   "pyprosegur": [
     "setuptools"
