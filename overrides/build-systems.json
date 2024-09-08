@@ -11810,6 +11810,10 @@
   "meson": [
     "setuptools"
   ],
+  "meson-python": [
+    "meson",
+    "ninja"
+  ],
   "mesonpep517": [
     "setuptools"
   ],
