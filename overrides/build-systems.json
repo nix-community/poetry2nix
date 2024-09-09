@@ -14274,6 +14274,9 @@
   "objgraph": [
     "setuptools"
   ],
+  "objprint": [
+    "setuptools"
+  ],
   "objsize": [
     "setuptools"
   ],
