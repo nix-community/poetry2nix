@@ -26496,6 +26496,9 @@
   "vivisect": [
     "setuptools"
   ],
+  "viztracer": [
+    "setuptools"
+  ],
   "vmprof": [
     "setuptools"
   ],
