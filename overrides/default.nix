@@ -3967,6 +3967,17 @@ lib.composeManyExtensions [
         }
       );
 
+      pye3d = prev.pye3d.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ]
+          ++ [ pkgs.eigen final.scikit-build ];
+
+        postPatch = ''
+          sed -i "2i version = ${old.version}" setup.cfg
+        '';
+
+        dontUseCmakeConfigure = true;
+      });
+
       # pyee cannot find `vcversioner` and other "setup requirements", so it tries to
       # download them from the internet, which only works when nix sandboxing is disabled.
       # Additionally, since pyee uses vcversioner to specify its version, we need to do this

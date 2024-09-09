@@ -17126,6 +17126,11 @@
     "flit-core",
     "setuptools"
   ],
+  "pye3d": [
+    "cmake",
+    "cython",
+    "setuptools"
+  ],
   "pyeapi": [
     "setuptools"
   ],
