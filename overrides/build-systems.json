@@ -20094,6 +20094,9 @@
   "python3-application": [
     "setuptools"
   ],
+  "python3-discogs-client": [
+    "setuptools"
+  ],
   "python3-eventlib": [
     "setuptools"
   ],
