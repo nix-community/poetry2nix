@@ -1135,6 +1135,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "apykuma": [
+    "poetry-core"
+  ],
   "aqipy-atmotech": [
     "setuptools"
   ],
