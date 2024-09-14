@@ -287,7 +287,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             # without this patch a download of sqlite is attempted
-            substituteInPlace setup.py --replace 'if self.fetch:' 'if False:'
+            substituteInPlace setup.py --replace-warn 'if self.fetch:' 'if False:'
           '';
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.sqlite ];
         }
@@ -306,7 +306,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools~=67.3.2' 'setuptools'
+              --replace-warn 'setuptools~=67.3.2' 'setuptools'
           '';
         }
       );
@@ -315,7 +315,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools~=67.3.2' 'setuptools'
+              --replace-warn 'setuptools~=67.3.2' 'setuptools'
           '';
         }
       );
@@ -324,8 +324,8 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools~=62.1.0' 'setuptools' \
-              --replace 'wheel~=0.37.1' 'wheel'
+              --replace-warn 'setuptools~=62.1.0' 'setuptools' \
+              --replace-warn 'wheel~=0.37.1' 'wheel'
           '';
         }
       );
@@ -334,7 +334,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools~=67.3.2' 'setuptools'
+              --replace-warn 'setuptools~=67.3.2' 'setuptools'
           '';
         }
       );
@@ -447,7 +447,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools~=67.3.2' 'setuptools'
+              --replace-warn 'setuptools~=67.3.2' 'setuptools'
           '';
         }
       );
@@ -464,7 +464,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools~=67.3.2' 'setuptools'
+              --replace-warn 'setuptools~=67.3.2' 'setuptools'
           '';
         }
       );
@@ -485,9 +485,9 @@ lib.composeManyExtensions [
               buildInputs = old.buildInputs or [ ] ++ [ pkgs.libffi ];
               prePatch = (old.prePatch or "") + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
                 # Remove setup.py impurities
-                substituteInPlace setup.py --replace "'-iwithsysroot/usr/include/ffi'" ""
-                substituteInPlace setup.py --replace "'/usr/include/ffi'," ""
-                substituteInPlace setup.py --replace '/usr/include/libffi' '${lib.getDev pkgs.libffi}/include'
+                substituteInPlace setup.py --replace-warn "'-iwithsysroot/usr/include/ffi'" ""
+                substituteInPlace setup.py --replace-warn "'/usr/include/ffi'," ""
+                substituteInPlace setup.py --replace-warn '/usr/include/libffi' '${lib.getDev pkgs.libffi}/include'
               '';
 
             }
@@ -499,7 +499,7 @@ lib.composeManyExtensions [
         let
           fixupScriptText = ''
             substituteInPlace cmdstanpy/model.py \
-              --replace 'cmd = [make]' \
+              --replace-warn 'cmd = [make]' \
               'cmd = ["${pkgs.cmdstan}/bin/stan"]'
           '';
           isWheel = old.src.isWheel or false;
@@ -519,7 +519,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           dontUseMesonConfigure = true;
           postPatch = ''
-            substituteInPlace pyproject.toml --replace 'meson[ninja]' 'meson'
+            substituteInPlace pyproject.toml --replace-warn 'meson[ninja]' 'meson'
           '';
         }
       );
@@ -663,7 +663,7 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
         postPatch = ''
           if [ -f setup.py ]; then
-            substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+            substituteInPlace setup.py --replace-warn 'setuptools>=50.3.2,<51.0.0' 'setuptools'
           fi
         '';
       });
@@ -677,7 +677,7 @@ lib.composeManyExtensions [
         postPatch = ''
           # sometimes setup.py doesn't exist
           if [ -f setup.py ]; then
-            substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+            substituteInPlace setup.py --replace-warn 'setup_requires=["pytest-runner"],' ""
           fi
         '';
       });
@@ -688,7 +688,7 @@ lib.composeManyExtensions [
 
       datadog-lambda = prev.datadog-lambda.overridePythonAttrs (old: {
         postPatch = ''
-          substituteInPlace setup.py --replace "setuptools==" "setuptools>="
+          substituteInPlace setup.py --replace-warn "setuptools==" "setuptools>="
         '';
         buildInputs = old.buildInputs or [ ] ++ [ final.setuptools ];
       });
@@ -710,8 +710,8 @@ lib.composeManyExtensions [
           ++ lib.optionals (lib.versionAtLeast old.version "1.3") [ pkgs.dbus ];
       } // lib.optionalAttrs (lib.versionOlder old.version "1.3") {
         postPatch = old.postPatch or "" + ''
-          substituteInPlace ./configure --replace /usr/bin/file ${pkgs.file}/bin/file
-          substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
+          substituteInPlace ./configure --replace-warn /usr/bin/file ${pkgs.file}/bin/file
+          substituteInPlace ./dbus-python.pc.in --replace-warn 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
         '';
 
         configureFlags = old.configureFlags or [ ] ++ [
@@ -839,8 +839,8 @@ lib.composeManyExtensions [
           ${lib.optionalString (lib.versionOlder old.version "0.8") "cd tools/pythonpkg"}
 
           substituteInPlace setup.py \
-            --replace 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
-            --replace 'setuptools_scm<7.0.0' 'setuptools_scm'
+            --replace-warn 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
+            --replace-warn 'setuptools_scm<7.0.0' 'setuptools_scm'
         '';
       });
 
@@ -849,13 +849,13 @@ lib.composeManyExtensions [
 
       eth-hash = prev.eth-hash.overridePythonAttrs {
         preConfigure = ''
-          substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+          substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
         '';
       };
 
       eth-keyfile = prev.eth-keyfile.overridePythonAttrs (old: {
         preConfigure = ''
-          substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+          substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
         '';
 
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
@@ -863,7 +863,7 @@ lib.composeManyExtensions [
 
       eth-keys = prev.eth-keys.overridePythonAttrs {
         preConfigure = ''
-          substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+          substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
         '';
       };
 
@@ -872,7 +872,7 @@ lib.composeManyExtensions [
 
       evdev = prev.evdev.overridePythonAttrs (_old: {
         preConfigure = ''
-          substituteInPlace setup.py --replace /usr/include/linux ${pkgs.linuxHeaders}/include/linux
+          substituteInPlace setup.py --replace-warn /usr/include/linux ${pkgs.linuxHeaders}/include/linux
         '';
       });
 
@@ -887,8 +887,8 @@ lib.composeManyExtensions [
         old: {
           postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
             substituteInPlace setup.py \
-              --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
-              --replace 'versioning="devcommit"' 'version="${old.version}"'
+              --replace-warn 'setup_requires="setupmeta"' 'setup_requires=[]' \
+              --replace-warn 'versioning="devcommit"' 'version="${old.version}"'
           '';
         }
       );
@@ -913,7 +913,7 @@ lib.composeManyExtensions [
       file-magic = prev.file-magic.overridePythonAttrs (_: {
         postPatch = ''
           substituteInPlace magic.py \
-            --replace \
+            --replace-warn \
             "find_library('magic')" \
             "'${pkgs.file}/lib/libmagic${sharedLibExt}'"
         '';
@@ -939,7 +939,7 @@ lib.composeManyExtensions [
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ gdal final.numpy ];
           preBuild = (old.preBuild or "") + ''
             substituteInPlace setup.cfg \
-              --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
+              --replace-warn "../../apps/gdal-config" '${gdal}/bin/gdal-config'
           '';
         }
       );
@@ -1042,7 +1042,7 @@ lib.composeManyExtensions [
         old: {
           preBuild = (old.preBuild or "") + ''
             substituteInPlace h3/h3.py \
-              --replace "'{}/{}'.format(_dirname, libh3_path)" '"${pkgs.h3}/lib/libh3${sharedLibExt}"'
+              --replace-warn "'{}/{}'.format(_dirname, libh3_path)" '"${pkgs.h3}/lib/libh3${sharedLibExt}"'
           '';
         }
       );
@@ -1068,7 +1068,7 @@ lib.composeManyExtensions [
             HDF5_MPI = if mpiSupport then "ON" else "OFF";
             # avoid strict pinning of numpy
             postPatch = ''
-              substituteInPlace setup.py --replace "numpy ==" "numpy >="
+              substituteInPlace setup.py --replace-warn "numpy ==" "numpy >="
             '';
             pythonImportsCheck = [ "h5py" ];
           }
@@ -1127,7 +1127,7 @@ lib.composeManyExtensions [
       icecream = prev.icecream.overridePythonAttrs (_old: {
         #  # ERROR: Could not find a version that satisfies the requirement executing>=0.3.1 (from icecream) (from versions: none)
         postPatch = ''
-          substituteInPlace setup.py --replace 'executing>=0.3.1' 'executing'
+          substituteInPlace setup.py --replace-warn 'executing>=0.3.1' 'executing'
         '';
       });
 
@@ -1142,19 +1142,19 @@ lib.composeManyExtensions [
         old: {
           patchPhase = ''
             substituteInPlace setup.py \
-              --replace "/usr/include/openjpeg-2.3" \
+              --replace-warn "/usr/include/openjpeg-2.3" \
                         "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}"
             substituteInPlace setup.py \
-              --replace "/usr/include/jxrlib" \
+              --replace-warn "/usr/include/jxrlib" \
                         "$out/include/libjxr"
             substituteInPlace imagecodecs/_zopfli.c \
-              --replace '"zopfli/zopfli.h"' \
+              --replace-warn '"zopfli/zopfli.h"' \
                         '<zopfli.h>'
             substituteInPlace imagecodecs/_zopfli.c \
-              --replace '"zopfli/zlib_container.h"' \
+              --replace-warn '"zopfli/zlib_container.h"' \
                         '<zlib_container.h>'
             substituteInPlace imagecodecs/_zopfli.c \
-              --replace '"zopfli/gzip_container.h"' \
+              --replace-warn '"zopfli/gzip_container.h"' \
                         '<gzip_container.h>'
           '';
 
@@ -1262,7 +1262,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools>=40.8.0,<61' 'setuptools'
+              --replace-warn 'setuptools>=40.8.0,<61' 'setuptools'
           '';
         }
       );
@@ -1281,7 +1281,7 @@ lib.composeManyExtensions [
       jsondiff = prev.jsondiff.overridePythonAttrs (
         old: lib.optionalAttrs (lib.versionOlder old.version "2.0.0" && !(old.src.isWheel or false)) {
           preBuild = (old.preBuild or "") + ''
-            substituteInPlace setup.py --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
+            substituteInPlace setup.py --replace-warn "'jsondiff=jsondiff.cli:main_deprecated'," ""
           '';
         }
       );
@@ -1339,7 +1339,7 @@ lib.composeManyExtensions [
           # jupyterlab?)
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace ', "jupyterlab~=3.1"' ""
+              --replace-warn ', "jupyterlab~=3.1"' ""
           '';
         }
       );
@@ -1382,7 +1382,7 @@ lib.composeManyExtensions [
         buildInputs = old.buildInputs or [ ] ++ [ final.setuptools ];
 
         postPatch = ''
-          substituteInPlace libarchive/library.py --replace \
+          substituteInPlace libarchive/library.py --replace-warn \
             "_FILEPATH = find_and_load_library()" "_FILEPATH = '${pkgs.libarchive.lib}/lib/libarchive${sharedLibExt}'"
         '';
       });
@@ -1490,7 +1490,7 @@ lib.composeManyExtensions [
           propagatedBuildInputs = builtins.filter (i: i.pname != "mdit-py-plugins") old.propagatedBuildInputs;
           preConfigure = lib.optionalString (!(old.src.isWheel or false)) (
             (old.preConfigure or "") + ''
-              substituteInPlace pyproject.toml --replace 'plugins = ["mdit-py-plugins"]' 'plugins = []'
+              substituteInPlace pyproject.toml --replace-warn 'plugins = ["mdit-py-plugins"]' 'plugins = []'
             ''
           );
         }
@@ -1589,8 +1589,8 @@ lib.composeManyExtensions [
               '' + lib.optionalString (stdenv.isLinux && interactive) ''
                 # fix paths to libraries in dlopen calls (headless detection)
                 substituteInPlace src/_c_internal_utils.c \
-                  --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
-                  --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
+                  --replace-warn libX11.so.6 ${libX11}/lib/libX11.so.6 \
+                  --replace-warn libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
               ''
               + lib.optionalString mpl39 ''patchShebangs .''
               # avoid matplotlib trying to download dependencies
@@ -1643,7 +1643,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'Cython~=3.0.0' 'Cython'
+              --replace-warn 'Cython~=3.0.0' 'Cython'
           '';
         }
       );
@@ -2003,11 +2003,38 @@ lib.composeManyExtensions [
               sha256 = githubHash;
             };
 
+            cargoHash = {
+              "3.10.7" = "sha256-MACmdptHmnifBTfB5s+CY6npAOFIrh0zvrIImYghGsw=";
+              "3.10.6" = "sha256-SNdwqb47dJ084TMNsm2Btks1UCDerjSmSrQQUiGbx50=";
+              "3.10.5" = "sha256-yhLKw4BhdIHgcu4iVlXQlHk/8J+3NK6LlmSWbm/5y4Q=";
+              "3.10.4" = "sha256-3///vbnCUeMVi2Yej8IR3ensQntA+E0su0GxhMN+2Rs=";
+              "3.10.3" = "sha256-ilGq+/gPSuNwURUWy2ZxInzmUv+PxYMxd8esxrMpr2o=";
+              "3.9.10" = "sha256-2eRV+oZQvsWWJ4AUTeuE0CHtTHC6jNZiX/y5uXuwvns=";
+              "3.9.7" = "sha256-IwWbd7LE/t1UEo/bdC0bXl2K8hYyvDPbyHLBIurfb/8=";
+              "3.9.5" = "sha256-ErKqQXuSWUr3wav3SE6YpkCma3DLlV8VOsCjtvTf13M=";
+              "3.9.1" = "sha256-2eRV+oZQvsWWJ4AUTeuE0CHtTHC6jNZiX/y5uXuwvns=";
+              "3.9.0" = "sha256-BsRs7noHkpa74pVw5X1t+gA35XrJRBI33XYQIzXEtXA=";
+              "3.8.14" = "sha256-PTfwnQW4q9StMuLwy3yB14U8uRhKRe6n/hwpHCAYB3A=";
+              "3.8.13" = "sha256-L3qei2Qh1AXbfiZ0zh3CZ0HE8EYxFqp3xmw8g2TutXE=";
+              "3.8.12" = "sha256-OAF1qyHLy8c1o7FNKMwzuumq1bA7x1mFzSAS/Ml7M34=";
+              "3.8.11" = "sha256-/x+0/I3WFxPwVu2LliTgr42SuJX7VjOLe/SGai5OgAw=";
+              "3.8.10" = "sha256-AcrTEHv7GYtGe4fXYsM24ElrzfhnOxLYlaon1ZrlD4A=";
+              "3.8.9" = "sha256-ogkTRRykLF2dTOxilsfwsRH+Au/O0e1kL1e9sFOFLeY=";
+              "3.8.8" = "sha256-AK4HtqPKg2O2FeLHCbY9o+N1BV4QFMNaHVE1NaFYHa4=";
+              "3.8.7" = "sha256-JBO8nl0sC+XIn17vI7hC8+nA1HYI9jfvZrl9nCE3k1s=";
+              "3.8.6" = "sha256-8T//q6nQoZhh8oJWDCeQf3gYRew58dXAaxkYELY4CJM=";
+              "3.8.5" = "sha256-JtUCJ3TP9EKGcddeyW1e/72k21uKneq9SnZJeLvn9Os=";
+              "3.8.4" = "sha256-O2W9zO7qHWG+78T+uECICAmecaSIbTTJPktJIPZYElE=";
+              "3.8.3" = "sha256-oSZO4cN1sJKd0T7pYrKG63is8AZMKaLRZqj5UCVY/14=";
+            }.${old.version};
+
           in
           {
             inherit src;
-            cargoDeps = pkgs.rustPlatform.importCargoLock {
-              lockFile = "${src.out}/Cargo.lock";
+            cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+              inherit src;
+              name = "${old.pname}-${old.version}";
+              sha256 = cargoHash;
             };
             nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
               pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
@@ -2041,14 +2068,14 @@ lib.composeManyExtensions [
         postPatch = ''
           if [ -f pyproject.toml ]; then
             substituteInPlace pyproject.toml \
-              --replace 'meson-python==0.13.1' 'meson-python'
+              --replace-warn 'meson-python==0.13.1' 'meson-python'
           fi
         '' + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
           if [ -f setup.py ]; then
             cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
             echo "Adding $cpp_sdk to the setup.py common_include variable"
             substituteInPlace setup.py \
-              --replace "['pandas/src/klib', 'pandas/src']" \
+              --replace-warn "['pandas/src/klib', 'pandas/src']" \
                         "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
           fi
         '';
@@ -2153,7 +2180,7 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'flit_core >=2,<3' 'flit_core'
+              --replace-warn 'flit_core >=2,<3' 'flit_core'
           '';
         }
       );
@@ -2232,7 +2259,7 @@ lib.composeManyExtensions [
       py-solc-x = prev.py-solc-x.overridePythonAttrs (
         old: {
           preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
           '';
           propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.requests final.semantic-version ];
         }
@@ -2407,11 +2434,11 @@ lib.composeManyExtensions [
         old: {
           postPatch = (old.postPatch or "") + ''
             substituteInPlace pymediainfo/__init__.py \
-              --replace "libmediainfo.0.dylib" \
+              --replace-warn "libmediainfo.0.dylib" \
                         "${pkgs.libmediainfo}/lib/libmediainfo.0${sharedLibExt}" \
-              --replace "libmediainfo.dylib" \
+              --replace-warn "libmediainfo.dylib" \
                         "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}" \
-              --replace "libmediainfo.so.0" \
+              --replace-warn "libmediainfo.so.0" \
                         "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}.0"
           '';
         }
@@ -2521,11 +2548,11 @@ lib.composeManyExtensions [
           postPatch =
             if withApplePCSC then ''
               substituteInPlace smartcard/scard/winscarddll.c \
-                --replace "/System/Library/Frameworks/PCSC.framework/PCSC" \
+                --replace-warn "/System/Library/Frameworks/PCSC.framework/PCSC" \
                           "${PCSC}/Library/Frameworks/PCSC.framework/PCSC"
             '' else ''
               substituteInPlace smartcard/scard/winscarddll.c \
-                --replace "libpcsclite.so.1" \
+                --replace-warn "libpcsclite.so.1" \
                           "${lib.getLib pcsclite}/lib/libpcsclite${sharedLibExt}"
             '';
           propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ (
@@ -2602,7 +2629,7 @@ lib.composeManyExtensions [
         postPatch = (old.postPatch or "") + ''
           echo "Patching find_library call."
           substituteInPlace snap7/common.py \
-            --replace "find_library('snap7')" "\"${pkgs.snap7}/lib/libsnap7.so\""
+            --replace-warn "find_library('snap7')" "\"${pkgs.snap7}/lib/libsnap7.so\""
         '';
       });
 
@@ -2830,8 +2857,8 @@ lib.composeManyExtensions [
           postPatch = ''
             # sometimes setup.py doesn't exist
             if [ -f setup.py ]; then
-              substituteInPlace setup.py --replace "'pytest>=3.6'," ""
-              substituteInPlace setup.py --replace "'pytest>=3.6'" ""
+              substituteInPlace setup.py --replace-warn "'pytest>=3.6'," ""
+              substituteInPlace setup.py --replace-warn "'pytest>=3.6'" ""
             fi
           '';
         }
@@ -2847,9 +2874,9 @@ lib.composeManyExtensions [
         old: lib.optionalAttrs (!(old.src.isWheel or false)) {
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'setuptools ~= 50.3.0' 'setuptools' \
-              --replace 'wheel ~= 0.36.0' 'wheel' \
-              --replace 'setuptools-scm[toml] ~= 5.0.0' 'setuptools-scm[toml]' \
+              --replace-warn 'setuptools ~= 50.3.0' 'setuptools' \
+              --replace-warn 'wheel ~= 0.36.0' 'wheel' \
+              --replace-warn 'setuptools-scm[toml] ~= 5.0.0' 'setuptools-scm[toml]' \
           '';
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
             final.toml
@@ -2897,7 +2924,7 @@ lib.composeManyExtensions [
           libPath = "${lib.getLib pkgs.file}/lib/libmagic${sharedLibExt}";
           fixupScriptText = ''
             substituteInPlace magic/loader.py \
-              --replace "find_library('magic')" "'${libPath}'"
+              --replace-warn "find_library('magic')" "'${libPath}'"
           '';
           isWheel = old.src.isWheel or false;
         in
@@ -2921,8 +2948,8 @@ lib.composeManyExtensions [
         _old: {
           postPatch = ''
             substituteInPlace src/pam/__internals.py \
-            --replace 'find_library("pam")' '"${pkgs.pam}/lib/libpam.so"' \
-            --replace 'find_library("pam_misc")' '"${pkgs.pam}/lib/libpam_misc.so"'
+            --replace-warn 'find_library("pam")' '"${pkgs.pam}/lib/libpam.so"' \
+            --replace-warn 'find_library("pam_misc")' '"${pkgs.pam}/lib/libpam_misc.so"'
           '';
         }
       );
@@ -2958,7 +2985,7 @@ lib.composeManyExtensions [
       pyudev = prev.pyudev.overridePythonAttrs (_old: {
         postPatch = ''
           substituteInPlace src/pyudev/_ctypeslib/utils.py \
-            --replace "find_library(name)" "'${lib.getLib pkgs.systemd}/lib/libudev.so'"
+            --replace-warn "find_library(name)" "'${lib.getLib pkgs.systemd}/lib/libudev.so'"
         '';
       });
 
@@ -3021,7 +3048,7 @@ lib.composeManyExtensions [
       scaleapi = prev.scaleapi.overridePythonAttrs (
         _old: {
           postPatch = ''
-            substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
+            substituteInPlace setup.py --replace-warn "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
           '';
         }
       );
@@ -3053,8 +3080,8 @@ lib.composeManyExtensions [
           dontUseCmakeConfigure = true;
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'scikit-build~=0.17.0' 'scikit-build' \
-              --replace 'Cython==3.0.0b2' 'Cython'
+              --replace-warn 'scikit-build~=0.17.0' 'scikit-build' \
+              --replace-warn 'Cython==3.0.0b2' 'Cython'
           '';
         }
       );
@@ -3085,7 +3112,7 @@ lib.composeManyExtensions [
 
       rlp = prev.rlp.overridePythonAttrs {
         preConfigure = ''
-          substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+          substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
         '';
       };
 
@@ -3149,7 +3176,7 @@ lib.composeManyExtensions [
       rtree = prev.rtree.overridePythonAttrs (old: {
         propagatedNativeBuildInputs = old.propagatedNativeBuildInputs or [ ] ++ [ pkgs.libspatialindex ];
         postPatch = ''
-          substituteInPlace rtree/finder.py --replace \
+          substituteInPlace rtree/finder.py --replace-warn \
             "find_library('spatialindex_c')" \
             "'${pkgs.libspatialindex}/lib/libspatialindex_c${sharedLibExt}'"
         '';
@@ -3414,7 +3441,7 @@ lib.composeManyExtensions [
             (stdenv.isDarwin && (lib.versionAtLeast old.version "1.14.0"))
             ''
               substituteInPlace scipy/meson.build \
-                --replace "'xcrun'" "'${pkgs.buildPackages.xcbuild}/bin/xcrun'"
+                --replace-warn "'xcrun'" "'${pkgs.buildPackages.xcbuild}/bin/xcrun'"
             '';
           preConfigure = ''
             export NPY_NUM_BUILD_JOBS=$NIX_BUILD_CORES
@@ -3426,10 +3453,10 @@ lib.composeManyExtensions [
           '';
           postPatch = ''
             substituteInPlace pyproject.toml \
-              --replace 'wheel<0.38.0' 'wheel' \
-              --replace 'pybind11>=2.4.3,<2.11.0' 'pybind11' \
-              --replace 'pythran>=0.9.12,<0.13.0' 'pythran' \
-              --replace 'setuptools<=51.0.0' 'setuptools'
+              --replace-warn 'wheel<0.38.0' 'wheel' \
+              --replace-warn 'pybind11>=2.4.3,<2.11.0' 'pybind11' \
+              --replace-warn 'pythran>=0.9.12,<0.13.0' 'pythran' \
+              --replace-warn 'setuptools<=51.0.0' 'setuptools'
             sed -i pyproject.toml -e 's/numpy==[0-9]\+\.[0-9]\+\.[0-9]\+;/numpy;/g'
           '';
         }
@@ -3472,7 +3499,7 @@ lib.composeManyExtensions [
 
       ckzg = prev.ckzg.overridePythonAttrs (old: {
         postPatch = old.postPatch or lib.optionalString stdenv.cc.isGNU ''
-          substituteInPlace src/Makefile --replace 'CC = clang' 'CC = gcc'
+          substituteInPlace src/Makefile --replace-warn 'CC = clang' 'CC = gcc'
         '';
       });
 
@@ -3490,11 +3517,11 @@ lib.composeManyExtensions [
 
           postPatch = old.postPatch or "" + ''
             patchShebangs .
-            substituteInPlace pyproject.toml --replace 'setuptools<60.0' 'setuptools'
+            substituteInPlace pyproject.toml --replace-warn 'setuptools<60.0' 'setuptools'
           ''
             # patchShebangs doesn't seem to like #!/usr but accepts #! /usr ¯\_(ツ)_/¯
             + lib.optionalString (lib.versionAtLeast old.version "1.5") ''
-            substituteInPlace sklearn/_build_utils/version.py --replace "#!/usr/bin/env python" "#!${final.python}/bin/python"
+            substituteInPlace sklearn/_build_utils/version.py --replace-warn "#!/usr/bin/env python" "#!${final.python}/bin/python"
           '';
         }
       );
@@ -3511,8 +3538,8 @@ lib.composeManyExtensions [
         # Local setuptools versions like "x.y.post0" confuse an internal check
         postPatch = ''
           substituteInPlace setup.py \
-            --replace 'setuptools_version.' '"${final.setuptools.version}".' \
-            --replace 'pytest-runner==' 'pytest-runner>='
+            --replace-warn 'setuptools_version.' '"${final.setuptools.version}".' \
+            --replace-warn 'pytest-runner==' 'pytest-runner>='
         '';
       });
 
@@ -3540,7 +3567,7 @@ lib.composeManyExtensions [
           # Fix library paths
           postPatch = lib.optionalString (!(old.src.isWheel or false)) (old.postPatch or "" + ''
             ${pkgs.python3.interpreter} ${./shapely-rewrite.py} shapely/geos.py
-            substituteInPlace pyproject.toml --replace 'setuptools<64' 'setuptools'
+            substituteInPlace pyproject.toml --replace-warn 'setuptools<64' 'setuptools'
           '');
         }
       );
@@ -3548,8 +3575,8 @@ lib.composeManyExtensions [
       jsii = prev.jsii.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
         postPatch = ''
           substituteInPlace pyproject.toml \
-            --replace 'setuptools~=62.2' 'setuptools' \
-            --replace 'wheel~=0.37' 'wheel'
+            --replace-warn 'setuptools~=62.2' 'setuptools' \
+            --replace-warn 'wheel~=0.37' 'wheel'
         '';
       });
 
@@ -3562,8 +3589,8 @@ lib.composeManyExtensions [
           in
           ''
             substituteInPlace setup.py \
-              --replace "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
-              --replace "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
+              --replace-warn "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
+              --replace-warn "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
           '';
 
         propagatedUserEnvPkgs = (old.propagatedUserEnvPkgs or [ ]) ++ [
@@ -3576,7 +3603,7 @@ lib.composeManyExtensions [
         let
           patch = ''
             substituteInPlace soundfile.py \
-              --replace "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${sharedLibExt}'"
+              --replace-warn "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${sharedLibExt}'"
           '';
         in
         prev.soundfile.overridePythonAttrs (old: {
@@ -3596,7 +3623,7 @@ lib.composeManyExtensions [
         patchPhase = builtins.concatStringsSep "\n" [
           (old.patchPhase or "")
           ''
-            substituteInPlace "pyproject.toml" --replace 'version = "0"' 'version = "${old.version}"'
+            substituteInPlace "pyproject.toml" --replace-warn 'version = "0"' 'version = "${old.version}"'
           ''
         ];
       });
@@ -3676,14 +3703,14 @@ lib.composeManyExtensions [
       tensorpack = prev.tensorpack.overridePythonAttrs (
         _old: {
           postPatch = ''
-            substituteInPlace setup.cfg --replace "# will call find_packages()" ""
+            substituteInPlace setup.cfg --replace-warn "# will call find_packages()" ""
           '';
         }
       );
 
       thrift = prev.thrift.overridePythonAttrs (old: {
         postPatch = old.postPatch or "" + lib.optionalString (final.pythonAtLeast "3.12") ''
-          substituteInPlace setup.cfg --replace 'optimize = 1' 'optimize = 0'
+          substituteInPlace setup.cfg --replace-warn 'optimize = 1' 'optimize = 0'
         '';
       });
 
@@ -3830,8 +3857,8 @@ lib.composeManyExtensions [
             patchPhase = builtins.concatStringsSep "\n" [
               (old.patchPhase or "")
               ''
-                substituteInPlace "Cargo.lock" --replace 'version = "0.0.0"' 'version = "${old.version}"'
-                substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
+                substituteInPlace "Cargo.lock" --replace-warn 'version = "0.0.0"' 'version = "${old.version}"'
+                substituteInPlace "Cargo.toml" --replace-warn 'version = "0.0.0"' 'version = "${old.version}"'
               ''
             ];
             buildInputs = old.buildInputs or [ ] ++ lib.optionals stdenv.isDarwin [
@@ -3855,7 +3882,7 @@ lib.composeManyExtensions [
 
       web3 = prev.web3.overridePythonAttrs {
         preConfigure = ''
-          substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+          substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
         '';
       };
 
@@ -3940,6 +3967,17 @@ lib.composeManyExtensions [
         }
       );
 
+      pye3d = prev.pye3d.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ]
+          ++ [ pkgs.eigen final.scikit-build ];
+
+        postPatch = ''
+          sed -i "2i version = ${old.version}" setup.cfg
+        '';
+
+        dontUseCmakeConfigure = true;
+      });
+
       # pyee cannot find `vcversioner` and other "setup requirements", so it tries to
       # download them from the internet, which only works when nix sandboxing is disabled.
       # Additionally, since pyee uses vcversioner to specify its version, we need to do this
@@ -3962,7 +4000,7 @@ lib.composeManyExtensions [
       newrelic = prev.newrelic.overridePythonAttrs (
         old: {
           postPatch = old.postPatch or "" + ''
-            substituteInPlace setup.py --replace '"setuptools_scm>=3.2,<4"' '"setuptools_scm"'
+            substituteInPlace setup.py --replace-warn '"setuptools_scm>=3.2,<4"' '"setuptools_scm"'
           '';
         }
       );
@@ -4036,8 +4074,8 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.sqlite ];
         patchPhase = ''
           substituteInPlace "setup.cfg"                                     \
-                  --replace "/usr/local/include" "${pkgs.sqlite.dev}/include"   \
-                  --replace "/usr/local/lib" "${pkgs.sqlite.out}/lib"
+                  --replace-warn "/usr/local/include" "${pkgs.sqlite.dev}/include"   \
+                  --replace-warn "/usr/local/lib" "${pkgs.sqlite.out}/lib"
           ${lib.optionalString (!stdenv.isDarwin) ''export LDSHARED="$CC -pthread -shared"''}
         '';
       });
@@ -4081,7 +4119,7 @@ lib.composeManyExtensions [
           patchExporters = lib.optionalString (lib.versionAtLeast final.nbconvert.version "6.5.0") ''
             substituteInPlace \
               ./nbconvert/exporters/templateexporter.py \
-              --replace \
+              --replace-warn \
               'root_dirs.extend(jupyter_path())' \
               'root_dirs.extend(jupyter_path() + [os.path.join("@out@", "share", "jupyter")])' \
               --subst-var out
@@ -4092,7 +4130,7 @@ lib.composeManyExtensions [
             patchExporters + lib.optionalString (lib.versionAtLeast final.nbconvert.version "7.0") ''
               substituteInPlace \
                 ./hatch_build.py \
-                --replace \
+                --replace-warn \
                 'if final.target_name not in ["wheel", "sdist"]:' \
                 'if True:'
             ''

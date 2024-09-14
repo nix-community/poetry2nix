@@ -14007,6 +14007,9 @@
   "nmapthon2": [
     "setuptools"
   ],
+  "nmcli": [
+    "setuptools"
+  ],
   "nocasedict": [
     "setuptools"
   ],
@@ -14272,6 +14275,9 @@
     "setuptools"
   ],
   "objgraph": [
+    "setuptools"
+  ],
+  "objprint": [
     "setuptools"
   ],
   "objsize": [
@@ -17118,6 +17124,11 @@
   ],
   "pydyf": [
     "flit-core",
+    "setuptools"
+  ],
+  "pye3d": [
+    "cmake",
+    "cython",
     "setuptools"
   ],
   "pyeapi": [
@@ -20081,6 +20092,9 @@
     "setuptools"
   ],
   "python3-application": [
+    "setuptools"
+  ],
+  "python3-discogs-client": [
     "setuptools"
   ],
   "python3-eventlib": [
@@ -26488,6 +26502,9 @@
     "setuptools"
   ],
   "vivisect": [
+    "setuptools"
+  ],
+  "viztracer": [
     "setuptools"
   ],
   "vmprof": [
