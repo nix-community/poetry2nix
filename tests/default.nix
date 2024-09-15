@@ -108,6 +108,7 @@ in
   cattrs = callTest ./cattrs { };
   cattrs-pre-23-2 = callTest ./cattrs-pre-23-2 { };
   cdk-nag = callTest ./cdk-nag { };
+  commitizen = callTest ./commitizen { };
   arrow = callTest ./arrow { };
   gitlint-core = callTest ./gitlint-core { };
   gitlint = callTest ./gitlint { };
