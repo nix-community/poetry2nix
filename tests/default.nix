@@ -115,6 +115,8 @@ in
   jupyter-ydoc = callTest ./jupyter-ydoc { };
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
+  decli = callTest ./decli { };
+  decli-pre-0_6_2 = callTest ./decli-pre-0_6_2 { };
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
