@@ -1143,7 +1143,7 @@ lib.composeManyExtensions [
           patchPhase = ''
             substituteInPlace setup.py \
               --replace-warn "/usr/include/openjpeg-2.3" \
-                        "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}
+                        "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}"
             substituteInPlace setup.py \
               --replace-warn "/usr/include/jxrlib" \
                         "$out/include/libjxr"
