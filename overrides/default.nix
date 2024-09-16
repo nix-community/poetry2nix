@@ -1650,7 +1650,7 @@ lib.composeManyExtensions [
 
       msgspec = prev.msgspec.overridePythonAttrs (old: {
         # crash during integer serialization - see https://github.com/jcrist/msgspec/issues/730
-        hardeningDisable = old.hardeningDisable or [] ++ [ "fortify" ];
+        hardeningDisable = old.hardeningDisable or [ ] ++ [ "fortify" ];
       });
 
       munch = prev.munch.overridePythonAttrs (
@@ -2774,15 +2774,12 @@ lib.composeManyExtensions [
       });
 
       pyside6-essentials = prev.pyside6-essentials.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
-        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6*" ];
+        autoPatchelfIgnoreMissingDeps = [ "libmysqlclient.so.21" "libmimerapi.so" "libQt6EglFsKmsGbmSupport.so*" ];
         preFixup = ''
-          addAutoPatchelfSearchPath $out/${final.python.sitePackages}/PySide6
           addAutoPatchelfSearchPath ${final.shiboken6}/${final.python.sitePackages}/shiboken6
         '';
-        postInstall = ''
-          rm -r $out/${final.python.sitePackages}/PySide6/__pycache__
-        '';
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+          pkgs.qt6.full
           pkgs.libxkbcommon
           pkgs.gtk3
           pkgs.speechd
@@ -2802,30 +2799,47 @@ lib.composeManyExtensions [
           pkgs.xorg.xcbutilwm
           pkgs.libdrm
           pkgs.pulseaudio
-          final.shiboken6
         ];
+        pythonImportsCheck = [
+          "PySide6"
+          "PySide6.QtCore"
+        ];
+        postInstall = ''
+          python -c 'import PySide6; print(PySide6.__all__)'
+        '';
       });
 
-      pyside6-addons = prev.pyside6-addons.overridePythonAttrs (old: lib.optionalAttrs stdenv.isLinux {
+      pyside6-addons = prev.pyside6-addons.overridePythonAttrs (_old: lib.optionalAttrs stdenv.isLinux {
         autoPatchelfIgnoreMissingDeps = [
           "libmysqlclient.so.21"
           "libmimerapi.so"
-          "libQt6Quick3DSpatialAudio.so.6"
-          "libQt6Quick3DHelpersImpl.so.6"
         ];
         preFixup = ''
           addAutoPatchelfSearchPath ${final.shiboken6}/${final.python.sitePackages}/shiboken6
           addAutoPatchelfSearchPath ${final.pyside6-essentials}/${final.python.sitePackages}/PySide6
+          addAutoPatchelfSearchPath $out/${final.python.sitePackages}/PySide6
         '';
-        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [
+        buildInputs = [
           pkgs.nss
           pkgs.xorg.libXtst
           pkgs.alsa-lib
           pkgs.xorg.libxshmfence
           pkgs.xorg.libxkbfile
         ];
-        postInstall = ''
-          rm -r $out/${final.python.sitePackages}/PySide6/__pycache__
+      });
+      pyside6 = prev.pyside6.overridePythonAttrs (_old: {
+        # The PySide6/__init__.py script tries to find the Qt libraries
+        # relative to its own path in the installed site-packages directory.
+        # This then fails to find the paths from pyside6-essentials and
+        # pyside6-addons because they are installed into different directories.
+        #
+        # To work around this issue we symlink all of the files resulting from
+        # those packages into the aggregated `pyside6` output directories.
+        #
+        # See https://github.com/nix-community/poetry2nix/issues/1791 for more details.
+        postFixup = ''
+          ${pkgs.xorg.lndir}/bin/lndir ${final.pyside6-essentials}/${final.python.sitePackages}/PySide6 $out/${final.python.sitePackages}/PySide6
+          ${pkgs.xorg.lndir}/bin/lndir ${final.pyside6-addons}/${final.python.sitePackages}/PySide6 $out/${final.python.sitePackages}/PySide6
         '';
       });
 
