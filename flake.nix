@@ -135,7 +135,7 @@
         poetry = {
           # https://wiki.nixos.org/wiki/Flakes
           type = "app";
-          program = pkgs.poetry;
+          program = "${pkgs.poetry}/bin/poetry";
         };
         poetry2nix = flake-utils.lib.mkApp { drv = packages.poetry2nix; };
         default = apps.poetry2nix;
