@@ -3802,6 +3802,7 @@ lib.composeManyExtensions [
         let
           # Watchfiles does not include Cargo.lock in tarball released on PyPi for versions up to 0.17.0
           getRepoHash = version: {
+            "0.24.0" = "sha256-uc4CfczpNkS4NMevtRxhUOj9zTt59cxoC0BXnuHFzys=";
             "0.23.0" = "sha256-kFScg3pkOD0gASRtfXSfwZxyW/XvW9x0zgMn0AQek4A=";
             "0.22.0" = "sha256-TtRSRgtMOqsnhdvsic3lg33xlA+r/DcYHlzewSOu/44=";
             "0.21.0" = "sha256-/qNgkPF5N8jzSV3M0YFWvQngZ4Hf4WM/GBS1LtgFbWM=";
@@ -3822,6 +3823,9 @@ lib.composeManyExtensions [
           sha256 = getRepoHash prev.watchfiles.version;
 
           getCargoHash = version: {
+            "0.24.0".outputHashes = {
+             "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
+            };
             "0.23.0" = "sha256-m7XFpbujWFmDNSDydY3ec6b+AGgrfo3+TTbRN7te8bY=";
             "0.22.0" = "sha256-pl5BBOxrxvPvBJTnTqvWNFecoJwfyuAs4xZEgmg+T+w=";
             "0.21.0" = "sha256-KDm1nGeg4oDcbopedPfzalK2XO1c1ZQUZu6xhfRdQx4=";
@@ -3840,11 +3844,11 @@ lib.composeManyExtensions [
             };
 
             cargoDeps = let hash = getCargoHash prev.watchfiles.version; in
-              if hash == null then
+              if hash == null || lib.isAttrs hash then
                 pkgs.rustPlatform.importCargoLock
-                  {
+                  ({
                     lockFile = "${src.out}/Cargo.lock";
-                  } else
+                  } // (lib.optionalAttrs (lib.isAttrs hash) hash)) else
                 pkgs.rustPlatform.fetchCargoTarball {
                   name = "watchfiles-${old.version}-cargo-deps";
                   inherit src hash;
