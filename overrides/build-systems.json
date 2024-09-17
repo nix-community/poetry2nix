@@ -5286,6 +5286,9 @@
   "django-braces": [
     "setuptools"
   ],
+  "django-browser-reload": [
+    "setuptools"
+  ],
   "django-cache-memoize": [
     "setuptools"
   ],
@@ -5471,6 +5474,9 @@
   "django-libsass": [
     "setuptools"
   ],
+  "django-lifecycle": [
+    "setuptools"
+  ],
   "django-logentry-admin": [
     "setuptools"
   ],
@@ -5616,6 +5622,9 @@
   "django-scopes": [
     "setuptools"
   ],
+  "django-sendgrid-v5": [
+    "setuptools"
+  ],
   "django-ses": [
     "setuptools"
   ],
@@ -5666,9 +5675,15 @@
   "django-tastypie": [
     "setuptools"
   ],
+  "django-template-partials": [
+    "flit-core"
+  ],
   "django-timezone-field": [
     "poetry-core",
     "setuptools"
+  ],
+  "django-tree-queries": [
+    "hatchling"
   ],
   "django-treebeard": [
     "setuptools"
@@ -7591,6 +7606,8 @@
     "setuptools"
   ],
   "fsspec": [
+    "hatch-vcs",
+    "hatchling",
     "setuptools"
   ],
   "fsspec-xrootd": [
