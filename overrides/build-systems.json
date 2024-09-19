@@ -26345,6 +26345,9 @@
   "uuid": [
     "setuptools"
   ],
+  "uuid7": [
+    "setuptools"
+  ],
   "uvcclient": [
     "setuptools"
   ],
