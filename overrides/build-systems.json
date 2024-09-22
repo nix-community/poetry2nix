@@ -21718,6 +21718,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "scienceplots": [
+    "setuptools"
+  ],
   "scikit-bio": [
     "cython",
     "setuptools"
