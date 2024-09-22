@@ -25769,7 +25769,14 @@
     "setuptools"
   ],
   "types-awscrt": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "0.21.4"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.21.4"
+    }
   ],
   "types-backports": [
     "setuptools"
@@ -25908,7 +25915,14 @@
     "setuptools"
   ],
   "types-s3transfer": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "0.10.2"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.10.2"
+    }
   ],
   "types-setuptools": [
     "setuptools"
