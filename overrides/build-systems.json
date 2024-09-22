@@ -26272,6 +26272,10 @@
     {
       "buildSystem": "hatchling",
       "from": "2.0.2"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "2.2.3"
     }
   ],
   "urlman": [
