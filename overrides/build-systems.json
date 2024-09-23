@@ -11041,6 +11041,9 @@
   "litellm": [
     "poetry-core"
   ],
+  "litestar": [
+    "hatchling"
+  ],
   "littleutils": [
     "setuptools"
   ],
@@ -15937,7 +15940,14 @@
     "setuptools"
   ],
   "polyfactory": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.10.0"
+    }
   ],
   "polyline": [
     "setuptools"
@@ -26347,6 +26357,12 @@
     "setuptools"
   ],
   "uuid": [
+    "setuptools"
+  ],
+  "uuid6": [
+    "setuptools"
+  ],
+  "uuid7": [
     "setuptools"
   ],
   "uvcclient": [
