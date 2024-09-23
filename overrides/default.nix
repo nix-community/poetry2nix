@@ -2884,7 +2884,18 @@ lib.composeManyExtensions [
         }
       );
 
-      pytest-runner = prev.pytest-runner or prev.pytestrunner;
+      pytest-runner = final.buildPythonPackage rec {
+        pname = "pytest-runner";
+        version = "6.0.1";
+        pyproject = true;
+
+        src = final.fetchPypi {
+          inherit pname version;
+          hash = "sha256-cNRzlYWnAI83v0kzwBP9sye4h4paafy7MxbIiILw9Js=";
+        };
+
+        build-system = [ final.setuptools final.setuptools-scm ];
+      };
 
       pytest-pylint = prev.pytest-pylint.overridePythonAttrs (
         _old: {
