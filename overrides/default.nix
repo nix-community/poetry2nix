@@ -3,7 +3,6 @@
 }:
 
 let
-  inherit (pkgs) fetchPypi;
   addBuildSystem' =
     { final
     , drv
@@ -2890,7 +2889,7 @@ lib.composeManyExtensions [
         version = "6.0.1";
         pyproject = true;
 
-        src = fetchPypi {
+        src = final.pkgs.fetchPypi {
           inherit pname version;
           hash = "sha256-cNRzlYWnAI83v0kzwBP9sye4h4paafy7MxbIiILw9Js=";
         };
