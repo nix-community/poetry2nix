@@ -12424,7 +12424,14 @@
     "setuptools"
   ],
   "mss": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "9.0.2"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "9.0.2"
+    }
   ],
   "mt-940": [
     "setuptools"
