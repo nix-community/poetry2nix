@@ -6910,6 +6910,9 @@
   "ffmpeg-python": [
     "setuptools"
   ],
+  "ffmpegcv": [
+    "setuptools"
+  ],
   "ffmpy": [
     "setuptools"
   ],
