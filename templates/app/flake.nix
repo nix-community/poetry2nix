@@ -8,7 +8,6 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
-      inputs.systems.follows = "flake-utils";
     };
   };
 
