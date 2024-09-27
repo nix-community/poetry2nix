@@ -1,7 +1,7 @@
-{ curl, lib, poetry2nix, python3, runCommand }:
+{ curl, lib, poetry2nix, python311, runCommand }:
 let
   app = poetry2nix.mkPoetryApplication {
-    python = python3;
+    python = python311;
     src = lib.cleanSource ./.;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;

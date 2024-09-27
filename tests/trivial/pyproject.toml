@@ -5,8 +5,8 @@ description = "poetry2nix test"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-alembic = "1.0.10"
+python = "^3.9"
+alembic = "^1.0.10"
 Flask = "^1.1.1"
 
 [build-system]

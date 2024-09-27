@@ -8,7 +8,8 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.8"
 aiopath = [
   { version = "0.5.12", python = ">=3.7,<3.10" },
-  { version = ">0.5.12,<0.7", python = ">=3.10,<3.11" }
+  { version = ">=0.6,<0.7", python = ">=3.10,<3.11" },
+  { version = ">=0.7,<1", python = ">=3.12,<4" },
 ]
 
 [build-system]

@@ -5,7 +5,7 @@ description = "poetry2nix test"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.9"
 file-wheel-deps = { path = "../file-wheel-deps" }
 
 [build-system]
