@@ -11836,6 +11836,10 @@
   "meson": [
     "setuptools"
   ],
+  "meson-python": [
+    "meson",
+    "ninja"
+  ],
   "mesonpep517": [
     "setuptools"
   ],
@@ -16819,7 +16823,18 @@
     "setuptools"
   ],
   "pycairo": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.27.0"
+    },
+    {
+      "buildSystem": "meson-python",
+      "from": "1.27.0"
+    },
+    {
+      "buildSystem": "ninja",
+      "from": "1.27.0"
+    }
   ],
   "pycangjie": [
     "cython",
@@ -18355,7 +18370,14 @@
     "flit-core"
   ],
   "pyproject-metadata": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.8.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.8.0"
+    }
   ],
   "pyprosegur": [
     "setuptools"
