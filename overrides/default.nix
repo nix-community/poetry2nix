@@ -2221,6 +2221,12 @@ lib.composeManyExtensions [
         CMDSTAN = "${pkgs.cmdstan}";
       });
 
+      psycopg-c = prev.psycopg-c.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.postgresql ];
+        }
+      );
+
       psycopg2 = prev.psycopg2.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ]
