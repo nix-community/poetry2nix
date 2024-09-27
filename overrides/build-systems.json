@@ -1463,6 +1463,9 @@
   "asyncpg": [
     "setuptools"
   ],
+  "asyncpg-stubs": [
+    "poetry-core"
+  ],
   "asyncsleepiq": [
     "setuptools"
   ],
@@ -16311,6 +16314,9 @@
     "setuptools"
   ],
   "psycopg": [
+    "setuptools"
+  ],
+  "psycopg-c": [
     "setuptools"
   ],
   "psycopg-pool": [
