@@ -1,7 +1,7 @@
-{ poetry2nix, python3, runCommand, curl }:
+{ poetry2nix, python311, runCommand, curl }:
 let
   env = poetry2nix.mkPoetryEnv {
-    python = python3;
+    python = python311;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
 

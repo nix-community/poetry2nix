@@ -1,4 +1,4 @@
-{ lib, poetry2nix, python3, pkgs, runCommand }:
+{ lib, poetry2nix, python311, pkgs, runCommand }:
 let
   wheelImports = {
     bokeh = "bokeh";
@@ -7,7 +7,7 @@ let
   };
   wheelPackages = builtins.attrNames wheelImports;
   env = poetry2nix.mkPoetryEnv {
-    python = python3;
+    python = python311;
     pyproject = ./pyproject.toml;
     poetrylock = ./poetry.lock;
     overrides = poetry2nix.overrides.withDefaults (

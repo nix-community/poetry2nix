@@ -5,7 +5,7 @@ description = "poetry2nix test"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.9"
 trivial = { path = "../trivial/dist/trivial-0.1.0.tar.gz" }
 
 [build-system]
