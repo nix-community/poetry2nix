@@ -4199,7 +4199,42 @@ in
               ];
           }
         );
+        temporalio = let
+          getCargoHash = version:
+            {
+              "1.7.1" = "sha256-A3/U73EXE7ZWuxYbWWvJPPLqEZjUG7i+p9Ub7SSjlNk=";
+            }
+            .${version}
+            or (
+              lib.warn "Unknown temporalio version: '${version}'. Please update getCargoHash." lib.fakeHash
+            );
+          sha256 = getCargoHash prev.temporalio.version;
+          cargoRoot = "temporalio/bridge";
+        in
+          prev.temporalio.overridePythonAttrs (old: {
+            inherit cargoRoot;
+            cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+              inherit (old) src;
+              name = "${old.pname}-${old.version}";
+              hash = sha256;
+              sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
+            };
 
+            nativeBuildInputs =
+              old.nativeBuildInputs
+              or []
+              ++ [
+                final.poetry-core
+                final.setuptools-rust
+              ]
+              ++ (with pkgs; [
+                cargo
+                rustc
+                pkg-config
+                self.protoc-wheel-0
+                rustPlatform.cargoSetupHook
+              ]);
+          });
         tensorboard = prev.tensorboard.overridePythonAttrs (
           old: {
             buildInputs =
