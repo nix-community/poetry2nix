@@ -701,7 +701,7 @@ in
                 buildInputs =
                   old.buildInputs
                   or []
-                  ++ [pkgs.libxcrypt]
+                  ++ [pkgs.libxcrypt pkgs.maturin pkgs.rustPlatform.maturinBuildHook]
                   ++ [
                     (
                       if lib.versionAtLeast old.version "37"
