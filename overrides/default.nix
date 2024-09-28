@@ -216,7 +216,9 @@ in
             nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.pytest-runner];
           }
         );
-
+        aioquic = prev.aioquic.overridePythonAttrs (old: {
+          buildInputs = old.buildInputs or [] ++ [final.openssl];
+        });
         ansible = prev.ansible.overridePythonAttrs (
           old: {
             # Inputs copied from nixpkgs as ansible doesn't specify it's dependencies
@@ -1002,6 +1004,9 @@ in
         fastapi-cache2 = prev.fastapi-cache2.overridePythonAttrs (old: {
           nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.poetry-core];
         });
+        fastapi-pagination = prev.fastapi-pagination.overridePythonAttrs (old: {
+          nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.poetry-core];
+        });
         fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
           buildInputs = old.buildInputs or [] ++ [pkgs.gmp.dev];
         });
@@ -1471,7 +1476,9 @@ in
                   sed -i "/Topic :: File Formats :: JSON/d" pyproject.toml
                 '';
             });
-
+        json-stream-rs-tokenizer = prev.json-stream-rs-tokenizer.overridePythonAttrs (old: {
+          nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.setuptools-rust];
+        });
         jsonschema-specifications = prev.jsonschema-specifications.overridePythonAttrs (
           old:
             lib.optionalAttrs (!(old.src.isWheel or false)) {
@@ -1825,7 +1832,9 @@ in
             doCheck = false;
           }
         );
-
+        mitmproxy2swagger = prev.mitmproxy2swagger.overridePythonAttrs (old: {
+          nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.poetry-core];
+        });
         mip = prev.mip.overridePythonAttrs (
           old: {
             nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkgs.autoPatchelfHook];
@@ -2111,6 +2120,15 @@ in
         );
         openapi-python-client = prev.openapi-python-client.overridePythonAttrs (old: {
           nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.hatchling];
+        });
+        openapi-specgen = prev.openapi-specgen.overridePythonAttrs (old: {
+          nativeBuildInputs =
+            old.nativeBuildInputs
+            or []
+            ++ [
+              final.setuptools
+              final.setuptools-scm
+            ];
         });
         open3d = prev.open3d.overridePythonAttrs (old: {
           propagatedBuildInputs =
@@ -4325,7 +4343,9 @@ in
               ];
           }
         );
-
+        uuid6 = prev.uuid6.overridePythonAttrs (old: {
+          nativeBuildInputs = old.nativeBuildInputs or [] ++ [final.setuptools];
+        });
         vose-alias-method = prev.vose-alias-method.overridePythonAttrs (
           _old: {
             postInstall = ''
