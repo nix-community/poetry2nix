@@ -25848,6 +25848,9 @@
   "types-cachetools": [
     "setuptools"
   ],
+  "types-cffi": [
+    "setuptools"
+  ],
   "types-click": [
     "setuptools"
   ],
