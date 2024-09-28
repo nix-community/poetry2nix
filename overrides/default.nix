@@ -696,7 +696,7 @@ in
                   or []
                   ++ lib.optionals (lib.versionAtLeast old.version "3.4") [final.setuptools-rust]
                   ++ lib.optionals (!final.isPyPy) [pyBuildPackages.cffi]
-                  ++ lib.optionals (lib.versionAtLeast old.version "3.5" && !isWheel) [pkgs.rustPlatform.cargoSetupHook pkgs.cargo pkgs.rustc]
+                  ++ lib.optionals (lib.versionAtLeast old.version "3.5" && !isWheel) [pkgs.rustPlatform.cargoSetupHook pkgs.cargo pkgs.rustc pkgs.rustPlatform.maturinBuildHook]
                   ++ [pkg-config];
                 buildInputs =
                   old.buildInputs
