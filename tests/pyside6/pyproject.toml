@@ -3,6 +3,7 @@ name = "test_pyside6"
 version = "0.1.0"
 description = ""
 authors = ["considerate <viktor.kronvall@gmail.com>"]
+packages = [{include = "test_pyside6", from = "."}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
@@ -10,6 +11,9 @@ python = ">=3.10,<3.12"
 pyside6 = "<6.5.3"
 
 [tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+test_pyside6 = "test_pyside6:main"
 
 [build-system]
 requires = ["poetry-core>=1"]

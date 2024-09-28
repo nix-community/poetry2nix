@@ -307,7 +307,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 # without this patch a download of sqlite is attempted
-                substituteInPlace setup.py --replace 'if self.fetch:' 'if False:'
+                substituteInPlace setup.py --replace-warn 'if self.fetch:' 'if False:'
               '';
               buildInputs = old.buildInputs or [] ++ [pkgs.sqlite];
             }
@@ -329,7 +329,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools~=67.3.2' 'setuptools'
+                  --replace-warn 'setuptools~=67.3.2' 'setuptools'
               '';
             }
         );
@@ -339,7 +339,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools~=67.3.2' 'setuptools'
+                  --replace-warn 'setuptools~=67.3.2' 'setuptools'
               '';
             }
         );
@@ -349,8 +349,8 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools~=62.1.0' 'setuptools' \
-                  --replace 'wheel~=0.37.1' 'wheel'
+                  --replace-warn 'setuptools~=62.1.0' 'setuptools' \
+                  --replace-warn 'wheel~=0.37.1' 'wheel'
               '';
             }
         );
@@ -360,7 +360,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools~=67.3.2' 'setuptools'
+                  --replace-warn 'setuptools~=67.3.2' 'setuptools'
               '';
             }
         );
@@ -487,7 +487,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools~=67.3.2' 'setuptools'
+                  --replace-warn 'setuptools~=67.3.2' 'setuptools'
               '';
             }
         );
@@ -505,7 +505,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools~=67.3.2' 'setuptools'
+                  --replace-warn 'setuptools~=67.3.2' 'setuptools'
               '';
             }
         );
@@ -530,9 +530,9 @@ in
                     (old.prePatch or "")
                     + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
                       # Remove setup.py impurities
-                      substituteInPlace setup.py --replace "'-iwithsysroot/usr/include/ffi'" ""
-                      substituteInPlace setup.py --replace "'/usr/include/ffi'," ""
-                      substituteInPlace setup.py --replace '/usr/include/libffi' '${lib.getDev pkgs.libffi}/include'
+                      substituteInPlace setup.py --replace-warn "'-iwithsysroot/usr/include/ffi'" ""
+                      substituteInPlace setup.py --replace-warn "'/usr/include/ffi'," ""
+                      substituteInPlace setup.py --replace-warn '/usr/include/libffi' '${lib.getDev pkgs.libffi}/include'
                     '';
                 }
               )
@@ -542,7 +542,7 @@ in
           old: let
             fixupScriptText = ''
               substituteInPlace cmdstanpy/model.py \
-                --replace 'cmd = [make]' \
+                --replace-warn 'cmd = [make]' \
                 'cmd = ["${pkgs.cmdstan}/bin/stan"]'
             '';
             isWheel = old.src.isWheel or false;
@@ -562,7 +562,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               dontUseMesonConfigure = true;
               postPatch = ''
-                substituteInPlace pyproject.toml --replace 'meson[ninja]' 'meson'
+                substituteInPlace pyproject.toml --replace-warn 'meson[ninja]' 'meson'
               '';
             }
         );
@@ -732,7 +732,7 @@ in
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
           postPatch = ''
             if [ -f setup.py ]; then
-              substituteInPlace setup.py --replace 'setuptools>=50.3.2,<51.0.0' 'setuptools'
+              substituteInPlace setup.py --replace-warn 'setuptools>=50.3.2,<51.0.0' 'setuptools'
             fi
           '';
         });
@@ -746,7 +746,7 @@ in
           postPatch = ''
             # sometimes setup.py doesn't exist
             if [ -f setup.py ]; then
-              substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+              substituteInPlace setup.py --replace-warn 'setup_requires=["pytest-runner"],' ""
             fi
           '';
         });
@@ -757,7 +757,7 @@ in
 
         datadog-lambda = prev.datadog-lambda.overridePythonAttrs (old: {
           postPatch = ''
-            substituteInPlace setup.py --replace "setuptools==" "setuptools>="
+            substituteInPlace setup.py --replace-warn "setuptools==" "setuptools>="
           '';
           buildInputs = old.buildInputs or [] ++ [final.setuptools];
         });
@@ -787,8 +787,8 @@ in
               old.postPatch
               or ""
               + ''
-                substituteInPlace ./configure --replace /usr/bin/file ${pkgs.file}/bin/file
-                substituteInPlace ./dbus-python.pc.in --replace 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
+                substituteInPlace ./configure --replace-warn /usr/bin/file ${pkgs.file}/bin/file
+                substituteInPlace ./dbus-python.pc.in --replace-warn 'Cflags: -I''${includedir}' 'Cflags: -I''${includedir}/dbus-1.0'
               '';
 
             configureFlags =
@@ -932,11 +932,11 @@ in
 
         duckdb = prev.duckdb.overridePythonAttrs (old: {
           postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
-            ${lib.optionalString (lib.versionOlder old.version "0.8") "cd tools/pythonpkg"}
+              ${lib.optionalString (lib.versionOlder old.version "0.8") "cd tools/pythonpkg"}
 
             substituteInPlace setup.py \
-              --replace 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
-              --replace 'setuptools_scm<7.0.0' 'setuptools_scm'
+              --replace-warn 'multiprocessing.cpu_count()' "$NIX_BUILD_CORES" \
+              --replace-warn 'setuptools_scm<7.0.0' 'setuptools_scm'
           '';
         });
 
@@ -948,13 +948,13 @@ in
 
         eth-hash = prev.eth-hash.overridePythonAttrs {
           preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
           '';
         };
 
         eth-keyfile = prev.eth-keyfile.overridePythonAttrs (old: {
           preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
           '';
 
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.setuptools];
@@ -962,7 +962,7 @@ in
 
         eth-keys = prev.eth-keys.overridePythonAttrs {
           preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
           '';
         };
 
@@ -971,7 +971,7 @@ in
 
         evdev = prev.evdev.overridePythonAttrs (_old: {
           preConfigure = ''
-            substituteInPlace setup.py --replace /usr/include/linux ${pkgs.linuxHeaders}/include/linux
+            substituteInPlace setup.py --replace-warn /usr/include/linux ${pkgs.linuxHeaders}/include/linux
           '';
         });
 
@@ -986,8 +986,8 @@ in
           old: {
             postPatch = lib.optionalString (!(old.src.isWheel or false)) ''
               substituteInPlace setup.py \
-                --replace 'setup_requires="setupmeta"' 'setup_requires=[]' \
-                --replace 'versioning="devcommit"' 'version="${old.version}"'
+                --replace-warn 'setup_requires="setupmeta"' 'setup_requires=[]' \
+                --replace-warn 'versioning="devcommit"' 'version="${old.version}"'
             '';
           }
         );
@@ -1015,7 +1015,7 @@ in
         file-magic = prev.file-magic.overridePythonAttrs (_: {
           postPatch = ''
             substituteInPlace magic.py \
-              --replace \
+              --replace-warn \
               "find_library('magic')" \
               "'${pkgs.file}/lib/libmagic${sharedLibExt}'"
           '';
@@ -1060,7 +1060,7 @@ in
               (old.preBuild or "")
               + ''
                 substituteInPlace setup.cfg \
-                  --replace "../../apps/gdal-config" '${gdal}/bin/gdal-config'
+                  --replace-warn "../../apps/gdal-config" '${gdal}/bin/gdal-config'
               '';
           }
         );
@@ -1171,7 +1171,7 @@ in
               (old.preBuild or "")
               + ''
                 substituteInPlace h3/h3.py \
-                  --replace "'{}/{}'.format(_dirname, libh3_path)" '"${pkgs.h3}/lib/libh3${sharedLibExt}"'
+                  --replace-warn "'{}/{}'.format(_dirname, libh3_path)" '"${pkgs.h3}/lib/libh3${sharedLibExt}"'
               '';
           }
         );
@@ -1203,7 +1203,7 @@ in
                   else "OFF";
                 # avoid strict pinning of numpy
                 postPatch = ''
-                  substituteInPlace setup.py --replace "numpy ==" "numpy >="
+                  substituteInPlace setup.py --replace-warn "numpy ==" "numpy >="
                 '';
                 pythonImportsCheck = ["h5py"];
               }
@@ -1275,7 +1275,7 @@ in
         icecream = prev.icecream.overridePythonAttrs (_old: {
           #  # ERROR: Could not find a version that satisfies the requirement executing>=0.3.1 (from icecream) (from versions: none)
           postPatch = ''
-            substituteInPlace setup.py --replace 'executing>=0.3.1' 'executing'
+            substituteInPlace setup.py --replace-warn 'executing>=0.3.1' 'executing'
           '';
         });
 
@@ -1290,19 +1290,19 @@ in
           old: {
             patchPhase = ''
               substituteInPlace setup.py \
-                --replace "/usr/include/openjpeg-2.3" \
-                          "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}
+                --replace-warn "/usr/include/openjpeg-2.3" \
+                          "${pkgs.openjpeg.dev}/include/${pkgs.openjpeg.dev.incDir}"
               substituteInPlace setup.py \
-                --replace "/usr/include/jxrlib" \
+                --replace-warn "/usr/include/jxrlib" \
                           "$out/include/libjxr"
               substituteInPlace imagecodecs/_zopfli.c \
-                --replace '"zopfli/zopfli.h"' \
+                --replace-warn '"zopfli/zopfli.h"' \
                           '<zopfli.h>'
               substituteInPlace imagecodecs/_zopfli.c \
-                --replace '"zopfli/zlib_container.h"' \
+                --replace-warn '"zopfli/zlib_container.h"' \
                           '<zlib_container.h>'
               substituteInPlace imagecodecs/_zopfli.c \
-                --replace '"zopfli/gzip_container.h"' \
+                --replace-warn '"zopfli/gzip_container.h"' \
                           '<gzip_container.h>'
             '';
 
@@ -1426,7 +1426,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools>=40.8.0,<61' 'setuptools'
+                  --replace-warn 'setuptools>=40.8.0,<61' 'setuptools'
               '';
             }
         );
@@ -1448,7 +1448,7 @@ in
               preBuild =
                 (old.preBuild or "")
                 + ''
-                  substituteInPlace setup.py --replace "'jsondiff=jsondiff.cli:main_deprecated'," ""
+                  substituteInPlace setup.py --replace-warn "'jsondiff=jsondiff.cli:main_deprecated'," ""
                 '';
             }
         );
@@ -1519,7 +1519,7 @@ in
               # jupyterlab?)
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace ', "jupyterlab~=3.1"' ""
+                  --replace-warn ', "jupyterlab~=3.1"' ""
               '';
             }
         );
@@ -1573,7 +1573,7 @@ in
           buildInputs = old.buildInputs or [] ++ [final.setuptools];
 
           postPatch = ''
-            substituteInPlace libarchive/library.py --replace \
+            substituteInPlace libarchive/library.py --replace-warn \
               "_FILEPATH = find_and_load_library()" "_FILEPATH = '${pkgs.libarchive.lib}/lib/libarchive${sharedLibExt}'"
           '';
         });
@@ -1695,7 +1695,7 @@ in
             preConfigure = lib.optionalString (!(old.src.isWheel or false)) (
               (old.preConfigure or "")
               + ''
-                substituteInPlace pyproject.toml --replace 'plugins = ["mdit-py-plugins"]' 'plugins = []'
+                substituteInPlace pyproject.toml --replace-warn 'plugins = ["mdit-py-plugins"]' 'plugins = []'
               ''
             );
           }
@@ -1803,8 +1803,8 @@ in
                 + lib.optionalString (stdenv.isLinux && interactive) ''
                   # fix paths to libraries in dlopen calls (headless detection)
                   substituteInPlace src/_c_internal_utils.c \
-                    --replace libX11.so.6 ${libX11}/lib/libX11.so.6 \
-                    --replace libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
+                    --replace-warn libX11.so.6 ${libX11}/lib/libX11.so.6 \
+                    --replace-warn libwayland-client.so.0 ${wayland}/lib/libwayland-client.so.0
                 ''
                 + lib.optionalString mpl39 ''patchShebangs .''
                 # avoid matplotlib trying to download dependencies
@@ -1862,7 +1862,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'Cython~=3.0.0' 'Cython'
+                  --replace-warn 'Cython~=3.0.0' 'Cython'
               '';
             }
         );
@@ -2274,10 +2274,39 @@ in
                   rev = old.version;
                   sha256 = githubHash;
                 };
+
+                cargoHash =
+                  {
+                    "3.10.7" = "sha256-MACmdptHmnifBTfB5s+CY6npAOFIrh0zvrIImYghGsw=";
+                    "3.10.6" = "sha256-SNdwqb47dJ084TMNsm2Btks1UCDerjSmSrQQUiGbx50=";
+                    "3.10.5" = "sha256-yhLKw4BhdIHgcu4iVlXQlHk/8J+3NK6LlmSWbm/5y4Q=";
+                    "3.10.4" = "sha256-3///vbnCUeMVi2Yej8IR3ensQntA+E0su0GxhMN+2Rs=";
+                    "3.10.3" = "sha256-ilGq+/gPSuNwURUWy2ZxInzmUv+PxYMxd8esxrMpr2o=";
+                    "3.9.10" = "sha256-2eRV+oZQvsWWJ4AUTeuE0CHtTHC6jNZiX/y5uXuwvns=";
+                    "3.9.7" = "sha256-IwWbd7LE/t1UEo/bdC0bXl2K8hYyvDPbyHLBIurfb/8=";
+                    "3.9.5" = "sha256-ErKqQXuSWUr3wav3SE6YpkCma3DLlV8VOsCjtvTf13M=";
+                    "3.9.1" = "sha256-2eRV+oZQvsWWJ4AUTeuE0CHtTHC6jNZiX/y5uXuwvns=";
+                    "3.9.0" = "sha256-BsRs7noHkpa74pVw5X1t+gA35XrJRBI33XYQIzXEtXA=";
+                    "3.8.14" = "sha256-PTfwnQW4q9StMuLwy3yB14U8uRhKRe6n/hwpHCAYB3A=";
+                    "3.8.13" = "sha256-L3qei2Qh1AXbfiZ0zh3CZ0HE8EYxFqp3xmw8g2TutXE=";
+                    "3.8.12" = "sha256-OAF1qyHLy8c1o7FNKMwzuumq1bA7x1mFzSAS/Ml7M34=";
+                    "3.8.11" = "sha256-/x+0/I3WFxPwVu2LliTgr42SuJX7VjOLe/SGai5OgAw=";
+                    "3.8.10" = "sha256-AcrTEHv7GYtGe4fXYsM24ElrzfhnOxLYlaon1ZrlD4A=";
+                    "3.8.9" = "sha256-ogkTRRykLF2dTOxilsfwsRH+Au/O0e1kL1e9sFOFLeY=";
+                    "3.8.8" = "sha256-AK4HtqPKg2O2FeLHCbY9o+N1BV4QFMNaHVE1NaFYHa4=";
+                    "3.8.7" = "sha256-JBO8nl0sC+XIn17vI7hC8+nA1HYI9jfvZrl9nCE3k1s=";
+                    "3.8.6" = "sha256-8T//q6nQoZhh8oJWDCeQf3gYRew58dXAaxkYELY4CJM=";
+                    "3.8.5" = "sha256-JtUCJ3TP9EKGcddeyW1e/72k21uKneq9SnZJeLvn9Os=";
+                    "3.8.4" = "sha256-O2W9zO7qHWG+78T+uECICAmecaSIbTTJPktJIPZYElE=";
+                    "3.8.3" = "sha256-oSZO4cN1sJKd0T7pYrKG63is8AZMKaLRZqj5UCVY/14=";
+                  }
+                  .${old.version};
               in {
                 inherit src;
-                cargoDeps = pkgs.rustPlatform.importCargoLock {
-                  lockFile = "${src.out}/Cargo.lock";
+                cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+                  inherit src;
+                  name = "${old.pname}-${old.version}";
+                  sha256 = cargoHash;
                 };
                 nativeBuildInputs =
                   old.nativeBuildInputs
@@ -2315,7 +2344,7 @@ in
               ''
                 if [ -f pyproject.toml ]; then
                   substituteInPlace pyproject.toml \
-                    --replace 'meson-python==0.13.1' 'meson-python'
+                    --replace-warn 'meson-python==0.13.1' 'meson-python'
                 fi
               ''
               + lib.optionalString (!(old.src.isWheel or false) && stdenv.isDarwin) ''
@@ -2323,7 +2352,7 @@ in
                   cpp_sdk="${lib.getDev pkgs.libcxx}/include/c++/v1";
                   echo "Adding $cpp_sdk to the setup.py common_include variable"
                   substituteInPlace setup.py \
-                    --replace "['pandas/src/klib', 'pandas/src']" \
+                    --replace-warn "['pandas/src/klib', 'pandas/src']" \
                               "['pandas/src/klib', 'pandas/src', '$cpp_sdk']"
                 fi
               '';
@@ -2436,7 +2465,7 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'flit_core >=2,<3' 'flit_core'
+                  --replace-warn 'flit_core >=2,<3' 'flit_core'
               '';
             }
         );
@@ -2479,6 +2508,12 @@ in
           PROPHET_REPACKAGE_CMDSTAN = "false";
           CMDSTAN = "${pkgs.cmdstan}";
         });
+
+        psycopg-c = prev.psycopg-c.overridePythonAttrs (
+          old: {
+            nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkgs.postgresql];
+          }
+        );
 
         psycopg2 = prev.psycopg2.overridePythonAttrs (
           old: {
@@ -2524,7 +2559,7 @@ in
         py-solc-x = prev.py-solc-x.overridePythonAttrs (
           old: {
             preConfigure = ''
-              substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+              substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
             '';
             propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [final.requests final.semantic-version];
           }
@@ -2547,8 +2582,8 @@ in
                 );
 
                 ARROW_HOME = _arrow-cpp;
-                arrowCppVersion = lib.versions.majorMinor _arrow-cpp;
-                pyArrowVersion = lib.versions.majorMinor prev.pyarrow;
+                arrowCppVersion = lib.versions.majorMinor _arrow-cpp.version;
+                pyArrowVersion = lib.versions.majorMinor prev.pyarrow.version;
                 errorMessage = "arrow-cpp version (${arrowCppVersion}) mismatches pyarrow version (${pyArrowVersion})";
               in
                 lib.throwIf (arrowCppVersion != pyArrowVersion) errorMessage {
@@ -2728,11 +2763,11 @@ in
               (old.postPatch or "")
               + ''
                 substituteInPlace pymediainfo/__init__.py \
-                  --replace "libmediainfo.0.dylib" \
+                  --replace-warn "libmediainfo.0.dylib" \
                             "${pkgs.libmediainfo}/lib/libmediainfo.0${sharedLibExt}" \
-                  --replace "libmediainfo.dylib" \
+                  --replace-warn "libmediainfo.dylib" \
                             "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}" \
-                  --replace "libmediainfo.so.0" \
+                  --replace-warn "libmediainfo.so.0" \
                             "${pkgs.libmediainfo}/lib/libmediainfo${sharedLibExt}.0"
               '';
           }
@@ -2856,12 +2891,12 @@ in
               if withApplePCSC
               then ''
                 substituteInPlace smartcard/scard/winscarddll.c \
-                  --replace "/System/Library/Frameworks/PCSC.framework/PCSC" \
+                  --replace-warn "/System/Library/Frameworks/PCSC.framework/PCSC" \
                             "${PCSC}/Library/Frameworks/PCSC.framework/PCSC"
               ''
               else ''
                 substituteInPlace smartcard/scard/winscarddll.c \
-                  --replace "libpcsclite.so.1" \
+                  --replace-warn "libpcsclite.so.1" \
                             "${lib.getLib pcsclite}/lib/libpcsclite${sharedLibExt}"
               '';
             propagatedBuildInputs =
@@ -2951,7 +2986,7 @@ in
             + ''
               echo "Patching find_library call."
               substituteInPlace snap7/common.py \
-                --replace "find_library('snap7')" "\"${pkgs.snap7}/lib/libsnap7.so\""
+                --replace-warn "find_library('snap7')" "\"${pkgs.snap7}/lib/libsnap7.so\""
             '';
         });
 
@@ -3110,18 +3145,15 @@ in
 
         pyside6-essentials = prev.pyside6-essentials.overridePythonAttrs (old:
           lib.optionalAttrs stdenv.isLinux {
-            autoPatchelfIgnoreMissingDeps = ["libmysqlclient.so.21" "libmimerapi.so" "libQt6*"];
+            autoPatchelfIgnoreMissingDeps = ["libmysqlclient.so.21" "libmimerapi.so" "libQt6EglFsKmsGbmSupport.so*"];
             preFixup = ''
-              addAutoPatchelfSearchPath $out/${final.python.sitePackages}/PySide6
               addAutoPatchelfSearchPath ${final.shiboken6}/${final.python.sitePackages}/shiboken6
-            '';
-            postInstall = ''
-              rm -r $out/${final.python.sitePackages}/PySide6/__pycache__
             '';
             propagatedBuildInputs =
               old.propagatedBuildInputs
               or []
               ++ [
+                pkgs.qt6.full
                 pkgs.libxkbcommon
                 pkgs.gtk3
                 pkgs.speechd
@@ -3141,36 +3173,50 @@ in
                 pkgs.xorg.xcbutilwm
                 pkgs.libdrm
                 pkgs.pulseaudio
-                final.shiboken6
               ];
+            pythonImportsCheck = [
+              "PySide6"
+              "PySide6.QtCore"
+            ];
+            postInstall = ''
+              python -c 'import PySide6; print(PySide6.__all__)'
+            '';
           });
 
-        pyside6-addons = prev.pyside6-addons.overridePythonAttrs (old:
+        pyside6-addons = prev.pyside6-addons.overridePythonAttrs (_old:
           lib.optionalAttrs stdenv.isLinux {
             autoPatchelfIgnoreMissingDeps = [
               "libmysqlclient.so.21"
               "libmimerapi.so"
-              "libQt6Quick3DSpatialAudio.so.6"
-              "libQt6Quick3DHelpersImpl.so.6"
             ];
             preFixup = ''
               addAutoPatchelfSearchPath ${final.shiboken6}/${final.python.sitePackages}/shiboken6
               addAutoPatchelfSearchPath ${final.pyside6-essentials}/${final.python.sitePackages}/PySide6
+              addAutoPatchelfSearchPath $out/${final.python.sitePackages}/PySide6
             '';
-            propagatedBuildInputs =
-              old.propagatedBuildInputs
-              or []
-              ++ [
-                pkgs.nss
-                pkgs.xorg.libXtst
-                pkgs.alsa-lib
-                pkgs.xorg.libxshmfence
-                pkgs.xorg.libxkbfile
-              ];
-            postInstall = ''
-              rm -r $out/${final.python.sitePackages}/PySide6/__pycache__
-            '';
+            buildInputs = [
+              pkgs.nss
+              pkgs.xorg.libXtst
+              pkgs.alsa-lib
+              pkgs.xorg.libxshmfence
+              pkgs.xorg.libxkbfile
+            ];
           });
+        pyside6 = prev.pyside6.overridePythonAttrs (_old: {
+          # The PySide6/__init__.py script tries to find the Qt libraries
+          # relative to its own path in the installed site-packages directory.
+          # This then fails to find the paths from pyside6-essentials and
+          # pyside6-addons because they are installed into different directories.
+          #
+          # To work around this issue we symlink all of the files resulting from
+          # those packages into the aggregated `pyside6` output directories.
+          #
+          # See https://github.com/nix-community/poetry2nix/issues/1791 for more details.
+          postFixup = ''
+            ${pkgs.xorg.lndir}/bin/lndir ${final.pyside6-essentials}/${final.python.sitePackages}/PySide6 $out/${final.python.sitePackages}/PySide6
+            ${pkgs.xorg.lndir}/bin/lndir ${final.pyside6-addons}/${final.python.sitePackages}/PySide6 $out/${final.python.sitePackages}/PySide6
+          '';
+        });
 
         pytest-datadir = prev.pytest-datadir.overridePythonAttrs (
           _old: {
@@ -3207,8 +3253,8 @@ in
             postPatch = ''
               # sometimes setup.py doesn't exist
               if [ -f setup.py ]; then
-                substituteInPlace setup.py --replace "'pytest>=3.6'," ""
-                substituteInPlace setup.py --replace "'pytest>=3.6'" ""
+                substituteInPlace setup.py --replace-warn "'pytest>=3.6'," ""
+                substituteInPlace setup.py --replace-warn "'pytest>=3.6'" ""
               fi
             '';
           }
@@ -3228,9 +3274,9 @@ in
             lib.optionalAttrs (!(old.src.isWheel or false)) {
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'setuptools ~= 50.3.0' 'setuptools' \
-                  --replace 'wheel ~= 0.36.0' 'wheel' \
-                  --replace 'setuptools-scm[toml] ~= 5.0.0' 'setuptools-scm[toml]' \
+                  --replace-warn 'setuptools ~= 50.3.0' 'setuptools' \
+                  --replace-warn 'wheel ~= 0.36.0' 'wheel' \
+                  --replace-warn 'setuptools-scm[toml] ~= 5.0.0' 'setuptools-scm[toml]' \
               '';
               nativeBuildInputs =
                 old.nativeBuildInputs
@@ -3241,7 +3287,18 @@ in
             }
         );
 
-        pytest-runner = prev.pytest-runner or prev.pytestrunner;
+        pytest-runner = final.buildPythonPackage rec {
+          pname = "pytest-runner";
+          version = "6.0.1";
+          pyproject = true;
+
+          src = final.pkgs.fetchPypi {
+            inherit pname version;
+            hash = "sha256-cNRzlYWnAI83v0kzwBP9sye4h4paafy7MxbIiILw9Js=";
+          };
+
+          build-system = [final.setuptools final.setuptools-scm];
+        };
 
         pytest-pylint = prev.pytest-pylint.overridePythonAttrs (
           _old: {
@@ -3284,7 +3341,7 @@ in
             libPath = "${lib.getLib pkgs.file}/lib/libmagic${sharedLibExt}";
             fixupScriptText = ''
               substituteInPlace magic/loader.py \
-                --replace "find_library('magic')" "'${libPath}'"
+                --replace-warn "find_library('magic')" "'${libPath}'"
             '';
             isWheel = old.src.isWheel or false;
           in {
@@ -3307,8 +3364,8 @@ in
           _old: {
             postPatch = ''
               substituteInPlace src/pam/__internals.py \
-              --replace 'find_library("pam")' '"${pkgs.pam}/lib/libpam.so"' \
-              --replace 'find_library("pam_misc")' '"${pkgs.pam}/lib/libpam_misc.so"'
+              --replace-warn 'find_library("pam")' '"${pkgs.pam}/lib/libpam.so"' \
+              --replace-warn 'find_library("pam_misc")' '"${pkgs.pam}/lib/libpam_misc.so"'
             '';
           }
         );
@@ -3347,7 +3404,7 @@ in
         pyudev = prev.pyudev.overridePythonAttrs (_old: {
           postPatch = ''
             substituteInPlace src/pyudev/_ctypeslib/utils.py \
-              --replace "find_library(name)" "'${lib.getLib pkgs.systemd}/lib/libudev.so'"
+              --replace-warn "find_library(name)" "'${lib.getLib pkgs.systemd}/lib/libudev.so'"
           '';
         });
 
@@ -3410,7 +3467,7 @@ in
         scaleapi = prev.scaleapi.overridePythonAttrs (
           _old: {
             postPatch = ''
-              substituteInPlace setup.py --replace "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
+              substituteInPlace setup.py --replace-warn "install_requires = ['requests>=2.4.2', 'enum34']" "install_requires = ['requests>=2.4.2']" || true
             '';
           }
         );
@@ -3445,8 +3502,8 @@ in
               dontUseCmakeConfigure = true;
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'scikit-build~=0.17.0' 'scikit-build' \
-                  --replace 'Cython==3.0.0b2' 'Cython'
+                  --replace-warn 'scikit-build~=0.17.0' 'scikit-build' \
+                  --replace-warn 'Cython==3.0.0b2' 'Cython'
               '';
             }
         );
@@ -3484,7 +3541,7 @@ in
 
         rlp = prev.rlp.overridePythonAttrs {
           preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
           '';
         };
 
@@ -3557,7 +3614,7 @@ in
         rtree = prev.rtree.overridePythonAttrs (old: {
           propagatedNativeBuildInputs = old.propagatedNativeBuildInputs or [] ++ [pkgs.libspatialindex];
           postPatch = ''
-            substituteInPlace rtree/finder.py --replace \
+            substituteInPlace rtree/finder.py --replace-warn \
               "find_library('spatialindex_c')" \
               "'${pkgs.libspatialindex}/lib/libspatialindex_c${sharedLibExt}'"
           '';
@@ -3687,6 +3744,38 @@ in
               };
               "0.5.6" = {
                 # https://raw.githubusercontent.com/astral-sh/ruff/0.5.6/Cargo.lock
+                lockFile = ./ruff/0.5.6-Cargo.lock;
+                outputHashes = {
+                  "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                  "salsa-0.18.0" = "sha256-y5PuGeQNUHLhU8YY9wPbGk71eNZ0aM0Xpvwfyf+UZwM=";
+                };
+              };
+              "0.5.5" = {
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.5.5/Cargo.lock
+                lockFile = ./ruff/0.5.5-Cargo.lock;
+                outputHashes = {
+                  "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                  "salsa-0.18.0" = "sha256-y5PuGeQNUHLhU8YY9wPbGk71eNZ0aM0Xpvwfyf+UZwM=";
+                };
+              };
+              "0.5.4" = {
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.5.4/Cargo.lock
+                lockFile = ./ruff/0.5.4-Cargo.lock;
+                outputHashes = {
+                  "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                  "salsa-0.18.0" = "sha256-y5PuGeQNUHLhU8YY9wPbGk71eNZ0aM0Xpvwfyf+UZwM=";
+                };
+              };
+              "0.5.3" = {
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.5.3/Cargo.lock
+                lockFile = ./ruff/0.5.3-Cargo.lock;
+                outputHashes = {
+                  "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                  "salsa-0.18.0" = "sha256-y5PuGeQNUHLhU8YY9wPbGk71eNZ0aM0Xpvwfyf+UZwM=";
+                };
+              };
+              "0.5.2" = {
+                # https://raw.githubusercontent.com/astral-sh/ruff/0.5.2/Cargo.lock
                 lockFile = ./ruff/0.5.6-Cargo.lock;
                 outputHashes = {
                   "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
@@ -3851,7 +3940,7 @@ in
                 (stdenv.isDarwin && (lib.versionAtLeast old.version "1.14.0"))
                 ''
                   substituteInPlace scipy/meson.build \
-                    --replace "'xcrun'" "'${pkgs.buildPackages.xcbuild}/bin/xcrun'"
+                    --replace-warn "'xcrun'" "'${pkgs.buildPackages.xcbuild}/bin/xcrun'"
                 '';
               preConfigure =
                 ''
@@ -3865,10 +3954,10 @@ in
               '';
               postPatch = ''
                 substituteInPlace pyproject.toml \
-                  --replace 'wheel<0.38.0' 'wheel' \
-                  --replace 'pybind11>=2.4.3,<2.11.0' 'pybind11' \
-                  --replace 'pythran>=0.9.12,<0.13.0' 'pythran' \
-                  --replace 'setuptools<=51.0.0' 'setuptools'
+                  --replace-warn 'wheel<0.38.0' 'wheel' \
+                  --replace-warn 'pybind11>=2.4.3,<2.11.0' 'pybind11' \
+                  --replace-warn 'pythran>=0.9.12,<0.13.0' 'pythran' \
+                  --replace-warn 'setuptools<=51.0.0' 'setuptools'
                 sed -i pyproject.toml -e 's/numpy==[0-9]\+\.[0-9]\+\.[0-9]\+;/numpy;/g'
               '';
             }
@@ -3919,6 +4008,12 @@ in
             }
         );
 
+        ckzg = prev.ckzg.overridePythonAttrs (old: {
+          postPatch = old.postPatch or lib.optionalString stdenv.cc.isGNU ''
+            substituteInPlace src/Makefile --replace-warn 'CC = clang' 'CC = gcc'
+          '';
+        });
+
         scikit-learn = prev.scikit-learn.overridePythonAttrs (
           old:
             lib.optionalAttrs (!(old.src.isWheel or false)) {
@@ -3942,11 +4037,11 @@ in
                 or ""
                 + ''
                   patchShebangs .
-                  substituteInPlace pyproject.toml --replace 'setuptools<60.0' 'setuptools'
+                  substituteInPlace pyproject.toml --replace-warn 'setuptools<60.0' 'setuptools'
                 ''
                 # patchShebangs doesn't seem to like #!/usr but accepts #! /usr ¯\_(ツ)_/¯
                 + lib.optionalString (lib.versionAtLeast old.version "1.5") ''
-                  substituteInPlace sklearn/_build_utils/version.py --replace "#!/usr/bin/env python" "#!${final.python}/bin/python"
+                  substituteInPlace sklearn/_build_utils/version.py --replace-warn "#!/usr/bin/env python" "#!${final.python}/bin/python"
                 '';
             }
         );
@@ -3966,8 +4061,8 @@ in
           # Local setuptools versions like "x.y.post0" confuse an internal check
           postPatch = ''
             substituteInPlace setup.py \
-              --replace 'setuptools_version.' '"${final.setuptools.version}".' \
-              --replace 'pytest-runner==' 'pytest-runner>='
+              --replace-warn 'setuptools_version.' '"${final.setuptools.version}".' \
+              --replace-warn 'pytest-runner==' 'pytest-runner>='
           '';
         });
 
@@ -3996,7 +4091,7 @@ in
               or ""
               + ''
                 ${pkgs.python3.interpreter} ${./shapely-rewrite.py} shapely/geos.py
-                substituteInPlace pyproject.toml --replace 'setuptools<64' 'setuptools'
+                substituteInPlace pyproject.toml --replace-warn 'setuptools<64' 'setuptools'
               '');
           }
         );
@@ -4005,8 +4100,8 @@ in
           lib.optionalAttrs (!(old.src.isWheel or false)) {
             postPatch = ''
               substituteInPlace pyproject.toml \
-                --replace 'setuptools~=62.2' 'setuptools' \
-                --replace 'wheel~=0.37' 'wheel'
+                --replace-warn 'setuptools~=62.2' 'setuptools' \
+                --replace-warn 'wheel~=0.37' 'wheel'
             '';
           });
 
@@ -4016,8 +4111,8 @@ in
             fakeCommand = "type('FakeCommand', (Command,), {'initialize_options': lambda self: None, 'finalize_options': lambda self: None, 'run': lambda self: None})";
           in ''
             substituteInPlace setup.py \
-              --replace "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
-              --replace "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
+              --replace-warn "'fetch_binaries': fetch_binaries," "'fetch_binaries': ${fakeCommand}," \
+              --replace-warn "'install_shellcheck': install_shellcheck," "'install_shellcheck': ${fakeCommand},"
           '';
 
           propagatedUserEnvPkgs =
@@ -4030,7 +4125,7 @@ in
         soundfile = let
           patch = ''
             substituteInPlace soundfile.py \
-              --replace "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${sharedLibExt}'"
+              --replace-warn "_find_library('sndfile')" "'${pkgs.libsndfile.out}/lib/libsndfile${sharedLibExt}'"
           '';
         in
           prev.soundfile.overridePythonAttrs (old: {
@@ -4047,16 +4142,12 @@ in
         sqlmodel = prev.sqlmodel.overridePythonAttrs (old: {
           # sqlmodel's pyproject.toml lists version = "0" that it changes during a build phase
           # If this isn't fixed, it gets a vague "ERROR: No matching distribution for sqlmodel..." error
-          nativeBuildInputs = old.nativeBuildInputs or [] ++ [pkgs.pdm final.pdm-backend];
-          patches = [
-            (pkgs.fetchpatch {
-              # https://github.com/tiangolo/sqlmodel/pull/969
-              name = "passthru-environ-variables.patch";
-              url = "https://github.com/tiangolo/sqlmodel/pull/969/commits/42d33049e9e4182b78914ad41d1e3d30125126ba.patch";
-              hash = "sha256-dPuFCFUnmTpduxn45tE8XUP0Jlwjwmwe+zFaKSganOg=";
-            })
+          patchPhase = builtins.concatStringsSep "\n" [
+            (old.patchPhase or "")
+            ''
+              substituteInPlace "pyproject.toml" --replace-warn 'version = "0"' 'version = "${old.version}"'
+            ''
           ];
-          pythonImportsCheck = ["sqlmodel"];
         });
 
         suds = prev.suds.overridePythonAttrs (_old: {
@@ -4146,7 +4237,7 @@ in
         tensorpack = prev.tensorpack.overridePythonAttrs (
           _old: {
             postPatch = ''
-              substituteInPlace setup.cfg --replace "# will call find_packages()" ""
+              substituteInPlace setup.cfg --replace-warn "# will call find_packages()" ""
             '';
           }
         );
@@ -4156,7 +4247,7 @@ in
             old.postPatch
             or ""
             + lib.optionalString (final.pythonAtLeast "3.12") ''
-              substituteInPlace setup.cfg --replace 'optimize = 1' 'optimize = 0'
+              substituteInPlace setup.cfg --replace-warn 'optimize = 1' 'optimize = 0'
             '';
         });
 
@@ -4265,7 +4356,7 @@ in
           # Watchfiles does not include Cargo.lock in tarball released on PyPi for versions up to 0.17.0
           getRepoHash = version:
             {
-              "0.24.0" = "sha256-kFScg3pkOD0gASRtfXSfwZxyW/XvW9x0zgMn0AQek4A=";
+              "0.24.0" = "sha256-uc4CfczpNkS4NMevtRxhUOj9zTt59cxoC0BXnuHFzys=";
               "0.23.0" = "sha256-kFScg3pkOD0gASRtfXSfwZxyW/XvW9x0zgMn0AQek4A=";
               "0.22.0" = "sha256-TtRSRgtMOqsnhdvsic3lg33xlA+r/DcYHlzewSOu/44=";
               "0.21.0" = "sha256-/qNgkPF5N8jzSV3M0YFWvQngZ4Hf4WM/GBS1LtgFbWM=";
@@ -4288,7 +4379,9 @@ in
 
           getCargoHash = version:
             {
-              "0.24.0" = "sha256-m7XFpbujWFmDNSDydY3ec6b+AGgrfo3+TTbRN7te8bY=";
+              "0.24.0".outputHashes = {
+                "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
+              };
               "0.23.0" = "sha256-m7XFpbujWFmDNSDydY3ec6b+AGgrfo3+TTbRN7te8bY=";
               "0.22.0" = "sha256-pl5BBOxrxvPvBJTnTqvWNFecoJwfyuAs4xZEgmg+T+w=";
               "0.21.0" = "sha256-KDm1nGeg4oDcbopedPfzalK2XO1c1ZQUZu6xhfRdQx4=";
@@ -4310,12 +4403,13 @@ in
             cargoDeps = let
               hash = getCargoHash prev.watchfiles.version;
             in
-              if hash == null
+              if hash == null || lib.isAttrs hash
               then
                 pkgs.rustPlatform.importCargoLock
-                {
-                  lockFile = "${src.out}/Cargo.lock";
-                }
+                ({
+                    lockFile = "${src.out}/Cargo.lock";
+                  }
+                  // (lib.optionalAttrs (lib.isAttrs hash) hash))
               else
                 pkgs.rustPlatform.fetchCargoTarball {
                   name = "watchfiles-${old.version}-cargo-deps";
@@ -4328,8 +4422,8 @@ in
               patchPhase = builtins.concatStringsSep "\n" [
                 (old.patchPhase or "")
                 ''
-                  substituteInPlace "Cargo.lock" --replace 'version = "0.0.0"' 'version = "${old.version}"'
-                  substituteInPlace "Cargo.toml" --replace 'version = "0.0.0"' 'version = "${old.version}"'
+                  substituteInPlace "Cargo.lock" --replace-warn 'version = "0.0.0"' 'version = "${old.version}"'
+                  substituteInPlace "Cargo.toml" --replace-warn 'version = "0.0.0"' 'version = "${old.version}"'
                 ''
               ];
               buildInputs =
@@ -4359,7 +4453,7 @@ in
 
         web3 = prev.web3.overridePythonAttrs {
           preConfigure = ''
-            substituteInPlace setup.py --replace \'setuptools-markdown\' ""
+            substituteInPlace setup.py --replace-warn \'setuptools-markdown\' ""
           '';
         };
 
@@ -4467,6 +4561,19 @@ in
           }
         );
 
+        pye3d = prev.pye3d.overridePythonAttrs (old: {
+          buildInputs =
+            old.buildInputs
+            or []
+            ++ [pkgs.eigen final.scikit-build];
+
+          postPatch = ''
+            sed -i "2i version = ${old.version}" setup.cfg
+          '';
+
+          dontUseCmakeConfigure = true;
+        });
+
         # pyee cannot find `vcversioner` and other "setup requirements", so it tries to
         # download them from the internet, which only works when nix sandboxing is disabled.
         # Additionally, since pyee uses vcversioner to specify its version, we need to do this
@@ -4497,7 +4604,7 @@ in
               old.postPatch
               or ""
               + ''
-                substituteInPlace setup.py --replace '"setuptools_scm>=3.2,<4"' '"setuptools_scm"'
+                substituteInPlace setup.py --replace-warn '"setuptools_scm>=3.2,<4"' '"setuptools_scm"'
               '';
           }
         );
@@ -4574,8 +4681,8 @@ in
           propagatedBuildInputs = old.propagatedBuildInputs or [] ++ [pkgs.sqlite];
           patchPhase = ''
             substituteInPlace "setup.cfg"                                     \
-                    --replace "/usr/local/include" "${pkgs.sqlite.dev}/include"   \
-                    --replace "/usr/local/lib" "${pkgs.sqlite.out}/lib"
+                    --replace-warn "/usr/local/include" "${pkgs.sqlite.dev}/include"   \
+                    --replace-warn "/usr/local/lib" "${pkgs.sqlite.out}/lib"
             ${lib.optionalString (!stdenv.isDarwin) ''export LDSHARED="$CC -pthread -shared"''}
           '';
         });
@@ -4623,7 +4730,7 @@ in
           patchExporters = lib.optionalString (lib.versionAtLeast final.nbconvert.version "6.5.0") ''
             substituteInPlace \
               ./nbconvert/exporters/templateexporter.py \
-              --replace \
+              --replace-warn \
               'root_dirs.extend(jupyter_path())' \
               'root_dirs.extend(jupyter_path() + [os.path.join("@out@", "share", "jupyter")])' \
               --subst-var out
@@ -4635,7 +4742,7 @@ in
               + lib.optionalString (lib.versionAtLeast final.nbconvert.version "7.0") ''
                 substituteInPlace \
                   ./hatch_build.py \
-                  --replace \
+                  --replace-warn \
                   'if final.target_name not in ["wheel", "sdist"]:' \
                   'if True:'
               ''

@@ -1463,6 +1463,9 @@
   "asyncpg": [
     "setuptools"
   ],
+  "asyncpg-stubs": [
+    "poetry-core"
+  ],
   "asyncsleepiq": [
     "setuptools"
   ],
@@ -5286,6 +5289,9 @@
   "django-braces": [
     "setuptools"
   ],
+  "django-browser-reload": [
+    "setuptools"
+  ],
   "django-cache-memoize": [
     "setuptools"
   ],
@@ -5471,6 +5477,9 @@
   "django-libsass": [
     "setuptools"
   ],
+  "django-lifecycle": [
+    "setuptools"
+  ],
   "django-logentry-admin": [
     "setuptools"
   ],
@@ -5616,6 +5625,9 @@
   "django-scopes": [
     "setuptools"
   ],
+  "django-sendgrid-v5": [
+    "setuptools"
+  ],
   "django-ses": [
     "setuptools"
   ],
@@ -5666,9 +5678,15 @@
   "django-tastypie": [
     "setuptools"
   ],
+  "django-template-partials": [
+    "flit-core"
+  ],
   "django-timezone-field": [
     "poetry-core",
     "setuptools"
+  ],
+  "django-tree-queries": [
+    "hatchling"
   ],
   "django-treebeard": [
     "setuptools"
@@ -6895,6 +6913,9 @@
   "ffmpeg-python": [
     "setuptools"
   ],
+  "ffmpegcv": [
+    "setuptools"
+  ],
   "ffmpy": [
     "setuptools"
   ],
@@ -7591,6 +7612,8 @@
     "setuptools"
   ],
   "fsspec": [
+    "hatch-vcs",
+    "hatchling",
     "setuptools"
   ],
   "fsspec-xrootd": [
@@ -11024,6 +11047,9 @@
   "litellm": [
     "poetry-core"
   ],
+  "litestar": [
+    "hatchling"
+  ],
   "littleutils": [
     "setuptools"
   ],
@@ -11810,6 +11836,10 @@
   "meson": [
     "setuptools"
   ],
+  "meson-python": [
+    "meson",
+    "ninja"
+  ],
   "mesonpep517": [
     "setuptools"
   ],
@@ -12404,7 +12434,14 @@
     "setuptools"
   ],
   "mss": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "9.0.2"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "9.0.2"
+    }
   ],
   "mt-940": [
     "setuptools"
@@ -14007,6 +14044,9 @@
   "nmapthon2": [
     "setuptools"
   ],
+  "nmcli": [
+    "setuptools"
+  ],
   "nocasedict": [
     "setuptools"
   ],
@@ -14272,6 +14312,9 @@
     "setuptools"
   ],
   "objgraph": [
+    "setuptools"
+  ],
+  "objprint": [
     "setuptools"
   ],
   "objsize": [
@@ -15914,7 +15957,14 @@
     "setuptools"
   ],
   "polyfactory": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "2.10.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2.10.0"
+    }
   ],
   "polyline": [
     "setuptools"
@@ -16268,6 +16318,9 @@
     "setuptools"
   ],
   "psycopg": [
+    "setuptools"
+  ],
+  "psycopg-c": [
     "setuptools"
   ],
   "psycopg-pool": [
@@ -16770,7 +16823,18 @@
     "setuptools"
   ],
   "pycairo": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.27.0"
+    },
+    {
+      "buildSystem": "meson-python",
+      "from": "1.27.0"
+    },
+    {
+      "buildSystem": "ninja",
+      "from": "1.27.0"
+    }
   ],
   "pycangjie": [
     "cython",
@@ -17118,6 +17182,11 @@
   ],
   "pydyf": [
     "flit-core",
+    "setuptools"
+  ],
+  "pye3d": [
+    "cmake",
+    "cython",
     "setuptools"
   ],
   "pyeapi": [
@@ -18301,7 +18370,14 @@
     "flit-core"
   ],
   "pyproject-metadata": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "0.8.0"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "0.8.0"
+    }
   ],
   "pyprosegur": [
     "setuptools"
@@ -20083,6 +20159,9 @@
   "python3-application": [
     "setuptools"
   ],
+  "python3-discogs-client": [
+    "setuptools"
+  ],
   "python3-eventlib": [
     "setuptools"
   ],
@@ -21686,6 +21765,9 @@
     "hatchling",
     "setuptools",
     "setuptools-scm"
+  ],
+  "scienceplots": [
+    "setuptools"
   ],
   "scikit-bio": [
     "cython",
@@ -25738,7 +25820,14 @@
     "setuptools"
   ],
   "types-awscrt": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "0.21.4"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.21.4"
+    }
   ],
   "types-backports": [
     "setuptools"
@@ -25877,7 +25966,14 @@
     "setuptools"
   ],
   "types-s3transfer": [
-    "poetry-core"
+    {
+      "buildSystem": "poetry-core",
+      "until": "0.10.2"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.10.2"
+    }
   ],
   "types-setuptools": [
     "setuptools"
@@ -26241,6 +26337,10 @@
     {
       "buildSystem": "hatchling",
       "from": "2.0.2"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "2.2.3"
     }
   ],
   "urlman": [
@@ -26295,6 +26395,12 @@
     "setuptools"
   ],
   "uuid": [
+    "setuptools"
+  ],
+  "uuid6": [
+    "setuptools"
+  ],
+  "uuid7": [
     "setuptools"
   ],
   "uvcclient": [
@@ -26488,6 +26594,9 @@
     "setuptools"
   ],
   "vivisect": [
+    "setuptools"
+  ],
+  "viztracer": [
     "setuptools"
   ],
   "vmprof": [
