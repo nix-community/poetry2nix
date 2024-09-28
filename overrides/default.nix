@@ -4231,7 +4231,8 @@ in
                 cargo
                 rustc
                 pkg-config
-                self.protoc-wheel-0
+                final.protoc-wheel-0
+                final.poetry-core
                 rustPlatform.cargoSetupHook
               ]);
           });
