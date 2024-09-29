@@ -2126,6 +2126,25 @@ lib.composeManyExtensions [
         }
       );
 
+      pendulum = prev.pendulum.overridePythonAttrs (
+        old:
+        # NOTE: Versions <3.0.0 is pure Python and is not PEP-517 compliant,
+        #       which means they can not be built using recent Poetry versions.
+        lib.optionalAttrs (lib.versionAtLeast old.version "3" && (!old.src.isWheel or false)) {
+          cargoRoot = "rust";
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = ./pendulum/3.0.0-Cargo.lock;
+          };
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+          buildInputs = old.buildInputs or [ ] ++ lib.optionals pkgs.stdenv.isDarwin [
+            pkgs.libiconv
+          ];
+        }
+      );
+
       pikepdf = prev.pikepdf.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.qpdf final.pybind11 ];
