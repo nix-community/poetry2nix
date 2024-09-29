@@ -5,7 +5,7 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 jupyter-ydoc = "*"
 
 [build-system]

@@ -1,7 +1,8 @@
-{ poetry2nix, runCommand }:
+{ poetry2nix, runCommand, python311 }:
 let
   mkEnv = preferWheel: poetry2nix.mkPoetryEnv {
     projectDir = ./.;
+    python = python311;
     overrides = poetry2nix.overrides.withDefaults (
       _: prev: {
         matplotlib = prev.matplotlib.override {

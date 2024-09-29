@@ -1670,7 +1670,7 @@ lib.composeManyExtensions [
               { }
               {
                 mpi = {
-                  mpicc = "${pkgs.mpi.dev}/bin/mpicc";
+                  mpicc = "${lib.getDev pkgs.mpi}/bin/mpicc";
                 };
               };
           };
@@ -1863,6 +1863,8 @@ lib.composeManyExtensions [
         ];
         buildInputs = old.buildInputs or [ ] ++ [
           pkgs.libusb1
+          pkgs.xorg.libXfixes
+          pkgs.xorg.libXxf86vm
         ] ++ lib.optionals stdenv.isLinux [
           pkgs.udev
         ] ++ lib.optionals (lib.versionAtLeast prev.open3d.version "0.16.0" && !pkgs.mesa.meta.broken) [
@@ -2269,6 +2271,33 @@ lib.composeManyExtensions [
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.postgresql ];
         }
       );
+
+      pemja = prev.pemja.overridePythonAttrs (old: {
+        buildInputs = old.buildInputs or [ ] ++ [ pkgs.openjdk17_headless ];
+      });
+
+      pycrdt =
+        let
+          hashes = {
+            "0.9.11" = "sha256-qKrYCkSP8f/oQytfc1xvBX6gt26D3Z/5bbzKPO0e0tQ=";
+          };
+        in
+        prev.pycrdt.overridePythonAttrs (old: {
+          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            inherit (old) src;
+            name = "${old.pname}-${old.version}";
+            sha256 = hashes.${old.version};
+          };
+
+          buildInputs = old.buildInputs or [ ] ++ lib.optionals stdenv.isDarwin [
+            pkgs.libiconv
+          ];
+
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+            pkgs.rustPlatform.cargoSetupHook
+            pkgs.rustPlatform.maturinBuildHook
+          ];
+        });
 
       pycurl = prev.pycurl.overridePythonAttrs (
         old: {
@@ -3906,7 +3935,7 @@ lib.composeManyExtensions [
 
           getCargoHash = version: {
             "0.24.0".outputHashes = {
-             "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
+              "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
             };
             "0.23.0" = "sha256-m7XFpbujWFmDNSDydY3ec6b+AGgrfo3+TTbRN7te8bY=";
             "0.22.0" = "sha256-pl5BBOxrxvPvBJTnTqvWNFecoJwfyuAs4xZEgmg+T+w=";

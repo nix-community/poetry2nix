@@ -165,7 +165,6 @@ in
   git-subdirectory-hook = callTest ./git-subdirectory-hook { };
   pandas = callTest ./pandas { };
   python-magic = callTest ./python-magic { };
-  cmdstanpy = callTest ./cmdstanpy { };
   avro-python3 = callTest ./avro-python3 { };
   mpi4py-test = callTest ./mpi4py-test { };
   ckzg = callTest ./ckzg { };
@@ -226,6 +225,7 @@ in
   common-pkgs-2 = callTest ./common-pkgs-2 { };
   pytest-randomly = callTest ./pytest-randomly { };
   fetched-projectdir = callTest ./fetched-projectdir { };
+  cmdstanpy = callTest ./cmdstanpy { };
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_86-linux
   pendulum = callTest ./pendulum { };
