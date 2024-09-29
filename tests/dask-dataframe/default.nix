@@ -7,7 +7,7 @@ let
     preferWheels = true;
   };
 in
-runCommand "overturemapsdownloader-test" { } ''
-  ${env}/bin/python -c 'import overturemapsdownloader'
+runCommand "dask-dataframe-infinite-recursion-test" { } ''
+  ${env}/bin/python -c 'import dask.dataframe as dd; import dask_expr'
   touch $out
 ''
