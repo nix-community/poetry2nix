@@ -21256,6 +21256,9 @@
   "reserved": [
     "setuptools"
   ],
+  "resize-right": [
+    "setuptools"
+  ],
   "resolvelib": [
     "setuptools"
   ],
