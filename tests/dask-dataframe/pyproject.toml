@@ -8,6 +8,7 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.10"
 dask = { version = ">=2024.8.0", extras = ["dataframe"] }
 dask_expr = "*"
+pyarrow = "^17"
 
 [build-system]
 requires = ["poetry-core"]
