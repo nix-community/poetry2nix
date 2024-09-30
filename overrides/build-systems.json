@@ -6745,6 +6745,10 @@
   "facedancer": [
     "setuptools"
   ],
+  "facexlib": [
+    "cython",
+    "setuptools-scm"
+  ],
   "factory-boy": [
     "setuptools"
   ],
