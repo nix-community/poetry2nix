@@ -20589,7 +20589,15 @@
   ],
   "pywavelets": [
     "cython",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "meson-python",
+      "from": "1.5.0"
+    },
+    {
+      "buildSystem": "ninja",
+      "from": "1.5.0"
+    }
   ],
   "pywayland": [
     "setuptools"
