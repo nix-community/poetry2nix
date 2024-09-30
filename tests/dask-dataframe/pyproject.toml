@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "dask-dataframe-infinite-recursion-test"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+dask = { version = ">=2024.8.0", extras = ["dataframe"] }
+dask_expr = "*"
+pyarrow = "^17"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

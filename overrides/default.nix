@@ -686,6 +686,19 @@ lib.composeManyExtensions [
         preferWheel = true;
       };
 
+      dask = prev.dask.overridePythonAttrs (
+        old: {
+          propagatedBuildInputs = removePackagesByName
+            old.propagatedBuildInputs or [ ]
+            (
+              # dask[dataframe] depends on dask-expr, which depends on dask, resulting in infinite recursion
+              lib.optionals (final ? dask-expr) [ final.dask-expr ] ++
+              # dask[dataframe] depends on distributed, which depends on dask, resulting in infinite recursion
+              lib.optionals (final ? distributed) [ final.distributed ]
+            );
+        }
+      );
+
       datadog-lambda = prev.datadog-lambda.overridePythonAttrs (old: {
         postPatch = ''
           substituteInPlace setup.py --replace-warn "setuptools==" "setuptools>="
