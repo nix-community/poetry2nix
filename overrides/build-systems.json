@@ -2719,6 +2719,9 @@
   "blebox-uniapi": [
     "setuptools"
   ],
+  "blendmodes": [
+    "poetry-core"
+  ],
   "bless": [
     "setuptools"
   ],
