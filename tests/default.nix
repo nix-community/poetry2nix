@@ -173,6 +173,7 @@ in
   soundfile-wheel = callTest ./soundfile-wheel { };
   soundfile = callTest ./soundfile { };
   pyogrio = callTest ./pyogrio { };
+  shellcheck-py = callTest ./shellcheck-py { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
