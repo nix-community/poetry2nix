@@ -6962,7 +6962,11 @@
     "setuptools"
   ],
   "ffmpy": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "poetry-core",
+      "from": "0.4.0"
+    }
   ],
   "fhconfparser": [
     "poetry-core"
