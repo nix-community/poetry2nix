@@ -4297,9 +4297,11 @@ lib.composeManyExtensions [
       });
 
       mkdocs-material = prev.mkdocs-material.overridePythonAttrs (old: {
-        postPatch = old.postPatch or "" + ''
-          sed -i 's/"Framework :: MkDocs",//' pyproject.toml
+        postPatch = old.postPatch or "" + lib.optionalString (old.version == "8.5.4") ''
+          sed -i 's/filename = "requirements.txt"//' pyproject.toml
+          sed -i '/\[project\]/a dependencies = ["jinja2>=3.0.2", "markdown>=3.2", "mkdocs>=1.3", "mkdocs-material-extensions>=1.0.3", "pygments>=2.12", "pymdown-extensions>=9.4", "requests>=2.26"]' pyproject.toml
         '';
+
       });
 
       # patch mkdocstrings to fix jinja2 imports
