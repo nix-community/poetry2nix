@@ -9208,6 +9208,9 @@
   "huey": [
     "setuptools"
   ],
+  "hug": [
+    "setuptools"
+  ],
   "huggingface-hub": [
     "setuptools"
   ],
