@@ -1987,6 +1987,30 @@ lib.composeManyExtensions [
         }
       );
 
+      open-clip-torch = prev.open-clip-torch.overridePythonAttrs (
+        # The sdist from pypi doesn't contain the requirements.txt
+        old:
+        lib.optionalAttrs (!(old.src.isWheel or false)) (
+          let
+            githubHash =
+              {
+                "2.20.0" = "sha256-Ca4oi2LqleIFAGBJB7YIi4nXe2XhOP6ErDFXgXtJLxM=";
+              }
+              .${old.version} or lib.fakeHash;
+
+            src = pkgs.fetchFromGitHub {
+              owner = "mlfoundations";
+              repo = "open_clip";
+              rev = "v${old.version}";
+              sha256 = githubHash;
+            };
+          in
+          {
+            inherit src;
+          }
+        )
+      );
+
       orjson = prev.orjson.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) (
           let
