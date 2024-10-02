@@ -15540,7 +15540,11 @@
   ],
   "pdoc3": [
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    {
+      "buildSystem": "setuptools-git",
+      "from": "0.5.0"
+    }
   ],
   "pdocs": [
     "poetry"
