@@ -1503,6 +1503,13 @@ lib.composeManyExtensions [
         }
       );
 
+      mariadb = prev.mariadb.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config pkgs.libmysqlclient ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libmysqlclient ];
+        }
+      );
+
       markdown-it-py = prev.markdown-it-py.overridePythonAttrs (
         old: {
           propagatedBuildInputs = builtins.filter (i: i.pname != "mdit-py-plugins") old.propagatedBuildInputs;
