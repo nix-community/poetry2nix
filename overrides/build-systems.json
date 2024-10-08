@@ -5573,6 +5573,9 @@
   "django-pwa": [
     "setuptools"
   ],
+  "django-pydantic-field": [
+    "setuptools"
+  ],
   "django-q": [
     "poetry-core",
     "setuptools"
