@@ -13983,6 +13983,10 @@
     "cython",
     "setuptools"
   ],
+  "nglview": [
+    "jupyter-packaging",
+    "versioneer"
+  ],
   "niaaml": [
     "poetry-core"
   ],
