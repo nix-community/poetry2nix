@@ -108,12 +108,15 @@ in
   cattrs = callTest ./cattrs { };
   cattrs-pre-23-2 = callTest ./cattrs-pre-23-2 { };
   cdk-nag = callTest ./cdk-nag { };
+  commitizen = callTest ./commitizen { };
   arrow = callTest ./arrow { };
   gitlint-core = callTest ./gitlint-core { };
   gitlint = callTest ./gitlint { };
   jupyter-ydoc = callTest ./jupyter-ydoc { };
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
+  decli = callTest ./decli { };
+  decli-pre-0_6_2 = callTest ./decli-pre-0_6_2 { };
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
