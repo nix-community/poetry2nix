@@ -14966,11 +14966,11 @@
   "orvibo": [
     "setuptools"
   ],
-  "os-service-types": [
-    "pbr",
+  "os-client-config": [
     "setuptools"
   ],
-  "os-client-config": [
+  "os-service-types": [
+    "pbr",
     "setuptools"
   ],
   "osc": [
