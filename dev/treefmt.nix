@@ -20,6 +20,9 @@
     };
 
     black.excludes = [ "vendor/**.py" ];
+
+    deadnix.excludes = [ "vendor/**.nix" ];
+    statix.excludes = [ "vendor/**.nix" ];
   };
 
   programs.deadnix.enable = true;

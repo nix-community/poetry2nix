@@ -59,6 +59,7 @@ in
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
   color-operations = callTest ./color-operations { };
+  cryptography = callTest ./cryptography { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   mailchimp3 = callTest ./mailchimp3 { };
   markupsafe2 = callTest ./markupsafe2 { };
@@ -107,12 +108,15 @@ in
   cattrs = callTest ./cattrs { };
   cattrs-pre-23-2 = callTest ./cattrs-pre-23-2 { };
   cdk-nag = callTest ./cdk-nag { };
+  commitizen = callTest ./commitizen { };
   arrow = callTest ./arrow { };
   gitlint-core = callTest ./gitlint-core { };
   gitlint = callTest ./gitlint { };
   jupyter-ydoc = callTest ./jupyter-ydoc { };
   mutmut = callTest ./mutmut { };
   procrastinate = callTest ./procrastinate { };
+  decli = callTest ./decli { };
+  decli-pre-0_6_2 = callTest ./decli-pre-0_6_2 { };
   pytest-redis = callTest ./pytest-redis { };
   pylint-django = callTest ./pylint-django { };
   pylint-django-pre-2-5-4 = callTest ./pylint-django-pre-2-5-4 { };
@@ -164,7 +168,6 @@ in
   git-subdirectory-hook = callTest ./git-subdirectory-hook { };
   pandas = callTest ./pandas { };
   python-magic = callTest ./python-magic { };
-  cmdstanpy = callTest ./cmdstanpy { };
   avro-python3 = callTest ./avro-python3 { };
   mpi4py-test = callTest ./mpi4py-test { };
   ckzg = callTest ./ckzg { };
@@ -173,6 +176,7 @@ in
   soundfile-wheel = callTest ./soundfile-wheel { };
   soundfile = callTest ./soundfile { };
   pyogrio = callTest ./pyogrio { };
+  dask-dataframe = callTest ./dask-dataframe { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
@@ -225,9 +229,11 @@ in
   common-pkgs-2 = callTest ./common-pkgs-2 { };
   pytest-randomly = callTest ./pytest-randomly { };
   fetched-projectdir = callTest ./fetched-projectdir { };
+  cmdstanpy = callTest ./cmdstanpy { };
 } // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_86-linux
   pendulum = callTest ./pendulum { };
+  pendulum-with-rust = callTest ./pendulum-with-rust { };
   tensorflow = callTest ./tensorflow { };
   # Test deadlocks on darwin and fails to start at all with aarch64-linux,
   # sandboxing issue?

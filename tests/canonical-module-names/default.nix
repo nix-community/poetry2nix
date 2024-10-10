@@ -15,7 +15,7 @@ poetry2nix.mkPoetryApplication {
           _old: {
             postPatch = ''
               touch LICENSE
-              substituteInPlace setup.py --replace 'setup_requires=["pytest-runner"],' ""
+              substituteInPlace setup.py --replace-warn 'setup_requires=["pytest-runner"],' ""
             '';
           }
         );
