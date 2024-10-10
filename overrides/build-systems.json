@@ -285,6 +285,9 @@
     "poetry-core",
     "setuptools"
   ],
+  "aiodataloader": [
+    "setuptools"
+  ],
   "aiodhcpwatcher": [
     "poetry-core"
   ],
@@ -8510,6 +8513,9 @@
   "graphene-django-optimizer": [
     "setuptools"
   ],
+  "graphene-file-upload": [
+    "setuptools"
+  ],
   "graphite-web": [
     "setuptools"
   ],
@@ -9178,6 +9184,10 @@
     "setuptools"
   ],
   "huisbaasje-client": [
+    "setuptools"
+  ],
+  "human-id": [
+    "poetry-core",
     "setuptools"
   ],
   "human-readable": [
@@ -10874,6 +10884,9 @@
   ],
   "libgpuarray": [
     "cython_0",
+    "setuptools"
+  ],
+  "libgravatar": [
     "setuptools"
   ],
   "libiio": [
@@ -16795,6 +16808,9 @@
     "setuptools"
   ],
   "pyautogui": [
+    "setuptools"
+  ],
+  "pyavatar": [
     "setuptools"
   ],
   "pyavm": [
@@ -23178,6 +23194,9 @@
     }
   ],
   "sqlobject": [
+    "setuptools"
+  ],
+  "sqlparams": [
     "setuptools"
   ],
   "sqlparse": [
