@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "mkdocs-material-test"
+version = "0.1.0"
+description = "Test of mkdocs-material"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+mkdocs-material = "8.5.4"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"
