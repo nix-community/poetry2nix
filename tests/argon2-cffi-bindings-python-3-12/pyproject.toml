@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "test_argon2_cffi_bindings_python_3_12"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.12"
+argon2-cffi-bindings = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
