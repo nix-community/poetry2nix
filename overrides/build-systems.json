@@ -16216,6 +16216,11 @@
   "prompthub-py": [
     "poetry-core"
   ],
+  "propcache": [
+    "cython",
+    "expandvars",
+    "setuptools"
+  ],
   "property-manager": [
     "setuptools"
   ],
