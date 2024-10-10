@@ -3141,10 +3141,6 @@ lib.composeManyExtensions [
         }
       );
 
-      sarif-tools = prev.sarif-tools.overridePythonAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkgs.python3.pkgs.poetry-core ];
-      });
-
       scaleapi = prev.scaleapi.overridePythonAttrs (
         _old: {
           postPatch = ''
