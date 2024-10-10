@@ -5858,7 +5858,14 @@
   ],
   "docker": [
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    {
+      "buildSystem": "hatchling",
+      "from": "7.1.0"
+    }
+  ],
+  "docker-image-py": [
+    "setuptools"
   ],
   "docker-py": [
     "setuptools"
@@ -8591,6 +8598,9 @@
     "setuptools"
   ],
   "grpcio-gcp": [
+    "setuptools"
+  ],
+  "grpcio-health-checking": [
     "setuptools"
   ],
   "grpcio-reflection": [
@@ -25867,6 +25877,9 @@
     "setuptools"
   ],
   "types-cachetools": [
+    "setuptools"
+  ],
+  "types-certifi": [
     "setuptools"
   ],
   "types-cffi": [
