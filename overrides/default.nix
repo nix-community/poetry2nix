@@ -1415,7 +1415,7 @@ lib.composeManyExtensions [
         }
       );
 
-      license-expression = prev.license-expression.overridePythonAttrs (old: {
+      license-expression = prev.license-expression.overridePythonAttrs (_old: {
         dontConfigure = true;
       });
 
