@@ -12106,6 +12106,9 @@
     "hatchling",
     "poetry"
   ],
+  "mkdocs-get-deps": [
+    "hatchling"
+  ],
   "mkdocs-git-authors-plugin": [
     "setuptools"
   ],
