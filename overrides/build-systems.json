@@ -11258,6 +11258,9 @@
   "logging-journald": [
     "poetry-core"
   ],
+  "logging-json": [
+    "setuptools"
+  ],
   "logi-circle": [
     "setuptools"
   ],
