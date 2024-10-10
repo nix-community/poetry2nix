@@ -2002,8 +2002,7 @@ lib.composeManyExtensions [
             githubHash =
               {
                 "2.20.0" = "sha256-Ca4oi2LqleIFAGBJB7YIi4nXe2XhOP6ErDFXgXtJLxM=";
-              }
-              .${old.version} or lib.fakeHash;
+              }.${old.version} or lib.fakeHash;
 
             src = pkgs.fetchFromGitHub {
               owner = "mlfoundations";
