@@ -8513,6 +8513,9 @@
   "graphene-django-optimizer": [
     "setuptools"
   ],
+  "graphene-file-upload": [
+    "setuptools"
+  ],
   "graphite-web": [
     "setuptools"
   ],
@@ -9181,12 +9184,6 @@
     "setuptools"
   ],
   "huisbaasje-client": [
-    "setuptools"
-  ],
-  "graphene-file-upload": [
-    "setuptools"
-  ],
-  "sqlparams": [
     "setuptools"
   ],
   "human-id": [
@@ -10892,7 +10889,6 @@
   "libgravatar": [
     "setuptools"
   ],
-
   "libiio": [
     "setuptools"
   ],
@@ -23198,6 +23194,9 @@
     }
   ],
   "sqlobject": [
+    "setuptools"
+  ],
+  "sqlparams": [
     "setuptools"
   ],
   "sqlparse": [
