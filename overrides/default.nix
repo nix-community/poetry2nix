@@ -2253,6 +2253,11 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
       });
 
+      propcache = prev.propcache.overridePythonAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs or [ ]
+          ++ lib.optionals (final.pythonOlder "3.11") [ final.tomli ];
+      });
+
       prophet = prev.prophet.overridePythonAttrs (old: {
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.cmdstan final.cmdstanpy ];
         PROPHET_REPACKAGE_CMDSTAN = "false";
