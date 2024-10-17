@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "propcache-test"
+version = "0.1.0"
+description = "Test of propcache"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+propcache = "*"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

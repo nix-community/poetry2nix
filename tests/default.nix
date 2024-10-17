@@ -178,6 +178,7 @@ in
   pyogrio = callTest ./pyogrio { };
   dask-dataframe = callTest ./dask-dataframe { };
   argon2-cffi-bindings-python-3-12 = callTest ./argon2-cffi-bindings-python-3-12 { };
+  propcache = callTest ./propcache { };
 } // lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
