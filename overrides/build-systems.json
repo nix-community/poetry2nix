@@ -21771,6 +21771,9 @@
     "pbr",
     "setuptools"
   ],
+  "sarif-tools": [
+    "poetry-core"
+  ],
   "sasmodels": [
     "setuptools"
   ],

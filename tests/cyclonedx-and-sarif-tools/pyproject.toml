@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "cyclonedx-and-sarif-tools-test"
+version = "0.1.0"
+description = "Test of cyclonedx and sarif-tools"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+cyclonedx-python-lib = "*"
+sarif-tools = "*"
+
+[build-system]
+requires = ["poetry-core>=1"]
+build-backend = "poetry.core.masonry.api"

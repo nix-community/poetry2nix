@@ -1415,6 +1415,10 @@ lib.composeManyExtensions [
         }
       );
 
+      license-expression = prev.license-expression.overridePythonAttrs (_old: {
+        dontConfigure = true;
+      });
+
       llama-cpp-python = prev.llama-cpp-python.overridePythonAttrs (
         old: {
           buildInputs = with pkgs; lib.optionals stdenv.isDarwin [
