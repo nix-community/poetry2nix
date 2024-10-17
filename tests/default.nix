@@ -129,6 +129,7 @@ in
   shapely-wheel = callTest ./shapely-wheel { };
   cffi-pandas-wheel = callTest ./cffi-pandas-wheel { };
   mkdocstrings-wheel = callTest ./mkdocstrings-wheel { };
+  mkdocs-material = callTest ./mkdocs-material { };
   test-extras = callTest ./test-extras { };
   test-no-extras = callTest ./test-no-extras { };
   missing-iswheel = callTest ./missing-iswheel { };
