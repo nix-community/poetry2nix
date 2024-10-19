@@ -6097,6 +6097,9 @@
   "duo-client": [
     "setuptools"
   ],
+  "durationpy": [
+    "setuptools"
+  ],
   "durus": [
     "setuptools"
   ],
