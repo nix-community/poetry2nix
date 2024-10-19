@@ -14931,7 +14931,22 @@
     "setuptools"
   ],
   "opt-einsum": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.4.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "3.4.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "3.4.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "3.4.0"
+    }
   ],
   "optax": [
     "flit-core",
