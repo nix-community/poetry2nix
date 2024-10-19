@@ -18087,7 +18087,15 @@
     "setuptools"
   ],
   "pymongo": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatch-requirements-txt",
+      "from": "4.9"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.9"
+    }
   ],
   "pymongo-inmemory": [
     "poetry-core"
