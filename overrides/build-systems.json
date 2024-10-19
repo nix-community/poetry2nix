@@ -10776,7 +10776,14 @@
     "setuptools"
   ],
   "lazy-loader": [
-    "flit-core"
+    {
+      "buildSystem": "flit-core",
+      "until": "0.4"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.4"
+    }
   ],
   "lazy-object-proxy": [
     "setuptools",
