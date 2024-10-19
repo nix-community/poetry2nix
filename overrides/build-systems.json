@@ -1649,6 +1649,10 @@
   "autopep8": [
     "setuptools"
   ],
+  "autoray": [
+    "setuptools",
+    "setuptools-scm"
+  ],
   "autoslot": [
     "flit-core"
   ],
