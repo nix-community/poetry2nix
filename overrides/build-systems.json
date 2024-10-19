@@ -24444,6 +24444,9 @@
   "torch-bin": [
     "setuptools"
   ],
+  "torch-geometric": [
+    "flit-core"
+  ],
   "torch-pitch-shift": [
     "setuptools"
   ],
