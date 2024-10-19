@@ -16304,6 +16304,10 @@
   "protobuf3-to-dict": [
     "setuptools"
   ],
+  "protoc-gen-openapiv2": [
+    "setuptools",
+    "wheel"
+  ],
   "protoletariat": [
     "poetry-core"
   ],
