@@ -11615,6 +11615,9 @@
   "marshmallow-enum": [
     "setuptools"
   ],
+  "marshmallow-jsonschema": [
+    "setuptools"
+  ],
   "marshmallow-objects": [
     "setuptools"
   ],
