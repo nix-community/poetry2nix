@@ -20318,7 +20318,14 @@
     "setuptools"
   ],
   "pytoolconfig": [
-    "pdm-pep517"
+    {
+      "buildSystem": "pdm-pep517",
+      "until": "1.2.6"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "1.2.6"
+    }
   ],
   "pytools": [
     "setuptools"
