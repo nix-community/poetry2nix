@@ -1618,7 +1618,14 @@
     "setuptools"
   ],
   "autograd": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.7.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.7.0"
+    }
   ],
   "autoit-ripper": [
     "setuptools"
