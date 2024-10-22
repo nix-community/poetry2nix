@@ -2719,6 +2719,9 @@
   "blebox-uniapi": [
     "setuptools"
   ],
+  "blendmodes": [
+    "poetry-core"
+  ],
   "bless": [
     "setuptools"
   ],
@@ -6731,6 +6734,10 @@
   "facedancer": [
     "setuptools"
   ],
+  "facexlib": [
+    "cython",
+    "setuptools-scm"
+  ],
   "factory-boy": [
     "setuptools"
   ],
@@ -6944,7 +6951,11 @@
     "setuptools"
   ],
   "ffmpy": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "poetry-core",
+      "from": "0.4.0"
+    }
   ],
   "fhconfparser": [
     "poetry-core"
@@ -9183,6 +9194,9 @@
   "huey": [
     "setuptools"
   ],
+  "hug": [
+    "setuptools"
+  ],
   "huggingface-hub": [
     "setuptools"
   ],
@@ -10773,7 +10787,14 @@
     "setuptools"
   ],
   "lazy-loader": [
-    "flit-core"
+    {
+      "buildSystem": "flit-core",
+      "until": "0.4"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.4"
+    }
   ],
   "lazy-object-proxy": [
     "setuptools",
@@ -13772,6 +13793,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "narwhals": [
+    "hatchling"
+  ],
   "nats-py": [
     "setuptools"
   ],
@@ -15481,7 +15505,14 @@
   ],
   "pdoc3": [
     "setuptools",
-    "setuptools-scm"
+    "setuptools-scm",
+    {
+      "buildSystem": "setuptools-git",
+      "from": "0.5.0"
+    }
+  ],
+  "pdocs": [
+    "poetry"
   ],
   "pdunehd": [
     "setuptools"
@@ -15705,6 +15736,9 @@
     "setuptools"
   ],
   "pillow": [
+    "setuptools"
+  ],
+  "pillow-avif-plugin": [
     "setuptools"
   ],
   "pillow-heif": [
@@ -16069,6 +16103,9 @@
   ],
   "portpicker": [
     "setuptools"
+  ],
+  "portray": [
+    "poetry"
   ],
   "posix-ipc": [
     "setuptools"
@@ -20523,7 +20560,15 @@
   ],
   "pywavelets": [
     "cython",
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "meson-python",
+      "from": "1.5.0"
+    },
+    {
+      "buildSystem": "ninja",
+      "from": "1.5.0"
+    }
   ],
   "pywayland": [
     "setuptools"
@@ -21245,6 +21290,9 @@
     "setuptools"
   ],
   "reserved": [
+    "setuptools"
+  ],
+  "resize-right": [
     "setuptools"
   ],
   "resolvelib": [
@@ -24257,6 +24305,9 @@
   ],
   "timing-asgi": [
     "poetry-core"
+  ],
+  "timm": [
+    "pdm-backend"
   ],
   "tiny-cuda-nn": [
     "setuptools"
