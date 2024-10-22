@@ -1135,6 +1135,9 @@
     "setuptools",
     "setuptools-scm"
   ],
+  "apykuma": [
+    "poetry-core"
+  ],
   "aqipy-atmotech": [
     "setuptools"
   ],
@@ -1434,6 +1437,9 @@
   ],
   "async-upnp-client": [
     "setuptools"
+  ],
+  "asyncache": [
+    "poetry-core"
   ],
   "asyncclick": [
     "setuptools",
@@ -8086,7 +8092,8 @@
     }
   ],
   "gitpython": [
-    "setuptools"
+    "setuptools",
+    "typing-extensions"
   ],
   "glad": [
     "setuptools"
@@ -10879,8 +10886,7 @@
     "setuptools"
   ],
   "libcst": [
-    "setuptools",
-    "setuptools-scm"
+    "setuptools-rust"
   ],
   "libevdev": [
     "setuptools"
@@ -10977,6 +10983,9 @@
     "setuptools"
   ],
   "libvirt-python": [
+    "setuptools"
+  ],
+  "lice": [
     "setuptools"
   ],
   "license-expression": [
@@ -11719,6 +11728,7 @@
   ],
   "mcstatus": [
     "poetry-core",
+    "poetry-dynamic-versioning",
     "setuptools"
   ],
   "md-toc": [
@@ -16979,6 +16989,9 @@
     "cython",
     "setuptools",
     "setuptools-scm"
+  ],
+  "pycln": [
+    "poetry-core"
   ],
   "pycm": [
     "setuptools"
