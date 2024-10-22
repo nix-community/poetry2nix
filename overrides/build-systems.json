@@ -16434,7 +16434,14 @@
     "setuptools"
   ],
   "pudb": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "2024.1.3"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "2024.1.3"
+    }
   ],
   "pueblo": [
     "setuptools"
