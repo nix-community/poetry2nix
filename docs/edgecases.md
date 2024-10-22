@@ -127,7 +127,7 @@ In order to be able to build `django-floppyforms` we should modify our nix defin
 ``` nix
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
-  overrides = poetry2nix.defaultPoetryOverrides.extend
+  overrides = poetry2nix.lib.mkPoetry2Nix.defaultPoetryOverrides.extend
     (final: prev: {
       django-floppyforms = prev.django-floppyforms.overridePythonAttrs
       (
@@ -149,7 +149,7 @@ Your file might then look something like this:
 ``` nix
 poetry2nix.mkPoetryApplication {
   projectDir = ./.;
-  overrides = poetry2nix.defaultPoetryOverrides.extend
+  overrides = poetry2nix.lib.mkPoetry2Nix.defaultPoetryOverrides.extend
     (final: prev: {
       first-dependency = prev.first-dependency.overridePythonAttrs
       (
@@ -180,7 +180,7 @@ let
     simpervisor = [ "setuptools" ];
     pandas = [ "versioneer" ];
   };
-  p2n-overrides = p2n.defaultPoetryOverrides.extend (final: prev:
+  p2n-overrides = p2n.lib.mkPoetry2Nix.defaultPoetryOverrides.extend (final: prev:
     builtins.mapAttrs (package: build-requirements:
       (builtins.getAttr package prev).overridePythonAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ (builtins.map (pkg: if builtins.isString pkg then builtins.getAttr pkg prev else pkg) build-requirements);
