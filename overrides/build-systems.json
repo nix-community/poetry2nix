@@ -4305,6 +4305,9 @@
   "criticality-score": [
     "setuptools"
   ],
+  "cron-converter": [
+    "setuptools"
+  ],
   "cron-descriptor": [
     "setuptools"
   ],
