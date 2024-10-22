@@ -1618,7 +1618,14 @@
     "setuptools"
   ],
   "autograd": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "1.7.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "1.7.0"
+    }
   ],
   "autoit-ripper": [
     "setuptools"
@@ -1641,6 +1648,10 @@
   ],
   "autopep8": [
     "setuptools"
+  ],
+  "autoray": [
+    "setuptools",
+    "setuptools-scm"
   ],
   "autoslot": [
     "flit-core"
@@ -6095,6 +6106,9 @@
     "setuptools"
   ],
   "duo-client": [
+    "setuptools"
+  ],
+  "durationpy": [
     "setuptools"
   ],
   "durus": [
@@ -10773,7 +10787,14 @@
     "setuptools"
   ],
   "lazy-loader": [
-    "flit-core"
+    {
+      "buildSystem": "flit-core",
+      "until": "0.4"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "0.4"
+    }
   ],
   "lazy-object-proxy": [
     "setuptools",
@@ -11603,6 +11624,9 @@
     "setuptools"
   ],
   "marshmallow-enum": [
+    "setuptools"
+  ],
+  "marshmallow-jsonschema": [
     "setuptools"
   ],
   "marshmallow-objects": [
@@ -14907,7 +14931,22 @@
     "setuptools"
   ],
   "opt-einsum": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "3.4.0"
+    },
+    {
+      "buildSystem": "hatch-fancy-pypi-readme",
+      "from": "3.4.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "3.4.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "3.4.0"
+    }
   ],
   "optax": [
     "flit-core",
@@ -16293,6 +16332,10 @@
   ],
   "protobuf3-to-dict": [
     "setuptools"
+  ],
+  "protoc-gen-openapiv2": [
+    "setuptools",
+    "wheel"
   ],
   "protoletariat": [
     "poetry-core"
@@ -18054,7 +18097,15 @@
     "setuptools"
   ],
   "pymongo": [
-    "setuptools"
+    "setuptools",
+    {
+      "buildSystem": "hatch-requirements-txt",
+      "from": "4.9"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "4.9"
+    }
   ],
   "pymongo-inmemory": [
     "poetry-core"
@@ -20311,7 +20362,14 @@
     "setuptools"
   ],
   "pytoolconfig": [
-    "pdm-pep517"
+    {
+      "buildSystem": "pdm-pep517",
+      "until": "1.2.6"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "1.2.6"
+    }
   ],
   "pytools": [
     "setuptools"
@@ -24418,6 +24476,9 @@
   ],
   "torch-bin": [
     "setuptools"
+  ],
+  "torch-geometric": [
+    "flit-core"
   ],
   "torch-pitch-shift": [
     "setuptools"
