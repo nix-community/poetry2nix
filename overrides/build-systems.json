@@ -11365,6 +11365,9 @@
   "lsprotocol": [
     "flit-core"
   ],
+  "luaparser": [
+    "setuptools"
+  ],
   "luddite": [
     "setuptools"
   ],
