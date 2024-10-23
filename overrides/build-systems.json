@@ -15531,6 +15531,7 @@
     "setuptools"
   ],
   "pendulum": [
+    "maturin",
     "poetry-core",
     "setuptools"
   ],
