@@ -9,7 +9,6 @@ license = "MIT"
 python = "^3.11"
 pendulum = "^3.0.0"
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
