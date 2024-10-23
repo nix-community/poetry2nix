@@ -2,13 +2,12 @@
 name = "test_pendulum"
 version = "0.1.0"
 description = ""
-authors = []
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pendulum = "^2.1.2"
-
-[tool.poetry.dev-dependencies]
+python = "^3.11"
+pendulum = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core"]
