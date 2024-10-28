@@ -1503,6 +1503,13 @@ lib.composeManyExtensions [
         }
       );
 
+      mariadb = prev.mariadb.overridePythonAttrs (
+        old: {
+          nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config pkgs.libmysqlclient ];
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libmysqlclient ];
+        }
+      );
+
       markdown-it-py = prev.markdown-it-py.overridePythonAttrs (
         old: {
           propagatedBuildInputs = builtins.filter (i: i.pname != "mdit-py-plugins") old.propagatedBuildInputs;
@@ -1987,6 +1994,29 @@ lib.composeManyExtensions [
         }
       );
 
+      open-clip-torch = prev.open-clip-torch.overridePythonAttrs (
+        # The sdist from pypi doesn't contain the requirements.txt
+        old:
+        lib.optionalAttrs (!(old.src.isWheel or false)) (
+          let
+            githubHash =
+              {
+                "2.20.0" = "sha256-Ca4oi2LqleIFAGBJB7YIi4nXe2XhOP6ErDFXgXtJLxM=";
+              }.${old.version} or lib.fakeHash;
+
+            src = pkgs.fetchFromGitHub {
+              owner = "mlfoundations";
+              repo = "open_clip";
+              rev = "v${old.version}";
+              sha256 = githubHash;
+            };
+          in
+          {
+            inherit src;
+          }
+        )
+      );
+
       orjson = prev.orjson.overridePythonAttrs (
         old: lib.optionalAttrs (!(old.src.isWheel or false)) (
           let
@@ -2191,6 +2221,12 @@ lib.composeManyExtensions [
               sha256 = "sha256-rZfk+OXZU6xBpoumIW30E80gRsox/Goa3hMDxBUkTY0=";
             })
           ];
+        }
+      );
+
+      pillow-avif-plugin = prev.pillow-avif-plugin.overridePythonAttrs (
+        old: {
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libavif ];
         }
       );
 
@@ -4293,7 +4329,7 @@ lib.composeManyExtensions [
 
       mkdocs-material = prev.mkdocs-material.overridePythonAttrs (old: {
         postPatch = old.postPatch or "" + ''
-          sed -i 's/"Framework :: MkDocs",//' pyproject.toml
+          substituteInPlace pyproject.toml --replace-warn 'filename = "requirements.txt"' ""
         '';
       });
 
