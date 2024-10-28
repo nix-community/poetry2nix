@@ -2478,6 +2478,9 @@
   "bayespy": [
     "setuptools"
   ],
+  "bbcode": [
+    "setuptools"
+  ],
   "bbox": [
     "poetry-core",
     "setuptools"
