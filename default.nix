@@ -83,8 +83,9 @@ let
       buildInputs = mkInput "buildInputs" (if includeBuildSystem then buildSystemPkgs else [ ]);
       propagatedBuildInputs = mkInput "propagatedBuildInputs" (
         let
-          availableGroups = {main.dependencies = allRawDeps;} // pyProject.tool.poetry.group or { };
-        in lib.flatten (map (g: getDeps availableGroups.${g}.dependencies or {}) groups)
+          availableGroups = { main.dependencies = allRawDeps; } // pyProject.tool.poetry.group or { };
+        in
+        lib.flatten (map (g: getDeps availableGroups.${g}.dependencies or { }) groups)
       );
       nativeBuildInputs = mkInput "nativeBuildInputs" [ ];
       checkInputs = mkInput "checkInputs" checkInputs';
@@ -331,10 +332,11 @@ lib.makeScope pkgs.newScope (self: {
 
       allEditablePackageSources = (getEditableDeps (pyProject.tool.poetry."dev-dependencies" or { }))
         // (
-          let 
-            deps = pyProject.tool.poetry."dependencies" or { };
-            availableGroups = {main.dependencies = deps;} // pyProject.tool.poetry.group or { };
-          in builtins.foldl' (acc: g: acc // getEditableDeps availableGroups.${g}.dependencies or {}) { } groups
+        let
+          deps = pyProject.tool.poetry."dependencies" or { };
+          availableGroups = { main.dependencies = deps; } // pyProject.tool.poetry.group or { };
+        in
+        builtins.foldl' (acc: g: acc // getEditableDeps availableGroups.${g}.dependencies or { }) { } groups
       )
         // editablePackageSources;
 
