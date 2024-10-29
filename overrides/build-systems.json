@@ -13941,6 +13941,16 @@
     "hatchling",
     "setuptools"
   ],
+  "nepattern": [
+    {
+      "buildSystem": "pdm-pep517",
+      "until": "0.7.0"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "0.7.0"
+    }
+  ],
   "nessclient": [
     "setuptools"
   ],
