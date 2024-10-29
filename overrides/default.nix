@@ -3147,7 +3147,7 @@ lib.composeManyExtensions [
       pyzmq = prev.pyzmq.overridePythonAttrs (
         old: {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.zeromq ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.zeromq pkgs.libsodium ];
           # setting dontUseCmakeConfigure is necessary because:
           #
           # 1. pyzmq uses scikit-build-core as of pyzmq version 26.0.0
