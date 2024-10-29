@@ -2144,8 +2144,15 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.pyutilib ];
       });
 
-      paramiko = prev.paramiko.overridePythonAttrs (_: {
+      paramiko = prev.paramiko.overridePythonAttrs (old: {
         doCheck = false; # requires networking
+
+        optional-dependencies = old.optional-dependencies or {
+          ed25519 = [
+            final.pynacl
+            final.bcrypt
+          ];
+        };
       });
 
       parsel = prev.parsel.overridePythonAttrs (
