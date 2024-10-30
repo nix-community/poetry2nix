@@ -2144,8 +2144,15 @@ lib.composeManyExtensions [
         propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.pyutilib ];
       });
 
-      paramiko = prev.paramiko.overridePythonAttrs (_: {
+      paramiko = prev.paramiko.overridePythonAttrs (old: {
         doCheck = false; # requires networking
+
+        optional-dependencies = old.optional-dependencies or {
+          ed25519 = [
+            final.pynacl
+            final.bcrypt
+          ];
+        };
       });
 
       parsel = prev.parsel.overridePythonAttrs (
@@ -2790,11 +2797,7 @@ lib.composeManyExtensions [
 
       pyqt6 =
         let
-          # The build from source fails unless the pyqt6 version agrees
-          # with the version of qt6 from nixpkgs. Thus, we prefer using
-          # the wheel here.
-          pyqt6-wheel = prev.pyqt6.override { preferWheel = true; };
-          pyqt6 = pyqt6-wheel.overridePythonAttrs (old:
+          pyqt6 = prev.pyqt6.overridePythonAttrs (old:
             let
               confirm-license = pkgs.writeText "confirm-license.patch" ''
                 diff --git a/project.py b/project.py
@@ -3147,7 +3150,7 @@ lib.composeManyExtensions [
       pyzmq = prev.pyzmq.overridePythonAttrs (
         old: {
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
-          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.zeromq ];
+          propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.zeromq pkgs.libsodium ];
           # setting dontUseCmakeConfigure is necessary because:
           #
           # 1. pyzmq uses scikit-build-core as of pyzmq version 26.0.0
@@ -3890,14 +3893,6 @@ lib.composeManyExtensions [
           buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
         }
       );
-
-      # The tokenizers build requires a complex rust setup (cf. nixpkgs override)
-      #
-      # Instead of providing a full source build, we use a wheel to keep
-      # the complexity manageable for now.
-      tokenizers = prev.tokenizers.override {
-        preferWheel = true;
-      };
 
       torch = prev.torch.overridePythonAttrs (old: {
         # torch has an auto-magical way to locate the cuda libraries from site-packages.
