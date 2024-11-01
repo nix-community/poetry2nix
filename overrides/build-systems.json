@@ -1160,6 +1160,38 @@
     "poetry-core",
     "setuptools"
   ],
+  "arclet-alconna": [
+    {
+      "buildSystem": "setuptools",
+      "until": "1.1.2.1"
+    },
+    {
+      "buildSystem": "wheel",
+      "until": "1.1.2.1"
+    },
+    {
+      "buildSystem": "pdm-pep517",
+      "until": "1.7.9"
+    },
+    {
+      "buildSystem": "pdm-pep517",
+      "from": "1.1.2.1"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "1.7.9"
+    }
+  ],
+  "arclet-alconna-tools": [
+    {
+      "buildSystem": "pdm-pep517",
+      "until": "0.7.1"
+    },
+    {
+      "buildSystem": "pdm-backend",
+      "from": "0.7.1"
+    }
+  ],
   "area": [
     "setuptools"
   ],
