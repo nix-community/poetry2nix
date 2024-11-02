@@ -23692,6 +23692,9 @@
   "sumtypes": [
     "setuptools"
   ],
+  "suncalc": [
+    "setuptools"
+  ],
   "sunpy": [
     "setuptools",
     "setuptools-scm"
