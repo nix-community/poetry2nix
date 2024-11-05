@@ -4543,6 +4543,9 @@
   "daemonocle": [
     "setuptools"
   ],
+  "daff": [
+    "setuptools"
+  ],
   "daiquiri": [
     "setuptools",
     "setuptools-scm"
