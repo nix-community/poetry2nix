@@ -7,6 +7,17 @@ _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix deriva
 
 For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
+## Maintenance status
+
+The creator & long-term maintainer of poetry2nix ([@adisbladis](https://github.com/adisbladis)) is no longer using Poetry or Poetry2nix.
+This means that [poetry2nix is looking for maintainers](https://github.com/nix-community/poetry2nix/issues/1865).
+
+Poetry has a number of upcoming large changes, which poetry2nix is unlikely to gain support for:
+- [PEP-621 pyproject.toml metadata](https://github.com/python-poetry/poetry-core/pull/708)
+- [Poetry 2.0](https://github.com/python-poetry/poetry/issues/9448)
+
+If you are not already using Poetry & Poetry2nix, do consider [`uv`](https://docs.astral.sh/uv/) & [`uv2nix`](https://github.com/adisbladis/uv2nix).
+
 ## Quickstart Non-flake
 
 You can turn your Python application into a Nix package with a few lines
@@ -17,7 +28,7 @@ by adding a `default.nix` next to your `pyproject.toml` and `poetry.lock` files:
 let
   sources = import ./nix/sources.nix;
   pkgs = import sources.nixpkgs { };
-  # Let all API attributes like "poetry2nix.mkPoetryApplication" 
+  # Let all API attributes like "poetry2nix.mkPoetryApplication"
   # use the packages and versions (python3, poetry etc.) from our pinned nixpkgs above
   # under the hood:
   poetry2nix = import sources.poetry2nix { inherit pkgs; };
