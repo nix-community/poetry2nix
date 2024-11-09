@@ -23,11 +23,19 @@ let
     length
     isList
     any
+    isAttrs
+    tryEval
+    deepSeq
+    splitVersion
+    concatStringsSep
+    tail
     ;
   inherit (lib)
     stringToCharacters
     sublist
     hasInfix
+    take
+    toInt
     ;
   inherit (import ./util.nix { inherit lib; }) splitComma stripStr;
 
@@ -42,6 +50,25 @@ let
         type = "version";
         value = pep440.parseVersion value;
       };
+
+      emptyPlatformRelease = {
+        type = "platform_release";
+        value = "";
+      };
+
+      platform_release =
+        value:
+        if value == "" then
+          emptyPlatformRelease
+        else
+          let
+            parsed' = pep440.parseVersion value;
+            eval' = tryEval (deepSeq parsed' parsed');
+          in
+          {
+            type = "platform_release";
+            value = if eval'.success then eval'.value else value;
+          };
     in
     {
       "implementation_name" = default;
@@ -49,9 +76,9 @@ let
       "os_name" = default;
       "platform_machine" = default;
       "platform_python_implementation" = default;
-      "platform_release" = default;
+      "platform_release" = platform_release;
       "platform_system" = default;
-      "platform_version" = version;
+      "platform_version" = default;
       "python_full_version" = version;
       "python_version" = version;
       "sys_platform" = default;
@@ -81,6 +108,31 @@ let
     # Check for member in list if list, otherwise simply compare.
     "==" = extras: extra: if typeOf extras == "list" then elem extra extras else extras == extra;
     "!=" = extras: extra: if typeOf extras == "list" then !(elem extra extras) else extras != extra;
+  };
+
+  # Platform_release parsing is more complicated than other fields.
+  #
+  # If both lhs and rhs were correctly parsed as PEP-440 versions run regular version comparison,
+  # otherwise compare lexicographically
+  #
+  # See:
+  # - https://github.com/pypa/packaging/issues/774
+  # - https://github.com/astral-sh/uv/issues/3917#issuecomment-2141754917
+  platformReleaseComparators = {
+    "==" =
+      a: b: if isAttrs a && isAttrs b then pep440.comparators."==" a b else (a.str or a) == (b.str or b);
+    "!=" =
+      a: b: if isAttrs a && isAttrs b then pep440.comparators."!=" a b else (a.str or a) != (b.str or b);
+    "<=" =
+      a: b: if isAttrs a && isAttrs b then pep440.comparators."<=" a b else (a.str or a) <= (b.str or b);
+    ">=" =
+      a: b: if isAttrs a && isAttrs b then pep440.comparators.">=" a b else (a.str or a) >= (b.str or b);
+    "<" =
+      a: b: if isAttrs a && isAttrs b then pep440.comparators."<" a b else (a.str or a) < (b.str or b);
+
+    ">" =
+      a: b: if isAttrs a && isAttrs b then pep440.comparators.">" a b else (a.str or a) > (b.str or b);
+    "===" = a: b: a == b;
   };
 
   boolOps = {
@@ -614,22 +666,42 @@ in
     let
       inherit (python) stdenv;
       inherit (stdenv) targetPlatform;
+      inherit (targetPlatform)
+        isLinux
+        isDarwin
+        isFreeBSD
+        isAarch64
+        isx86_64
+        ;
       impl = python.passthru.implementation;
     in
     mapAttrs (name: markerFields.${name}) {
       os_name = if python.pname == "jython" then "java" else "posix";
       sys_platform =
-        if stdenv.isLinux then
+        if isLinux then
           "linux"
-        else if stdenv.isDarwin then
+        else if isDarwin then
           "darwin"
+        else if isFreeBSD then
+          "freebsd${head (splitVersion stdenv.cc.libc.version)}"
         else
           throw "Unsupported platform";
       platform_machine =
-        if targetPlatform.isDarwin then
+        if isDarwin then
           targetPlatform.darwinArch
+        else if isLinux then
+          pep599.manyLinuxTargetMachines.${targetPlatform.parsed.cpu.name} or targetPlatform.parsed.cpu.name
+        else if isFreeBSD then
+          (
+            if isx86_64 then
+              "amd64"
+            else if isAarch64 then
+              "arm64"
+            else
+              throw "Unhandled FreeBSD architecture"
+          )
         else
-          pep599.manyLinuxTargetMachines.${targetPlatform.parsed.cpu.name} or targetPlatform.parsed.cpu.name;
+          throw "Unsupported platform";
       platform_python_implementation =
         if impl == "cpython" then
           "CPython"
@@ -637,12 +709,30 @@ in
           "PyPy"
         else
           throw "Unsupported implementation ${impl}";
-      platform_release = ""; # Field not reproducible
+      # We have no reliable value to set platform_release to.
+      # In theory this could be set to linuxHeaders.version on Linux, but that's
+      # not correct
+      platform_release =
+        if isLinux then
+          stdenv.cc.libc.linuxHeaders.version
+        else if isDarwin then
+          (
+            let
+              tokens = splitVersion targetPlatform.darwinSdkVersion;
+            in
+            concatStringsSep "." ([ (toString ((toInt (head tokens)) + 9)) ] ++ tail tokens)
+          )
+        else if isFreeBSD then
+          "${concatStringsSep "." (take 2 (splitVersion stdenv.cc.libc.version))}-RELEASE"
+        else
+          throw "Unsupported platform";
       platform_system =
-        if stdenv.isLinux then
+        if isLinux then
           "Linux"
-        else if stdenv.isDarwin then
+        else if isDarwin then
           "Darwin"
+        else if isFreeBSD then
+          "FreeBSD"
         else
           throw "Unsupported platform";
       platform_version = ""; # Field not reproducible
@@ -675,8 +765,11 @@ in
       if value.type == "compare" then
         (
           (
+            # platform_release is being compared as foo
+            if value.lhs.type == "variable" && value.lhs.value == "platform_release" then
+              platformReleaseComparators.${value.op}
             # Version comparison
-            if value.lhs.type == "version" || value.rhs.type == "version" then
+            else if value.lhs.type == "version" || value.rhs.type == "version" then
               pep440.comparators.${value.op}
             # `Extra` environment marker comparison requires special casing because it's equality checks can
             # == can be considered a `"key" in set` comparison when multiple extras are activated for a dependency.
@@ -694,7 +787,7 @@ in
         boolOps.${value.op} (evalMarkers environ value.lhs) (evalMarkers environ value.rhs)
       else if value.type == "variable" then
         (evalMarkers environ environ.${value.value})
-      else if value.type == "version" || value.type == "extra" then
+      else if value.type == "version" || value.type == "extra" || value.type == "platform_release" then
         value.value
       else if elem value.type primitives then
         value.value

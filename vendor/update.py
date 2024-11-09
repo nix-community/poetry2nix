@@ -6,6 +6,16 @@ import json
 import os
 
 
+# Skip parts of the tree which aren't used in poetry2nix
+SKIP_FILES = [
+    "renderers.nix",
+    "project.nix",
+    "pep723.nix",
+    "validators.nix",
+    "scripts.nix",
+]
+
+
 if __name__ == "__main__":
     store_path = json.loads(
         subprocess.check_output(
@@ -14,7 +24,7 @@ if __name__ == "__main__":
                 "--eval",
                 "--json",
                 "--expr",
-                'builtins.fetchGit { url = "git@github.com:adisbladis/pyproject.nix.git"; }',
+                'builtins.fetchGit { url = "git@github.com:nix-community/pyproject.nix.git"; }',
             ]
         )
     )
@@ -31,8 +41,6 @@ if __name__ == "__main__":
 
     # Copy lib/
     for filename in os.listdir(f"{store_path}/lib"):
-        if filename.startswith("test") or not filename.endswith(".nix"):
+        if filename.startswith("test") or not filename.endswith(".nix") or filename in SKIP_FILES:
             continue
         shutil.copy(f"{store_path}/lib/{filename}", f"pyproject.nix/lib/{filename}")
-
-    # shutil.copytree(f"{store_path}/fetchers", "pyproject.nix/fetchers")

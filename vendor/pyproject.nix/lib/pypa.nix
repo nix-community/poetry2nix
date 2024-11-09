@@ -37,15 +37,6 @@ let
 
   optionalString = s: if s != "" then s else null;
 
-  checkTagVersion =
-    sourceVersion: tagVersion:
-    tagVersion == null
-    || tagVersion == sourceVersion.major
-    || (
-      hasPrefix sourceVersion.major tagVersion
-      && ((toInt (sourceVersion.major + sourceVersion.minor)) >= toInt tagVersion)
-    );
-
 in
 lib.fix (self: {
   /*
@@ -227,7 +218,14 @@ lib.fix (self: {
     )
     &&
       # Check version
-      (checkTagVersion sourceVersion abiTag.version);
+      (
+        abiTag.version == null
+        || abiTag.version == sourceVersion.major
+        || (
+          hasPrefix sourceVersion.major abiTag.version
+          && ((toInt (sourceVersion.major + sourceVersion.minor)) == toInt abiTag.version)
+        )
+      );
 
   /*
     Check whether a platform tag is compatible with this python interpreter.
@@ -328,7 +326,12 @@ lib.fix (self: {
     )
     &&
       # Check version
-      checkTagVersion sourceVersion pythonTag.version;
+      pythonTag.version == null
+    || pythonTag.version == sourceVersion.major
+    || (
+      hasPrefix sourceVersion.major pythonTag.version
+      && ((toInt (sourceVersion.major + sourceVersion.minor)) >= toInt pythonTag.version)
+    );
 
   /*
     Check whether wheel file name is compatible with this python interpreter.

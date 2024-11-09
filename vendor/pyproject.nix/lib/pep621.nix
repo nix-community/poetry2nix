@@ -11,6 +11,8 @@ let
     foldl'
     split
     filter
+    concatMap
+    isAttrs
     ;
   inherit (lib)
     isString
@@ -51,21 +53,49 @@ fix (_self: {
       pyproject,
       extrasAttrPaths ? [ ],
       extrasListPaths ? { },
+      groupsAttrPaths ? [ ],
+      groupsListPaths ? { },
     }:
     let
       # Fold extras from all considered attributes into one set
       extras' =
-        foldl' (acc: attr: acc // getAttrPath attr { } pyproject) (pyproject.project.optional-dependencies
+        (foldl' (acc: attr: acc // getAttrPath attr { } pyproject) (pyproject.project.optional-dependencies
           or { }
-        ) extrasAttrPaths
+        ) extrasAttrPaths)
         // filterAttrs (_: deps: length deps > 0) (
           mapAttrs' (path: attr: nameValuePair attr (getAttrPath path [ ] pyproject)) extrasListPaths
         );
+
+      depGroups' =
+        (foldl' (acc: attr: acc // getAttrPath attr { } pyproject) (pyproject.dependency-groups or { }
+        ) groupsAttrPaths)
+        // filterAttrs (_: deps: length deps > 0) (
+          mapAttrs' (path: attr: nameValuePair attr (getAttrPath path [ ] pyproject)) groupsListPaths
+        );
+
     in
     {
       dependencies = map pep508.parseString (pyproject.project.dependencies or [ ]);
       extras = mapAttrs (_: map pep508.parseString) extras';
       build-systems = pep518.parseBuildSystems pyproject;
+
+      # PEP-735 dependency groups
+      groups =
+        let
+          groups' = mapAttrs (
+            _group:
+            concatMap (
+              x:
+              if isString x then
+                [ (pep508.parseString x) ]
+              else if isAttrs x then
+                groups'.${x.include-group}
+              else
+                throw "Unsupported dependency group: ${x}"
+            )
+          ) depGroups';
+        in
+        groups';
     };
 
   /*
@@ -115,6 +145,7 @@ fix (_self: {
         dependencies = filterList dependencies.dependencies;
         extras = mapAttrs (_: filterList) dependencies.extras;
         build-systems = filterList dependencies.build-systems;
+        groups = mapAttrs (_: filterList) dependencies.groups;
       }
     );
 })
