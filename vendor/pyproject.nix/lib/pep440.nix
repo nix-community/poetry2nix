@@ -42,6 +42,7 @@ let
     post = null;
     pre = null;
     release = [ ];
+    str = "";
   };
 
   # We consider some words to be alternate spellings of other words and
@@ -164,11 +165,14 @@ fix (self: {
             # Split post345 into ["post" "345"]
             m = match "-?([^0-9]+)([0-9]+)" mod;
           in
-          assert m != null;
-          {
-            type = normalizedReleaseType (elemAt m 0);
-            value = toIntRelease (elemAt m 1);
-          }
+          if m == null then
+            throw "PEP-440 modifier segment invalid: ${mod}"
+          # assert m != null;
+          else
+            {
+              type = normalizedReleaseType (elemAt m 0);
+              value = toIntRelease (elemAt m 1);
+            }
         ) (filter (s: isString s && s != "") (split "\\." modifiersSegment));
 
       in
@@ -190,6 +194,11 @@ fix (self: {
           # Local releases needs to be treated specially.
           # The value isn't just a straight up number, but an arbitrary string.
           local = if local != "" then local else null;
+
+          # Return the input verbatim for lexicographical comparisons such as those
+          # done for platform_release which is parsed as PEP-440 when compliant,
+          # but are compare lexicographically when the version string is non-compliant.
+          str = version;
         };
 
   /*

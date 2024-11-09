@@ -1,7 +1,7 @@
-{ lib, poetry2nix, python3, stdenv }:
+{ lib, poetry2nix, python311, stdenv }:
 let
   args = {
-    python = python3;
+    python = python311;
     projectDir = ./.;
     preferWheels = true;
   };

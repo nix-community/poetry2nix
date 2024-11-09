@@ -1,3 +1,4 @@
+
 let
   flake = builtins.getFlake "${toString ../.}";
 in
@@ -10,8 +11,16 @@ in
   }
 }:
 let
-  poetry2nix = import ./.. { inherit pkgs; };
-  callTest = test: attrs: pkgs.callPackage test ({ inherit poetry2nix; } // attrs);
+  pkgs' = pkgs // {
+    inherit poetry2nix;
+
+    # At the time of writing 3.12 is causing issues.
+    python3 = pkgs.python311;
+    python = pkgs.python311;
+  };
+
+  poetry2nix = import ./.. { pkgs = pkgs'; };
+  callTest = lib.callPackageWith pkgs';
 
   inherit (pkgs) lib stdenv;
 
