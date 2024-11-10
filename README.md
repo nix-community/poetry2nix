@@ -5,9 +5,9 @@
 
 _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
 
-For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
+For more information, see [the original announcement post](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
-## Maintenance status
+## Maintenance status: ⚠️ Unmaintained ⚠️
 
 The creator & long-term maintainer of poetry2nix ([@adisbladis](https://github.com/adisbladis)) is no longer using Poetry or Poetry2nix.
 This means that [poetry2nix is looking for maintainers](https://github.com/nix-community/poetry2nix/issues/1865).
@@ -642,10 +642,6 @@ nix-build --expr 'with import <unstable> {}; callPackage ./tests/default.nix {}'
 ## Contact
 
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
-
-## Acknowledgements
-
-Development of `poetry2nix` has been supported by [Tweag](https://tweag.io).
 
 ## License
 
