@@ -1023,11 +1023,12 @@ lib.composeManyExtensions [
           }
         ));
 
-      gitpython = prev.gitpython.overridePythonAttrs (
-        old: {
-          buildInputs = old.buildInputs or [ ] ++ [ final.typing-extensions ];
-        }
-      );
+      gitpython = prev.gitpython.overridePythonAttrs {
+          postPatch = ''
+            substituteInPlace git/cmd.py \
+              --replace 'git_exec_name = "git"' 'git_exec_name = "${pkgs.gitMinimal}/bin/git"'
+          '';
+        };
 
       grpcio = prev.grpcio.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
@@ -1400,6 +1401,66 @@ lib.composeManyExtensions [
             "_FILEPATH = find_and_load_library()" "_FILEPATH = '${pkgs.libarchive.lib}/lib/libarchive${sharedLibExt}'"
         '';
       });
+
+      libcst = prev.libcst.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false)) (
+          let
+            githubHash = {
+              "1.4.0" = "sha256-H0YO8ILWOyhYdosNRWQQ9wziFk0syKSG3vF2zuYkL2k=";
+              "1.3.1" = "sha256-IQb8+rS7ICGr62Mb1NAPZlBCKymeSTSZfEBllscmoyk=";
+              "1.3.0" = "sha256-1qAb6iS1iGoZLry/ZHzl/xvEJX0ouqVBL/3i61YEgac=";
+              "1.2.0" = "sha256-ro8btPXseIjKRGi1LrxcSyRAw2CqvolxMWuwVjcVEtY=";
+              "1.1.0" = "sha256-kFs7edBWz0GRbgbLDmtpUVi5R+6mYXsJSvceOoPW9ck=";
+              "1.0.1" = "sha256-FgQE8ofRXQs/zHh7AKscXu0deN3IG+Nk/h+a09Co5R8=";
+              "1.0.0" = "sha256-KOPocF/hwcQWJvE/cEF6gu/bHNFOPXaBkgTt2bc29Xk=";
+              "0.4.10" = "sha256-IYAGpjcjDzzRBYo7YZjDLizm+HvZnCXLcIo3G8ss7mU=";
+              "0.4.9" = "sha256-ikddvKsvXMNHMfA9jUhvyiDXII0tTs/rE97IGI/azgA=";
+              "0.4.8" = "sha256-wo5g7Uyk9kX62VFxYpHuHrp+VoiEZqELqemjVLVJYJM=";
+              "0.4.7" = "sha256-YrGajxs8t8PU4XRkFlhwtxoa9pzpKPXq8ZvN/uqftlE=";
+              "0.4.6" = "sha256-7VKEy4+CV2lOs15OEo+6WoIsbU6iLIsEUHH9I4Vw6lw=";
+              "0.4.5" = "sha256-36eU1FUM5yiex6o1hbYWBxpt1XYNyODxquwKlO9xmXc=";
+              "0.4.4" = "sha256-ie0anAHaODny88nsfrkxu2yzb3J523pMJmbFunRTp8M=";
+              "0.4.3" = "sha256-Lm62rVL5f+fu4KzOQMroM0Eu27l5v2dkGtRiIVPFNhg=";
+              "0.4.2" = "sha256-yqd5qqajDI1vJQxz2C4z345sa2arGyt0YFDjSKcPcVA=";
+              "0.4.1" = "sha256-soAlt1KBpCn5JxM1b2LZ3vOpBn9HPGdbm+BBYbyEkfE=";
+              "0.4.0" = "sha256-o9C/HxwzdSzdRnN7559cWAXCIU1rQm3XG/X9tHO+QLM=";
+              "0.4.0a2" = "sha256-JXMit04l+/QsymBek8N4qwvJ2bRfZotPHhSJ1SbrgQo=";
+              "0.4.0a1" = "sha256-agyUIc47K3sd1Lnwi0J4sfiGB1wYgWYgdLBfe+FDsRc=";
+              "0.3.23" = "sha256-fec/M448UtDGYieaXHqWvv8T4dN2KpdCKEfhZi+OiuQ=";
+              "0.3.22" = "sha256-hyuIICOTtjwhyG1/rH+PbYf3rxj+HCrnaNVfFVgXDBY=";
+              "0.3.21" = "sha256-aJzXGc0DADWKMM6hQAtPtpn0Pehb1GjmHCsBSGwy5Q8=";
+              "0.3.20" = "sha256-HlvhQGKq0oVFJNpGK56FrvXOkvjTSLBFLKJ5/4Kgaxg=";
+              "0.3.19" = "sha256-qpLOv4uCA+BAIyirkyRygEX5r5VHoeG0mCUAqTwMTwQ=";
+              "0.3.18" = "sha256-19yGaKBLpGASSPv/aSX0kx9lh2JxKExHJDKKtuBbuqI=";
+              "0.3.17" = "sha256-mlSeB9OjCiUVYwcPYNrQdlfcj9DV/+wqVWt91uFsQsU=";
+              "0.3.16" = "sha256-U/b2GhqgGp5gLikAdjlFRxQhdSCBcXjImeaZaasQd9g=";
+              "0.3.15" = "sha256-n1EGfC/T9yZWSfZyQHok5gsAqVD32TDBdSrrvjN3zKA=";
+              "0.3.14" = "sha256-SHhN8QoieIYgf7hxTdJkN4Vl/CQnaN38HLxXhM4NBvc=";
+            }.${old.version} or lib.fakeHash;
+            # we can count on this repo's root to have Cargo.lock
+
+            src = pkgs.fetchFromGitHub {
+              owner = "Instagram";
+              repo = "LibCST";
+              rev = old.version;
+              sha256 = githubHash;
+            };
+
+          in
+          {
+            inherit src;
+            cargoDeps = pkgs.rustPlatform.importCargoLock {
+              lockFile = "${src.out}/native/Cargo.lock";
+            };
+            cargoRoot = "native";
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+              pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
+              pkgs.rustc
+              pkgs.cargo
+            ];
+          }
+        )
+      );
 
       libvirt-python = prev.libvirt-python.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
