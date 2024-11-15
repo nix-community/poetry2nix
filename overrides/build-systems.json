@@ -20776,6 +20776,9 @@
   "pyzufall": [
     "setuptools"
   ],
+  "pzp": [
+    "setuptools"
+  ],
   "qasync": [
     "poetry-core"
   ],
