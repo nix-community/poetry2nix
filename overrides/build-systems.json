@@ -5065,6 +5065,9 @@
     "cython",
     "setuptools"
   ],
+  "directory-tree": [
+    "setuptools"
+  ],
   "directv": [
     "setuptools"
   ],
