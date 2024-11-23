@@ -4526,7 +4526,14 @@
     "setuptools"
   ],
   "cz-conventional-gitmoji": [
-    "poetry"
+    {
+      "buildSystem": "poetry",
+      "until": "0.4.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.4.0"
+    }
   ],
   "d20": [
     "setuptools"
