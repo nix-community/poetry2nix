@@ -3905,6 +3905,19 @@ lib.composeManyExtensions [
         ];
       });
 
+      torchaudio = prev.torchaudio.overridePythonAttrs (old: {
+        autoPatchelfIgnoreMissingDeps = true;
+
+        # (no patchelf on darwin, since no elves there.)
+        preFixup = lib.optionals (!stdenv.isDarwin) ''
+          addAutoPatchelfSearchPath "${final.torch}/${final.python.sitePackages}/torch/lib"
+        '';
+
+        buildInputs = old.buildInputs or [ ] ++ [
+          final.torch
+        ];
+      });
+
       torchvision = prev.torchvision.overridePythonAttrs (old: {
         autoPatchelfIgnoreMissingDeps = true;
 
