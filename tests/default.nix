@@ -68,6 +68,7 @@ in
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
   color-operations = callTest ./color-operations { };
+  cryptography-43 = callTest ./cryptography-43 { };
   cryptography = callTest ./cryptography { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
   mailchimp3 = callTest ./mailchimp3 { };
