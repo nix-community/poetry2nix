@@ -1023,11 +1023,12 @@ lib.composeManyExtensions [
           }
         ));
 
-      gitpython = prev.gitpython.overridePythonAttrs (
-        old: {
-          buildInputs = old.buildInputs or [ ] ++ [ final.typing-extensions ];
-        }
-      );
+      gitpython = prev.gitpython.overridePythonAttrs {
+          postPatch = ''
+            substituteInPlace git/cmd.py \
+              --replace 'git_exec_name = "git"' 'git_exec_name = "${pkgs.gitMinimal}/bin/git"'
+          '';
+        };
 
       grpcio = prev.grpcio.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
@@ -1400,6 +1401,21 @@ lib.composeManyExtensions [
             "_FILEPATH = find_and_load_library()" "_FILEPATH = '${pkgs.libarchive.lib}/lib/libarchive${sharedLibExt}'"
         '';
       });
+
+      libcst = prev.libcst.overridePythonAttrs (
+        old: lib.optionalAttrs (!(old.src.isWheel or false))
+          {
+            cargoDeps = pkgs.rustPlatform.importCargoLock {
+              lockFile = ./libcst/${old.version}-Cargo.lock;
+            };
+            cargoRoot = "native";
+            nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
+              pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
+              pkgs.rustc
+              pkgs.cargo
+            ];
+          }
+      );
 
       libvirt-python = prev.libvirt-python.overridePythonAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ pkg-config ];
