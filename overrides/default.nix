@@ -1149,6 +1149,13 @@ lib.composeManyExtensions [
         old: {
           nativeBuildInputs = [ cmake ] ++ old.nativeBuildInputs or [ ];
           dontUseCmakeConfigure = true;
+          patches = old.patches or [ ] ++ [
+            # remove when https://github.com/igraph/python-igraph/pull/810 was merged
+            (pkgs.fetchpatch {
+              url = "https://github.com/m1-s/python-igraph/commit/023af84e7d4c024b0497caae88c95b6b71269866.patch";
+              sha256 = "RDA6ypUelHRZZLxJkX3MDLOZ3mm2D7Lg7n0nay4LQCU=";
+            })
+          ];
         }
       );
 
