@@ -122,13 +122,13 @@
           nativeBuildInputs = [
             p2nix-tools.env
             p2nix-tools.flamegraph
+            pkgs.jq
+            pkgs.niv
+            pkgs.nix-build-uncached
+            pkgs.nix-eval-jobs
+            pkgs.nix-prefetch-git
             pkgs.nixpkgs-fmt
             pkgs.poetry
-            pkgs.niv
-            pkgs.jq
-            pkgs.nix-prefetch-git
-            pkgs.nix-eval-jobs
-            pkgs.nix-build-uncached
           ];
         };
       };
