@@ -127,7 +127,7 @@
             pkgs.nix-build-uncached
             pkgs.nix-eval-jobs
             pkgs.nix-prefetch-git
-            pkgs.nixpkgs-fmt
+            pkgs.nixfmt-rfc-style
             pkgs.poetry
           ];
         };
