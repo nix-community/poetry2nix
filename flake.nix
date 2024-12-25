@@ -123,16 +123,16 @@
 
         devShells = {
           default = pkgs.mkShell {
-            nativeBuildInputs = with pkgs; [
+            nativeBuildInputs = [
               p2nix-tools.env
               p2nix-tools.flamegraph
-              nixpkgs-fmt
-              poetry
-              niv
-              jq
-              nix-prefetch-git
-              nix-eval-jobs
-              nix-build-uncached
+              pkgs.nixpkgs-fmt
+              pkgs.poetry
+              pkgs.niv
+              pkgs.jq
+              pkgs.nix-prefetch-git
+              pkgs.nix-eval-jobs
+              pkgs.nix-build-uncached
             ];
           };
         };
