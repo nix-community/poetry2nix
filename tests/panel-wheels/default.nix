@@ -1,4 +1,10 @@
-{ lib, poetry2nix, python311, pkgs, runCommand }:
+{
+  lib,
+  poetry2nix,
+  python311,
+  pkgs,
+  runCommand,
+}:
 let
   wheelImports = {
     bokeh = "bokeh";
@@ -29,7 +35,8 @@ let
   areWheels = map (name: env.python.pkgs.${name}.src.isWheel) wheelPackages;
   mkImportCall = pkg: "${env}/bin/python -c 'import ${pkg}; print(${pkg}.__version__)' > $out/${pkg}";
 in
-assert builtins.all lib.id areWheels; runCommand "panel-wheels" { } ''
+assert builtins.all lib.id areWheels;
+runCommand "panel-wheels" { } ''
   mkdir -p "$out"
   ${lib.concatStringsSep "\n" (map (pkg: mkImportCall wheelImports.${pkg}) wheelPackages)}
 ''

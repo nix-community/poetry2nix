@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   env-wheel = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -15,7 +19,9 @@ let
   isWheel = env-wheel.python.pkgs.colour.src.isWheel or false;
   isNotWheel = env-no-wheel.python.pkgs.colour.src.isWheel or false;
 in
-assert isWheel; assert !isNotWheel; runCommand "colour-test" { } ''
+assert isWheel;
+assert !isNotWheel;
+runCommand "colour-test" { } ''
   ${env-wheel}/bin/python -c 'import colour; print("wheel")' > $out
   ${env-no-wheel}/bin/python -c 'import colour; print("source")' >> $out
 ''

@@ -1,9 +1,11 @@
-{ lib
-, scripts
-, python
+{
+  lib,
+  scripts,
+  python,
 }:
 let
-  mkScript = bin: entrypoint:
+  mkScript =
+    bin: entrypoint:
     let
       elem = builtins.elemAt (builtins.split ":" entrypoint);
       module = elem 0;

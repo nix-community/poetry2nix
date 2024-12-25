@@ -1,4 +1,8 @@
-{ poetry2nix, python311, runCommand }:
+{
+  poetry2nix,
+  python311,
+  runCommand,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python311;
@@ -6,8 +10,7 @@ let
     poetrylock = ./poetry.lock;
   };
 in
-runCommand "twisted-test"
-{ } ''
+runCommand "twisted-test" { } ''
   ${env}/bin/python -c 'from twisted.web import server, resource'
   touch $out
 ''

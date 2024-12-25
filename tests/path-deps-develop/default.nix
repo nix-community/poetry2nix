@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 
 let
   env = poetry2nix.mkPoetryEnv {
@@ -8,11 +12,13 @@ let
       dep1 = null;
     };
 
-    overrides = poetry2nix.overrides.withDefaults (final: prev: {
-      dep1 = prev.dep1.overridePythonAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools ];
-      });
-    });
+    overrides = poetry2nix.overrides.withDefaults (
+      final: prev: {
+        dep1 = prev.dep1.overridePythonAttrs (old: {
+          buildInputs = (old.buildInputs or [ ]) ++ [ final.setuptools ];
+        });
+      }
+    );
   };
 
 in
