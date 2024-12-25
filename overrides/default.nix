@@ -982,6 +982,12 @@ lib.composeManyExtensions [
         }
       );
 
+      google-re2 = prev.google-re2.overridePythonAttrs (
+        old: {
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.abseil-cpp final.pybind11 pkgs.re2 ];
+        }
+      );
+
       grandalf = prev.grandalf.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
