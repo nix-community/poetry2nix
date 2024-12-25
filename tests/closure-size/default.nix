@@ -1,4 +1,9 @@
-{ lib, poetry2nix, poetry, postgresql }:
+{
+  lib,
+  poetry2nix,
+  poetry,
+  postgresql,
+}:
 poetry2nix.mkPoetryApplication {
   pyproject = ./pyproject.toml;
   poetrylock = ./poetry.lock;

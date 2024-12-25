@@ -1,4 +1,9 @@
-{ poetry2nix, python311, runCommand, curl }:
+{
+  poetry2nix,
+  python311,
+  runCommand,
+  curl,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python311;
@@ -13,8 +18,7 @@ let
     };
   };
 in
-runCommand "editable-egg-test"
-{ } ''
+runCommand "editable-egg-test" { } ''
   cp -r --no-preserve=mode ${./src} src
 
   run() {

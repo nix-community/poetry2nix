@@ -1,4 +1,10 @@
-{ curl, lib, poetry2nix, python311, runCommand }:
+{
+  curl,
+  lib,
+  poetry2nix,
+  python311,
+  runCommand,
+}:
 let
   app = poetry2nix.mkPoetryApplication {
     python = python311;
@@ -15,8 +21,7 @@ let
     app = overridden;
   };
 in
-runCommand "dependency-environment-test"
-{ } ''
+runCommand "dependency-environment-test" { } ''
   ${depEnv}/bin/gunicorn --bind=unix:socket trivial:app &
   sleep 1
   ${curl}/bin/curl --unix-socket socket localhost

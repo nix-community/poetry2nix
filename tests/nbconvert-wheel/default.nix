@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -10,7 +14,8 @@ let
   pkg = py.pkgs.nbconvert;
   isNbConvertWheel = pkg.src.isWheel;
 in
-assert isNbConvertWheel; runCommand "nbconvert-wheel" { } ''
+assert isNbConvertWheel;
+runCommand "nbconvert-wheel" { } ''
   ${env}/bin/python -c 'import nbconvert as nbc; print(nbc.__version__)' > $out
   grep -q '"${pkg}", "share", "jupyter"' "${pkg}/${py.sitePackages}/nbconvert/exporters/templateexporter.py"
 ''

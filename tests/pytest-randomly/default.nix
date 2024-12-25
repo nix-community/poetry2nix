@@ -1,4 +1,8 @@
-{ poetry2nix, python39, runCommand }:
+{
+  poetry2nix,
+  python39,
+  runCommand,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python39;
@@ -6,8 +10,7 @@ let
     poetrylock = ./poetry.lock;
   };
 in
-runCommand "pytest_randomly"
-{ } ''
+runCommand "pytest_randomly" { } ''
   ${env}/bin/python -c 'import pytest_randomly'
   touch $out
 ''
