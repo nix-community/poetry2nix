@@ -1,4 +1,8 @@
-{ lib, poetry2nix, python310 }:
+{
+  lib,
+  poetry2nix,
+  python310,
+}:
 
 poetry2nix.mkPoetryApplication {
   python = python310;
