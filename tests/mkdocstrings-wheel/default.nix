@@ -9,4 +9,5 @@ let
   pkg = env.python.pkgs.mkdocstrings;
   isMkdocstringsWheel = pkg.src.isWheel;
 in
-assert isMkdocstringsWheel; pkg
+assert isMkdocstringsWheel;
+pkg

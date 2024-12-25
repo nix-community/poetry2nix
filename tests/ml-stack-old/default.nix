@@ -1,4 +1,9 @@
-{ poetry2nix, python310, runCommand, writeText }:
+{
+  poetry2nix,
+  python310,
+  runCommand,
+  writeText,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python310;

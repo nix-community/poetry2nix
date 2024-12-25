@@ -1,4 +1,9 @@
-{ pkgs, poetry2nix, python39, fetchFromGitHub }:
+{
+  pkgs,
+  poetry2nix,
+  python39,
+  fetchFromGitHub,
+}:
 
 let
   rawProjectDir = fetchFromGitHub {

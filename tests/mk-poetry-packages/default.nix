@@ -1,9 +1,14 @@
-/* It is assumed that propagated dependencies are included in the poetryPackages.
+/*
+  It is assumed that propagated dependencies are included in the poetryPackages.
   The "certifi" is direct dependency of "requests" library.
 
   Note: this test assumes that "certifi" lib is going to be a dep of "requests" in the future.
 */
-{ poetry2nix, python3, python39 }:
+{
+  poetry2nix,
+  python3,
+  python39,
+}:
 let
   inherit (builtins) elem map;
   drvPythonCurrent = poetry2nix.mkPoetryPackages {

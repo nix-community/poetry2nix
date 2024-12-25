@@ -9,4 +9,5 @@ let
   pkg = env.python.pkgs.fancycompleter;
   isFancycompleterWheel = pkg.src.isWheel;
 in
-assert isFancycompleterWheel; pkg
+assert isFancycompleterWheel;
+pkg

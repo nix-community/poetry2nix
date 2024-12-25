@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   envWheel = poetry2nix.mkPoetryEnv {
     python = python3;

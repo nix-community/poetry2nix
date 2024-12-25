@@ -1,7 +1,8 @@
-{ pkgs
-, lib
-, stdenvNoCC
-, pyproject-nix
+{
+  pkgs,
+  lib,
+  stdenvNoCC,
+  pyproject-nix,
 }:
 let
   inherit (builtins) substring elemAt;
@@ -19,17 +20,20 @@ let
   predictURLFromPypi =
     {
       # package name
-      pname
-    , # filename including extension
-      file
+      pname,
+      # filename including extension
+      file,
     }:
     let
       matchedWheel = matchWheelFileName file;
       matchedEgg = matchEggFileName file;
       kind =
-        if matchedWheel != null then "wheel"
-        else if matchedEgg != null then elemAt matchedEgg 2
-        else "source";
+        if matchedWheel != null then
+          "wheel"
+        else if matchedEgg != null then
+          elemAt matchedEgg 2
+        else
+          "source";
     in
     "https://files.pythonhosted.org/packages/${kind}/${toLower (substring 0 1 file)}/${pname}/${file}";
 in
@@ -41,20 +45,19 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
     will use the Pypi API to determine the correct URL.
 
     Type: fetchFromPypi :: AttrSet -> derivation
-    */
+  */
   fetchFromPypi =
     {
       # package name
-      pname
-    , # filename including extension
-      file
-    , # the version string of the dependency
-      version
-    , # SRI hash
-      hash
-    , # Options to pass to `curl`
-      curlOpts ? ""
-    ,
+      pname,
+      # filename including extension
+      file,
+      # the version string of the dependency
+      version,
+      # SRI hash
+      hash,
+      # Options to pass to `curl`
+      curlOpts ? "",
     }:
     let
       predictedURL = predictURLFromPypi { inherit pname file; };
@@ -69,13 +72,17 @@ lib.mapAttrs (_: func: lib.makeOverridable func) {
       system = "builtin";
 
       preferLocalBuild = true;
-      impureEnvVars =
-        lib.fetchers.proxyImpureEnvVars
-        ++ [
-          "NIX_CURL_FLAGS"
-        ];
+      impureEnvVars = lib.fetchers.proxyImpureEnvVars ++ [
+        "NIX_CURL_FLAGS"
+      ];
 
-      inherit pname file version curlOpts predictedURL;
+      inherit
+        pname
+        file
+        version
+        curlOpts
+        predictedURL
+        ;
 
       builder = ./fetch-from-pypi.sh;
 

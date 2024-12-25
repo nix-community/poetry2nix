@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -8,6 +12,7 @@ let
   };
   isWheelWheel = env.python.pkgs.wheel.src.isWheel or false;
 in
-assert (!isWheelWheel); runCommand "wheel-wheel-test" { } ''
+assert (!isWheelWheel);
+runCommand "wheel-wheel-test" { } ''
   ${env}/bin/python -c 'import wheel; print(wheel.__version__)' > $out
 ''

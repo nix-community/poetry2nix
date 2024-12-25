@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -6,8 +10,7 @@ let
     poetrylock = ./poetry.lock;
   };
 in
-runCommand "returns-test"
-{ } ''
+runCommand "returns-test" { } ''
   ${env}/bin/python -c 'import returns'
   touch $out
 ''

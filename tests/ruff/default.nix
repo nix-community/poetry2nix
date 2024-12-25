@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   env1 = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -12,8 +16,7 @@ let
     preferWheels = true;
   };
 in
-runCommand "ruff-test"
-{ } ''
+runCommand "ruff-test" { } ''
   ${env1}/bin/ruff version
   ${env2}/bin/ruff version
   touch $out

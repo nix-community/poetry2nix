@@ -1,4 +1,8 @@
-{ poetry2nix, python3, pkgs }:
+{
+  poetry2nix,
+  python3,
+  pkgs,
+}:
 let
   env = poetry2nix.mkPoetryEnv {
     python = python3;
@@ -7,8 +11,11 @@ let
     preferWheels = false;
   };
 in
-assert !(env.python.pkgs.rpds-py.src.isWheel ||
-  env.python.pkgs.referencing.src.isWheel ||
-  env.python.pkgs.jsonschema-specifications.src.isWheel ||
-  env.python.pkgs.jsonschema.src.isWheel
-); env
+assert
+  !(
+    env.python.pkgs.rpds-py.src.isWheel
+    || env.python.pkgs.referencing.src.isWheel
+    || env.python.pkgs.jsonschema-specifications.src.isWheel
+    || env.python.pkgs.jsonschema.src.isWheel
+  );
+env

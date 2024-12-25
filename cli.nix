@@ -1,5 +1,6 @@
-{ pkgs ? import <nixpkgs> { }
-, lib ? pkgs.lib
+{
+  pkgs ? import <nixpkgs> { },
+  lib ? pkgs.lib,
 }:
 let
   inherit (pkgs) python3;
@@ -34,9 +35,11 @@ pkgs.stdenv.mkDerivation {
     # need to remap this to be consistent with `pkgs.lib.getBin` "standard"
     mv poetry2nix $out/bin/${pname}
 
-    wrapProgram $out/bin/${pname} --prefix PATH ":" ${lib.makeBinPath [
-      pkgs.nix-prefetch-git
-    ]}
+    wrapProgram $out/bin/${pname} --prefix PATH ":" ${
+      lib.makeBinPath [
+        pkgs.nix-prefetch-git
+      ]
+    }
 
     runHook postInstall
   '';

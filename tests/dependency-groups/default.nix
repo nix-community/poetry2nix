@@ -1,4 +1,8 @@
-{ poetry2nix, runCommand, writeText }:
+{
+  poetry2nix,
+  runCommand,
+  writeText,
+}:
 
 let
   env = poetry2nix.mkPoetryEnv {

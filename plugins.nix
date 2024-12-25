@@ -3,12 +3,13 @@ let
   inherit (pkgs) stdenv;
 
   mkPluginDrv =
-    { self
-    , plugins
-    , drv
-    , postInstall ? ""
-    , nativeBuildInputs ? [ ]
-    , buildInputs ? [ ]
+    {
+      self,
+      plugins,
+      drv,
+      postInstall ? "",
+      nativeBuildInputs ? [ ],
+      buildInputs ? [ ],
     }:
     let
       env = self.python.withPackages (_ps: plugins);
@@ -19,7 +20,9 @@ let
       inherit (drv) src version meta;
 
       buildInputs = drv.buildInputs ++ drv.propagatedBuildInputs ++ buildInputs;
-      nativeBuildInputs = builtins.filter (x: x.name != "python-output-dist-hook") (drv.nativeBuildInputs ++ nativeBuildInputs);
+      nativeBuildInputs = builtins.filter (x: x.name != "python-output-dist-hook") (
+        drv.nativeBuildInputs ++ nativeBuildInputs
+      );
 
       dontConfigure = true;
       dontBuild = true;
@@ -52,19 +55,30 @@ in
 {
 
   # Provide the `withPlugins` function
-  toPluginAble = self: { drv
-                       , finalDrv
-                       , postInstall ? ""
-                       , nativeBuildInputs ? [ ]
-                       , buildInputs ? [ ]
-                       }: drv.overridePythonAttrs (old: {
-    passthru = old.passthru // {
-      withPlugins = pluginFn: mkPluginDrv {
-        plugins = [ finalDrv ] ++ pluginFn self;
-        inherit self postInstall nativeBuildInputs buildInputs;
-        drv = finalDrv;
+  toPluginAble =
+    self:
+    {
+      drv,
+      finalDrv,
+      postInstall ? "",
+      nativeBuildInputs ? [ ],
+      buildInputs ? [ ],
+    }:
+    drv.overridePythonAttrs (old: {
+      passthru = old.passthru // {
+        withPlugins =
+          pluginFn:
+          mkPluginDrv {
+            plugins = [ finalDrv ] ++ pluginFn self;
+            inherit
+              self
+              postInstall
+              nativeBuildInputs
+              buildInputs
+              ;
+            drv = finalDrv;
+          };
       };
-    };
-  });
+    });
 
 }
