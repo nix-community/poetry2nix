@@ -2949,6 +2949,9 @@ lib.composeManyExtensions [
           pkgs.xorg.libxshmfence
           pkgs.xorg.libxkbfile
         ];
+        postInstall = ''
+          rm -r $out/${final.python.sitePackages}/PySide6/__pycache__/
+        '';
       });
       pyside6 = prev.pyside6.overridePythonAttrs (_old: {
         # The PySide6/__init__.py script tries to find the Qt libraries
@@ -2963,6 +2966,7 @@ lib.composeManyExtensions [
         postFixup = ''
           ${pkgs.xorg.lndir}/bin/lndir ${final.pyside6-essentials}/${final.python.sitePackages}/PySide6 $out/${final.python.sitePackages}/PySide6
           ${pkgs.xorg.lndir}/bin/lndir ${final.pyside6-addons}/${final.python.sitePackages}/PySide6 $out/${final.python.sitePackages}/PySide6
+          rm -r $out/${final.python.sitePackages}/PySide6/__pycache__/
         '';
       });
 
