@@ -882,6 +882,16 @@ lib.composeManyExtensions [
         '';
       };
 
+      # remove eth-hash dependency because eth-hash also depends on eth-utils causing a cycle.
+      eth-utils = prev.eth-utils.overridePythonAttrs (old: {
+        propagatedBuildInputs =
+          builtins.filter (i: i.pname != "eth-hash") old.propagatedBuildInputs;
+        preConfigure = ''
+          ${old.preConfigure or ""}
+          sed -i '/eth-hash/d' setup.py
+        '';
+      });
+
       evdev = prev.evdev.overridePythonAttrs (_old: {
         preConfigure = ''
           substituteInPlace setup.py --replace-warn /usr/include/linux ${pkgs.linuxHeaders}/include/linux
