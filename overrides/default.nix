@@ -977,6 +977,17 @@ lib.composeManyExtensions [
         '';
       });
 
+      gmsh = prev.gmsh.overridePythonAttrs (
+        old: {
+          buildInputs = old.buildInputs or [ ] ++ [
+            pkgs.libGLU
+            pkgs.xorg.libXcursor
+            pkgs.xorg.libXft
+            pkgs.xorg.libXinerama
+          ];
+        }
+      );
+
       gnureadline = prev.gnureadline.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.ncurses ];
