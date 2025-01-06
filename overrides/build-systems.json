@@ -3681,7 +3681,14 @@
     "setuptools"
   ],
   "click": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "8.1.8"
+    },
+    {
+      "buildSystem": "flit-core",
+      "from": "8.1.8"
+    }
   ],
   "click-aliases": [
     "poetry-core"
