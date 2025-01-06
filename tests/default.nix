@@ -67,6 +67,8 @@ in
   blinker-1_6_2 = callTest ./blinker-1_6_2 { };
   blinker = callTest ./blinker { };
   bcrypt = callTest ./bcrypt { };
+  click-pre-8_1_8 = callTest ./click-pre-8_1_8 { };
+  click = callTest ./click { };
   color-operations = callTest ./color-operations { };
   cryptography-43 = callTest ./cryptography-43 { };
   cryptography = callTest ./cryptography { };
