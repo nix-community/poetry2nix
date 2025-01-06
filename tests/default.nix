@@ -213,6 +213,9 @@ in
   matplotlib-3-6 = callTest ./matplotlib-3-6 { };
   # the version of scipy used here doesn't build from source on darwin
   scipy1_9 = callTest ./scipy1_9 { };
+
+  # Gives "error: Missing suitable source/wheel file entry for gmsh"
+  gmsh = callTest ./gmsh { };
 } // lib.optionalAttrs (!stdenv.isAarch64) {
   # no wheel for aarch64 for the tested packages
   # x86_64-{linux,darwin}
