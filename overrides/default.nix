@@ -883,9 +883,6 @@ lib.composeManyExtensions [
         '';
       };
 
-      # FIXME: this is a workaround for https://github.com/nix-community/poetry2nix/issues/1161
-      eth-utils = prev.eth-utils.override { preferWheel = true; };
-
       evdev = prev.evdev.overridePythonAttrs (_old: {
         preConfigure = ''
           substituteInPlace setup.py --replace-warn /usr/include/linux ${pkgs.linuxHeaders}/include/linux
