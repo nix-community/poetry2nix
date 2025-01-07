@@ -3312,6 +3312,7 @@ lib.composeManyExtensions [
             "0.19.1" = "sha256-qIXdoCEVGCGUnTicZp4bUTJyGpFy9dwWY03lXUbxiHg=";
             "0.20.0" = "sha256-5vbR2EbrAPJ8pb78tj/+r9nOWgQDT5aO/LUQI4kAGjU=";
             "0.20.1" = "sha256-vqJCGlp5S2wECfgleCexCb9xegA8b6wo7YNBbcsbXqk=";
+            "0.22.3" = "sha256-m01OB4CqDowlTAiDQx6tJ7SeP3t+EtS9UZ7Jad6Ccvc=";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -3983,8 +3984,9 @@ lib.composeManyExtensions [
 
       watchfiles =
         let
-          # Watchfiles does not include Cargo.lock in tarball released on PyPi for versions up to 0.17.0
+          # Watchfiles does not include Cargo.lock in tarball
           getRepoHash = version: {
+            "1.0.3" = "sha256-l0Df5ELWfo2TIo3ZKVTLHGYYYA7SPLhU+mu1RLam/7I=";
             "0.24.0" = "sha256-uc4CfczpNkS4NMevtRxhUOj9zTt59cxoC0BXnuHFzys=";
             "0.23.0" = "sha256-kFScg3pkOD0gASRtfXSfwZxyW/XvW9x0zgMn0AQek4A=";
             "0.22.0" = "sha256-TtRSRgtMOqsnhdvsic3lg33xlA+r/DcYHlzewSOu/44=";
@@ -4006,6 +4008,9 @@ lib.composeManyExtensions [
           sha256 = getRepoHash prev.watchfiles.version;
 
           getCargoHash = version: {
+            "1.0.3".outputHashes = {
+              "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
+            };
             "0.24.0".outputHashes = {
               "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
             };

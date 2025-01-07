@@ -23413,7 +23413,12 @@
     },
     {
       "buildSystem": "pdm-backend",
-      "from": "1.8.1"
+      "from": "1.8.1",
+      "until": "2.2.0"
+    },
+    {
+      "buildSystem": "setuptools",
+      "from": "2.2.0"
     }
   ],
   "sseclient": [
