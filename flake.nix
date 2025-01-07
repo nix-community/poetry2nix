@@ -12,6 +12,8 @@
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
