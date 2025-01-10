@@ -11,13 +11,41 @@ in
   }
 }:
 let
-  pkgs' = pkgs // {
-    inherit poetry2nix;
-
-    # At the time of writing 3.12 is causing issues.
-    python3 = pkgs.python311;
-    python = pkgs.python311;
+  python3 = pkgs.python311.override {
+    # Can be removed once https://nixpk.gs/pr-tracker.html?pr=362304 is through
+    self = python3;
+    packageOverrides = final: prev: {
+      wheel = prev.wheel.overridePythonAttrs (oA: rec {
+        version = "0.45.1";
+        src = oA.src.override (oA: {
+          rev = "refs/tags/${version}";
+          hash = "sha256-tgueGEWByS5owdA5rhXGn3qh1Vtf0HGYC6+BHfrnGAs=";
+        });
+      });
+    };
   };
+  python = pkgs.python311.override {
+    # Can be removed once https://nixpk.gs/pr-tracker.html?pr=362304 is through
+    self = python;
+    packageOverrides = final: prev: {
+      wheel = prev.wheel.overridePythonAttrs (oA: rec {
+        version = "0.45.1";
+        src = oA.src.override (oA: {
+          rev = "refs/tags/${version}";
+          hash = "sha256-tgueGEWByS5owdA5rhXGn3qh1Vtf0HGYC6+BHfrnGAs=";
+        });
+      });
+    };
+  };
+  pkgs' = pkgs // {
+    inherit
+      poetry2nix
+      python
+      python3
+      ;
+  };
+
+  # At the time of writing 3.12 is causing issues.
 
   poetry2nix = import ./.. { pkgs = pkgs'; };
   callTest = lib.callPackageWith pkgs';
