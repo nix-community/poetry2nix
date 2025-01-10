@@ -57,14 +57,17 @@ in
   };
 
   pipBuildHook =
-    callPackage
+    nonOverlayedPython.pkgs.callPackage
       (
         { pip, wheel }:
         makeSetupHook
           ({
             name = "pip-build-hook.sh";
             substitutions = {
-              inherit pythonInterpreter pythonSitePackages;
+              # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
+              # because building of tomlkit and its dependencies also use these hooks.
+              pythonInterpreter = nonOverlayedPython.interpreter;
+              pythonSitePackages = nonOverlayedPython.sitePackages;
             };
           }
           // (makeSetupHookArgs [ pip wheel ]))
