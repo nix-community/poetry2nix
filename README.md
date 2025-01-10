@@ -7,16 +7,15 @@ _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix deriva
 
 For more information, see [the original announcement post](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
 
-## Maintenance status: ⚠️ Unmaintained ⚠️
+## Maintenance status: ⚠️ Work in Progress ⚠️
 
-The creator & long-term maintainer of poetry2nix ([@adisbladis](https://github.com/adisbladis)) is no longer using Poetry or Poetry2nix.
-This means that [poetry2nix is looking for maintainers](https://github.com/nix-community/poetry2nix/issues/1865).
+[@Nebucatnetzer](https://github.com/Nebucatnetzer) took over maintenance for poetry2nix and [@elikoga](https://github.com/elikoga) is supporting him in doing so.
+We're currently working on getting the project up and running again.
 
-Poetry has a number of upcoming large changes, which poetry2nix is unlikely to gain support for:
+Poetry has a number of upcoming large changes, which poetry2nix is currently not supporting:
+
 - [PEP-621 pyproject.toml metadata](https://github.com/python-poetry/poetry-core/pull/708)
 - [Poetry 2.0](https://github.com/python-poetry/poetry/issues/9448)
-
-If you are not already using Poetry & Poetry2nix, do consider [`uv`](https://docs.astral.sh/uv/) & [`uv2nix`](https://github.com/adisbladis/uv2nix).
 
 ## Quickstart Non-flake
 
@@ -608,6 +607,10 @@ poetry2nix.mkPoetryApplication {
 
 - [Package and deploy Python apps faster with Poetry and Nix](https://www.youtube.com/watch?v=TbIHRHy7_JM)
 This is a short (11 minutes) video tutorial by [Steve Purcell](https://github.com/purcell/) from [Tweag](https://tweag.io) walking you through how to get started with a small web development project.
+
+## Alternative projects
+
+If poetry2nix isn't working for your use case check the NixOS wiki for alternative solutions: https://wiki.nixos.org/wiki/Python#Package_a_Python_application
 
 ## Contributing
 
