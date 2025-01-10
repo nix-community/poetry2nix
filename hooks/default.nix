@@ -75,10 +75,6 @@ in
           ({
             name = "pip-build-hook.sh";
             substitutions = {
-              # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
-              # pythonPath = nonOverlayedPython.pkgs.makePythonPath [ nonOverlayedPython ];
-              # pythonInterpreter = nonOverlayedPython.interpreter;
-              # pythonSitePackages = nonOverlayedPython.sitePackages;
               inherit pythonSitePackages;
               inherit pythonInterpreter;
             };
