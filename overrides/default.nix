@@ -179,9 +179,7 @@ lib.composeManyExtensions [
         inherit (final) buildPythonPackage flit-core tomli;
       };
 
-      wheel = bootstrappingBase.wheel.override {
-        inherit (final) buildPythonPackage flit-core;
-      };
+
 
       inherit (bootstrappingBase) cython cython_0;
       #### END bootstrapping pkgs
@@ -915,12 +913,12 @@ lib.composeManyExtensions [
 
       uvicorn = prev.uvicorn.overridePythonAttrs (old: {
         optional-dependencies.standard = [
-            prev.httptools
-            prev.python-dotenv
-            prev.pyyaml
-            prev.uvloop
-            prev.watchfiles
-            prev.websockets
+          prev.httptools
+          prev.python-dotenv
+          prev.pyyaml
+          prev.uvloop
+          prev.watchfiles
+          prev.websockets
         ];
       });
 
@@ -4321,6 +4319,14 @@ lib.composeManyExtensions [
             ${localPython.interpreter} setup.py install --skip-build --prefix=$out
           '';
         });
+
+      wheel = prev.wheel.overridePythonAttrs (old: rec {
+        version = "0.45.1";
+        src = old.src.override (oldSrc: {
+          rev = "refs/tags/${version}";
+          hash = "sha256-tgueGEWByS5owdA5rhXGn3qh1Vtf0HGYC6+BHfrnGAs=";
+        });
+      });
 
       marisa-trie = prev.marisa-trie.overridePythonAttrs (
         old: {
