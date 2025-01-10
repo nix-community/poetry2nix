@@ -1,4 +1,8 @@
-{ poetry2nix, python3, pkgs }:
+{
+  poetry2nix,
+  python3,
+  pkgs,
+}:
 let
   inherit (pkgs.stdenv) isLinux;
   env = poetry2nix.mkPoetryEnv {
@@ -27,8 +31,11 @@ let
     );
   };
 in
-assert isLinux ->
-env.python.pkgs.rpds-py.src.isWheel
-  && env.python.pkgs.referencing.src.isWheel
-  && env.python.pkgs.jsonschema-specifications.src.isWheel
-  && env.python.pkgs.jsonschema.src.isWheel; env
+assert
+  isLinux
+  ->
+    env.python.pkgs.rpds-py.src.isWheel
+    && env.python.pkgs.referencing.src.isWheel
+    && env.python.pkgs.jsonschema-specifications.src.isWheel
+    && env.python.pkgs.jsonschema.src.isWheel;
+env

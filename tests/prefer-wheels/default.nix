@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   py = poetry2nix.mkPoetryPackages {
     python = python3;
@@ -7,4 +11,5 @@ let
   };
   isWheelAttr = py.python.pkgs.maturin.src.isWheel or false;
 in
-assert isWheelAttr; runCommand "prefer-wheels" { } "touch $out"
+assert isWheelAttr;
+runCommand "prefer-wheels" { } "touch $out"

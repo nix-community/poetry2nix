@@ -1,4 +1,9 @@
-{ pkgs, lib, poetry2nix, python311 }:
+{
+  pkgs,
+  lib,
+  poetry2nix,
+  python311,
+}:
 
 poetry2nix.mkPoetryApplication {
   python = python311;

@@ -1,4 +1,8 @@
-{ poetry2nix, python3, runCommand, lib }:
+{
+  poetry2nix,
+  python3,
+  runCommand,
+}:
 let
   fakeDir = runCommand "artificial-dir-for-test" { } ''
     mkdir -p $out

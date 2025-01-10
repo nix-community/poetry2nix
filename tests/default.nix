@@ -1,14 +1,14 @@
-
 let
   flake = builtins.getFlake "${toString ../.}";
 in
-{ pkgs ? import flake.inputs.nixpkgs {
+{
+  pkgs ? import flake.inputs.nixpkgs {
     config = {
       allowAliases = false;
       allowInsecurePredicate = _: true;
     };
     overlays = [ flake.overlays.default ];
-  }
+  },
 }:
 let
   pkgs' = pkgs // {
@@ -194,7 +194,8 @@ in
   cyclonedx-and-sarif-tools = callTest ./cyclonedx-and-sarif-tools { };
   propcache = callTest ./propcache { };
   shellcheck-py = callTest ./shellcheck-py { };
-} // lib.optionalAttrs (!stdenv.isDarwin) {
+}
+// lib.optionalAttrs (!stdenv.isDarwin) {
   # Editable tests fails on Darwin because of sandbox paths
   pep600 = callTest ./pep600 { };
   editable = callTest ./editable { };
@@ -218,22 +219,26 @@ in
 
   # Gives "error: Missing suitable source/wheel file entry for gmsh"
   gmsh = callTest ./gmsh { };
-} // lib.optionalAttrs (!stdenv.isAarch64) {
+}
+// lib.optionalAttrs (!stdenv.isAarch64) {
   # no wheel for aarch64 for the tested packages
   # x86_64-{linux,darwin}
   preferWheel = callTest ./prefer-wheel { };
-} // lib.optionalAttrs (!stdenv.isDarwin || stdenv.isAarch64) {
+}
+// lib.optionalAttrs (!stdenv.isDarwin || stdenv.isAarch64) {
   # {x86_64,aarch64}-linux
   # aarch64-darwin
   pyarrow-wheel = callTest ./pyarrow-wheel { };
   fiona-wheel = callTest ./fiona-wheel { };
   ml-stack = callTest ./ml-stack { };
   flink = callTest ./flink { };
-} // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
+}
+// lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_64-linux
   pyqt6 = callTest ./pyqt6 { };
   vllm-wheel = callTest ./vllm-wheel { };
-} // lib.optionalAttrs (!(stdenv.isLinux && stdenv.isAarch64)) {
+}
+// lib.optionalAttrs (!(stdenv.isLinux && stdenv.isAarch64)) {
   # x86_64-linux
   # {x86_64,aarch64}-darwin
   pyside6 = callTest ./pyside6 { };
@@ -250,7 +255,8 @@ in
   pytest-randomly = callTest ./pytest-randomly { };
   fetched-projectdir = callTest ./fetched-projectdir { };
   cmdstanpy = callTest ./cmdstanpy { };
-} // lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
+}
+// lib.optionalAttrs (stdenv.isLinux && stdenv.isx86_64) {
   # x86_86-linux
   pendulum = callTest ./pendulum { };
   pendulum-with-rust = callTest ./pendulum-with-rust { };
@@ -259,5 +265,5 @@ in
   # sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
   editable-egg = callTest ./editable-egg { };
-  eth-utils= callTest ./eth-utils { };
+  eth-utils = callTest ./eth-utils { };
 }
