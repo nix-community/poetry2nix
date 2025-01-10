@@ -913,6 +913,17 @@ lib.composeManyExtensions [
           (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
       });
 
+      uvicorn = prev.uvicorn.overridePythonAttrs (old: {
+        optional-dependencies.standard = [
+            prev.httptools
+            prev.python-dotenv
+            prev.pyyaml
+            prev.uvloop
+            prev.watchfiles
+            prev.websockets
+        ];
+      });
+
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev ];
       });
