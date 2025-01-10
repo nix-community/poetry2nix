@@ -5,7 +5,18 @@ let
   pythonInterpreter = pythonOnBuildForHost.interpreter;
   pythonSitePackages = python.sitePackages;
 
-  nonOverlayedPython = (pkgs.python3.pythonOnBuildForHost or pkgs.python3.pythonForBuild).withPackages (ps: [ ps.tomlkit ]);
+  pythonFromPkgs = {
+    "3.6" = pkgs.python36;
+    "3.7" = pkgs.python37;
+    "3.8" = pkgs.python38;
+    "3.9" = pkgs.python39;
+    "3.10" = pkgs.python310;
+    "3.11" = pkgs.python311;
+    "3.12" = pkgs.python312;
+    "3.13" = pkgs.python313;
+  }.${lib.versions.majorMinor python.version};
+
+  nonOverlayedPython = (pythonFromPkgs.pythonOnBuildForHost or pythonFromPkgs.pythonForBuild).withPackages (ps: [ ps.tomlkit ps.pip ]);
   makeRemoveSpecialDependenciesHook =
     { fields
     , kind
@@ -57,20 +68,22 @@ in
   };
 
   pipBuildHook =
-    nonOverlayedPython.pkgs.callPackage
+    callPackage
       (
-        { pip, wheel }:
+        { wheel }:
         makeSetupHook
           ({
             name = "pip-build-hook.sh";
             substitutions = {
               # NOTE: We have to use a non-overlayed Python here because otherwise we run into an infinite recursion
-              # because building of tomlkit and its dependencies also use these hooks.
-              pythonInterpreter = nonOverlayedPython.interpreter;
-              pythonSitePackages = nonOverlayedPython.sitePackages;
+              # pythonPath = nonOverlayedPython.pkgs.makePythonPath [ nonOverlayedPython ];
+              # pythonInterpreter = nonOverlayedPython.interpreter;
+              # pythonSitePackages = nonOverlayedPython.sitePackages;
+              inherit pythonSitePackages;
+              inherit pythonInterpreter;
             };
           }
-          // (makeSetupHookArgs [ pip wheel ]))
+          // (makeSetupHookArgs [ nonOverlayedPython.pkgs.pip wheel ]))
           ./pip-build-hook.sh
       )
       { };
