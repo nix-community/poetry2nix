@@ -9885,8 +9885,22 @@
     "setuptools"
   ],
   "isort": [
-    "poetry-core",
-    "setuptools"
+    {
+      "buildSystem": "poetry-core",
+      "until": "5.13.2"
+    },
+    {
+      "buildSystem": "setuptools",
+      "until": "5.13.2"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "6.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "6.0.0"
+    }
   ],
   "isosurfaces": [
     "setuptools"
