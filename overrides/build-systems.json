@@ -26142,6 +26142,9 @@
   "types-mock": [
     "setuptools"
   ],
+  "types-mysqlclient": [
+    "setuptools"
+  ],
   "types-oauthlib": [
     "setuptools"
   ],
