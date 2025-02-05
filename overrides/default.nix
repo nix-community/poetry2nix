@@ -3166,6 +3166,10 @@ lib.composeManyExtensions [
           propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ pkgs.hdf5 ];
         }
       );
+      pyyaml = prev.pyyaml.overridePythonAttrs (
+        old: {
+            buildInputs = old.buildInputs or [ ] ++ [ pkgs.libyaml ];
+      });
 
       pyzmq = prev.pyzmq.overridePythonAttrs (
         old: {
