@@ -13,10 +13,6 @@ in
 let
   pkgs' = pkgs // {
     inherit poetry2nix;
-
-    # At the time of writing 3.12 is causing issues.
-    python3 = pkgs.python311;
-    python = pkgs.python311;
   };
 
   poetry2nix = import ./.. { pkgs = pkgs'; };
