@@ -2218,6 +2218,10 @@ lib.composeManyExtensions [
         }
       );
 
+      phonetics = prev.phonetics.overridePythonAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ [ final.setuptools ];
+      });
+
       pikepdf = prev.pikepdf.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.qpdf final.pybind11 ];
