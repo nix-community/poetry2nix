@@ -4689,6 +4689,20 @@
   "datafusion": [
     "setuptools"
   ],
+  "datamodel-code-generator": [
+    {
+      "buildSystem": "poetry",
+      "until": "0.27.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "0.27.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "0.27.0"
+    }
+  ],
   "datamodeldict": [
     "setuptools"
   ],
