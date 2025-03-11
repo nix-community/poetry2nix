@@ -9912,11 +9912,11 @@
   "isort": [
     {
       "buildSystem": "poetry-core",
-      "until": "5.13.2"
+      "until": "6.0.0"
     },
     {
       "buildSystem": "setuptools",
-      "until": "5.13.2"
+      "until": "6.0.0"
     },
     {
       "buildSystem": "hatch-vcs",
