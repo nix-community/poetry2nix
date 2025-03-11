@@ -9426,7 +9426,18 @@
     "setuptools"
   ],
   "icalendar": [
-    "setuptools"
+    {
+      "buildSystem": "setuptools",
+      "until": "6.0.0"
+    },
+    {
+      "buildSystem": "hatch-vcs",
+      "from": "6.0.0"
+    },
+    {
+      "buildSystem": "hatchling",
+      "from": "6.0.0"
+    }
   ],
   "icalevents": [
     "poetry-core"
