@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "mk-poetry-packages-partition"
+version = "0.1.0"
+description = "Tests if mkPoetryPackages can select dependency markers"
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.12"
+watchdog = [
+  { platform = "linux", path = "watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl" },
+  { platform = "darwin", path = "watchdog-6.0.0-cp312-cp312-macosx_10_13_universal2.whl" },
+  { platform = "win32", path = "watchdog-6.0.0-py3-none-win32.whl" },
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
