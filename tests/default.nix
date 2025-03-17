@@ -73,6 +73,8 @@ in
   cryptography-43 = callTest ./cryptography-43 { };
   cryptography = callTest ./cryptography { };
   mk-poetry-packages = callTest ./mk-poetry-packages { };
+  mk-poetry-packages-partition-whl-remote = callTest ./mk-poetry-packages-partition-whl-remote { };
+  mk-poetry-packages-partition-whl-local = callTest ./mk-poetry-packages-partition-whl-local { };
   mailchimp3 = callTest ./mailchimp3 { };
   markupsafe2 = callTest ./markupsafe2 { };
   mysqlclient = callTest ./mysqlclient { };
