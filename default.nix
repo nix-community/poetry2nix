@@ -180,10 +180,10 @@ lib.makeScope pkgs.newScope (self: {
       partitions =
         let
           supportsPythonVersion = pkgMeta:
-            if pkgMeta ? markers then
+            if pkgMeta ? marker then
               (
                 let
-                  marker = pyproject-nix.lib.pep508.parseMarkers pkgMeta.markers;
+                  marker = pyproject-nix.lib.pep508.parseMarkers pkgMeta.marker;
                 in
                 pyproject-nix.lib.pep508.evalMarkers pep508Env marker
               ) else true && poetryLib.checkPythonVersions pyVersion pkgMeta.python-versions;
