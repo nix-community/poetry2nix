@@ -149,6 +149,16 @@ lib.composeManyExtensions [
           rm $out/bin/tensorboard
         '';
       };
+      pythonFromPkgs = {
+        "3.6" = pkgs.python36;
+        "3.7" = pkgs.python37;
+        "3.8" = pkgs.python38;
+        "3.9" = pkgs.python39;
+        "3.10" = pkgs.python310;
+        "3.11" = pkgs.python311;
+        "3.12" = pkgs.python312;
+        "3.13" = pkgs.python313;
+      }.${lib.versions.majorMinor prev.python.version};
     in
 
     {
@@ -179,9 +189,7 @@ lib.composeManyExtensions [
         inherit (final) buildPythonPackage flit-core tomli;
       };
 
-      wheel = bootstrappingBase.wheel.override {
-        inherit (final) buildPythonPackage flit-core;
-      };
+
 
       inherit (bootstrappingBase) cython cython_0;
       #### END bootstrapping pkgs
@@ -412,13 +420,13 @@ lib.composeManyExtensions [
           # apply necessary patches in postInstall if the source is a wheel
           postInstall = lib.optionalString (old.src.isWheel or false) ''
             pushd "$out/${final.python.sitePackages}"
-            for patch in ${lib.concatMapStringsSep " " (p: "${p}") pkgs.python3.pkgs.cairocffi.patches}; do
+            for patch in ${lib.concatMapStringsSep " " (p: "${p}") pythonFromPkgs.pkgs.cairocffi.patches}; do
               patch -p1 < "$patch"
             done
             popd
           '';
         } // lib.optionalAttrs (!(old.src.isWheel or false)) {
-          inherit (pkgs.python3.pkgs.cairocffi) patches;
+          inherit (pythonFromPkgs.pkgs.cairocffi) patches;
         }
       );
 
@@ -915,6 +923,17 @@ lib.composeManyExtensions [
           (lib.optionals (final ? fastapi-cli) [ final.fastapi-cli ]);
       });
 
+      uvicorn = prev.uvicorn.overridePythonAttrs (old: {
+        optional-dependencies.standard = [
+          prev.httptools
+          prev.python-dotenv
+          prev.pyyaml
+          prev.uvloop
+          prev.watchfiles
+          prev.websockets
+        ];
+      });
+
       fastecdsa = prev.fastecdsa.overridePythonAttrs (old: {
         buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev ];
       });
@@ -1281,7 +1300,7 @@ lib.composeManyExtensions [
 
       jira = prev.jira.overridePythonAttrs (
         old: {
-          inherit (pkgs.python3Packages.jira) patches;
+          inherit (pythonFromPkgs.pkgs.jira) patches;
           buildInputs = old.buildInputs or [ ] ++ [
             final.pytestrunner
             final.cryptography
@@ -1830,7 +1849,7 @@ lib.composeManyExtensions [
               };
           };
         in
-        {
+         {
           # fails to build with format=pyproject and setuptools >= 65
           format =
             if ((old.format or null) == "poetry2nix") then
@@ -2232,7 +2251,7 @@ lib.composeManyExtensions [
       pillow = prev.pillow.overridePythonAttrs (
         old:
         let
-          preConfigure = (old.preConfigure or "") + pkgs.python3.pkgs.pillow.preConfigure;
+          preConfigure = (old.preConfigure or "") + pythonFromPkgs.pkgs.pillow.preConfigure;
         in
         {
           nativeBuildInputs = old.nativeBuildInputs or [ ]
@@ -3822,7 +3841,7 @@ lib.composeManyExtensions [
 
           # Fix library paths
           postPatch = lib.optionalString (!(old.src.isWheel or false)) (old.postPatch or "" + ''
-            ${pkgs.python3.interpreter} ${./shapely-rewrite.py} shapely/geos.py
+            ${pythonFromPkgs.interpreter} ${./shapely-rewrite.py} shapely/geos.py
             substituteInPlace pyproject.toml --replace-warn 'setuptools<64' 'setuptools'
           '');
         }
@@ -4047,7 +4066,7 @@ lib.composeManyExtensions [
 
       vispy = prev.vispy.overrideAttrs (
         _: {
-          inherit (pkgs.python3.pkgs.vispy) patches;
+          inherit (pythonFromPkgs.pkgs.vispy) patches;
         }
       );
 
@@ -4140,7 +4159,7 @@ lib.composeManyExtensions [
 
       weasyprint = prev.weasyprint.overridePythonAttrs (
         old: {
-          inherit (pkgs.python3.pkgs.weasyprint) patches;
+          inherit (pythonFromPkgs.pkgs.weasyprint) patches;
           nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [ final.pytest-runner ];
           buildInputs = old.buildInputs or [ ] ++ [ final.pytest-runner ];
         }
@@ -4320,6 +4339,14 @@ lib.composeManyExtensions [
             ${localPython.interpreter} setup.py install --skip-build --prefix=$out
           '';
         });
+
+      wheel = prev.wheel.overridePythonAttrs (old: rec {
+        version = "0.45.1";
+        src = old.src.override (oldSrc: {
+          rev = "refs/tags/${version}";
+          hash = "sha256-tgueGEWByS5owdA5rhXGn3qh1Vtf0HGYC6+BHfrnGAs=";
+        });
+      });
 
       marisa-trie = prev.marisa-trie.overridePythonAttrs (
         old: {
