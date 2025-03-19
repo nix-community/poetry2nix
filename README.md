@@ -142,7 +142,7 @@ The _poetry2nix_ public API consists of the following attributes:
 - [mkPoetryScriptsPackage](#mkpoetryscriptspackage): Creates a package containing the scripts from `tool.poetry.scripts` of the `pyproject.toml`.
 - [mkPoetryEditablePackage](#mkpoetryeditablepackage): Creates a package containing editable sources. Changes in the specified paths will be reflected in an interactive nix-shell session without the need to restart it.
 - [defaultPoetryOverrides](#defaultpoetryoverrides): A set of bundled overrides fixing problems with Python packages.
-- [overrides.withDefaults](#overrideswithdefaults): A convenience function for specifying overrides on top of the defaults.
+- [overrides.withDefaults](#overrideswithdefaults): A convenience function for specifying overrides on top of the defaults (it applies user overrides and then applies defaults after).
 - [overrides.withoutDefaults](#overrideswithoutdefaults): A convenience function for specifying overrides without defaults.
 - [cleanPythonSources](#cleanpythonsources): A function to create a source filter for python projects.
 
@@ -591,6 +591,15 @@ poetry2nix.mkPoetryApplication {
   });
 }
 ```
+
+Please remember that `withDefaults` function, applies user overrides first, and than applies `defaults`. If you want to change package
+that already is overriden by `defaults` you may need to do 
+```
+ overrides = [ poetry2nix.defaultPoetryOverrides (self: super: {
+    # ... package overrides here ...
+  }) ];
+```
+which put your changes on top of defaults.
 
 **Q.** I'm experiencing one of the following errors, what do I do?
 
