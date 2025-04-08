@@ -106,5 +106,9 @@
   {
     "dep": "orjson",
     "version": "3.10.7"
+  },
+  {
+    "dep": "orjson",
+    "version": "3.10.15"
   }
 ]
