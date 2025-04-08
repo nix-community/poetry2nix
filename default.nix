@@ -247,7 +247,8 @@ lib.makeScope pkgs.newScope (self: {
               final: _prev:
                 {
                   mkPoetryDep = final.callPackage ./mk-poetry-dep.nix {
-                    inherit lib python poetryLib pep508Env pyVersion;
+                    inherit lib poetryLib pep508Env pyVersion;
+                    python = py;
                     inherit pyproject-nix;
                   };
 
