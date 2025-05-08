@@ -11419,6 +11419,7 @@
     "setuptools"
   ],
   "loguru": [
+    "flit-core",
     "setuptools"
   ],
   "logutils": [
@@ -15078,6 +15079,9 @@
     "setuptools"
   ],
   "orderedmultidict": [
+    "setuptools"
+  ],
+  "orderly-set": [
     "setuptools"
   ],
   "orgparse": [

@@ -3374,6 +3374,8 @@ lib.composeManyExtensions [
           #       echo "\"${version#v}\" = \"$(echo "$nix_prefetch" | jq -r ".sha256 // .hash")\";"
           #     done' _
           getRepoHash = version: {
+            "0.9.6" = "sha256-xKlvj+8ox5UdkH3s9IOIMOVPCDQMLnGUKDOhKAZZgg4=";
+            "0.9.5" = "sha256-VoYV13GsTaAWoLcSfuadLR2l8Xbn0MEd/Uh9EP/DgjE=";
             "0.8.6" = "sha256-9YvHmNiKdf5hKqy9tToFSQZM2DNLoIiChcfjQay8wbU=";
             "0.7.4" = "sha256-viDjUfj/OWYU7Fa7mqD2gYoirKFSaTXPPi0iS7ibiiU=";
             "0.7.3" = "sha256-TQ7nBd2S77VYShYxpxZ3CfCMiOGyl9EtIv9nXZjmijc=";
@@ -3464,6 +3466,24 @@ lib.composeManyExtensions [
           );
 
           getCargoHash = version: {
+            "0.9.6" = {
+              # https://raw.githubusercontent.com/astral-sh/ruff/0.9.6/Cargo.lock
+              lockFile = ./ruff/0.9.6-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                # lock file has a revision override
+                "salsa-0.18.0" = "sha256-esWNyc3TcIhFul4VjtZH991aZp03BUVgvzCFqt6GtUg=";
+              };
+            };
+            "0.9.5" = {
+              # https://raw.githubusercontent.com/astral-sh/ruff/0.9.5/Cargo.lock
+              lockFile = ./ruff/0.9.5-Cargo.lock;
+              outputHashes = {
+                "lsp-types-0.95.1" = "sha256-8Oh299exWXVi6A39pALOISNfp8XBya8z+KT/Z7suRxQ=";
+                # lock file has a revision override
+                "salsa-0.18.0" = "sha256-esWNyc3TcIhFul4VjtZH991aZp03BUVgvzCFqt6GtUg=";
+              };
+            };
             "0.8.6" = {
               # https://raw.githubusercontent.com/astral-sh/ruff/0.8.6/Cargo.lock
               lockFile = ./ruff/0.8.6-Cargo.lock;
@@ -4065,6 +4085,7 @@ lib.composeManyExtensions [
         let
           # Watchfiles does not include Cargo.lock in tarball released on PyPi for versions up to 0.17.0
           getRepoHash = version: {
+            "1.0.4" = "sha256-VoYV13GsTaAWoLcSfuadLR2l8Xbn0MEd/Uh9EP/DgjE=";
             "0.24.0" = "sha256-uc4CfczpNkS4NMevtRxhUOj9zTt59cxoC0BXnuHFzys=";
             "0.23.0" = "sha256-kFScg3pkOD0gASRtfXSfwZxyW/XvW9x0zgMn0AQek4A=";
             "0.22.0" = "sha256-TtRSRgtMOqsnhdvsic3lg33xlA+r/DcYHlzewSOu/44=";
@@ -4086,6 +4107,7 @@ lib.composeManyExtensions [
           sha256 = getRepoHash prev.watchfiles.version;
 
           getCargoHash = version: {
+            "1.0.4" = "";
             "0.24.0".outputHashes = {
               "notify-6.1.1" = "sha256-lT3R5ZQpjx52NVMEKTTQI90EWT16YnbqphqvZmNpw/I=";
             };
