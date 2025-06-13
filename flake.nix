@@ -25,8 +25,10 @@
     let
       inherit (nixpkgs) lib;
       systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      eachSystem = f: lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
+
+      forAllSystems = f: lib.genAttrs
+        systems
+        (system: f nixpkgs.legacyPackages.${system});
     in
     {
       overlays.default = lib.composeManyExtensions [ (import ./overlay.nix) ];
@@ -41,55 +43,57 @@
         };
         default = self.templates.app;
       };
-    }
-    // (flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowAliases = false;
-        };
 
-        poetry2nix = import ./default.nix { inherit pkgs; };
-        p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
-      in
-      {
-        formatter = treefmtEval.${system}.config.build.wrapper;
+      formatter = forAllSystems (pkgs:
+        let
+          treefmtEval = treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix;
+        in
+        treefmtEval.config.build.wrapper);
 
-        packages = {
+      packages = forAllSystems (pkgs:
+        let
+          poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
+        in
+        {
           poetry2nix = poetry2nix.cli;
           default = poetry2nix.cli;
-        };
+        });
 
-        devShells = {
+      apps = forAllSystems (pkgs:
+        let
+          poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
+          app = flake-utils.lib.mkApp { drv = poetry2nix.env; };
+        in
+        {
+          poetry = {
+            # https://wiki.nixos.org/wiki/Flakes
+            type = "app";
+            program = "${pkgs.poetry}/bin/poetry";
+          };
+          poetry2nix = app;
+          default = app;
+        });
+
+      devShells = forAllSystems (pkgs:
+        let
+          poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
+          p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
+        in
+        {
           default = pkgs.mkShell {
-            nativeBuildInputs = with pkgs; [
+            nativeBuildInputs = [
               p2nix-tools.env
               p2nix-tools.flamegraph
-              nixpkgs-fmt
-              poetry
-              niv
-              jq
-              nix-prefetch-git
-              nix-eval-jobs
-              nix-build-uncached
+
+              pkgs.nixpkgs-fmt
+              pkgs.poetry
+              pkgs.niv
+              pkgs.jq
+              pkgs.nix-prefetch-git
+              pkgs.nix-eval-jobs
+              pkgs.nix-build-uncached
             ];
           };
-        };
-
-        apps =
-          let
-            app = flake-utils.lib.mkApp { drv = poetry2nix.cli; };
-          in
-          {
-            poetry = {
-              # https://wiki.nixos.org/wiki/Flakes
-              type = "app";
-              program = "${pkgs.poetry}/bin/poetry";
-            };
-            poetry2nix = app;
-            default = app;
-          };
-      }
-    ));
+        });
+    };
 }
