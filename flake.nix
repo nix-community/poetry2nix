@@ -111,7 +111,7 @@
         poetry2nix = import ./default.nix { inherit pkgs; };
         p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
       in
-      rec {
+      {
         formatter = treefmtEval.${system}.config.build.wrapper;
 
         packages = {
@@ -135,14 +135,17 @@
           };
         };
 
-        apps = {
+        apps = let
+          app = flake-utils.lib.mkApp { drv = poetry2nix.cli; };
+        in
+        {
           poetry = {
             # https://wiki.nixos.org/wiki/Flakes
             type = "app";
             program = "${pkgs.poetry}/bin/poetry";
           };
-          poetry2nix = flake-utils.lib.mkApp { drv = packages.poetry2nix; };
-          default = apps.poetry2nix;
+          poetry2nix = app;
+          default = app;
         };
       }
     ));
