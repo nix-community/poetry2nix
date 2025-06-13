@@ -2,7 +2,6 @@
   description = "Poetry2nix flake";
 
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils";
     # Last working commit from nixos-small-unstable
     nixpkgs.url = "github:NixOS/nixpkgs?rev=75e28c029ef2605f9841e0baa335d70065fe7ae2";
 
@@ -18,7 +17,6 @@
   outputs =
     { self
     , nixpkgs
-    , flake-utils
     , treefmt-nix
     , ...
     } @ inputs:
@@ -29,6 +27,18 @@
       forAllSystems = f: lib.genAttrs
         systems
         (system: f nixpkgs.legacyPackages.${system});
+
+      # Taking the mkApp functionality from flake-utils, so we don't need it
+      # as a dependency
+      mkApp =
+        { drv
+        , name ? drv.pname or drv.name
+        , exePath ? drv.passthru.exePath or "/bin/${name}"
+        }:
+        {
+          type = "app";
+          program = "${drv}${exePath}";
+        };
     in
     {
       overlays.default = lib.composeManyExtensions [ (import ./overlay.nix) ];
@@ -62,16 +72,18 @@
       apps = forAllSystems (pkgs:
         let
           poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
-          app = flake-utils.lib.mkApp { drv = poetry2nix.env; };
+
+          default = mkApp { drv = poetry2nix.env; };
         in
         {
+          inherit default;
+          poetry2nix = default;
+
           poetry = {
             # https://wiki.nixos.org/wiki/Flakes
             type = "app";
             program = "${pkgs.poetry}/bin/poetry";
           };
-          poetry2nix = app;
-          default = app;
         });
 
       devShells = forAllSystems (pkgs:
