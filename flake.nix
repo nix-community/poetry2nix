@@ -13,8 +13,6 @@
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    systems.url = "github:nix-systems/default";
   };
 
   outputs =
@@ -24,10 +22,10 @@
       flake-utils,
       nix-github-actions,
       treefmt-nix,
-      systems,
     }:
     let
-      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
+      systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      eachSystem = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
     in
     {
