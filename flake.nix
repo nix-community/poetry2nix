@@ -82,7 +82,7 @@
           poetry = {
             # https://wiki.nixos.org/wiki/Flakes
             type = "app";
-            program = "${pkgs.poetry}/bin/poetry";
+            program = lib.getExe pkgs.poetry;
           };
         });
 
