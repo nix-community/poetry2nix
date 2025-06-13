@@ -16,12 +16,11 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      treefmt-nix,
-      ...
+    { self
+    , nixpkgs
+    , flake-utils
+    , treefmt-nix
+    , ...
     } @ inputs:
     let
       inherit (nixpkgs) lib;
@@ -78,18 +77,19 @@
           };
         };
 
-        apps = let
-          app = flake-utils.lib.mkApp { drv = poetry2nix.cli; };
-        in
-        {
-          poetry = {
-            # https://wiki.nixos.org/wiki/Flakes
-            type = "app";
-            program = "${pkgs.poetry}/bin/poetry";
+        apps =
+          let
+            app = flake-utils.lib.mkApp { drv = poetry2nix.cli; };
+          in
+          {
+            poetry = {
+              # https://wiki.nixos.org/wiki/Flakes
+              type = "app";
+              program = "${pkgs.poetry}/bin/poetry";
+            };
+            poetry2nix = app;
+            default = app;
           };
-          poetry2nix = app;
-          default = app;
-        };
       }
     ));
 }

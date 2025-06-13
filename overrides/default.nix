@@ -3175,8 +3175,9 @@ lib.composeManyExtensions [
       );
       pyyaml = prev.pyyaml.overridePythonAttrs (
         old: {
-            buildInputs = old.buildInputs or [ ] ++ [ pkgs.libyaml ];
-      });
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.libyaml ];
+        }
+      );
 
       pyzmq = prev.pyzmq.overridePythonAttrs (
         old: {

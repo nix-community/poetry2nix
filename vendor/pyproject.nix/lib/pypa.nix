@@ -1,8 +1,7 @@
-{
-  lib,
-  pep600,
-  pep656,
-  ...
+{ lib
+, pep600
+, pep656
+, ...
 }:
 let
   inherit (builtins)
@@ -210,22 +209,22 @@ lib.fix (self: {
       # None is a wildcard compatible with any implementation
       (abiTag.implementation == "none" || abiTag.implementation == "any")
       ||
-        # implementation == sys.implementation.name
-        abiTag.implementation == implementation
+      # implementation == sys.implementation.name
+      abiTag.implementation == implementation
       ||
-        # The CPython stable ABI is abi3 as in the shared library suffix.
-        (abiTag.implementation == "abi" && implementation == "cpython")
+      # The CPython stable ABI is abi3 as in the shared library suffix.
+      (abiTag.implementation == "abi" && implementation == "cpython")
     )
     &&
-      # Check version
-      (
-        abiTag.version == null
-        || abiTag.version == sourceVersion.major
-        || (
-          hasPrefix sourceVersion.major abiTag.version
-          && ((toInt (sourceVersion.major + sourceVersion.minor)) == toInt abiTag.version)
-        )
-      );
+    # Check version
+    (
+      abiTag.version == null
+      || abiTag.version == sourceVersion.major
+      || (
+        hasPrefix sourceVersion.major abiTag.version
+        && ((toInt (sourceVersion.major + sourceVersion.minor)) == toInt abiTag.version)
+      )
+    );
 
   /*
     Check whether a platform tag is compatible with this python interpreter.
@@ -321,12 +320,12 @@ lib.fix (self: {
       # Python is a wildcard compatible with any implementation
       pythonTag.implementation == "python"
       ||
-        # implementation == sys.implementation.name
-        pythonTag.implementation == implementation
+      # implementation == sys.implementation.name
+      pythonTag.implementation == implementation
     )
     &&
-      # Check version
-      pythonTag.version == null
+    # Check version
+    pythonTag.version == null
     || pythonTag.version == sourceVersion.major
     || (
       hasPrefix sourceVersion.major pythonTag.version
@@ -383,38 +382,42 @@ lib.fix (self: {
     else
       let
         # Get sorting/filter criteria fields
-        withSortedTags = map (
-          file:
-          let
-            abiCompatible = self.isABITagCompatible python file.abiTag;
+        withSortedTags = map
+          (
+            file:
+            let
+              abiCompatible = self.isABITagCompatible python file.abiTag;
 
-            # Filter only compatible tags
-            languageTags = filter (self.isPythonTagCompatible python) file.languageTags;
-            # Extract the tag as a number. E.g. "37" is `toInt "37"` and "none"/"any" is 0
-            languageTags' = map (tag: if tag == "none" then 0 else toInt tag.version) languageTags;
+              # Filter only compatible tags
+              languageTags = filter (self.isPythonTagCompatible python) file.languageTags;
+              # Extract the tag as a number. E.g. "37" is `toInt "37"` and "none"/"any" is 0
+              languageTags' = map (tag: if tag == "none" then 0 else toInt tag.version) languageTags;
 
-          in
-          {
-            bestLanguageTag = head (sort (x: y: x > y) languageTags');
-            compatible =
-              abiCompatible
-              && length languageTags > 0
-              && lib.any (self.isPlatformTagCompatible platform python.stdenv.cc.libc) file.platformTags;
-            inherit file;
-          }
-        ) files;
+            in
+            {
+              bestLanguageTag = head (sort (x: y: x > y) languageTags');
+              compatible =
+                abiCompatible
+                && length languageTags > 0
+                && lib.any (self.isPlatformTagCompatible platform python.stdenv.cc.libc) file.platformTags;
+              inherit file;
+            }
+          )
+          files;
 
         # Only consider files compatible with this interpreter
         compatibleFiles = filter (file: file.compatible) withSortedTags;
 
         # Sort files based on their tags
-        sorted = sort (
-          x: y:
-          x.file.distribution > y.file.distribution
-          || x.file.version > y.file.version
-          || (x.file.buildTag != null && (y.file.buildTag == null || x.file.buildTag > y.file.buildTag))
-          || x.bestLanguageTag > y.bestLanguageTag
-        ) compatibleFiles;
+        sorted = sort
+          (
+            x: y:
+              x.file.distribution > y.file.distribution
+              || x.file.version > y.file.version
+              || (x.file.buildTag != null && (y.file.buildTag == null || x.file.buildTag > y.file.buildTag))
+              || x.bestLanguageTag > y.bestLanguageTag
+          )
+          compatibleFiles;
 
       in
       # Strip away temporary sorting metadata

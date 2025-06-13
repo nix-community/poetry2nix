@@ -1,9 +1,8 @@
-{
-  lib,
-  pep440,
-  pep508,
-  pep518,
-  ...
+{ lib
+, pep440
+, pep508
+, pep518
+, ...
 }:
 let
   inherit (builtins)
@@ -49,26 +48,32 @@ fix (_self: {
       }
   */
   parseDependencies =
-    {
-      pyproject,
-      extrasAttrPaths ? [ ],
-      extrasListPaths ? { },
-      groupsAttrPaths ? [ ],
-      groupsListPaths ? { },
+    { pyproject
+    , extrasAttrPaths ? [ ]
+    , extrasListPaths ? { }
+    , groupsAttrPaths ? [ ]
+    , groupsListPaths ? { }
+    ,
     }:
     let
       # Fold extras from all considered attributes into one set
       extras' =
-        (foldl' (acc: attr: acc // getAttrPath attr { } pyproject) (pyproject.project.optional-dependencies
-          or { }
-        ) extrasAttrPaths)
+        (foldl' (acc: attr: acc // getAttrPath attr { } pyproject)
+          (
+            pyproject.project.optional-dependencies
+              or { }
+          )
+          extrasAttrPaths)
         // filterAttrs (_: deps: length deps > 0) (
           mapAttrs' (path: attr: nameValuePair attr (getAttrPath path [ ] pyproject)) extrasListPaths
         );
 
       depGroups' =
-        (foldl' (acc: attr: acc // getAttrPath attr { } pyproject) (pyproject.dependency-groups or { }
-        ) groupsAttrPaths)
+        (foldl' (acc: attr: acc // getAttrPath attr { } pyproject)
+          (
+            pyproject.dependency-groups or { }
+          )
+          groupsAttrPaths)
         // filterAttrs (_: deps: length deps > 0) (
           mapAttrs' (path: attr: nameValuePair attr (getAttrPath path [ ] pyproject)) groupsListPaths
         );
@@ -82,18 +87,20 @@ fix (_self: {
       # PEP-735 dependency groups
       groups =
         let
-          groups' = mapAttrs (
-            _group:
-            concatMap (
-              x:
-              if isString x then
-                [ (pep508.parseString x) ]
-              else if isAttrs x then
-                groups'.${x.include-group}
-              else
-                throw "Unsupported dependency group: ${x}"
+          groups' = mapAttrs
+            (
+              _group:
+              concatMap (
+                x:
+                if isString x then
+                  [ (pep508.parseString x) ]
+                else if isAttrs x then
+                  groups'.${x.include-group}
+                else
+                  throw "Unsupported dependency group: ${x}"
+              )
             )
-          ) depGroups';
+            depGroups';
         in
         groups';
     };

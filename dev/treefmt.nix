@@ -26,6 +26,7 @@
   };
 
   programs.deadnix.enable = true;
+  programs.nixpkgs-fmt.enable = true;
   programs.statix.enable = true;
   programs.black.enable = true;
 }

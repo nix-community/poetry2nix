@@ -1,9 +1,8 @@
-{
-  lib,
-  pep440,
-  pep508,
-  pep518,
-  ...
+{ lib
+, pep440
+, pep508
+, pep518
+, ...
 }:
 
 lib.fix (
@@ -65,23 +64,23 @@ lib.fix (
           foldl'
             (
               state: v:
-              let
-                nonzero = state.nonzero || v != 0;
-              in
-              state
-              // {
-                release = state.release ++ [
-                  (
-                    if nonzero && !state.nonzero then
-                      (v + 1)
-                    else if nonzero then
-                      0
-                    else
-                      v
-                  )
-                ];
-                inherit nonzero;
-              }
+                let
+                  nonzero = state.nonzero || v != 0;
+                in
+                state
+                // {
+                  release = state.release ++ [
+                    (
+                      if nonzero && !state.nonzero then
+                        (v + 1)
+                      else if nonzero then
+                        0
+                      else
+                        v
+                    )
+                  ];
+                  inherit nonzero;
+                }
             )
             {
               release = [ ];
@@ -109,16 +108,18 @@ lib.fix (
     # ]
     normalizeDependendenciesToList =
       deps:
-      foldl' (
-        acc: name:
-        acc
-        ++ (
-          let
-            dep = deps.${name};
-          in
-          if typeOf dep == "list" then map (normalizeDep name) dep else [ (normalizeDep name dep) ]
-        )
-      ) [ ] (attrNames deps);
+      foldl'
+        (
+          acc: name:
+          acc
+          ++ (
+            let
+              dep = deps.${name};
+            in
+            if typeOf dep == "list" then map (normalizeDep name) dep else [ (normalizeDep name dep) ]
+          )
+        ) [ ]
+        (attrNames deps);
 
     dummyMarker = {
       type = "bool";
@@ -184,29 +185,29 @@ lib.fix (
     */
     translatePoetryProject =
       pyproject:
-      assert !(pyproject ? project);
-      let
-        inherit (pyproject.tool) poetry;
-      in
-      pyproject
-      // {
-        project =
-          {
-            inherit (poetry) name version description;
-            authors = map translateAuthor poetry.authors;
-            urls =
-              optionalAttrs (poetry ? homepage) { Homepage = poetry.homepage; }
-              // optionalAttrs (poetry ? repository) { Repository = poetry.repository; }
-              // optionalAttrs (poetry ? documentation) { Documentation = poetry.documentation; };
-          }
-          // optionalAttrs (poetry ? license) { license.text = poetry.license; }
-          // optionalAttrs (poetry ? maintainers) { maintainers = map translateAuthor poetry.maintainers; }
-          // optionalAttrs (poetry ? readme) { inherit (poetry) readme; }
-          // optionalAttrs (poetry ? keywords) { inherit (poetry) keywords; }
-          // optionalAttrs (poetry ? classifiers) { inherit (poetry) classifiers; }
-          // optionalAttrs (poetry ? scripts) { inherit (poetry) scripts; }
-          // optionalAttrs (poetry ? plugins) { entry-points = poetry.plugins; };
-      };
+        assert !(pyproject ? project);
+        let
+          inherit (pyproject.tool) poetry;
+        in
+        pyproject
+        // {
+          project =
+            {
+              inherit (poetry) name version description;
+              authors = map translateAuthor poetry.authors;
+              urls =
+                optionalAttrs (poetry ? homepage) { Homepage = poetry.homepage; }
+                // optionalAttrs (poetry ? repository) { Repository = poetry.repository; }
+                // optionalAttrs (poetry ? documentation) { Documentation = poetry.documentation; };
+            }
+            // optionalAttrs (poetry ? license) { license.text = poetry.license; }
+            // optionalAttrs (poetry ? maintainers) { maintainers = map translateAuthor poetry.maintainers; }
+            // optionalAttrs (poetry ? readme) { inherit (poetry) readme; }
+            // optionalAttrs (poetry ? keywords) { inherit (poetry) keywords; }
+            // optionalAttrs (poetry ? classifiers) { inherit (poetry) classifiers; }
+            // optionalAttrs (poetry ? scripts) { inherit (poetry) scripts; }
+            // optionalAttrs (poetry ? plugins) { entry-points = poetry.plugins; };
+        };
 
     /*
       Parse dependencies from pyproject.toml (Poetry edition).
@@ -231,9 +232,10 @@ lib.fix (
       dependencies = map parseDependency (
         normalizeDependendenciesToList (pyproject.tool.poetry.dependencies or { })
       );
-      extras = mapAttrs (
-        _: group: map parseDependency (normalizeDependendenciesToList group.dependencies)
-      ) pyproject.tool.poetry.group or { };
+      extras = mapAttrs
+        (
+          _: group: map parseDependency (normalizeDependendenciesToList group.dependencies)
+        ) pyproject.tool.poetry.group or { };
       build-systems = pep518.parseBuildSystems pyproject;
 
       # PEP-735 dependency groups
@@ -274,15 +276,17 @@ lib.fix (
             {
               op = "<";
               version = version // rec {
-                release = lib.imap0 (
-                  i: tok:
-                  if i >= segments - 1 then
-                    0
-                  else if i == segments - 2 then
-                    (tok + 1)
-                  else
-                    tok
-                ) version.release;
+                release = lib.imap0
+                  (
+                    i: tok:
+                      if i >= segments - 1 then
+                        0
+                      else if i == segments - 2 then
+                        (tok + 1)
+                      else
+                        tok
+                  )
+                  version.release;
                 str = concatStringsSep "." (map toString release); # Overwrite with upper bounds
               };
             }

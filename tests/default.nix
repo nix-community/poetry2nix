@@ -1,4 +1,3 @@
-
 let
   flake = builtins.getFlake "${toString ../.}";
 in
@@ -259,5 +258,5 @@ in
   # sandboxing issue?
   dependency-environment = callTest ./dependency-environment { };
   editable-egg = callTest ./editable-egg { };
-  eth-utils= callTest ./eth-utils { };
+  eth-utils = callTest ./eth-utils { };
 }

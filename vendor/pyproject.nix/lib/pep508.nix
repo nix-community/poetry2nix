@@ -1,10 +1,9 @@
-{
-  lib,
-  pep508,
-  pep440,
-  pep599,
-  pypa,
-  ...
+{ lib
+, pep508
+, pep440
+, pep599
+, pypa
+, ...
 }:
 
 let
@@ -84,11 +83,11 @@ let
       "sys_platform" = default;
       "extra" =
         value:
-        assert isList value || isString value;
-        {
-          type = "extra";
-          inherit value;
-        };
+          assert isList value || isString value;
+          {
+            type = "extra";
+            inherit value;
+          };
     };
 
   # Comparators for simple equality
@@ -152,20 +151,22 @@ let
   # Copied from nixpkgs lib.findFirstIndex internals to save on a little bit of environment allocations.
   resultIndex' =
     pred:
-    foldl' (
-      index: el:
-      if index < 0 then
+    foldl'
+      (
+        index: el:
+        if index < 0 then
         # No match yet before the current index, we need to check the element
-        if pred el then
+          if pred el then
           # We have a match! Turn it into the actual index to prevent future iterations from modifying it
-          -index - 1
-        else
+            -index - 1
+          else
           # Still no match, update the index to the next element (we're counting down, so minus one)
-          index - 1
-      else
+            index - 1
+        else
         # There's already a match, propagate the index without evaluating anything
-        index
-    ) (-1);
+          index
+      )
+      (-1);
 
   inherit (pep508) parseMarkers evalMarkers;
 
@@ -333,7 +334,7 @@ in
               )
             # Closing group, return stack
             else if token == ")" then
-              # Return a tuple of stack and next so the "(" branch above can know where the list is closed
+            # Return a tuple of stack and next so the "(" branch above can know where the list is closed
               [
                 stack
                 (i + 1)
@@ -495,14 +496,14 @@ in
         else
           (
             if match ".+\/.+" input != null then
-              # Input is a bare URL
+            # Input is a bare URL
               {
                 packageSegment = null;
                 url = input;
                 markerSegment = null;
               }
             else
-              # Input is a package name
+            # Input is a package name
               {
                 packageSegment = input;
                 url = null;
@@ -541,7 +542,7 @@ in
             extras = [ ];
           }
         else
-          # Assert that either regex matched
+        # Assert that either regex matched
           assert m1 != null || m2 != null;
           {
             # Based on PEP-508 alone it's not clear whether names should be normalized or not.
@@ -780,8 +781,8 @@ in
             else
               comparators.${value.op}
           )
-          (evalMarkers environ value.lhs)
-          (evalMarkers environ value.rhs)
+            (evalMarkers environ value.lhs)
+            (evalMarkers environ value.rhs)
         )
       else if value.type == "boolOp" then
         boolOps.${value.op} (evalMarkers environ value.lhs) (evalMarkers environ value.rhs)

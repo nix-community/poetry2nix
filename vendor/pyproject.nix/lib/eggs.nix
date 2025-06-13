@@ -86,14 +86,18 @@ lib.fix (self: {
     let
       inherit (python.passthru) pythonVersion implementation;
 
-      langCompatible = filter (
-        file:
-        file.languageTag.implementation == "python" || file.languageTag.implementation == implementation
-      ) files;
+      langCompatible = filter
+        (
+          file:
+          file.languageTag.implementation == "python" || file.languageTag.implementation == implementation
+        )
+        files;
 
-      versionCompatible = filter (
-        file: compareVersions pythonVersion file.languageTag.version >= 0
-      ) langCompatible;
+      versionCompatible = filter
+        (
+          file: compareVersions pythonVersion file.languageTag.version >= 0
+        )
+        langCompatible;
 
     in
     sort (a: b: compareVersions a.languageTag.version b.languageTag.version > 0) versionCompatible;
