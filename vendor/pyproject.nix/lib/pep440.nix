@@ -96,24 +96,24 @@ let
   # Compare dev/pre/post/local release modifiers
   compareVersionModifier =
     x: y:
-    assert x != null && y != null;
-    let
-      prioX = modifierPriority.${x.type};
-      prioY = modifierPriority.${y.type};
-    in
-    if prioX == prioY then
-      (
-        if x.value == y.value then
-          0
-        else if x.value > y.value then
-          1
-        else
-          -1
-      )
-    else if prioX > prioY then
-      1
-    else
-      0;
+      assert x != null && y != null;
+      let
+        prioX = modifierPriority.${x.type};
+        prioY = modifierPriority.${y.type};
+      in
+      if prioX == prioY then
+        (
+          if x.value == y.value then
+            0
+          else if x.value > y.value then
+            1
+          else
+            -1
+        )
+      else if prioX > prioY then
+        1
+      else
+        0;
 
 in
 fix (self: {
@@ -159,21 +159,23 @@ fix (self: {
         local = mLocalAt 1;
 
         # Parse each post345/dev1 string into attrset
-        modifiers = map (
-          mod:
-          let
-            # Split post345 into ["post" "345"]
-            m = match "-?([^0-9]+)([0-9]+)" mod;
-          in
-          if m == null then
-            throw "PEP-440 modifier segment invalid: ${mod}"
-          # assert m != null;
-          else
-            {
-              type = normalizedReleaseType (elemAt m 0);
-              value = toIntRelease (elemAt m 1);
-            }
-        ) (filter (s: isString s && s != "") (split "\\." modifiersSegment));
+        modifiers = map
+          (
+            mod:
+            let
+              # Split post345 into ["post" "345"]
+              m = match "-?([^0-9]+)([0-9]+)" mod;
+            in
+            if m == null then
+              throw "PEP-440 modifier segment invalid: ${mod}"
+            # assert m != null;
+            else
+              {
+                type = normalizedReleaseType (elemAt m 0);
+                value = toIntRelease (elemAt m 1);
+              }
+          )
+          (filter (s: isString s && s != "") (split "\\." modifiersSegment));
 
       in
       if tokens == null || mLocal == null then
@@ -368,21 +370,21 @@ fix (self: {
         eq = self.comparators."==";
       in
       a: b:
-      (
-        # Local version identifiers are NOT permitted in this version specifier.
-        assert a.local == null && b.local == null;
-        gte a b
-        && eq a (
-          b
-          // {
-            release = sublist 0 ((length b.release) - 1) b.release;
-            # If a pre-release, post-release or developmental release is named in a compatible release clause as V.N.suffix, then the suffix is ignored when determining the required prefix match.
-            pre = null;
-            post = null;
-            dev = null;
-          }
-        )
-      );
+        (
+          # Local version identifiers are NOT permitted in this version specifier.
+          assert a.local == null && b.local == null;
+          gte a b
+          && eq a (
+            b
+            // {
+              release = sublist 0 ((length b.release) - 1) b.release;
+              # If a pre-release, post-release or developmental release is named in a compatible release clause as V.N.suffix, then the suffix is ignored when determining the required prefix match.
+              pre = null;
+              post = null;
+              dev = null;
+            }
+          )
+        );
     "==" = a: b: self.compareVersions a b == 0;
     "!=" = a: b: self.compareVersions a b != 0;
     "<=" = a: b: self.compareVersions a b <= 0;

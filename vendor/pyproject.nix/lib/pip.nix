@@ -56,65 +56,65 @@ lib.fix (self: {
       );
       # Fold line continuations
       inherit
-        (
-          (foldl'
-            (
-              acc: l':
-              let
-                m = match "(.+) *\\\\" l';
-                continue = m != null;
-                l = stripStr (if continue then (head m) else l');
-              in
-              if continue then
-                {
-                  line = acc.line ++ [ l ];
-                  inherit (acc) lines;
-                }
-              else
-                {
-                  line = [ ];
-                  lines = acc.lines ++ [ (acc.line ++ [ l ]) ];
-                }
-            )
-            {
-              lines = [ ];
-              line = [ ];
-            }
-            lines'
+        ((foldl'
+          (
+            acc: l':
+            let
+              m = match "(.+) *\\\\" l';
+              continue = m != null;
+              l = stripStr (if continue then (head m) else l');
+            in
+            if continue then
+              {
+                line = acc.line ++ [ l ];
+                inherit (acc) lines;
+              }
+            else
+              {
+                line = [ ];
+                lines = acc.lines ++ [ (acc.line ++ [ l ]) ];
+              }
           )
-        )
+          {
+            lines = [ ];
+            line = [ ];
+          }
+          lines'
+        ))
         lines
         ;
 
     in
-    foldl' (
-      acc: l:
-      let
-        m = match "-(c|r) (.+)" (head l);
-      in
-      acc
-      ++ (
-        # Common case, parse string
-        if m == null then
-          [
-            {
-              requirement = pep508.parseString (head l);
-              flags = tail l;
-            }
-          ]
+    foldl'
+      (
+        acc: l:
+        let
+          m = match "-(c|r) (.+)" (head l);
+        in
+        acc
+        ++ (
+          # Common case, parse string
+          if m == null then
+            [
+              {
+                requirement = pep508.parseString (head l);
+                flags = tail l;
+              }
+            ]
 
-        # Don't support constraint files
-        else if (head m) == "c" then
-          throw "Unsupported flag: -c"
+          # Don't support constraint files
+          else if (head m) == "c" then
+            throw "Unsupported flag: -c"
 
-        # Recursive requirements.txt
-        else
-          (self.parseRequirementsTxt (
-            if root == null then
-              throw "When importing recursive requirements.txt requirements needs to be passed as a path"
-            else
-              root + "/${head (tail m)}"
-          ))
-      )
-    ) [ ] lines;
+          # Recursive requirements.txt
+          else
+            (self.parseRequirementsTxt (
+              if root == null then
+                throw "When importing recursive requirements.txt requirements needs to be passed as a path"
+              else
+                root + "/${head (tail m)}"
+            ))
+        )
+      ) [ ]
+      lines;
 })

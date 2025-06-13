@@ -2,7 +2,6 @@
   description = "Poetry2nix flake";
 
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils";
     # Last working commit from nixos-small-unstable
     nixpkgs.url = "github:NixOS/nixpkgs?rev=75e28c029ef2605f9841e0baa335d70065fe7ae2";
 
@@ -13,86 +12,39 @@
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    systems.url = "github:nix-systems/default";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      nix-github-actions,
-      treefmt-nix,
-      systems,
-    }:
+    { self
+    , nixpkgs
+    , treefmt-nix
+    , ...
+    } @ inputs:
     let
-      eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
+      inherit (nixpkgs) lib;
+      systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
+
+      forAllSystems = f: lib.genAttrs
+        systems
+        (system: f nixpkgs.legacyPackages.${system});
+
+      # Taking the mkApp functionality from flake-utils, so we don't need it
+      # as a dependency
+      mkApp =
+        { drv
+        , name ? drv.pname or drv.name
+        , exePath ? drv.passthru.exePath or "/bin/${name}"
+        }:
+        {
+          type = "app";
+          program = "${drv}${exePath}";
+        };
     in
     {
-      overlays.default = nixpkgs.lib.composeManyExtensions [ (import ./overlay.nix) ];
+      overlays.default = lib.composeManyExtensions [ (import ./overlay.nix) ];
       lib.mkPoetry2Nix = { pkgs }: import ./default.nix { inherit pkgs; };
 
-      githubActions =
-        let
-          mkPkgs =
-            system:
-            import nixpkgs {
-              config = {
-                allowAliases = false;
-                allowInsecurePredicate = _: true;
-              };
-              overlays = [ self.overlays.default ];
-              inherit system;
-            };
-        in
-        nix-github-actions.lib.mkGithubMatrix {
-          platforms = {
-            "x86_64-linux" = "ubuntu-22.04";
-            "x86_64-darwin" = "macos-13";
-            "aarch64-darwin" = "macos-14";
-          };
-          checks = {
-            x86_64-linux =
-              let
-                pkgs = mkPkgs "x86_64-linux";
-              in
-              import ./tests { inherit pkgs; }
-              // {
-                formatting = treefmtEval.x86_64-linux.config.build.check self;
-              };
-
-            x86_64-darwin =
-              let
-                pkgs = mkPkgs "x86_64-darwin";
-                inherit (pkgs) lib;
-                tests = import ./tests { inherit pkgs; };
-              in
-              {
-                # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
-                aggregate = pkgs.runCommand "darwin-aggregate" {
-                  env.TEST_INPUTS = lib.concatStringsSep " " (
-                    lib.attrValues (lib.filterAttrs (_: v: lib.isDerivation v) tests)
-                  );
-                } "touch $out";
-              };
-            aarch64-darwin =
-              let
-                pkgs = mkPkgs "aarch64-darwin";
-                inherit (pkgs) lib;
-                tests = import ./tests { inherit pkgs; };
-              in
-              {
-                # Aggregate all tests into one derivation so that only one GHA runner is scheduled for all darwin jobs
-                aggregate = pkgs.runCommand "darwin-aggregate" {
-                  env.TEST_INPUTS = lib.concatStringsSep " " (
-                    lib.attrValues (lib.filterAttrs (_: v: lib.isDerivation v) tests)
-                  );
-                } "touch $out";
-              };
-          };
-        };
+      githubActions = import ./actions.nix { inherit inputs self; };
 
       templates = {
         app = {
@@ -101,51 +53,59 @@
         };
         default = self.templates.app;
       };
-    }
-    // (flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowAliases = false;
-        };
 
-        poetry2nix = import ./default.nix { inherit pkgs; };
-        p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
-      in
-      rec {
-        formatter = treefmtEval.${system}.config.build.wrapper;
+      formatter = forAllSystems (pkgs:
+        let
+          treefmtEval = treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix;
+        in
+        treefmtEval.config.build.wrapper);
 
-        packages = {
+      packages = forAllSystems (pkgs:
+        let
+          poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
+        in
+        {
           poetry2nix = poetry2nix.cli;
           default = poetry2nix.cli;
-        };
+        });
 
-        devShells = {
-          default = pkgs.mkShell {
-            nativeBuildInputs = with pkgs; [
-              p2nix-tools.env
-              p2nix-tools.flamegraph
-              nixpkgs-fmt
-              poetry
-              niv
-              jq
-              nix-prefetch-git
-              nix-eval-jobs
-              nix-build-uncached
-            ];
-          };
-        };
+      apps = forAllSystems (pkgs:
+        let
+          poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
 
-        apps = {
+          default = mkApp { drv = poetry2nix.env; };
+        in
+        {
+          inherit default;
+          poetry2nix = default;
+
           poetry = {
             # https://wiki.nixos.org/wiki/Flakes
             type = "app";
-            program = "${pkgs.poetry}/bin/poetry";
+            program = lib.getExe pkgs.poetry;
           };
-          poetry2nix = flake-utils.lib.mkApp { drv = packages.poetry2nix; };
-          default = apps.poetry2nix;
-        };
-      }
-    ));
+        });
+
+      devShells = forAllSystems (pkgs:
+        let
+          poetry2nix = self.lib.mkPoetry2Nix { inherit pkgs; };
+          p2nix-tools = pkgs.callPackage ./tools { inherit poetry2nix; };
+        in
+        {
+          default = pkgs.mkShell {
+            nativeBuildInputs = [
+              p2nix-tools.env
+              p2nix-tools.flamegraph
+
+              pkgs.nixpkgs-fmt
+              pkgs.poetry
+              pkgs.niv
+              pkgs.jq
+              pkgs.nix-prefetch-git
+              pkgs.nix-eval-jobs
+              pkgs.nix-build-uncached
+            ];
+          };
+        });
+    };
 }
