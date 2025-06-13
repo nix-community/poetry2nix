@@ -24,12 +24,13 @@
       ...
     } @ inputs:
     let
+      inherit (nixpkgs) lib;
       systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      eachSystem = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
+      eachSystem = f: lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./dev/treefmt.nix);
     in
     {
-      overlays.default = nixpkgs.lib.composeManyExtensions [ (import ./overlay.nix) ];
+      overlays.default = lib.composeManyExtensions [ (import ./overlay.nix) ];
       lib.mkPoetry2Nix = { pkgs }: import ./default.nix { inherit pkgs; };
 
       githubActions = import ./actions.nix { inherit inputs self; };
