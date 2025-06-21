@@ -621,6 +621,11 @@ lib.composeManyExtensions [
             "44.0.0" = "sha256-LJIY2O8ul36JQmhiW8VhLCQ0BaX+j+HGr3e8RUkZpc8=";
             "44.0.1" = "sha256-6inZ5HEnQmW5U+H+QG5eRHHdnYYnUQPXNvx6iBGXlOk=";
             "44.0.2" = "sha256-A3A9IiwcqZGSxpChsWuCquG1DNgiOzayWp43DY3lMXc=";
+            "44.0.3" = "sha256-KLM+HQ0tWnHkcCcUZ9BJGnQuGVWbtjQRmcpKzgUPIvk=";
+            "45.0.1" = "sha256-+3/uzwIp8daCL79jx4LM+iAoKd9YD7hUPXxuzVmpJhA=";
+            "45.0.2" = "sha256-7+CEbkFTc5P8tIv5uEAv5aVzDsM2PZx+jSDCrSe5qHA=";
+            "45.0.3" = "sha256-NXYN2Iln4rPkmSApQD9VcLqczefOKhiwS5uF6s8Sf5E=";
+            "45.0.4" = "sha256-bLkTRQTf3VpCg9gZsFW21icH+s3e2VM/EVbiNsVT4SU=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
