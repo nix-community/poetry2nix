@@ -26278,9 +26278,6 @@
   "types-tqdm": [
     "setuptools"
   ],
-  "types-typed-ast": [
-    "setuptools"
-  ],
   "types-ujson": [
     "setuptools"
   ],
