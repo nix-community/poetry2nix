@@ -4,7 +4,7 @@
 , pyproject-nix
 }:
 let
-  inherit (builtins) substring elemAt;
+  inherit (builtins) substring elemAt length;
   inherit (lib) toLower;
 
   inherit (pyproject-nix.lib.pypa) matchWheelFileName;
@@ -27,7 +27,7 @@ let
       matchedWheel = matchWheelFileName file;
       matchedEgg = matchEggFileName file;
       kind =
-        if matchedWheel != null then "wheel"
+        if matchedWheel != null then elemAt matchedWheel (length matchedWheel - 3)
         else if matchedEgg != null then elemAt matchedEgg 2
         else "source";
     in
