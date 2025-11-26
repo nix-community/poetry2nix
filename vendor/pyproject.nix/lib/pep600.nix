@@ -5,8 +5,20 @@ let
     elemAt
     compareVersions
     splitVersion
+    listToAttrs
+    attrNames
     ;
   inherit (lib) fix;
+
+  # Flip key/value positions in pep599.manyLinuxTargetMachines.
+  # When checking wheel compatibility we want to run the lookup in the opposite order,
+  # going _from_ a Python-native arch like ppc64le _to_ a nixpkgs value like powerpc64le.
+  targetMachines' = listToAttrs (
+    map (name: {
+      value = name;
+      name = pep599.manyLinuxTargetMachines.${name};
+    }) (attrNames pep599.manyLinuxTargetMachines)
+  );
 
 in
 fix (self: {
@@ -69,7 +81,7 @@ fix (self: {
       false
     else if compareVersions "${sysMajor}.${sysMinor}" "${tagMajor}.${tagMinor}" < 0 then
       false
-    else if pep599.manyLinuxTargetMachines.${tagArch} != platform.parsed.cpu.name then
+    else if (targetMachines'.${tagArch} or tagArch) != platform.parsed.cpu.name then
       false
     else
       true;

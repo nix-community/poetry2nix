@@ -37,7 +37,7 @@ let
     take
     toInt
     ;
-  inherit (import ./util.nix { inherit lib; }) splitComma stripStr;
+  inherit (import ./lib.nix { inherit lib; }) splitComma stripStr;
 
   # Marker fields + their parsers
   markerFields =
@@ -737,7 +737,14 @@ in
           throw "Unsupported platform";
       platform_version = ""; # Field not reproducible
       python_version = python.passthru.pythonVersion;
-      python_full_version = python.version;
+      # Nixpkgs lacks an equivalent of python_full_version.
+      # This isn't a problem on CPython where we can use python.version to get the full version,
+      # but on pypy we don't know which language patch version of Python the interpreter is for.
+      python_full_version =
+        if lib.hasPrefix python.passthru.pythonVersion python.version then
+          python.version
+        else
+          python.passthru.pythonVersion;
       implementation_name = python.passthru.implementation;
       implementation_version = python.version;
     };
