@@ -5,4 +5,9 @@ lib.fix (self: {
     pyproject-nix = self;
     inherit lib;
   };
+  packages =
+    { callPackage }:
+    {
+      build-editable = callPackage ./build/editable { };
+    };
 })

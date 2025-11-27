@@ -18,7 +18,7 @@ let
     sublist
     findFirst
     ;
-  inherit (import ./util.nix { inherit lib; }) splitComma;
+  inherit (import ./lib.nix { inherit lib; }) splitComma;
 
   # A version of lib.toInt that supports leading zeroes
   toIntRelease =
@@ -271,7 +271,13 @@ fix (self: {
         }
       ]
   */
-  parseVersionConds = conds: map self.parseVersionCond (splitComma conds);
+  parseVersionConds =
+    conds:
+    let
+      # If the conditions are surrounded by parens strip them away
+      parenM = match "\\((.+)\\)" conds;
+    in
+    map self.parseVersionCond (splitComma (if parenM != null then head parenM else conds));
 
   /*
     Compare two versions as parsed by `parseVersion` according to PEP-440.

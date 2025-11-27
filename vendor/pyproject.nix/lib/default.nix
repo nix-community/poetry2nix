@@ -11,6 +11,7 @@ fix (
     pypa = ./pypa.nix;
     project = ./project.nix;
     renderers = ./renderers.nix;
+    util = ./util.nix;
     validators = ./validators.nix;
     scripts = ./scripts.nix;
     poetry = ./poetry.nix;
