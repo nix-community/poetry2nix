@@ -379,12 +379,12 @@ lib.composeManyExtensions [
                 ++ lib.optionals (lib.versionAtLeast old.version "4") [ rustc cargo pkgs.rustPlatform.cargoSetupHook final.setuptools-rust ];
           } // lib.optionalAttrs (lib.versionAtLeast old.version "4") {
             cargoDeps =
-              pkgs.rustPlatform.fetchCargoTarball
+              pkgs.rustPlatform.fetchCargoVendor
                 {
                   inherit (old) src;
                   sourceRoot = "${old.pname}-${old.version}/src/_bcrypt";
                   name = "${old.pname}-${old.version}";
-                  sha256 = getCargoHash old.version;
+                  hash = getCargoHash old.version;
                 };
             cargoRoot = "src/_bcrypt";
           }
@@ -651,11 +651,11 @@ lib.composeManyExtensions [
               CRYPTOGRAPHY_DONT_BUILD_RUST = "1";
             } // lib.optionalAttrs (lib.versionAtLeast old.version "3.5" && !isWheel) rec {
               cargoDeps =
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   inherit (old) src;
                   sourceRoot = "${old.pname}-${old.version}/${cargoRoot}";
                   name = "${old.pname}-${old.version}";
-                  inherit sha256;
+                  hash = sha256;
                 };
               cargoRoot = if lib.versionAtLeast old.version "44" then "." else "src/rust";
             }
@@ -2100,10 +2100,10 @@ lib.composeManyExtensions [
           in
           {
             inherit src;
-            cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
               inherit src;
               name = "${old.pname}-${old.version}";
-              sha256 = cargoHash;
+              hash = cargoHash;
             };
             nativeBuildInputs = old.nativeBuildInputs or [ ] ++ [
               pkgs.rustPlatform.cargoSetupHook # handles `importCargoLock`
@@ -2372,10 +2372,10 @@ lib.composeManyExtensions [
           };
         in
         prev.pycrdt.overridePythonAttrs (old: {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
-            sha256 = hashes.${old.version};
+            hash = hashes.${old.version};
           };
 
           buildInputs = old.buildInputs or [ ] ++ lib.optionals stdenv.isDarwin [
@@ -3334,7 +3334,7 @@ lib.composeManyExtensions [
           );
         in
         prev.rpds-py.overridePythonAttrs (old: lib.optionalAttrs (!(old.src.isWheel or false)) {
-          cargoDeps = pkgs.rustPlatform.fetchCargoTarball {
+          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
             inherit (old) src;
             name = "${old.pname}-${old.version}";
             hash = getCargoHash old.version;
@@ -3664,7 +3664,7 @@ lib.composeManyExtensions [
                       lockFile = "${src.out}/Cargo.lock";
                     } // (if hash == null then { } else hash)
                   ) else
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   name = "ruff-${old.version}-cargo-deps";
                   inherit src hash;
                 };
@@ -4112,7 +4112,7 @@ lib.composeManyExtensions [
                   ({
                     lockFile = "${src.out}/Cargo.lock";
                   } // (lib.optionalAttrs (lib.isAttrs hash) hash)) else
-                pkgs.rustPlatform.fetchCargoTarball {
+                pkgs.rustPlatform.fetchCargoVendor {
                   name = "watchfiles-${old.version}-cargo-deps";
                   inherit src hash;
                 };
