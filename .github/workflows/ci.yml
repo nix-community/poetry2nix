@@ -17,8 +17,8 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
       - id: set-matrix
         name: Generate Nix Matrix
         run: |
@@ -35,9 +35,9 @@ jobs:
       max-parallel: 10
       matrix: ${{ fromJSON(needs.nix-matrix.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
-      - uses: cachix/cachix-action@v15
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v17
         with:
           name: poetry2nix
           authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
@@ -53,9 +53,9 @@ jobs:
           - macos-13
           - macos-14
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
-      - uses: cachix/cachix-action@v15
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v17
         with:
           name: poetry2nix
           authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
@@ -76,9 +76,9 @@ jobs:
           - macos-13
           - macos-14
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
-      - uses: cachix/cachix-action@v15
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v17
         with:
           name: poetry2nix
           authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
@@ -94,9 +94,9 @@ jobs:
           - macos-13
           - macos-14
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
-      - uses: cachix/cachix-action@v15
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v17
         with:
           name: poetry2nix
           authToken: ${{ secrets.POETRY2NIX_CACHIX_AUTH_TOKEN }}
@@ -146,7 +146,7 @@ jobs:
       contents: write
       pull-requests: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: "Generate tag"
         id: tag
         run: echo "tag=$(./tools/auto_version.py)" >> "$GITHUB_OUTPUT"
